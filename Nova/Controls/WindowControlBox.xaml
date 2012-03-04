@@ -1,0 +1,286 @@
+﻿<UserControl x:Class="Nova.Controls.WindowControlBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}" mc:Ignorable="d" d:DesignHeight="28" d:DesignWidth="120">
+	<UserControl.Resources>
+		
+		<BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+		
+		<Style x:Key="WindowControlStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+			<Setter Property="Width" Value="38" />
+			<Setter Property="Height" Value="14" />
+			<Setter Property="OverridesDefaultStyle" Value="True" />
+			<Setter Property="Padding" Value="0" />
+			<Setter Property="Margin" Value="0" />
+			<Setter Property="BorderBrush" Value="{DynamicResource UnfocusedControlBorderBrush}" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<ControlTemplate.Resources>
+							<Storyboard x:Key="HoverOn">
+								<DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgroundOver"
+								                 Storyboard.TargetProperty="Opacity" To="1" />
+								<DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgroundOver_Highlight"
+								                 Storyboard.TargetProperty="Opacity" To="0.65" />
+							</Storyboard>
+							<Storyboard x:Key="HoverOff">
+								<DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgroundOver"
+								                 Storyboard.TargetProperty="Opacity" To="0" />
+								<DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgroundOver_Highlight"
+								                 Storyboard.TargetProperty="Opacity" To="0" />
+							</Storyboard>
+							<Storyboard x:Key="PressedOn">
+								<DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgroundPressed"
+								                 Storyboard.TargetProperty="Opacity" To="0.84" />
+								<DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgoundPressed_Highlight"
+								                 Storyboard.TargetProperty="Opacity" To="0.65" />
+							</Storyboard>
+							<Storyboard x:Key="PressedOff">
+								<DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgroundPressed"
+								                 Storyboard.TargetProperty="Opacity" To="0" />
+								<DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgoundPressed_Highlight"
+								                 Storyboard.TargetProperty="Opacity" To="0" />
+							</Storyboard>
+							<Storyboard x:Key="FocusedOn">
+								<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement"
+								                               Storyboard.TargetProperty="(UIElement.Opacity)">
+									<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
+								</DoubleAnimationUsingKeyFrames>
+							</Storyboard>
+							<Storyboard x:Key="FocusedOff">
+								<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement"
+								                               Storyboard.TargetProperty="(UIElement.Opacity)">
+									<SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
+								</DoubleAnimationUsingKeyFrames>
+							</Storyboard>
+						</ControlTemplate.Resources>
+						<Grid x:Name="Grid">
+							<Border x:Name="BackgroundNorm" Background="{DynamicResource grayGradient}" BorderThickness="1"
+							        BorderBrush="{DynamicResource UnfocusedControlBorderBrush}"
+							        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" />
+							<Border x:Name="BackgroundNorm_highlight" Margin="1"
+							        BorderBrush="{DynamicResource BackgroundNorm_highlightBrush}" BorderThickness="1,0,1,1"
+							        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" Opacity="0.65" />
+							<Border x:Name="BackgroundOver" Background="{DynamicResource BtnOverFill}"
+							        BorderBrush="{DynamicResource TextBoxPressBrush}" BorderThickness="1"
+							        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" Opacity="0" />
+							<Border x:Name="BackgroundOver_Highlight" Margin="1" Background="{DynamicResource btnOverFillHighlight}"
+							        BorderBrush="{DynamicResource hoverStroke}" BorderThickness="1,0,1,1"
+							        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" Opacity="0" />
+							<Border x:Name="BackgroundPressed" Background="{DynamicResource BtnPressFill}"
+							        BorderBrush="{DynamicResource btnPressBorder}" BorderThickness="1"
+							        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" Opacity="0" />
+							<Border x:Name="BackgoundPressed_Highlight" Background="{DynamicResource btnPressFillHighlight}" Margin="1"
+							        CornerRadius="2.5" Opacity="0" />
+							<Border x:Name="Background_overlay" Margin="1,1,1,0" BorderThickness="1" CornerRadius="3,3,0,0"
+									Background="{DynamicResource ButtonBackground_overlay}"/>
+							<Border x:Name="DisabledVisualElement" Background="{DynamicResource DisabledVisualElementButtonBackgroundBrush}"
+							        BorderBrush="{DynamicResource DisabledVisualElementButtonBorderBrush}" BorderThickness="1"
+							        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" IsHitTestVisible="false"
+							        Visibility="Collapsed" />
+							<ContentPresenter x:Name="contentPresenter" Content="{TemplateBinding Content}"
+							                  ContentTemplate="{TemplateBinding ContentTemplate}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+							                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" />
+							<TextBlock Panel.ZIndex="1" x:Name="DisabledOverlay" Text="{TemplateBinding Content}"
+							           Foreground="{DynamicResource DisabledBrush}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+							           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}"
+							           Visibility="Collapsed" />
+							<Border x:Name="FocusVisualElement" Margin="1" BorderBrush="{DynamicResource btnFocus}" BorderThickness="1"
+							        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" IsHitTestVisible="false" Opacity="0" />
+							<Border x:Name="DefaultBorder" Margin="1" BorderBrush="{DynamicResource btnFocus}" BorderThickness="1"
+							        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" IsHitTestVisible="false" Opacity="0" />
+						</Grid>
+
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsDefault" Value="True">
+								<Setter Property="Opacity" TargetName="DefaultBorder" Value="1" />
+							</Trigger>
+							<Trigger Property="IsKeyboardFocused" Value="true">
+
+								<Trigger.ExitActions>
+									<BeginStoryboard x:Name="FocusedOff_BeginStoryboard" Storyboard="{StaticResource FocusedOff}" />
+								</Trigger.ExitActions>
+								<Trigger.EnterActions>
+									<BeginStoryboard x:Name="FocusedOn_BeginStoryboard" Storyboard="{StaticResource FocusedOn}" />
+								</Trigger.EnterActions>
+
+							</Trigger>
+							<Trigger Property="IsMouseOver" Value="true">
+								<Trigger.ExitActions>
+									<BeginStoryboard Storyboard="{StaticResource HoverOff}" x:Name="HoverOff_BeginStoryboard" />
+								</Trigger.ExitActions>
+								<Trigger.EnterActions>
+									<BeginStoryboard Storyboard="{StaticResource HoverOn}" />
+								</Trigger.EnterActions>
+
+								<Setter Property="Panel.ZIndex" Value="99" />
+							</Trigger>
+							<Trigger Property="IsPressed" Value="true">
+								<Trigger.ExitActions>
+									<BeginStoryboard Storyboard="{StaticResource PressedOff}" />
+								</Trigger.ExitActions>
+								<Trigger.EnterActions>
+									<BeginStoryboard Storyboard="{StaticResource PressedOn}" />
+								</Trigger.EnterActions>
+							</Trigger>
+							<Trigger Property="IsEnabled" Value="false">
+								<Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
+								<Setter Property="Visibility" TargetName="DisabledVisualElement" Value="Visible" />
+								<Setter Property="Visibility" TargetName="DisabledOverlay" Value="Visible" />
+								<Setter Property="Visibility" TargetName="contentPresenter" Value="Collapsed" />
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<Style x:Key="CloseControlStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+			<Setter Property="Width" Value="38" />
+			<Setter Property="Padding" Value="0" />
+			<Setter Property="Margin" Value="0" />
+			<Setter Property="Height" Value="14" />
+			<Setter Property="OverridesDefaultStyle" Value="True" />
+			<Setter Property="BorderBrush" Value="{DynamicResource UnfocusedControlBorderBrush}" />
+
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<ControlTemplate.Resources>
+							<Storyboard x:Key="HoverOn">
+								<DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgroundOver"
+								                 Storyboard.TargetProperty="Opacity" To="1" />
+								<DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgroundOver_Highlight"
+								                 Storyboard.TargetProperty="Opacity" To="0.65" />
+							</Storyboard>
+							<Storyboard x:Key="HoverOff">
+								<DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgroundOver"
+								                 Storyboard.TargetProperty="Opacity" To="0" />
+								<DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgroundOver_Highlight"
+								                 Storyboard.TargetProperty="Opacity" To="0" />
+							</Storyboard>
+							<Storyboard x:Key="PressedOn">
+								<DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgroundPressed"
+								                 Storyboard.TargetProperty="Opacity" To="0.84" />
+								<DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgoundPressed_Highlight"
+								                 Storyboard.TargetProperty="Opacity" To="0.65" />
+							</Storyboard>
+							<Storyboard x:Key="PressedOff">
+								<DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgroundPressed"
+								                 Storyboard.TargetProperty="Opacity" To="0" />
+								<DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgoundPressed_Highlight"
+								                 Storyboard.TargetProperty="Opacity" To="0" />
+							</Storyboard>
+							<Storyboard x:Key="FocusedOn">
+								<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement"
+								                               Storyboard.TargetProperty="(UIElement.Opacity)">
+									<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
+								</DoubleAnimationUsingKeyFrames>
+							</Storyboard>
+							<Storyboard x:Key="FocusedOff">
+								<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement"
+								                               Storyboard.TargetProperty="(UIElement.Opacity)">
+									<SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
+								</DoubleAnimationUsingKeyFrames>
+							</Storyboard>
+						</ControlTemplate.Resources>
+						<Grid x:Name="Grid">
+							<Border x:Name="BackgroundNorm" Background="{DynamicResource grayGradient}" BorderThickness="1"
+							        BorderBrush="{DynamicResource UnfocusedControlBorderBrush}"
+							        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" />
+							<Border x:Name="BackgroundNorm_highlight" Margin="1" BorderBrush="{DynamicResource BackgroundNorm_highlightBrush}"
+							        BorderThickness="1,0,1,1" CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}"
+							        Opacity="0.65" />
+							<Border x:Name="BackgroundOver" Background="{DynamicResource CloseBtnOverFill}"
+							        BorderBrush="{DynamicResource CloseTextBoxPressBrush}" BorderThickness="1"
+							        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" Opacity="0" />
+							<Border x:Name="BackgroundOver_Highlight" Margin="1" Background="{DynamicResource ClosebtnOverFillHighlight}"
+							        BorderBrush="{DynamicResource ClosehoverStroke}" BorderThickness="1,0,1,1"
+							        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" Opacity="0" />
+							<Border x:Name="BackgroundPressed" Background="{DynamicResource CloseBtnPressFill}"
+							        BorderBrush="{DynamicResource ClosebtnPressBorder}" BorderThickness="1"
+							        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" Opacity="0" />
+							<Border x:Name="BackgoundPressed_Highlight" Background="{DynamicResource ClosebtnPressFillHighlight}" Margin="1"
+							        CornerRadius="2.5" Opacity="0" />
+							<Border x:Name="Background_overlay" Margin="1,1,1,0" BorderThickness="1" CornerRadius="3,3,0,0"
+									Background="{DynamicResource ButtonBackground_overlay}"/>
+							<Border x:Name="DisabledVisualElement" Background="{DynamicResource DisabledVisualElementButtonBackgroundBrush}"
+							        BorderBrush="{DynamicResource DisabledVisualElementButtonBorderBrush}" BorderThickness="1"
+							        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" IsHitTestVisible="false"
+							        Visibility="Collapsed" />
+							<ContentPresenter x:Name="contentPresenter" Content="{TemplateBinding Content}"
+							                  ContentTemplate="{TemplateBinding ContentTemplate}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+							                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" />
+							<TextBlock Panel.ZIndex="1" x:Name="DisabledOverlay" Text="{TemplateBinding Content}"
+							           Foreground="{DynamicResource DisabledBrush}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+							           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}"
+							           Visibility="Collapsed" />
+							<Border x:Name="FocusVisualElement" Margin="1" BorderBrush="{DynamicResource ClosebtnFocus}" BorderThickness="1"
+							        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" IsHitTestVisible="false" Opacity="0" />
+							<Border x:Name="DefaultBorder" Margin="1" BorderBrush="{DynamicResource ClosebtnFocus}" BorderThickness="1"
+							        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" IsHitTestVisible="false" Opacity="0" />
+						</Grid>
+
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsDefault" Value="True">
+								<Setter Property="Opacity" TargetName="DefaultBorder" Value="1" />
+							</Trigger>
+							<Trigger Property="IsKeyboardFocused" Value="true">
+
+								<Trigger.ExitActions>
+									<BeginStoryboard x:Name="FocusedOff_BeginStoryboard" Storyboard="{StaticResource FocusedOff}" />
+								</Trigger.ExitActions>
+								<Trigger.EnterActions>
+									<BeginStoryboard x:Name="FocusedOn_BeginStoryboard" Storyboard="{StaticResource FocusedOn}" />
+								</Trigger.EnterActions>
+
+							</Trigger>
+							<Trigger Property="IsMouseOver" Value="true">
+								<Trigger.ExitActions>
+									<BeginStoryboard Storyboard="{StaticResource HoverOff}" x:Name="HoverOff_BeginStoryboard" />
+								</Trigger.ExitActions>
+								<Trigger.EnterActions>
+									<BeginStoryboard Storyboard="{StaticResource HoverOn}" />
+								</Trigger.EnterActions>
+
+								<Setter Property="Panel.ZIndex" Value="99" />
+							</Trigger>
+							<Trigger Property="IsPressed" Value="true">
+								<Trigger.ExitActions>
+									<BeginStoryboard Storyboard="{StaticResource PressedOff}" />
+								</Trigger.ExitActions>
+								<Trigger.EnterActions>
+									<BeginStoryboard Storyboard="{StaticResource PressedOn}" />
+								</Trigger.EnterActions>
+							</Trigger>
+							<Trigger Property="IsEnabled" Value="false">
+								<Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
+								<Setter Property="Visibility" TargetName="DisabledVisualElement" Value="Visible" />
+								<Setter Property="Visibility" TargetName="DisabledOverlay" Value="Visible" />
+								<Setter Property="Visibility" TargetName="contentPresenter" Value="Collapsed" />
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</UserControl.Resources>
+
+	<StackPanel Orientation="Horizontal">
+		<Button Click="MinimizeWindow" Margin="2,2,0,2" Style="{DynamicResource WindowControlStyle}" Tag="2,0,0,2">
+			<Image Source="{DynamicResource MinimizeIcon}" Margin="0,1,0,0" Height="10" />
+		</Button>
+
+		<Button Click="MaximizeWindow" Margin="-1,2,0,2" Style="{DynamicResource WindowControlStyle}" Tag="0"
+		        Visibility="{Binding Path=CanMaximize, Converter={StaticResource boolToVisibilityConverter}}">
+			<Image Source="{DynamicResource MaximizeIcon}" Margin="0,0,0,0" Height="11" />
+		</Button>
+
+		<Button Click="CloseWindow" Margin="-1,2,2,2" Style="{DynamicResource CloseControlStyle}" Tag="0,2,2,0"
+		        IsCancel="{Binding IsCancel}">
+			<Image Source="{DynamicResource CloseIcon}" Margin="0,-1,0,0" Height="12" />
+		</Button>
+	</StackPanel>
+</UserControl>

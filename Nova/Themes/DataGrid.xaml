@@ -1,0 +1,251 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Nova="clr-namespace:Nova.Controls">
+	
+	<Style TargetType="{x:Type DataGrid}">
+		<Setter Property="CanUserAddRows" Value="False" />
+		<Setter Property="CanUserDeleteRows" Value="False" />
+		<Setter Property="CanUserReorderColumns" Value="True" />
+		<Setter Property="CanUserResizeRows" Value="True" />
+		<Setter Property="CanUserSortColumns" Value="True" />
+		<Setter Property="AutoGenerateColumns" Value="False" />
+		<Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="BorderBrush" Value="{DynamicResource UnfocusedControlBorderBrush}" />
+		<Setter Property="RowBackground" Value="{DynamicResource RowBrush}" />
+		<Setter Property="AlternatingRowBackground" Value="{DynamicResource AlternatingRowBrush}" />
+		<Setter Property="RowHeaderWidth" Value="1" />
+		<Setter Property="SelectionUnit" Value="FullRow" />
+		<Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+		<Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+		<Setter Property="AlternationCount" Value="2" />
+		<Setter Property="GridLinesVisibility" Value="None" />
+		<Setter Property="RowDetailsVisibilityMode" Value="Collapsed"/>
+		<Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+		<Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+		<Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type DataGrid}">
+					<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+						<ScrollViewer x:Name="DG_ScrollViewer" Focusable="False">
+							<ScrollViewer.Template>
+								<ControlTemplate TargetType="{x:Type ScrollViewer}">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto"/>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="Auto"/>
+										</Grid.ColumnDefinitions>
+										<Grid.RowDefinitions>
+											<RowDefinition Height="Auto"/>
+											<RowDefinition Height="*"/>
+											<RowDefinition Height="Auto"/>
+										</Grid.RowDefinitions>
+										<Button Command="ApplicationCommands.SelectAll" Focusable="False" Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}}" Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGrid}}}">
+											<Button.Visibility>
+												<Binding Path="HeadersVisibility" RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGrid}}"
+														 Converter="{x:Static DataGrid.HeadersVisibilityConverter}">
+													<Binding.ConverterParameter>
+														<DataGridHeadersVisibility>All</DataGridHeadersVisibility>
+													</Binding.ConverterParameter>
+												</Binding>
+											</Button.Visibility>
+										</Button>
+										<DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter" Grid.Column="1">
+											<DataGridColumnHeadersPresenter.Visibility>
+												<Binding Path="HeadersVisibility" RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGrid}}"
+														 Converter="{x:Static DataGrid.HeadersVisibilityConverter}">
+													<Binding.ConverterParameter>
+														<DataGridHeadersVisibility>Column</DataGridHeadersVisibility>
+													</Binding.ConverterParameter>
+												</Binding>
+											</DataGridColumnHeadersPresenter.Visibility>
+										</DataGridColumnHeadersPresenter>
+										<ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" Grid.ColumnSpan="2" CanVerticallyScroll="False" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Grid.Row="1"/>
+										<ScrollBar x:Name="PART_VerticalScrollBar" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Maximum="{TemplateBinding ScrollableHeight}" Orientation="Vertical" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"/>
+										<Grid Grid.Column="1" Grid.Row="2">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGrid}}}"/>
+												<ColumnDefinition Width="*"/>
+											</Grid.ColumnDefinitions>
+											<ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Column="1" Maximum="{TemplateBinding ScrollableWidth}" Orientation="Horizontal" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}"/>
+										</Grid>
+									</Grid>
+								</ControlTemplate>
+							</ScrollViewer.Template>
+							<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+						</ScrollViewer>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+			<Trigger Property="IsGrouping" Value="True">
+				<Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+
+	<Style TargetType="{x:Type DataGridRow}">
+		<Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+		<Setter Property="SnapsToDevicePixels" Value="True" />
+		<Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+		<Setter Property="ValidationErrorTemplate">
+			<Setter.Value>
+				<ControlTemplate>
+					<TextBlock Foreground="{DynamicResource Error}" Margin="2,0,0,0" Text="!" VerticalAlignment="Center">
+						<Run Text="!" />
+					</TextBlock>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type DataGridRow}">
+					<Border x:Name="Border"
+							CornerRadius="2"
+							BorderThickness="1"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							Background="{TemplateBinding Background}"
+					        SnapsToDevicePixels="True">
+						<SelectiveScrollingGrid>
+							<SelectiveScrollingGrid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="*" />
+							</SelectiveScrollingGrid.ColumnDefinitions>
+							<SelectiveScrollingGrid.RowDefinitions>
+								<RowDefinition Height="*" />
+								<RowDefinition Height="Auto" />
+							</SelectiveScrollingGrid.RowDefinitions>
+
+							<DataGridCellsPresenter Grid.Column="1" 
+													ItemsPanel="{TemplateBinding ItemsPanel}"
+													SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+
+							<DataGridDetailsPresenter Grid.Column="1" Grid.Row="1" Visibility="{TemplateBinding DetailsVisibility}">
+								<SelectiveScrollingGrid.SelectiveScrollingOrientation>
+									<Binding Path="AreRowDetailsFrozen" RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGrid}}"
+											 Converter="{x:Static DataGrid.RowDetailsScrollingConverter}">
+										<Binding.ConverterParameter>
+											<SelectiveScrollingOrientation>Vertical</SelectiveScrollingOrientation>
+										</Binding.ConverterParameter>
+									</Binding>
+								</SelectiveScrollingGrid.SelectiveScrollingOrientation>
+							</DataGridDetailsPresenter>
+
+							<DataGridRowHeader Grid.RowSpan="2" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical">
+								<DataGridRowHeader.Visibility>
+									<Binding Path="HeadersVisibility" RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGrid}}"
+											 Converter="{x:Static DataGrid.HeadersVisibilityConverter}">
+										<Binding.ConverterParameter>
+											<DataGridHeadersVisibility>Row</DataGridHeadersVisibility>
+										</Binding.ConverterParameter>
+									</Binding>
+								</DataGridRowHeader.Visibility>
+							</DataGridRowHeader>
+
+						</SelectiveScrollingGrid>
+					</Border>
+					
+					<ControlTemplate.Triggers>						
+						<Trigger Property="ItemsControl.AlternationIndex" Value="0">
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource RowBrush}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource RowBrush}" />
+						</Trigger>
+
+						<Trigger Property="ItemsControl.AlternationIndex" Value="1">
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource AlternatingRowBrush}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource AlternatingRowBrush}" />
+						</Trigger>
+						
+						<Trigger Property="IsSelected" Value="True">
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource SelectedListItemBorderBrush}" />
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource SelectedListItemBrush}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style TargetType="{x:Type DataGridCell}">
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="BorderBrush" Value="Transparent"/>
+		<Setter Property="BorderThickness" Value="0"/>
+		<Setter Property="FontFamily" Value="{DynamicResource Font}" />
+		
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type DataGridCell}">
+					<Border Padding="3" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+						<ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+			<Trigger Property="IsSelected" Value="True">
+				<Setter Property="Background" Value="Transparent" />
+				<Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />				
+			</Trigger>
+			<Trigger Property="IsKeyboardFocusWithin" Value="True">
+				<Setter Property="BorderBrush" Value="{DynamicResource {ComponentResourceKey ResourceId=FocusBorderBrushKey, TypeInTargetAssembly={x:Type DataGrid}}}"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+	
+	<Style TargetType="{x:Type DataGridColumnHeader}">
+		<Style.Resources>
+			<Style x:Key="ColumnHeaderGripperStyle" TargetType="{x:Type Thumb}">
+				<Setter Property="Width" Value="8" />
+				<Setter Property="Background" Value="Transparent" />
+				<Setter Property="Cursor" Value="SizeWE" />
+				<Setter Property="FontFamily" Value="{DynamicResource Font}" />
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type Thumb}">
+							<Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" />
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+		</Style.Resources>
+		
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+						
+						<Nova:DataGridHeaderBorder BorderBrush="{TemplateBinding BorderBrush}"
+						                                               BorderThickness="{TemplateBinding BorderThickness}" 
+																	   Background="{TemplateBinding Background}"
+						                                               IsClickable="{TemplateBinding CanUserSort}" 
+																	   IsPressed="{TemplateBinding IsPressed}"
+						                                               IsHovered="{TemplateBinding IsMouseOver}" 
+																	   Padding="{TemplateBinding Padding}"
+						                                               SortDirection="{TemplateBinding SortDirection}" 
+																	   SeparatorBrush="{TemplateBinding SeparatorBrush}"
+						                                               SeparatorVisibility="Collapsed">
+
+							<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+											  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+											  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+
+						</Nova:DataGridHeaderBorder>
+						<Thumb x:Name="PART_LeftHeaderGripper" HorizontalAlignment="Left"
+						       Style="{DynamicResource ColumnHeaderGripperStyle}" />
+						<Thumb x:Name="PART_RightHeaderGripper" HorizontalAlignment="Right"
+						       Style="{DynamicResource ColumnHeaderGripperStyle}" />
+						
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

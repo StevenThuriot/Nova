@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	
+	<Style TargetType="{x:Type TextBlock}">
+		<Setter Property="FontFamily" Value="{DynamicResource Font}" />
+		<Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+		<Style.Triggers>
+			<Trigger Property="IsEnabled" Value="false">
+				<Setter Property="Foreground" Value="{DynamicResource DisabledBrush}" />
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+	
+	<Style x:Key="NovaTextBlock" TargetType="{x:Type TextBlock}">
+		<Setter Property="FontFamily" Value="{DynamicResource Font}" />
+		<Setter Property="Foreground" Value="{DynamicResource LabelBrush}" />
+		<Setter Property="Padding" Value="5"/>
+		<Style.Triggers>
+			<Trigger Property="IsEnabled" Value="false">
+				<Setter Property="Foreground" Value="{DynamicResource DisabledBrush}" />
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+	
+	<Style x:Key="NovaTextBlockBold" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource NovaTextBlock}">
+		<Setter Property="FontWeight" Value="DemiBold" />
+	</Style>
+
+	<Style x:Key="NovaTextBlockHeader" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource NovaTextBlockBold}">
+		<Setter Property="FontSize" Value="{DynamicResource HeaderFontSize}" />
+	</Style>
+</ResourceDictionary>

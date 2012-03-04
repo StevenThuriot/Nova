@@ -1,0 +1,187 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options" >
+	
+	<!-- Fonts -->
+	<FontFamily x:Key="SegoeUI">/Nova;component/Fonts/#Segoe UI</FontFamily>
+	<FontFamily x:Key="Nevis">/Nova;component/Fonts/#Nevis</FontFamily>
+	<FontFamily x:Key="AgencyFB">/Nova;component/Fonts//#Agency FB</FontFamily>
+	
+	<!-- Brushes -->
+	<SolidColorBrush ice:Freeze="True" x:Key="LightShadeBrush" Color="{DynamicResource LightShadeColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="LightGradientBrush" Color="{DynamicResource LightGradientColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="SolidMenuFontBrush" Color="{DynamicResource ForegroundColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="HighlightedTextBrush" Color="{DynamicResource HighlightedTextColor}" />
+
+	<SolidColorBrush ice:Freeze="True" x:Key="ForegroundBrush" Color="{DynamicResource ForegroundColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="LabelBrush" Color="{DynamicResource LabelColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="HighlightedForegroundBrush" Color="{DynamicResource HighlightedForegroundColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="BackgroundBrush" Color="{DynamicResource BackgroundColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="HighlightedBackgroundBrush" Color="{DynamicResource HighlightedBackgroundColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="ControlBorderBrush" Color="{DynamicResource ControlBorderColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="BorderBrush" Color="{DynamicResource BorderColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="HighlightedBorderBrush" Color="{DynamicResource HighlightedBorderColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="DisabledBrush" Color="{DynamicResource DisabledColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="FocusedInputBorderBrush" Color="{DynamicResource FocusedInputBorderColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="UnfocusedControlBorderBrush" Color="{DynamicResource UnfocusedControlBorderColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="WatermarkBrush" Color="{DynamicResource WatermarkColor}" />
+
+	<SolidColorBrush ice:Freeze="True" x:Key="Error" Color="{DynamicResource ErrorColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="Warning" Color="{DynamicResource WarningColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="Suggestion" Color="{DynamicResource SuggestionColor}" />
+	
+	<SolidColorBrush ice:Freeze="True" x:Key="SortArrowBrush" Color="{DynamicResource SortArrowColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="RowBrush" Color="{DynamicResource RowColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="AlternatingRowBrush" Color="{DynamicResource AlternatingRowColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="SelectedListItemBorderBrush" Color="{DynamicResource SelectedListItemBorderColor}" />
+
+	<SolidColorBrush ice:Freeze="True" x:Key="btnFocus" Color="{DynamicResource Focus}"/>
+	<SolidColorBrush ice:Freeze="True" x:Key="hoverStroke" Color="{DynamicResource ItemOverStroke}"/>
+	<SolidColorBrush ice:Freeze="True" x:Key="TextBoxPressBrush" Color="{DynamicResource TextboxPress1}"/>
+
+	<SolidColorBrush ice:Freeze="True" x:Key="ClosebtnFocus" Color="{DynamicResource CloseFocus}"/>
+	<SolidColorBrush ice:Freeze="True" x:Key="ClosehoverStroke" Color="{DynamicResource CloseItemOverStroke}"/>
+	<SolidColorBrush ice:Freeze="True" x:Key="CloseTextBoxPressBrush" Color="{DynamicResource CloseTextboxPress1}"/>
+	<SolidColorBrush ice:Freeze="True" x:Key="BackgroundNorm_highlightBrush" Color="{DynamicResource BackgroundNorm_highlightColor}"/>
+	<SolidColorBrush ice:Freeze="True" x:Key="DisabledVisualElementButtonBackgroundBrush" Color="{DynamicResource DisabledVisualElementButtonBackgroundColor}"/>
+	<SolidColorBrush ice:Freeze="True" x:Key="DisabledVisualElementButtonBorderBrush" Color="{DynamicResource DisabledVisualElementButtonBorderColor}"/>
+
+	<SolidColorBrush ice:Freeze="True" x:Key="SeparatorBackgroundBrush" Color="{DynamicResource SeparatorBackgroundColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="SeparatorBorderBrush" Color="{DynamicResource SeparatorBorderColor}" />
+	
+	<LinearGradientBrush ice:Freeze="True" x:Key="grayGradient" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="{DynamicResource Gray1}" Offset="0"/>
+		<GradientStop Color="{DynamicResource Gray2}" Offset="0.171"/>
+		<GradientStop Color="{DynamicResource Gray3}" Offset="0.5"/>
+		<GradientStop Color="{DynamicResource Gray4}" Offset="0.51"/>
+		<GradientStop Color="{DynamicResource Gray5}" Offset="1"/>
+	</LinearGradientBrush>
+	
+	<LinearGradientBrush ice:Freeze="True" x:Key="BtnOverFill" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="{DynamicResource Over1}" Offset="0.5"/>
+		<GradientStop Color="{DynamicResource Over2}" Offset="0.509"/>
+		<GradientStop Color="{DynamicResource Over3}" Offset="1"/>
+	</LinearGradientBrush>
+	
+	<LinearGradientBrush ice:Freeze="True" x:Key="BtnPressFill" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="{DynamicResource Press1}" Offset="0"/>
+		<GradientStop Color="{DynamicResource Press2}" Offset="0.152"/>
+		<GradientStop Color="{DynamicResource Over2}" Offset="0.5"/>
+		<GradientStop Color="{DynamicResource Press3}" Offset="0.509"/>
+	</LinearGradientBrush>
+
+	<LinearGradientBrush ice:Freeze="True" x:Key="btnOverFillHighlight" EndPoint="1,0.5" StartPoint="0,0.5">
+		<GradientStop Color="{DynamicResource ButtonHighlightMid2}" Offset="0"/>
+		<GradientStop Color="{DynamicResource ButtonHighlightMid}" Offset="0.101"/>
+		<GradientStop Color="{DynamicResource ButtonHighlightMid}" Offset="0.899"/>
+		<GradientStop Color="{DynamicResource ButtonHighlightMid2}" Offset="1"/>
+	</LinearGradientBrush>
+	<LinearGradientBrush ice:Freeze="True" x:Key="btnPressFillHighlight" EndPoint="1,0.5" StartPoint="0,0.5">
+		<GradientStop Color="{DynamicResource PressHighlight}" Offset="0"/>
+		<GradientStop Color="{DynamicResource ButtonHighlightMid3}" Offset="0.037"/>
+		<GradientStop Color="{DynamicResource ButtonHighlightMid}" Offset="0.143"/>
+		<GradientStop Color="{DynamicResource ButtonHighlightMid}" Offset="0.857"/>
+		<GradientStop Color="{DynamicResource ButtonHighlightMid3}" Offset="0.963"/>
+		<GradientStop Color="{DynamicResource PressHighlight}" Offset="1"/>
+	</LinearGradientBrush>
+	<LinearGradientBrush ice:Freeze="True" x:Key="btnPressBorder" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="{DynamicResource PressStroke1}" Offset="0"/>
+		<GradientStop Color="{DynamicResource PressStroke2}" Offset="1"/>
+	</LinearGradientBrush>
+	
+	<LinearGradientBrush ice:Freeze="True" x:Key="CloseBtnOverFill" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="{DynamicResource CloseOver1}" Offset="0.5"/>
+		<GradientStop Color="{DynamicResource CloseOver2}" Offset="0.509"/>
+		<GradientStop Color="{DynamicResource CloseOver3}" Offset="1"/>
+	</LinearGradientBrush>
+	
+	<LinearGradientBrush ice:Freeze="True" x:Key="CloseBtnPressFill" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="{DynamicResource ClosePress1}" Offset="0"/>
+		<GradientStop Color="{DynamicResource ClosePress2}" Offset="0.152"/>
+		<GradientStop Color="{DynamicResource CloseOver2}" Offset="0.5"/>
+		<GradientStop Color="{DynamicResource ClosePress3}" Offset="0.509"/>
+	</LinearGradientBrush>
+
+	<LinearGradientBrush ice:Freeze="True" x:Key="ClosebtnOverFillHighlight" EndPoint="1,0.5" StartPoint="0,0.5">
+		<GradientStop Color="{DynamicResource CloseButtonHighlightMid2}" Offset="0"/>
+		<GradientStop Color="{DynamicResource CloseButtonHighlightMid}" Offset="0.101"/>
+		<GradientStop Color="{DynamicResource CloseButtonHighlightMid}" Offset="0.899"/>
+		<GradientStop Color="{DynamicResource CloseButtonHighlightMid2}" Offset="1"/>
+	</LinearGradientBrush>
+	<LinearGradientBrush ice:Freeze="True" x:Key="ClosebtnPressFillHighlight" EndPoint="1,0.5" StartPoint="0,0.5">
+		<GradientStop Color="{DynamicResource ClosePressHighlight}" Offset="0"/>
+		<GradientStop Color="{DynamicResource CloseButtonHighlightMid3}" Offset="0.037"/>
+		<GradientStop Color="{DynamicResource CloseButtonHighlightMid}" Offset="0.143"/>
+		<GradientStop Color="{DynamicResource CloseButtonHighlightMid}" Offset="0.857"/>
+		<GradientStop Color="{DynamicResource CloseButtonHighlightMid3}" Offset="0.963"/>
+		<GradientStop Color="{DynamicResource ClosePressHighlight}" Offset="1"/>
+	</LinearGradientBrush>
+	<LinearGradientBrush ice:Freeze="True" x:Key="ClosebtnPressBorder" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="{DynamicResource ClosePressStroke1}" Offset="0"/>
+		<GradientStop Color="{DynamicResource ClosePressStroke2}" Offset="1"/>
+	</LinearGradientBrush>
+	
+	<LinearGradientBrush ice:Freeze="True" x:Key="ButtonBackground_overlay" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="{DynamicResource ButtonBackground_overlayColor1}" Offset="0"/>
+		<GradientStop Color="{DynamicResource ButtonBackground_overlayColor2}" Offset="0.157"/>
+		<GradientStop Color="{DynamicResource ButtonBackground_overlayColor3}" Offset="0.5"/>
+		<GradientStop Color="{DynamicResource ButtonBackground_overlayColor4}" Offset="0.51"/>
+	</LinearGradientBrush>
+	
+	<ImageBrush ice:Freeze="True" x:Key="WindowBackgroundImageBrush" 
+              AlignmentX="Right" 
+              AlignmentY="Bottom" 
+              Stretch="Uniform"
+	            ImageSource="{DynamicResource WindowBackgroundImage}" />
+	
+	<ImageBrush ice:Freeze="True" x:Key="ErrorBackgroundImageBrush" 
+              AlignmentX="Right" 
+              AlignmentY="Bottom" 
+              Stretch="Uniform"
+	            ImageSource="{DynamicResource ErrorBackgroundImage}" />
+
+	<ImageBrush ice:Freeze="True" x:Key="CheckIconBrush" ImageSource="{DynamicResource CheckIcon}" />
+	<ImageBrush ice:Freeze="True" x:Key="DeleteIconBrush" ImageSource="{DynamicResource DeleteIcon}" />
+
+	<!-- Gradients and effects -->
+	<LinearGradientBrush ice:Freeze="True" x:Key="NormalStateButton" StartPoint="0,0" EndPoint="0,1">
+		<GradientStop Color="{DynamicResource LightGradientColor}" Offset="0.2" />
+		<GradientStop Color="{DynamicResource DarkGradientColor}" Offset="0.85" />
+		<GradientStop Color="{DynamicResource MiddleGradientColor}" Offset="1" />
+	</LinearGradientBrush>
+
+	<LinearGradientBrush ice:Freeze="True" x:Key="PushedDownStateButton" StartPoint="0,0" EndPoint="0,1">
+		<GradientStop Color="{DynamicResource LightGradientColor}" Offset="0" />
+		<GradientStop Color="{DynamicResource DarkGradientColor}" Offset="0.25" />
+		<GradientStop Color="{DynamicResource MiddleGradientColor}" Offset="1" />
+	</LinearGradientBrush>
+
+	<LinearGradientBrush ice:Freeze="True" x:Key="SelectedListItemBrush" StartPoint="0,0" EndPoint="0,1">
+		<GradientStop Color="{DynamicResource SelectedListItemTopColor}" Offset="0" />
+		<GradientStop Color="{DynamicResource SelectedListItemBottomColor}" Offset="0.75" />
+	</LinearGradientBrush>
+
+	<LinearGradientBrush ice:Freeze="True" x:Key="ToolTipBackgroundGradient" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="{DynamicResource ToolTipStart}" Offset="0"/>
+		<GradientStop Color="{DynamicResource ToolTipStop}" Offset="1"/>
+	</LinearGradientBrush>
+	
+	<DropShadowEffect x:Key="ShadowEffect" ShadowDepth="1" BlurRadius="14" Opacity="0.6" Direction="320"
+	                  Color="{DynamicResource DarkShadeColor}" />
+
+	
+	<!-- Styles -->
+	<Style x:Key="MyFocusVisual">
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Control}">
+					<Grid Margin="3 2">
+						<Rectangle StrokeThickness="1" Stroke="{DynamicResource BorderBrush}" StrokeDashArray="2 2" />
+						<Border Width="{TemplateBinding ActualWidth}" Height="{TemplateBinding ActualHeight}" CornerRadius="2"
+						        BorderThickness="1" />
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

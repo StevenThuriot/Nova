@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+					x:Class="Nova.NovaFramework">
+
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="DefaultConfiguration.xaml" />
+		<ResourceDictionary Source="Various.xaml" /> <!-- Hooks into the default config and turns colors, images, ... into brushes and other things needed -->
+		<ResourceDictionary Source="TextBlock.xaml" />
+		<ResourceDictionary Source="Label.xaml" />
+		<ResourceDictionary Source="Watermark.xaml" />
+		<ResourceDictionary Source="TabControl.xaml" />
+		<ResourceDictionary Source="Scrollbar.xaml" />
+		<ResourceDictionary Source="Button.xaml" />
+		<ResourceDictionary Source="Textbox.xaml" />
+		<ResourceDictionary Source="Passwordbox.xaml" />
+		<ResourceDictionary Source="Checkbox.xaml" />
+		<ResourceDictionary Source="RadioButton.xaml" />
+		<ResourceDictionary Source="Combobox.xaml" />
+		<ResourceDictionary Source="Separator.xaml" />
+		<ResourceDictionary Source="Menu.xaml" />
+		<ResourceDictionary Source="ListBox.xaml" />
+		<ResourceDictionary Source="Expander.xaml" />
+		<ResourceDictionary Source="DataGrid.xaml" />
+		<ResourceDictionary Source="ToolTip.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

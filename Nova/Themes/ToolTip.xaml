@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	
+	<Style TargetType="{x:Type ToolTip}">
+		<Setter Property="FontFamily" Value="{DynamicResource Font}" />
+		<Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+		<Setter Property="Padding" Value="2,0,2,0"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="ToolTip">
+					<Border x:Name="Root">
+						<Border BorderBrush="{DynamicResource UnfocusedControlBorderBrush}" 
+								Background="{DynamicResource ToolTipBackgroundGradient}"
+								CornerRadius="{DynamicResource ControlRadius}"
+								BorderThickness="1"  
+								Padding="3">
+							<Border.Resources>
+								<Storyboard x:Key="Visible State"/>
+								<Storyboard x:Key="Normal State"/>
+							</Border.Resources>
+							<ContentPresenter
+								Content="{TemplateBinding Content}"
+								ContentTemplate="{TemplateBinding ContentTemplate}"
+								Cursor="{TemplateBinding Cursor}"
+								Margin="{TemplateBinding Padding}" />
+						</Border>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

@@ -1,0 +1,84 @@
+<Nova:ExceptionHandlerView x:Class="Nova.Controls.ExceptionHandler.ExceptionHandlerWindow"
+							 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+							 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+						     xmlns:Language="http://nova.thuriot.be/Language"
+                             xmlns:Base="http://nova.thuriot.be/Base"
+						     xmlns:Nova="clr-namespace:Nova.Controls.ExceptionHandler" MinWidth="600" MaxWidth="600" MaxHeight="550"
+							 WindowRadius="3"
+							 SizeToContent="Height"
+							 CloseOnCancel="True"
+							 BackgroundImage="{DynamicResource ErrorBackgroundImageBrush}">	
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="100" />
+			<RowDefinition Height="30" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="40" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="10" />
+			<ColumnDefinition Width="110" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="10" />
+		</Grid.ColumnDefinitions>
+
+		<Image Grid.Row="0" Grid.Column="1" 
+			   Height="90" Width="90"
+			   Margin="20,0,0,0"
+			   VerticalAlignment="Top"
+			   Source="{DynamicResource ErrorImage}" />
+			   
+		<TextBlock Grid.Row="0" Grid.Column="2" Margin="30,20,0,0" Text="{Binding Information, Mode=OneWay}" TextWrapping="Wrap" />
+		<Expander Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+				  Height="24"
+				  Margin="0,0,0,10"
+				  ExpandDirection="Down"
+				  Header="{x:Static Language:Resources.Details}"
+				  Visibility="{x:Static Base:ExceptionHandler.ExceptionInfoVisibility}">
+			<Expander.Triggers>
+				<EventTrigger RoutedEvent="Expander.Expanded">
+					<EventTrigger.Actions>
+						<BeginStoryboard>
+							<Storyboard>
+								<DoubleAnimation Storyboard.TargetProperty="Height"
+                                             From="24" To="300" Duration="0:0:0.5" />
+							</Storyboard>
+						</BeginStoryboard>
+					</EventTrigger.Actions>
+				</EventTrigger>
+
+				<EventTrigger RoutedEvent="Expander.Collapsed">
+					<EventTrigger.Actions>
+						<BeginStoryboard>
+							<Storyboard>
+								<DoubleAnimation Storyboard.TargetProperty="Height"
+                                             From="300" To="24" Duration="0:0:0.5" />
+							</Storyboard>
+						</BeginStoryboard>
+					</EventTrigger.Actions>
+				</EventTrigger>
+			</Expander.Triggers>
+
+			<Border CornerRadius="4"
+					Margin="6">
+				<Border.Background>
+					<SolidColorBrush Color="White" Opacity="0.6" />
+				</Border.Background>
+				<ScrollViewer Margin="3"
+							  VerticalScrollBarVisibility="Auto">
+					<TextBox TextWrapping="Wrap" Style="{x:Null}" IsReadOnly="True"
+							 BorderThickness="0"
+							 Background="Transparent"
+							 Text="{Binding FormattedMessage, Mode=OneWay}" />
+				</ScrollViewer>
+			</Border>
+		</Expander>
+
+		<Button Grid.Row="3" Grid.Column="2"
+				Width="90"
+				HorizontalAlignment="Right"
+				IsDefault="True"
+				Click="CloseWindow"
+				Content="OK" />
+	</Grid>
+</Nova:ExceptionHandlerView>

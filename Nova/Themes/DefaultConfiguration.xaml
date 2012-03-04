@@ -1,0 +1,157 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+	<FontFamily x:Key="Font">/Nova;component/Fonts/#Segoe UI</FontFamily>
+	<FontFamily x:Key="WatermarkFont">/Nova;component/Fonts/#Segoe UI</FontFamily>
+	
+	<!-- Images -->
+	<ImageSource x:Key="WindowBackgroundImage">
+		/Nova;component/Resources/ModernBlue.png
+	</ImageSource>
+	<ImageSource x:Key="ErrorBackgroundImage">
+		/Nova;component/Resources/ErrorBackground.png
+	</ImageSource>
+	<ImageSource x:Key="ErrorImage">
+		/Nova;component/Resources/Error.png
+	</ImageSource>
+	<ImageSource x:Key="LoaderImage">
+		/Nova;component/Resources/loader.gif
+	</ImageSource>
+	<ImageSource x:Key="CheckIcon">
+		/Nova;component/Resources/Check-icon.png
+	</ImageSource>
+	<ImageSource x:Key="DeleteIcon">
+		/Nova;component/Resources/Delete-icon.png
+	</ImageSource>
+
+	<ImageSource x:Key="MinimizeIcon">
+		/Nova;component/Resources/Minimize2.png
+	</ImageSource>
+	<ImageSource x:Key="MaximizeIcon">
+		/Nova;component/Resources/Maximize2.png
+	</ImageSource>
+	<ImageSource x:Key="CloseIcon">
+		/Nova;component/Resources/Close.png
+	</ImageSource>
+	
+	<ImageSource x:Key="SearchIcon">
+		/Nova;component/Resources/search.png
+	</ImageSource>
+	<ImageSource x:Key="ClearIcon">
+		/Nova;component/Resources/clear.png
+	</ImageSource>
+
+	<!-- Colors -->
+	<Color x:Key="ControlBorderColor">#636363</Color>
+	<Color x:Key="UnfocusedControlBorderColor">#bbb</Color>
+	<Color x:Key="BorderColor">#555555</Color>
+	<Color x:Key="DisabledColor">#AAAAAA</Color>
+	<Color x:Key="HighlightedBorderColor">#181854</Color>
+	<Color x:Key="FocusedInputBorderColor">#4b749f</Color>
+	<Color x:Key="WatermarkColor">#4b749f</Color>
+
+	<Color x:Key="ForegroundColor">#707070</Color>
+	<Color x:Key="LabelColor">#4b749f</Color>
+	<Color x:Key="HighlightedForegroundColor">#067cc5</Color>
+	<Color x:Key="BackgroundColor">White</Color>
+	<Color x:Key="HighlightedBackgroundColor">#def6ff</Color>
+
+	<Color x:Key="LightGradientColor">#f9f9f9</Color>
+	<Color x:Key="MiddleGradientColor">#dfdfdf</Color>
+	<Color x:Key="DarkGradientColor">#e3e3e3</Color>
+
+	<Color x:Key="LightShadeColor">#FFFCE3AC</Color>
+	<Color x:Key="DarkShadeColor">Black</Color>
+
+	<Color x:Key="FontColor">#707070</Color>
+	<Color x:Key="HighlightedTextColor">#064871</Color>
+
+	<Color x:Key="GlyphColor">#FF444444</Color>
+
+	<Color x:Key="ErrorColor">Red</Color>
+	<Color x:Key="WarningColor">DarkOrange</Color>
+	<Color x:Key="SuggestionColor">Black</Color>
+
+	<Color x:Key="SortArrowColor">#FF5091AF</Color>
+	
+	<Color x:Key="RowColor">White</Color>
+	<Color x:Key="AlternatingRowColor">#FFE1E9FC</Color>
+	<Color x:Key="SelectedListItemBorderColor">#99defd</Color>
+	<Color x:Key="SelectedListItemTopColor">#fafcfc</Color>
+	<Color x:Key="SelectedListItemBottomColor">#e3f4fc</Color>
+
+	<Color x:Key="SeparatorBackgroundColor">#FFA0A0A0</Color>
+	<Color x:Key="SeparatorBorderColor">#FF535353</Color>
+
+	<!--Button-->
+	<Color x:Key="Focus">#FF04CCFF</Color>
+	<Color x:Key="CloseFocus">#FFff0404</Color>
+
+	<Color x:Key="Over1">#FFE2F5FF</Color>
+	<Color x:Key="Over2">#FFC0E7FC</Color>
+	<Color x:Key="Over3">#FF9EDDFF</Color>
+
+	<Color x:Key="CloseOver1">#FFffe2e2</Color>
+	<Color x:Key="CloseOver2">#FFfcc0c0</Color>
+	<Color x:Key="CloseOver3">#FFff9e9e</Color>
+	
+	<Color x:Key="Press1">#FF759FB6</Color>
+	<Color x:Key="Press2">#FFB6E0F6</Color>
+	<Color x:Key="Press3">#FF9DD5F4</Color>
+	
+	<Color x:Key="ClosePress1">#FFb67575</Color>
+	<Color x:Key="ClosePress2">#FFf6b6b6</Color>
+	<Color x:Key="ClosePress3">#FFf49d9d</Color>
+
+	<Color x:Key="PressHighlight">#FF387599</Color>
+	<Color x:Key="ButtonHighlightMid">#0095D9FF</Color>
+	<Color x:Key="ButtonHighlightMid2">#9935A6E6</Color>
+
+	<Color x:Key="ClosePressHighlight">#FF993838</Color>
+	<Color x:Key="CloseButtonHighlightMid">#00ff9595</Color>
+	<Color x:Key="CloseButtonHighlightMid2">#99e63535</Color>
+	
+	<Color x:Key="ButtonHighlightMid3">#A535A6E6</Color>
+	<Color x:Key="CloseButtonHighlightMid3">#A5e63535</Color>
+
+	<Color x:Key="TextboxPress1">#FF3B79AC</Color>
+	<Color x:Key="ItemOverStroke">#FFD8F0FA</Color>
+	<Color x:Key="ItemSelectStroke">#FF98DDFB</Color>
+	<Color x:Key="PressStroke1">#FF1D415C</Color>
+	<Color x:Key="PressStroke2">#FF2C628B</Color>
+
+	<Color x:Key="CloseTextboxPress1">#FFac3b3b</Color>
+	<Color x:Key="CloseItemOverStroke">#FFfad8d8</Color>
+	<Color x:Key="CloseItemSelectStroke">#FFfb9898</Color>
+	<Color x:Key="ClosePressStroke1">#FF5c1d1d</Color>
+	<Color x:Key="ClosePressStroke2">#FF8b2c2c</Color>
+	
+	<Color x:Key="Gray1">#FFFFFFFF</Color>
+	<Color x:Key="Gray2">#FFEDEDED</Color>
+	<Color x:Key="Gray3">#FFE7E7E7</Color>
+	<Color x:Key="Gray4">#FFDCDCDC</Color>
+	<Color x:Key="Gray5">#FFEAEBEC</Color>
+
+	<Color x:Key="BackgroundNorm_highlightColor">#F2FFFFFF</Color>
+	<Color x:Key="DisabledVisualElementButtonBackgroundColor">#FFF1F1F1</Color>
+	<Color x:Key="DisabledVisualElementButtonBorderColor">#FFB2B2B2</Color>
+
+	<Color x:Key="ToolTipStart">#FFFFFFFF</Color>
+	<Color x:Key="ToolTipStop">#FFE7E7F7</Color>
+
+	<Color x:Key="ButtonBackground_overlayColor1">#00FFFFFF</Color>
+	<Color x:Key="ButtonBackground_overlayColor2">#72FFFFFF</Color>
+	<Color x:Key="ButtonBackground_overlayColor3">#72FFFFFF</Color>
+	<Color x:Key="ButtonBackground_overlayColor4">#00FFFFFF</Color>
+	
+	<!-- Radius -->
+	<Thickness x:Key="ValidationBorderThickness">1</Thickness>
+	<Thickness x:Key="BorderThickness">1</Thickness>
+	<CornerRadius x:Key="ControlRadius">2</CornerRadius>
+	<sys:Double x:Key="DefaultControlHeight">22</sys:Double>
+
+	<Geometry x:Key="ErrorIcon">F1 M 1,1 L 0,12 L 12,0 L 1,1 Z</Geometry>	
+	<Geometry x:Key="ErrorIconSmall">F1 M 1,1 L 0,9 L 9,0 L 1,1 Z</Geometry>
+
+	<sys:Double x:Key="HeaderFontSize">20</sys:Double>
+</ResourceDictionary>

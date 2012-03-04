@@ -1,0 +1,72 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+					xmlns:Base="http://nova.thuriot.be/Base"
+                    xmlns:Validation="http://nova.thuriot.be/Validation">
+
+	<Style x:Key="{x:Type RadioButton}" TargetType="{x:Type RadioButton}">
+		<Setter Property="Height" Value="{DynamicResource DefaultControlHeight}" />
+		<Setter Property="SnapsToDevicePixels" Value="true" />
+		<Setter Property="OverridesDefaultStyle" Value="true" />
+		<Setter Property="FocusVisualStyle" Value="{DynamicResource MyFocusVisual}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				
+				<ControlTemplate TargetType="{x:Type RadioButton}">
+
+					<BulletDecorator VerticalAlignment="Center" HorizontalAlignment="Left">
+						<BulletDecorator.Bullet>
+							<Grid>
+								<Border x:Name="Border" Width="13" Height="13" CornerRadius="{DynamicResource ControlRadius}"
+										BorderThickness="1" BorderBrush="{DynamicResource UnfocusedControlBorderBrush}" Background="Transparent">
+									<Rectangle x:Name="CheckMark" Fill="{DynamicResource CheckIconBrush}" />
+								</Border>
+
+								<Path x:Name="ErrorTriangle"
+											  Data="{DynamicResource ErrorIconSmall}"
+											  Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type RadioButton}}, Path=(Validation:Validation.Severity)}"
+											  Visibility="Collapsed"
+											  ToolTip="{Binding RelativeSource={RelativeSource AncestorType={x:Type RadioButton}}, Path=(Validation:Validation.ValidationTooltip)}" />
+							</Grid>
+						</BulletDecorator.Bullet>
+						<ContentPresenter Margin="4,0,0,0" x:Name="Presenter" RecognizesAccessKey="True" />
+					</BulletDecorator>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsChecked" Value="False">
+							<Setter TargetName="CheckMark" Property="Fill" Value="Transparent" />
+						</Trigger>
+						<Trigger Property="IsChecked" Value="{x:Null}">
+							<Setter TargetName="CheckMark" Property="Fill" Value="{DynamicResource BackgroundBrush}" />
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource TextBoxPressBrush}" />
+						</Trigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.IsValid)}" Value="False">
+							<Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type RadioButton}}, Path=(Validation:Validation.Severity)}" />
+							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Visible" />
+						</DataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.ValidationTooltip)}" Value="{x:Null}">
+							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Collapsed" />
+						</DataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.ValidationTooltip).Length}" Value="0">
+							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Collapsed" />
+						</DataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Base:ViewMode.IsReadOnly)}" Value="True">
+							<Setter TargetName="Border" Property="BorderBrush" Value="Transparent" />
+							<Setter Property="IsHitTestVisible" Value="False" />
+							<Setter Property="Focusable" Value="False" />
+							<Setter Property="IsTabStop" Value="False" />
+							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Collapsed" />
+						</DataTrigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource DisabledBrush}" />
+							<Setter TargetName="CheckMark" Property="Fill" Value="Transparent" />
+							<Setter TargetName="CheckMark" Property="Fill" Value="Transparent" />
+							<Setter Property="Foreground" Value="{DynamicResource DisabledBrush}" />
+							<Setter Property="BorderBrush" Value="{DynamicResource DisabledBrush}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>
