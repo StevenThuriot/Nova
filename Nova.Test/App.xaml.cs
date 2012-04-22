@@ -10,7 +10,7 @@ namespace Nova.Test
 	{
 		public App()
 		{
-			Startup += NovaFramework.Start;
+			Startup += NovaFramework.Initialize;
 		}
 	}
 }

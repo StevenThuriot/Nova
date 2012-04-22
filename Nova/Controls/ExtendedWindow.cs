@@ -44,7 +44,6 @@ namespace Nova.Controls
 		protected ExtendedWindow()
 		{
 			UseLayoutRounding = true;
-			RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
 			RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
 			VisualTextRenderingMode = TextRenderingMode.ClearType;
 

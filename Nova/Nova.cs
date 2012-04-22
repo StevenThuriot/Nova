@@ -33,12 +33,12 @@ namespace Nova
 		/// </summary>
 		/// <param name="sender">The application</param>
 		/// <param name="startupEventArgs">Start up event arguments. These aren't used.</param>
-		public static void Start(object sender, StartupEventArgs startupEventArgs)
+		public static void Initialize(object sender, StartupEventArgs startupEventArgs)
 		{
 			var app = sender as Application;
 			if (app == null) return;
 
-			app.Startup -= Start;
+			app.Startup -= Initialize;
 
 			app.DispatcherUnhandledException += ExceptionHandler. DispatcherUnhandledException;
 			AppDomain.CurrentDomain.UnhandledException += ExceptionHandler.UnhandledException;
