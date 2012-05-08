@@ -70,27 +70,30 @@ namespace Nova.Base
 		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
 		private void Dispose(bool disposing)
 		{
-			if (!_Disposed)
+			if (_Disposed) return;
+
+			if (disposing)
 			{
-				if (disposing)
+				DisposeManagedResources();
+
+				View = null;
+				ViewModel = null;
+
+				if (ActionContext != null)
 				{
-					DisposeManagedResources();
-
-					View = null;
-					ViewModel = null;
-
 					ActionContext.Clear();
-				    ActionContext = null;
-
-					if (_ValidationResults != null)
-						_ValidationResults.InternalReset();
-					
-					_ValidationResults = null;
+					ActionContext = null;
 				}
 
-				DisposeUnmanagedResources();
-				_Disposed = true;
+				if (_ValidationResults != null)
+				{
+					_ValidationResults.InternalReset();
+					_ValidationResults = null;
+				}
 			}
+
+			DisposeUnmanagedResources();
+			_Disposed = true;
 		}
 
 		#endregion

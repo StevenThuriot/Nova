@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -73,26 +72,6 @@ namespace Nova.Controls
 		{
 			get { return (bool)GetValue(IsLoadingProperty); }
 			set { SetValue(IsLoadingProperty, value); }
-		}
-
-		/// <summary>
-		/// How to dispose this view's controls.
-		/// </summary>
-		[SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
-		public static readonly DependencyProperty DisposeMethodProperty =
-			DependencyProperty.Register("DisposeMethod", typeof(TreeType), typeof(ExtendedWindow<TView, TViewModel>), new PropertyMetadata(TreeType.LogicalTree));
-
-		/// <summary>
-		/// Gets or sets the dispose method.
-		/// Default = LogicalTree
-		/// </summary>
-		/// <value>
-		/// The dispose method.
-		/// </value>
-		public TreeType DisposeMethod
-		{
-			get { return (TreeType) GetValue(DisposeMethodProperty); }
-			set { SetValue(DisposeMethodProperty, value); }
 		}
 
 // ReSharper restore StaticFieldInGenericType
@@ -186,21 +165,6 @@ namespace Nova.Controls
 			
 			if (disposing)
 			{
-				BindingOperations.ClearAllBindings(this);
-
-				CommandBindings.Clear();
-				InputBindings.Clear();
-
-				switch (DisposeMethod)
-				{
-					case TreeType.LogicalTree:
-						DisposeLogicalTree(this);
-						break;
-					case TreeType.VisualTree:
-						DisposeVisualTree(this);
-						break;
-				}
-
 				if (_ViewModel != null)
 				{
 					_ViewModel.Dispose();
@@ -208,53 +172,6 @@ namespace Nova.Controls
 			}
 
 			_Disposed = true;
-		}
-
-		/// <summary>
-		/// Disposes the logical tree.
-		/// </summary>
-		/// <param name="dependencyObject">The dependency object.</param>
-		private static void DisposeLogicalTree(DependencyObject dependencyObject)
-		{
-			foreach (var child in LogicalTreeHelper.GetChildren(dependencyObject))
-			{
-				var childDependencyObject = child as DependencyObject;
-				if (childDependencyObject != null)
-				{
-					DisposeLogicalTree(childDependencyObject);
-					BindingOperations.ClearAllBindings(childDependencyObject);
-				}
-
-				var disposable = child as IDisposable;
-				if (disposable != null)
-				{
-					disposable.Dispose();
-				}
-			}
-		}
-
-		/// <summary>
-		/// Disposes the visual tree.
-		/// </summary>
-		/// <param name="dependencyObject">The dependency object.</param>
-		private static void DisposeVisualTree(DependencyObject dependencyObject)
-		{
-			var childrenCount = VisualTreeHelper.GetChildrenCount(dependencyObject);
-
-			for (int i = 0; i < childrenCount; i++)
-			{
-				var child = VisualTreeHelper.GetChild(dependencyObject, i);
-				
-				DisposeVisualTree(child);
-				BindingOperations.ClearAllBindings(child);
-
-
-				var disposable = child as IDisposable;
-				if (disposable != null)
-				{
-					disposable.Dispose();
-				}
-			}
 		}
 	}
 }

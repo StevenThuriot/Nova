@@ -25,7 +25,7 @@ namespace Nova.Base
 
 		private TView _View;
 		private TViewModel _ViewModel;
-		
+
 		private MethodInfo _CreateAction;
 
 		private readonly Type _ViewType;
@@ -78,8 +78,8 @@ namespace Nova.Base
 			if (!_Actions.TryGetValue(name, out action))
 			{
 				var equivalentTypeName = name.EndsWith("action", StringComparison.OrdinalIgnoreCase)
-											? name.Substring(0, name.Length - 6)
-											: name + "Action";
+				                         	? name.Substring(0, name.Length - 6)
+				                         	: name + "Action";
 
 				var actionType = SearchType(equivalentTypeName, name);
 
@@ -110,9 +110,9 @@ namespace Nova.Base
 			_Actions.Add(name, action);
 			return action;
 		}
-		
+
 		#region Search Type
-		
+
 		private Type SearchType(string equivalentTypeName, string name)
 		{
 			var actionType = GetActionType(name, equivalentTypeName, _KnownTypes) ??
@@ -189,29 +189,29 @@ namespace Nova.Base
 		private void InitAllTypes()
 		{
 			var allTypes = AppDomain.CurrentDomain.GetAssemblies()
-									.Where(x =>
-									{
-										if (x.FullName.StartsWith("system", StringComparison.OrdinalIgnoreCase) ||
-											x.FullName.StartsWith("microsoft", StringComparison.OrdinalIgnoreCase))
-										{
-											return false;
-										}
+				.Where(x =>
+				       	{
+				       		if (x.FullName.StartsWith("system", StringComparison.OrdinalIgnoreCase) ||
+				       		    x.FullName.StartsWith("microsoft", StringComparison.OrdinalIgnoreCase))
+				       		{
+				       			return false;
+				       		}
 
-										var name = x.GetName().Name;
+				       		var name = x.GetName().Name;
 
-										if (string.IsNullOrEmpty(name))
-											return false;
+				       		if (string.IsNullOrEmpty(name))
+				       			return false;
 
-										return !name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase) &&
-											   !name.Equals("presentationcore", StringComparison.OrdinalIgnoreCase) &&
-											   !name.Equals("presentationframework", StringComparison.OrdinalIgnoreCase) &&
-											   !name.Equals("windowsbase", StringComparison.OrdinalIgnoreCase);
-									})
-									.SelectMany(x => x.GetTypes());
+				       		return !name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase) &&
+				       		       !name.Equals("presentationcore", StringComparison.OrdinalIgnoreCase) &&
+				       		       !name.Equals("presentationframework", StringComparison.OrdinalIgnoreCase) &&
+				       		       !name.Equals("windowsbase", StringComparison.OrdinalIgnoreCase);
+				       	})
+				.SelectMany(x => x.GetTypes());
 
 			_LoadedTypes = new List<Type>(allTypes);
 		}
-		
+
 		#endregion Init
 
 		#region Dispose
@@ -240,15 +240,27 @@ namespace Nova.Base
 		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
 		private void Dispose(bool disposing)
 		{
-			if (!_IsDisposed && disposing)
+			if (_IsDisposed)
+				return;
+
+			if (disposing)
 			{
-				foreach (var disposableAction in _Actions.Values.OfType<IDisposable>())
+				if (_Actions != null)
 				{
-					disposableAction.Dispose();
+					foreach (var disposableAction in _Actions.Values.OfType<IDisposable>().Where(x => x != null))
+					{
+						disposableAction.Dispose();
+					}
+
+					_Actions.Clear();
+					_Actions = null;
 				}
 
-				_KnownTypes.Clear();
-				_KnownTypes = null;
+				if (_KnownTypes != null)
+				{
+					_KnownTypes.Clear();
+					_KnownTypes = null;
+				}
 
 				if (_ViewAndViewModelTypes != null)
 				{
@@ -262,15 +274,9 @@ namespace Nova.Base
 					_LoadedTypes = null;
 				}
 
-				if (_Actions != null)
-				{
-					_Actions.Clear();
-					_Actions = null;
-				}
-
 				_View = null;
 				_ViewModel = null;
-				
+
 				_CreateAction = null;
 			}
 

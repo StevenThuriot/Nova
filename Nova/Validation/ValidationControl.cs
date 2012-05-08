@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -15,7 +14,7 @@ namespace Nova.Validation
 	/// The validation control to make validating easier.
 	/// You don't need to specify the Errors property for every child of this control, just the fieldnames.
 	/// </summary>
-	public class ValidationControl : Grid, IDisposable
+	public class ValidationControl : Grid
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ValidationControl"/> class.
@@ -24,11 +23,6 @@ namespace Nova.Validation
 		{
 			BindingOperations.SetBinding(this, ErrorsProperty, new ErrorBinding());
 		}
-
-		/// <summary>
-		/// Flag indicating wheter this instance is disposed.
-		/// </summary>
-		private bool _Disposed;
 
 		/// <summary>
 		/// A cache for the fields on the screen.
@@ -335,39 +329,6 @@ namespace Nova.Validation
 
 			Validation.SetIsValid(element, true);
 			Validation.SetValidationTooltip(element, null);
-		}
-
-		/// <summary>
-		/// Releases unmanaged resources and performs other cleanup operations before the
-		/// <see cref="ValidationControl"/> is reclaimed by garbage collection.
-		/// </summary>
-		~ValidationControl()
-		{
-			Dispose(false);
-		}
-
-		/// <summary>
-		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-		/// </summary>
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		/// <summary>
-		/// Releases unmanaged and - optionally - managed resources
-		/// </summary>
-		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-		private void Dispose(bool disposing)
-		{
-			if (!_Disposed && disposing)
-			{
-				_Fields.Clear();
-				_Fields = null;
-			}
-
-			_Disposed = true;
 		}
 	}
 }

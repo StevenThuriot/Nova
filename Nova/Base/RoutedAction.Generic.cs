@@ -182,9 +182,16 @@ namespace Nova.Base
 		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
 		private void Dispose(bool disposing)
 		{
-			if (!_Disposed && disposing)
+			if (_Disposed) return;
+
+			if (disposing)
 			{
-				_Action.Dispose();
+				if (_Action != null)
+				{
+					_Action.Dispose();
+					_Action = null;
+				}
+
 				_Controller = null;
 			}
 
