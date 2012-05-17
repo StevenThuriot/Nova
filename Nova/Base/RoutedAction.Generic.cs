@@ -146,7 +146,7 @@ namespace Nova.Base
             _Action.ActionContext.Clear();
 
 		    if (parameter != null)
-		        _Action.ActionContext.Add("CommandParameter", parameter);
+		        _Action.ActionContext.Add(RoutedAction.CommandParameter, parameter);
 		}
 
 		/// <summary>

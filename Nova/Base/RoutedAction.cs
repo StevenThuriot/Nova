@@ -12,6 +12,11 @@ namespace Nova.Base
 	public static class RoutedAction
 	{
 		/// <summary>
+		/// The key used to inject the ICommand parameter into the actioncontext.
+		/// </summary>
+		public const string CommandParameter = "CommandParameter";
+
+		/// <summary>
 		/// Creates a new action with a wrapper which implements the ICommand interface.
 		/// This will try to search for an action controller on the view. If not present, an exception will be thrown.
 		/// </summary>
