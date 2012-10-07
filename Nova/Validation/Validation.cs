@@ -59,9 +59,39 @@ namespace Nova.Validation
 
 		#endregion Validate
 
-		#region EntityID
+        #region IsRequired
 
-		/// <summary>
+        /// <summary>
+        /// Wether or not the dependency object is required.
+        /// </summary>
+        public static readonly DependencyProperty IsRequiredProperty =
+            DependencyProperty.RegisterAttached("IsRequired", typeof(bool), typeof(Validation), new PropertyMetadata(false));
+
+        /// <summary>
+        /// Gets wether or not the dependency object is required.
+        /// </summary>
+        /// <param name="dependencyObject">The dependency object.</param>
+        /// <returns>Wether or not the dependency object is required.</returns>
+        public static bool GetIsRequired(DependencyObject dependencyObject)
+        {
+            return (bool)dependencyObject.GetValue(IsRequiredProperty);
+        }
+
+        /// <summary>
+        /// Sets wether or not the dependency object is required.
+        /// </summary>
+        /// <param name="dependencyObject">The dependency object.</param>
+        /// <param name="value">if set to <c>true</c> [value].</param>
+        public static void SetIsRequired(DependencyObject dependencyObject, bool value)
+        {
+            dependencyObject.SetValue(IsRequiredProperty, value);
+        }
+
+        #endregion IsRequired
+
+        #region EntityID
+
+        /// <summary>
 		/// This is used when validating in a grid to the correct boxes will be shown.
 		/// For normal scenarios, this does not have to be set.
 		/// </summary>

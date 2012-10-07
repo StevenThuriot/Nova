@@ -58,7 +58,8 @@
 			<Button Content="Run Action" Command="{Binding ActionManager.ThrowException}" />
 			<TextBox Margin="10,0,0,0" Width="120" Text="Lalala"
 					 Base:ViewMode.Watermark="Put text here"
-					 Validation:Validation.FieldName="TextBox" />
+           Validation:Validation.FieldName="TextBox"
+           Validation:Validation.IsRequired="True" />
 
 			<PasswordBox Margin="10,0,0,0" Height="23" Width="120"
 					 Validation:Validation.FieldName="Password" />

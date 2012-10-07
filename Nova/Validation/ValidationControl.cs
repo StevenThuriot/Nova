@@ -24,6 +24,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Nova.Base;
 using System.Windows.Data;
+using System;
+using Nova.Controls;
 
 namespace Nova.Validation
 {
@@ -38,8 +40,34 @@ namespace Nova.Validation
 		/// </summary>
 		public ValidationControl()
 		{
-			BindingOperations.SetBinding(this, ErrorsProperty, new ErrorBinding());
+            Loaded += ControlLoaded;
+            BindingOperations.SetBinding(this, ErrorsProperty, new ErrorBinding());
 		}
+
+        /// <summary>
+        /// Triggers when the control is loaded.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
+        private void ControlLoaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var view = (Window.GetWindow(this) as IView);
+                if (view == null) return;
+
+                dynamic dynamicView = view;
+                var viewModel = dynamicView.ViewModel;
+
+                if (viewModel == null) return;
+
+                viewModel.ValidationControl = this;
+            }
+            finally
+            {
+                Loaded -= ControlLoaded;
+            }
+        }
 
 		/// <summary>
 		/// A cache for the fields on the screen.
@@ -293,8 +321,8 @@ namespace Nova.Validation
 			if (errors != null)
 			{
 				var entityID = Validation.GetEntityID(element);
-				var validations = errors.GetValidations(field, entityID).ToList();
-
+                
+                var validations = errors.GetValidations(field, entityID).ToList();
 				if (validations.Count > 0)
 				{
 					Validation.SetIsValid(element, false);
@@ -347,5 +375,102 @@ namespace Nova.Validation
 			Validation.SetIsValid(element, true);
 			Validation.SetValidationTooltip(element, null);
 		}
-	}
+
+        internal IEnumerable<KeyValuePair<Guid, string>> ValidateRequiredFields()
+        {
+            return MapVisualTreeOnce ? ValidateRequiredCache() : ValidateRequiredTree(this);
+        }
+
+        private IEnumerable<KeyValuePair<Guid, string>> ValidateRequiredTree(DependencyObject dependencyObject)
+        {
+            switch (ValidationMethod)
+            {
+                case TreeType.LogicalTree:
+                    return ValidateRequiredLogicalTree(dependencyObject);
+                case TreeType.VisualTree:
+                    return ValidateRequiredVisualTree(dependencyObject);
+            }
+
+            return new List<KeyValuePair<Guid, string>>();
+        }
+
+	    private IEnumerable<KeyValuePair<Guid, string>> ValidateRequiredLogicalTree(DependencyObject dependencyObject)
+        {
+            var fields = new List<KeyValuePair<Guid, string>>();
+            foreach (var child in LogicalTreeHelper.GetChildren(dependencyObject).OfType<DependencyObject>())
+            {
+                if (!CheckIfFilledIn(child as UIElement))
+                {
+                    var entityID = Validation.GetEntityID(child);
+                    var field = Validation.GetFieldName(child);
+                    var kvp = new KeyValuePair<Guid, string>(entityID, field);
+                    fields.Add(kvp);
+                }
+
+                fields = fields.Union(ValidateRequiredLogicalTree(child)).ToList();
+            }
+
+	        return fields;
+        }
+
+	    private IEnumerable<KeyValuePair<Guid, string>> ValidateRequiredVisualTree(DependencyObject dependencyObject)
+        {
+            var count = VisualTreeHelper.GetChildrenCount(dependencyObject);
+            var fields = new List<KeyValuePair<Guid, string>>();
+
+            for (var i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(dependencyObject, i);
+
+                if (!CheckIfFilledIn(child as UIElement))
+                {
+                    var entityID = Validation.GetEntityID(child);
+                    var field = Validation.GetFieldName(child);
+
+                    var kvp = new KeyValuePair<Guid, string>(entityID, field);
+                    fields.Add(kvp);
+                }
+
+                fields = fields.Union(ValidateRequiredVisualTree(child)).ToList();
+            }
+
+	        return fields;
+        }
+
+	    private IEnumerable<KeyValuePair<Guid, string>> ValidateRequiredCache()
+        {
+            if (_Fields == null)
+            {
+                _Fields = new List<UIElement>();
+                CacheTree(this);
+            }
+
+            return _Fields.Where(x => !CheckIfFilledIn(x))
+                          .Select(x => new KeyValuePair<Guid, string>(Validation.GetEntityID(x), Validation.GetFieldName(x)))
+                          .ToList();
+        }
+
+        private static bool CheckIfFilledIn(UIElement element)
+        {
+            if (element == null)
+                return true;
+
+            if (!Validation.GetIsRequired(element))
+                return true;
+
+            var textbox = element as TextBox;
+            if (textbox != null)
+            {
+                return !string.IsNullOrEmpty(textbox.Text);
+            }
+
+            var combobox = element as ComboBox;
+            if (combobox != null)
+            {
+                return !string.IsNullOrEmpty(combobox.Text);
+            }
+
+            return true; //return true if we don't know what it is.
+        }
+    }
 }

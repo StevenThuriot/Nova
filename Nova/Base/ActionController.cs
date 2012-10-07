@@ -82,6 +82,9 @@ namespace Nova.Base
 
 				_Actions.Add(actionToRun);
 
+                //Validate required fields before running.
+			    actionToRun.ValidateRequiredFields();
+
 				Task.Factory.StartNew(actionToRun.InternalExecute)
 							.ContinueWith(executedCompleteAction, TaskScheduler.FromCurrentSynchronizationContext());
 			}

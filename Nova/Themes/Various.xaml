@@ -29,6 +29,7 @@
 	<SolidColorBrush ice:Freeze="True" x:Key="Error" Color="{DynamicResource ErrorColor}" />
 	<SolidColorBrush ice:Freeze="True" x:Key="Warning" Color="{DynamicResource WarningColor}" />
 	<SolidColorBrush ice:Freeze="True" x:Key="Suggestion" Color="{DynamicResource SuggestionColor}" />
+	<SolidColorBrush ice:Freeze="True" x:Key="Required" Color="{DynamicResource RequiredColor}" />
 	
 	<SolidColorBrush ice:Freeze="True" x:Key="SortArrowBrush" Color="{DynamicResource SortArrowColor}" />
 	<SolidColorBrush ice:Freeze="True" x:Key="RowBrush" Color="{DynamicResource RowColor}" />

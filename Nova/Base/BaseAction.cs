@@ -17,6 +17,8 @@
 #endregion
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Windows.Threading;
 using Nova.Controls;
 using Nova.Properties;
 using Nova.Validation;
@@ -59,6 +61,27 @@ namespace Nova.Base
 			_CanComplete = false;
 			_ValidationResults = new ValidationResults();
 		}
+
+        /// <summary>
+        /// Validates the required fields.
+        /// </summary>
+        internal void ValidateRequiredFields()
+        {
+            if (ViewModel.ValidationControl == null) return;
+
+            var results = ViewModel.ValidationControl.ValidateRequiredFields();
+
+            foreach (var result in results)
+            {
+                var field = result.Value;
+                var entityID = result.Key;
+
+                var requiredField = string.Format(CultureInfo.CurrentCulture, Resources.RequiredField, field);
+                var validation = ValidationFactory.Create(field, requiredField, entityID, ValidationSeverity.Error);
+
+                _ValidationResults.InternalAdd(validation);
+            }
+        }
 		
 		#region IDisposable Members
 

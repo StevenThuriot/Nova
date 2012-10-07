@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using Nova.Base.Actions;
@@ -46,7 +47,15 @@ namespace Nova.Base
 		/// </summary>
         internal ActionController<TView, TViewModel> ActionController { get; private set; }
 
-		/// <summary>
+        /// <summary>
+        /// Gets the validation control.
+        /// </summary>
+        /// <value>
+        /// The validation control. (Possibly null when not found!)
+        /// </value>
+        internal ValidationControl ValidationControl { get; set; }
+
+        /// <summary>
 		/// Gets the action manager.
 		/// </summary>
 		public dynamic ActionManager { get; private set; }
@@ -102,14 +111,10 @@ namespace Nova.Base
 		    _IsValid = true;
 		}
 
-	    #region INotifyPropertyChanged Members
-
 		/// <summary>
 		/// Notifies clients that propertyName has changed.
 		/// </summary>
 		public event PropertyChangedEventHandler PropertyChanged;
-
-		#endregion
 
 		/// <summary>
 		/// Gets the name of the property.
@@ -214,7 +219,7 @@ namespace Nova.Base
 		    return viewModel;
 		}
 
-		/// <summary>
+        /// <summary>
 		/// Saves this instance.
 		/// </summary>
 		public void Save()

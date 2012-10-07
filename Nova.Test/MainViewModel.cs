@@ -83,12 +83,12 @@ namespace Nova.Test
 		{
 			MessageBox.Show("On After Action VM");
 		}
+		*/
 
 		public void OnAfterThrowException(ActionContext context)
 		{
 			MessageBox.Show("On After VM");
 		}
-		*/
 		protected override void Save(dynamic value)
 		{
 			value.Test = "test";

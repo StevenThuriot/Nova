@@ -70,7 +70,8 @@
 
 	<Color x:Key="ErrorColor">Red</Color>
 	<Color x:Key="WarningColor">DarkOrange</Color>
-	<Color x:Key="SuggestionColor">Black</Color>
+  <Color x:Key="SuggestionColor">Black</Color>
+  <Color x:Key="RequiredColor">Black</Color>
 
 	<Color x:Key="SortArrowColor">#FF5091AF</Color>
 	
@@ -147,7 +148,7 @@
 	<!-- Radius -->
 	<Thickness x:Key="ValidationBorderThickness">1</Thickness>
 	<Thickness x:Key="BorderThickness">1</Thickness>
-	<CornerRadius x:Key="ControlRadius">2</CornerRadius>
+	<CornerRadius x:Key="ControlRadius">1</CornerRadius>
 	<sys:Double x:Key="DefaultControlHeight">22</sys:Double>
 
 	<Geometry x:Key="ErrorIcon">F1 M 1,1 L 0,12 L 12,0 L 1,1 Z</Geometry>	
