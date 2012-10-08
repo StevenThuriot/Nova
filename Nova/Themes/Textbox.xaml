@@ -13,22 +13,24 @@
 		</Setter>
 	</Style>
 
-	<Style TargetType="{x:Type TextBox}">
-		<Setter Property="BorderThickness" Value="{DynamicResource BorderThickness}" />
-		<Setter Property="Margin" Value="1" />
-		<Setter Property="BorderBrush" Value="{DynamicResource UnfocusedControlBorderBrush}" />
-		<Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
-		<Setter Property="Height" Value="{DynamicResource DefaultControlHeight}" />
-		<Setter Property="VerticalContentAlignment" Value="Center" />
-		<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
-		<Setter Property="Padding" Value="1" />
-		<Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
-		<Setter Property="HorizontalContentAlignment" Value="Left" />
-		<Setter Property="FocusVisualStyle" Value="{x:Null}" />
-		<Setter Property="AllowDrop" Value="True" />
-		<Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
-		<Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+  <Style x:Key="TextBoxBase" TargetType="{x:Type TextBox}">
+    <Setter Property="BorderThickness" Value="{DynamicResource BorderThickness}" />
+    <Setter Property="Margin" Value="1" />
+    <Setter Property="BorderBrush" Value="{DynamicResource UnfocusedControlBorderBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+    <Setter Property="Height" Value="{DynamicResource DefaultControlHeight}" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+    <Setter Property="Padding" Value="1" />
+    <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+    <Setter Property="HorizontalContentAlignment" Value="Left" />
+    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+    <Setter Property="AllowDrop" Value="True" />
+    <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+    <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+  </Style>
 
+  <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBase}">
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type TextBox}">
@@ -66,14 +68,6 @@ Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validat
 Value="0">
 							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Collapsed" />
 						</DataTrigger>
-						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Nova:ViewMode.IsReadOnly)}"
-						             Value="True">
-							<Setter Property="IsReadOnly" Value="True" />
-							<Setter Property="BorderBrush" Value="Transparent" />
-							<Setter TargetName="ValidationBorder" Property="BorderBrush" Value="Transparent" />
-							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Collapsed" />
-							<Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Text}" />
-						</DataTrigger>
             <MultiDataTrigger>
               <MultiDataTrigger.Conditions>
                 <!-- Only show black border if the validation hasn't triggered yet. -->
@@ -85,6 +79,14 @@ Value="0">
                 <Setter TargetName="ValidationBorder" Property="BorderBrush" Value="{DynamicResource Required}" />
               </MultiDataTrigger.Setters>
             </MultiDataTrigger>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Nova:ViewMode.IsReadOnly)}"
+						             Value="True">
+              <Setter Property="IsReadOnly" Value="True" />
+              <Setter Property="BorderBrush" Value="Transparent" />
+              <Setter TargetName="ValidationBorder" Property="BorderBrush" Value="Transparent" />
+              <Setter TargetName="ErrorTriangle" Property="Visibility" Value="Collapsed" />
+              <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Text}" />
+            </DataTrigger>
 						<Trigger Property="IsEnabled" Value="False">
 							<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
 							<Setter Property="Foreground" Value="{DynamicResource DisabledBrush}" />
@@ -98,22 +100,7 @@ Value="0">
 		</Setter>
 	</Style>
 
-	<Style x:Key="WatermarkTextBoxStyle" TargetType="{x:Type TextBox}">
-		<Setter Property="BorderThickness" Value="{DynamicResource BorderThickness}" />
-		<Setter Property="Margin" Value="1" />
-		<Setter Property="BorderBrush" Value="{DynamicResource UnfocusedControlBorderBrush}" />
-		<Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
-		<Setter Property="Height" Value="{DynamicResource DefaultControlHeight}" />
-		<Setter Property="VerticalContentAlignment" Value="Center" />
-		<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
-		<Setter Property="Padding" Value="1" />
-		<Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
-		<Setter Property="HorizontalContentAlignment" Value="Left" />
-		<Setter Property="FocusVisualStyle" Value="{x:Null}" />
-		<Setter Property="AllowDrop" Value="True" />
-		<Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
-		<Setter Property="Stylus.IsFlicksEnabled" Value="False" />
-
+	<Style x:Key="WatermarkTextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBase}">
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type TextBox}">
@@ -153,14 +140,6 @@ Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validat
 Value="0">
 							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Collapsed" />
 						</DataTrigger>
-						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Nova:ViewMode.IsReadOnly)}"
-						             Value="True">
-							<Setter Property="IsReadOnly" Value="True" />
-							<Setter Property="BorderBrush" Value="Transparent" />
-							<Setter TargetName="ValidationBorder" Property="BorderBrush" Value="Transparent" />
-							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Collapsed" />
-							<Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Text}" />
-						</DataTrigger>
             <MultiDataTrigger>
               <MultiDataTrigger.Conditions>
                 <!-- Only show black border if the validation hasn't triggered yet. -->
@@ -172,6 +151,14 @@ Value="0">
                 <Setter TargetName="ValidationBorder" Property="BorderBrush" Value="{DynamicResource Required}" />
               </MultiDataTrigger.Setters>
             </MultiDataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Nova:ViewMode.IsReadOnly)}"
+						             Value="True">
+							<Setter Property="IsReadOnly" Value="True" />
+							<Setter Property="BorderBrush" Value="Transparent" />
+							<Setter TargetName="ValidationBorder" Property="BorderBrush" Value="Transparent" />
+							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Collapsed" />
+							<Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Text}" />
+						</DataTrigger>
 						<Trigger Property="IsEnabled" Value="False">
 							<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
 							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />

@@ -62,11 +62,14 @@
            Validation:Validation.IsRequired="True" />
 
 			<PasswordBox Margin="10,0,0,0" Height="23" Width="120"
-					 Validation:Validation.FieldName="Password" />
+					 Validation:Validation.FieldName="Password"
+					  Base:ViewMode.Watermark="Pass watermark"
+           Validation:Validation.IsRequired="True"  />
 
 			<ComboBox Margin="10,0,0,0" Width="120"
 					 Validation:Validation.FieldName="ComboBox"
 					 Validation:Validation.ConcatToolTip="False"
+           Validation:Validation.IsRequired="True" 
 					  Base:ViewMode.Watermark="ComboBox"
 					 SelectedIndex="1">
 				<ComboBoxItem>Item 1</ComboBoxItem>
@@ -76,8 +79,9 @@
 			
 			<Nova:SearchTextBox Width="150" Command="{Binding SearchCommand}"
 									  Text="{Binding SearchText}"
-				Base:ViewMode.Watermark="Searchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
-					 Validation:Validation.FieldName="SearchTextBox" />
+      Base:ViewMode.Watermark="Searchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
+         Validation:Validation.IsRequired="True"
+         Validation:Validation.FieldName="SearchTextBox" />
 
 			<Separator />
 		</StackPanel>

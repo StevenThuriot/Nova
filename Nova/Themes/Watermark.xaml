@@ -1,19 +1,21 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-					xmlns:Base="http://nova.thuriot.be/Base">
-	
-	<Style x:Key="WatermarkStyle" TargetType="{x:Type TextBlock}">
-		<Setter Property="FontFamily" Value="{DynamicResource WatermarkFont}" />
-		<Setter Property="Visibility" Value="Hidden" />
-		<Setter Property="VerticalAlignment" Value="Center" />
-		<Setter Property="Foreground" Value="{DynamicResource WatermarkBrush}" />
-		<Setter Property="Margin" Value="5,3,3,3"/>
-		<Setter Property="Text" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Control}}, Path=(Base:ViewMode.Watermark), Mode=OneWay}" />
-		<Setter Property="TextWrapping" Value="NoWrap" />
-		<Setter Property="Opacity" Value="0.7" />
-		<Setter Property="MaxWidth" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Control}}, Path=ActualWidth}" />
-		<Setter Property="FontStyle" Value="Italic" />
+					xmlns:Base="http://nova.thuriot.be/Base" xmlns:Controls="http://nova.thuriot.be/Controls">
 
+  <Style x:Key="WatermarkBaseStyle" TargetType="{x:Type TextBlock}">
+    <Setter Property="FontFamily" Value="{DynamicResource WatermarkFont}" />
+    <Setter Property="Visibility" Value="Hidden" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Foreground" Value="{DynamicResource WatermarkBrush}" />
+    <Setter Property="Margin" Value="5,3,3,3"/>
+    <Setter Property="Text" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Control}}, Path=(Base:ViewMode.Watermark), Mode=OneWay}" />
+    <Setter Property="TextWrapping" Value="NoWrap" />
+    <Setter Property="Opacity" Value="0.7" />
+    <Setter Property="MaxWidth" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Control}}, Path=ActualWidth}" />
+    <Setter Property="FontStyle" Value="Italic" />
+  </Style>
+
+  <Style x:Key="WatermarkStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource WatermarkBaseStyle}">
 		<Style.Triggers>
 			<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Control}}, Path=Text.Length, Mode=OneWay}" Value="0">
 				<Setter Property="Visibility" Value="Visible" />
@@ -25,5 +27,20 @@
 				<Setter Property="Visibility" Value="Hidden" />
 			</DataTrigger>
 		</Style.Triggers>
+	</Style>	
+  
+	<Style x:Key="PasswordWatermarkStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource WatermarkBaseStyle}">
+		<Style.Triggers>
+      <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type PasswordBox}}, Path=(Controls:PasswordBoxMonitor.PasswordLength), Mode=OneWay}" Value="0">
+				<Setter Property="Visibility" Value="Visible" />
+			</DataTrigger>
+			<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type PasswordBox}}, Path=IsKeyboardFocusWithin}" Value="True">
+				<Setter Property="Visibility" Value="Hidden" />
+			</DataTrigger>
+			<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type PasswordBox}}, Path=IsEnabled}" Value="False">
+				<Setter Property="Visibility" Value="Hidden" />
+			</DataTrigger>
+    </Style.Triggers>
 	</Style>
+  
 </ResourceDictionary>

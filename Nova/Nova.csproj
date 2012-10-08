@@ -211,6 +211,7 @@
     <Compile Include="Controls\IView.cs" />
     <Compile Include="Controls\ImageButton.cs" />
     <Compile Include="Controls\AnimatedLoader.cs" />
+    <Compile Include="Controls\PasswordBoxMonitor.cs" />
     <Compile Include="Controls\SearchTextBox.xaml.cs">
       <DependentUpon>SearchTextBox.xaml</DependentUpon>
     </Compile>

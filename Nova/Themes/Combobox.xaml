@@ -148,6 +148,17 @@
 						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.ValidationTooltip).Length}" Value="0">
 							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Collapsed" />
 						</DataTrigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <!-- Only show black border if the validation hasn't triggered yet. -->
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.IsValid)}" Value="True" />
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.IsRequired)}" Value="True" />
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text.Length}" Value="0" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter TargetName="ValidationBorder" Property="BorderBrush" Value="{DynamicResource Required}" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
 						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Base:ViewMode.IsReadOnly)}" Value="True">
 							<Setter TargetName="ToggleButton" Property="Visibility" Value="Hidden" />
 							<Setter Property="IsEditable" Value="False" />
@@ -251,6 +262,17 @@
 						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.ValidationTooltip).Length}" Value="0">
 							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Collapsed" />
 						</DataTrigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <!-- Only show black border if the validation hasn't triggered yet. -->
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.IsValid)}" Value="True" />
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.IsRequired)}" Value="True" />
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text.Length}" Value="0" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter TargetName="ValidationBorder" Property="BorderBrush" Value="{DynamicResource Required}" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
 						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Base:ViewMode.IsReadOnly)}" Value="True">
 							<Setter TargetName="ToggleButton" Property="Visibility" Value="Hidden" />
 							<Setter Property="IsEditable" Value="False" />

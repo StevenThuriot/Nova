@@ -121,9 +121,10 @@ namespace Nova.Validation
 
 		/// <summary>
 		/// A value indicating whether the visual tree gets mapped and cached, or iterated every time the errorlist changes.
+		/// Default: True
 		/// </summary>
 		public static readonly DependencyProperty MapVisualTreeOnceProperty =
-			DependencyProperty.Register("MapVisualTreeOnce", typeof (bool), typeof (ValidationControl), new PropertyMetadata(false));
+			DependencyProperty.Register("MapVisualTreeOnce", typeof (bool), typeof (ValidationControl), new PropertyMetadata(true));
 
 		/// <summary>
 		/// Gets or sets a value indicating whether the visual tree gets mapped and cached, or iterated every time the errorlist changes.
@@ -455,6 +456,9 @@ namespace Nova.Validation
             if (element == null)
                 return true;
 
+            if (ViewMode.GetIsReadOnly(element)) //Read Only elements can't be required.
+                return true;
+
             if (!Validation.GetIsRequired(element))
                 return true;
 
@@ -468,6 +472,12 @@ namespace Nova.Validation
             if (combobox != null)
             {
                 return !string.IsNullOrEmpty(combobox.Text);
+            }
+
+            var passwordBox = element as PasswordBox;
+            if (passwordBox != null)
+            {
+                return PasswordBoxMonitor.IsFilledIn(passwordBox);
             }
 
             return true; //return true if we don't know what it is.

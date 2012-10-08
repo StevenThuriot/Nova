@@ -16,12 +16,9 @@
 // 
 #endregion
 using System;
-using System.Collections;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Nova.Base;
 
 namespace Nova
