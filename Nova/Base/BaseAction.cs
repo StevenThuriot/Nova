@@ -17,11 +17,8 @@
 #endregion
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Windows.Threading;
 using Nova.Controls;
 using Nova.Properties;
-using Nova.Validation;
 
 namespace Nova.Base
 {
@@ -36,9 +33,13 @@ namespace Nova.Base
 	{
 		private bool _CanComplete;
 		private bool _Disposed;
-		private ValidationResults _ValidationResults;
 
-		/// <summary>
+        /// <summary>
+        /// Gets or sets the ability to complete. For Internal use only!
+        /// </summary>
+	    internal bool CanComplete { get; set; }
+
+	    /// <summary>
 		/// Gets the action context.
 		/// </summary>
 	    public ActionContext ActionContext { get; private set; }
@@ -59,29 +60,7 @@ namespace Nova.Base
 		protected BaseAction()
 		{
 			_CanComplete = false;
-			_ValidationResults = new ValidationResults();
 		}
-
-        /// <summary>
-        /// Validates the required fields.
-        /// </summary>
-        internal void ValidateRequiredFields()
-        {
-            if (ViewModel.ValidationControl == null) return;
-
-            var results = ViewModel.ValidationControl.ValidateRequiredFields();
-
-            foreach (var result in results)
-            {
-                var field = result.Value;
-                var entityID = result.Key;
-
-                var requiredField = string.Format(CultureInfo.CurrentCulture, Resources.RequiredField, field);
-                var validation = ValidationFactory.Create(field, requiredField, entityID, ValidationSeverity.Error);
-
-                _ValidationResults.InternalAdd(validation);
-            }
-        }
 		
 		#region IDisposable Members
 
@@ -115,7 +94,7 @@ namespace Nova.Base
 			if (disposing)
 			{
 				DisposeManagedResources();
-
+                
 				View = null;
 				ViewModel = null;
 
@@ -123,12 +102,6 @@ namespace Nova.Base
 				{
 					ActionContext.Clear();
 					ActionContext = null;
-				}
-
-				if (_ValidationResults != null)
-				{
-					_ValidationResults.InternalReset();
-					_ValidationResults = null;
 				}
 			}
 
@@ -164,14 +137,6 @@ namespace Nova.Base
 		/// Executes when the async execution succesfully completed.
 		/// </summary>
 		public virtual void ExecuteCompleted()
-		{
-		}
-
-		/// <summary>
-		/// Validates this instance.
-		/// </summary>
-		/// <param name="results">The results.</param>
-		public virtual void Validate(ValidationResults results)
 		{
 		}
 
@@ -217,12 +182,11 @@ namespace Nova.Base
 		/// Runs the execute action.
 		/// </summary>
 		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-		internal void InternalExecute()
+		internal virtual void InternalExecute()
 		{
 			try
 			{
-				Validate(_ValidationResults);
-				_CanComplete = _ValidationResults.IsValid && Execute();
+				_CanComplete = Execute();
 			}
 			catch (Exception exception)
 			{
@@ -235,27 +199,21 @@ namespace Nova.Base
 		/// Runs the execute completed action.
 		/// </summary>
 		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-		internal void InternalExecuteCompleted()
+		internal virtual void InternalExecuteCompleted()
 		{
-			if (_CanComplete)
-			{
-				try
-				{
-					ExecuteCompleted();
-					ActionContext.IsSuccessful = true;
-				}
-				catch (Exception exception)
-				{
-					ExceptionHandler.Handle(exception, Resources.ErrorMessageMainThread);
-				}
-			}
+		    if (!_CanComplete) return;
 
-			var validationMessages = _ValidationResults.InternalGetValidations();
-			ViewModel.ErrorCollection = new ReadOnlyErrorCollection(validationMessages);
-
-			_ValidationResults.InternalReset();
+		    try
+		    {
+		        ExecuteCompleted();
+		        ActionContext.IsSuccessful = true;
+		    }
+		    catch (Exception exception)
+		    {
+		        ExceptionHandler.Handle(exception, Resources.ErrorMessageMainThread);
+		    }
 		}
 
-		#endregion
+	    #endregion
 	}
 }

@@ -20,6 +20,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Nova.Base;
+using System.Threading;
 
 namespace Nova
 {
@@ -51,6 +52,11 @@ namespace Nova
 		{
 			var app = sender as Application;
 			if (app == null) return;
+
+            if (!string.IsNullOrEmpty(Thread.CurrentThread.Name))
+            {
+                Thread.CurrentThread.Name = "Nova GUI Thread";
+            }
 
 			app.Startup -= Initialize;
 

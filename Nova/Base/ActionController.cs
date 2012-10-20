@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Nova.Controls;
@@ -81,9 +80,6 @@ namespace Nova.Base
 					_View.StartLoading();
 
 				_Actions.Add(actionToRun);
-
-                //Validate required fields before running.
-			    actionToRun.ValidateRequiredFields();
 
 				Task.Factory.StartNew(actionToRun.InternalExecute)
 							.ContinueWith(executedCompleteAction, TaskScheduler.FromCurrentSynchronizationContext());
