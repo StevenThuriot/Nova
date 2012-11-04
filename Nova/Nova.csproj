@@ -50,7 +50,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>R:\Solution Items\Thuriot.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\packages\Thuriot.PFX.1.0.0\lib\Thuriot.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Publish|AnyCPU'">
     <OutputPath>R:\Nova\Main\</OutputPath>
@@ -258,6 +258,7 @@
     <Resource Include="Fonts\segoeuiz.ttf" />
     <Resource Include="Fonts\nevis.ttf" />
     <Resource Include="Fonts\AgencyFB.TTF" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -300,6 +301,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ErrorBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nova.Threading\Nova.Threading.csproj">
+      <Project>{28f961f0-1305-46ee-bc24-0a04d89f1e9e}</Project>
+      <Name>Nova.Threading</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
