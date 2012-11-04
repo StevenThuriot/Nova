@@ -50,16 +50,16 @@ namespace Nova
 		/// <param name="startupEventArgs">Start up event arguments. These aren't used.</param>
 		public static void Initialize(object sender, StartupEventArgs startupEventArgs)
 		{
-
-			if (!string.IsNullOrEmpty(Thread.CurrentThread.Name))
-			{
-				Thread.CurrentThread.Name = "Nova GUI Thread";
-			}
-
 			var app = sender as Application;
 			if (app == null) return;
 
 			app.Startup -= Initialize;
+
+			var currentThread = Thread.CurrentThread;
+			if (!string.IsNullOrEmpty(currentThread.Name))
+			{
+				currentThread.Name = "Nova GUI Thread";
+			}
 
 			app.DispatcherUnhandledException += ExceptionHandler.DispatcherUnhandledException;
 			AppDomain.CurrentDomain.UnhandledException += ExceptionHandler.UnhandledException;
