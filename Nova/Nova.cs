@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 // 
 //  Copyright 2012 Steven Thuriot
 // 
@@ -50,17 +50,18 @@ namespace Nova
 		/// <param name="startupEventArgs">Start up event arguments. These aren't used.</param>
 		public static void Initialize(object sender, StartupEventArgs startupEventArgs)
 		{
+
+			if (!string.IsNullOrEmpty(Thread.CurrentThread.Name))
+			{
+				Thread.CurrentThread.Name = "Nova GUI Thread";
+			}
+
 			var app = sender as Application;
 			if (app == null) return;
 
-            if (!string.IsNullOrEmpty(Thread.CurrentThread.Name))
-            {
-                Thread.CurrentThread.Name = "Nova GUI Thread";
-            }
-
 			app.Startup -= Initialize;
 
-			app.DispatcherUnhandledException += ExceptionHandler. DispatcherUnhandledException;
+			app.DispatcherUnhandledException += ExceptionHandler.DispatcherUnhandledException;
 			AppDomain.CurrentDomain.UnhandledException += ExceptionHandler.UnhandledException;
 
 			InitiateEventHandlers();
@@ -78,11 +79,11 @@ namespace Nova
 		/// </summary>
 		private static void InitiateEventHandlers()
 		{
-			EventManager.RegisterClassHandler(typeof(TextBox), UIElement.GotKeyboardFocusEvent, new RoutedEventHandler(TextBoxGotFocus));
-			EventManager.RegisterClassHandler(typeof(TextBox), UIElement.PreviewMouseDownEvent, new MouseButtonEventHandler(SelectivelyIgnoreMouseButtonTextBox));
+			EventManager.RegisterClassHandler(typeof(TextBox), UIElement.GotKeyboardFocusEvent, new RoutedEventHandler(BoxGotFocus));
+			EventManager.RegisterClassHandler(typeof(TextBox), UIElement.PreviewMouseDownEvent, new MouseButtonEventHandler(SelectivelyIgnoreMouseButton));
 
-			EventManager.RegisterClassHandler(typeof(PasswordBox), UIElement.GotKeyboardFocusEvent, new RoutedEventHandler(PasswordBoxGotFocus));
-			EventManager.RegisterClassHandler(typeof(PasswordBox), UIElement.PreviewMouseDownEvent, new MouseButtonEventHandler(SelectivelyIgnoreMouseButtonPasswordBox));
+			EventManager.RegisterClassHandler(typeof(PasswordBox), UIElement.GotKeyboardFocusEvent, new RoutedEventHandler(BoxGotFocus));
+			EventManager.RegisterClassHandler(typeof(PasswordBox), UIElement.PreviewMouseDownEvent, new MouseButtonEventHandler(SelectivelyIgnoreMouseButton));
 		}
 
 		/// <summary>
@@ -90,48 +91,37 @@ namespace Nova
 		/// </summary>
 		/// <param name="sender">The sender.</param>
 		/// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
-		private static void TextBoxGotFocus(object sender, RoutedEventArgs e)
+		private static void BoxGotFocus(object sender, RoutedEventArgs e)
 		{
 			var textBox = (sender as TextBox);
 			if (textBox != null)
 			{
 				textBox.SelectAll();
+				return;
 			}
-		}
-		/// <summary>
-		/// Triggers when the passwordbox receives focus.
-		/// </summary>
-		/// <param name="sender">The sender.</param>
-		/// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
-		private static void PasswordBoxGotFocus(object sender, RoutedEventArgs e)
-		{
+
 			var passwordBox = (sender as PasswordBox);
 			if (passwordBox != null)
 			{
 				passwordBox.SelectAll();
 			}
 		}
+
 		/// <summary>
 		/// Selectively ignores the mouse button.
 		/// </summary>
 		/// <param name="sender">The sender.</param>
 		/// <param name="e">The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.</param>
-		private static void SelectivelyIgnoreMouseButtonTextBox(object sender, MouseButtonEventArgs e)
+		private static void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)
 		{
 			var textBox = (sender as TextBox);
 			if (textBox != null && !textBox.IsKeyboardFocusWithin)
 			{
 				e.Handled = true;
 				textBox.Focus();
+				return;
 			}
-		}
-		/// <summary>
-		/// Selectively ignores the mouse button.
-		/// </summary>
-		/// <param name="sender">The sender.</param>
-		/// <param name="e">The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.</param>
-		private static void SelectivelyIgnoreMouseButtonPasswordBox(object sender, MouseButtonEventArgs e)
-		{
+
 			var passwordBox = (sender as PasswordBox);
 			if (passwordBox != null)
 			{
