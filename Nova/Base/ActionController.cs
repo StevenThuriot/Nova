@@ -19,10 +19,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using Nova.Controls;
 using Nova.Properties;
+using Nova.Threading;
 
 namespace Nova.Base
 {
@@ -37,21 +37,23 @@ namespace Nova.Base
 	{
 		private readonly TView _View;
 		private readonly TViewModel _ViewModel;
-		private readonly ICollection<BaseAction<TView, TViewModel>> _Actions;
+	    private readonly IActionQueueManager _ActionQueueManager;
+	    private readonly ICollection<BaseAction<TView, TViewModel>> _Actions;
 
-		/// <summary>
-		/// Default ctor.
-		/// </summary>
-		/// <param name="view">The View.</param>
-		/// <param name="viewModel">The ViewModel.</param>
-		public ActionController(TView view, TViewModel viewModel)
+	    /// <summary>
+	    /// Default ctor.
+	    /// </summary>
+	    /// <param name="view">The View.</param>
+	    /// <param name="viewModel">The ViewModel.</param>
+	    /// <param name="actionQueueManager">The Action Queue Manager</param>
+	    public ActionController(TView view, TViewModel viewModel, IActionQueueManager actionQueueManager)
 		{
 			_View = view;
 			_ViewModel = viewModel;
-			_Actions = new List<BaseAction<TView, TViewModel>>();
+	        _ActionQueueManager = actionQueueManager;
+	        _Actions = new List<BaseAction<TView, TViewModel>>();
 		}
-
-
+        
 		/// <summary>
 		/// Invokes the specified action.
 		/// </summary>
@@ -68,12 +70,6 @@ namespace Nova.Base
 
 			if (actionToRun.CanExecute())
 			{
-				Action<Task> executedCompleteAction = x =>
-				{
-					actionToRun.InternalExecuteCompleted();
-					CleanUp(actionToRun, executeCompleted, disposeActionDuringCleanup);
-				};
-
 				OnActionMethodRepository.OnBefore<T, TView, TViewModel>(actionToRun);
 
 				if (!_Actions.Any())
@@ -81,8 +77,23 @@ namespace Nova.Base
 
 				_Actions.Add(actionToRun);
 
-				Task.Factory.StartNew(actionToRun.InternalExecute)
-							.ContinueWith(executedCompleteAction, TaskScheduler.FromCurrentSynchronizationContext());
+				Action executedCompleteAction = () =>
+				{
+					actionToRun.InternalExecuteCompleted();
+					CleanUp(actionToRun, executeCompleted, disposeActionDuringCleanup);
+				};
+                
+			    var executeAction = new Action(actionToRun.InternalExecute);
+
+			    var sessionID = actionToRun.View.SessionID;
+			    var queueID = actionToRun.View.ID;
+
+                var action = executeAction.Wrap(sessionID, queueID)
+                                          .ContinueOnMainThreadWith(executedCompleteAction);
+
+			    action.Options = actionToRun.GetActionFlags();
+
+			    _ActionQueueManager.Queue(action);
 			}
 			else
 			{

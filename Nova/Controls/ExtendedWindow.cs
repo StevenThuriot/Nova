@@ -22,6 +22,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Nova.Base;
+using Nova.Threading;
 using RESX = Nova.Properties.Resources;
 
 namespace Nova.Controls
@@ -35,6 +36,11 @@ namespace Nova.Controls
 		where TViewModel : BaseViewModel<TView, TViewModel>, new()
 		where TView : class, IView
 	{
+        /// <summary>
+        /// The action queue manager
+        /// </summary>
+	    private readonly IActionQueueManager _ActionQueueManager;
+
 		private bool _Disposed;
 
 		private TViewModel _ViewModel;
@@ -54,7 +60,23 @@ namespace Nova.Controls
 			}
 		}
 
-		/// <summary>
+        /// <summary>
+        /// Gets the session ID.
+        /// </summary>
+        /// <value>
+        /// The session ID.
+        /// </value>
+        public Guid SessionID { get; private set; }
+
+        /// <summary>
+        /// Gets the unique step ID for this View/ViewModel.
+        /// </summary>
+        /// <value>
+        /// The ID.
+        /// </value>
+        public Guid ID { get; private set; }
+        
+	    /// <summary>
 		/// Initializes a new instance of the <see cref="ExtendedWindow&lt;TView, TViewModel&gt;"/> class.
 		/// </summary>
 		protected ExtendedWindow()
@@ -65,7 +87,11 @@ namespace Nova.Controls
 
 			WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            ViewModel = BaseViewModel<TView, TViewModel>.Create(this as TView);
+	        SessionID = Guid.NewGuid();
+	        ID = Guid.NewGuid();
+
+            _ActionQueueManager = new ActionQueueManager();
+            ViewModel = BaseViewModel<TView, TViewModel>.Create(this as TView, _ActionQueueManager);
 
 			Closed += (sender, args) => ViewModel.Dispose();
 		}
@@ -186,6 +212,11 @@ namespace Nova.Controls
 				{
 					_ViewModel.Dispose();
 				}
+
+                if (_ActionQueueManager != null)
+                {
+                    _ActionQueueManager.Dispose();
+                }
 			}
 
 			_Disposed = true;

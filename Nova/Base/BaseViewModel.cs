@@ -19,11 +19,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using Nova.Base.Actions;
 using Nova.Controls;
+using Nova.Threading;
 using Nova.Validation;
 
 namespace Nova.Base
@@ -36,11 +36,11 @@ namespace Nova.Base
 	public abstract class BaseViewModel<TView, TViewModel> : INotifyPropertyChanged, IDisposable
 		where TView : class, IView
         where TViewModel : BaseViewModel<TView, TViewModel>, new()
-	{
-		/// <summary>
+    {
+        /// <summary>
 		/// Gets the view.
 		/// </summary>
-		public TView View { get; internal set; }
+		public TView View { get; private set; }
 
 		/// <summary>
 		/// Gets the action controller.
@@ -90,7 +90,7 @@ namespace Nova.Base
 	    private bool _IsValid;
     	private bool _Disposed;
 
-    	/// <summary>
+        /// <summary>
 	    /// Gets a value indicating whether this instance is valid.
 	    /// </summary>
 	    /// <value>
@@ -106,7 +106,7 @@ namespace Nova.Base
         /// Initializes a new instance of the <see cref="BaseViewModel&lt;TView, TViewModel&gt;"/> class.
         /// </summary>
 		protected BaseViewModel()
-		{
+        {
 			_ErrorCollection = new ReadOnlyErrorCollection();
 		    _IsValid = true;
 		}
@@ -198,20 +198,21 @@ namespace Nova.Base
 		{
 		}
 
-		/// <summary>
-		/// Creates the specified viewmodel.
-		/// </summary>
-		/// <param name="view">The view.</param>
-		/// <returns></returns>
-		[SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
-		internal static TViewModel Create(TView view)
+        /// <summary>
+        /// Creates the specified viewmodel.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <param name="actionQueueManager"> </param>
+        /// <returns></returns>
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
+		internal static TViewModel Create(TView view, IActionQueueManager actionQueueManager)
 		{
 			if (view == null)
 				throw new ArgumentNullException("view");
 
 		    var viewModel = new TViewModel {View = view};
             
-			viewModel.ActionController = new ActionController<TView, TViewModel>(view, viewModel);
+			viewModel.ActionController = new ActionController<TView, TViewModel>(view, viewModel, actionQueueManager);
 			viewModel.ActionManager = new ActionManager<TView, TViewModel>(view, viewModel);
 
 			viewModel.OnCreated();
