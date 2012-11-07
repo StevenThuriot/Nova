@@ -3,16 +3,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                    xmlns:Converters="clr-namespace:Nova.Shell.Converters" 
-                    xmlns:Metro="clr-namespace:Nova.Shell.Metro" 
-                    xmlns:Shell="clr-namespace:Nova.Shell" 
-                    mc:Ignorable="d"
+                    xmlns:Converters="clr-namespace:Nova.Shell.Converters" xmlns:Shell="clr-namespace:Nova.Shell"
+                    xmlns:Controls="http://nova.thuriot.be/Controls" mc:Ignorable="d"
                     x:Name="_this"
         
                     Width="1024"
                     Height="768"
         
-                    Title="[ Empty ]"
+                    Title="{Binding Title}"
                     Icon="{Binding Icon}"
         
                     WindowStartupLocation="CenterScreen"
@@ -148,7 +146,7 @@
       </Border>
 
       <Grid Grid.Row="2" Grid.ColumnSpan="5" Background="{Binding ElementName=_WindowBorder, Path=Background}">
-        <Metro:ProgressIndicator Visibility="{Binding View.IsLoading, Converter={StaticResource _BooleanToVisibilityConverter}}" />
+        <Controls:ProgressIndicator Visibility="{Binding View.IsLoading, Converter={StaticResource _BooleanToVisibilityConverter}}" />
       </Grid>
     </Grid>
   </Border>

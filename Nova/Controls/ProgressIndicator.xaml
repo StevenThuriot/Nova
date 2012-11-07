@@ -1,13 +1,13 @@
-﻿<UserControl x:Class="Nova.Shell.Metro.ProgressIndicator"
+﻿<UserControl x:Class="Nova.Controls.ProgressIndicator"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Converters="clr-namespace:Nova.Shell.Converters" 
-             xmlns:Metro="clr-namespace:Nova.Shell.Metro"
+             xmlns:Controls="http://nova.thuriot.be/Controls" 
+             xmlns:Converters="clr-namespace:Nova.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance Metro:ProgressIndicator}"
+             d:DataContext="{d:DesignInstance Controls:ProgressIndicator}"
              Margin="15,0"
              Height="3">
 
@@ -15,7 +15,6 @@
 
         <Converters:WidthPercentageConverter x:Key="WidthPercentageConverter" />
         <CircleEase EasingMode="EaseIn" x:Key="ProgressBarEaseIn"/>
-
         <CircleEase EasingMode="EaseIn" x:Key="ProgressBarEaseOut" />
 
         <Storyboard RepeatBehavior="Forever" Duration="00:00:04.4" x:Key="animate">
@@ -77,14 +76,14 @@
             <BeginStoryboard Storyboard="{StaticResource animate}"/>
         </EventTrigger>
     </UserControl.Triggers>
-    <Border x:Name="IndeterminateRoot" Visibility="Visible"  VerticalAlignment="Stretch">
+    <Border x:Name="IndeterminateRoot" VerticalAlignment="Stretch">
         <Grid VerticalAlignment="Stretch" Margin="0" HorizontalAlignment="Left">
             <Grid.Resources>
                 <Style TargetType="Ellipse">
-                    <Setter Property="Fill" Value="{StaticResource White}" />
+                    <Setter Property="Fill" Value="White" />
                     <Setter Property="VerticalAlignment" Value="Stretch" />
                     <Setter Property="IsHitTestVisible" Value="False" />
-                    <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Self}, Path=Height}" />
+                    <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl},AncestorLevel=1}, Path=Height}" />
                     <Setter Property="HorizontalAlignment" Value="Left" />
                 </Style>
             </Grid.Resources>

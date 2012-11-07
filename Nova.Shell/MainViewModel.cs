@@ -50,6 +50,19 @@ namespace Nova.Shell
             }
         }
 
+        private string _Title = "[ Empty ]";
+        public string Title
+        {
+            get { return _Title; }
+            set
+            {
+                if (_Title == value) return;
+
+                _Title = value;
+                OnPropertyChanged(() => Title);
+            }
+        }
+
         protected override void OnCreated()
         {
             InvokeAction<ReadConfigurationAction>();
