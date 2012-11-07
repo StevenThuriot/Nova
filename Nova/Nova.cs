@@ -19,6 +19,8 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Nova.Base;
 using System.Threading;
 
@@ -41,8 +43,8 @@ namespace Nova
 		{
 			InitializeComponent();
 		}
-
-		/// <summary>
+        
+	    /// <summary>
 		/// StartUp event handler for applications to use.
 		/// Loads Nova's resource dictionaries into the application's resource dictionary.
 		/// </summary>
@@ -61,7 +63,7 @@ namespace Nova
 				currentThread.Name = "Nova GUI Thread";
 			}
 
-			app.DispatcherUnhandledException += ExceptionHandler.DispatcherUnhandledException;
+            app.DispatcherUnhandledException += ExceptionHandler.DispatcherUnhandledException;
 			AppDomain.CurrentDomain.UnhandledException += ExceptionHandler.UnhandledException;
 
 			InitiateEventHandlers();
@@ -73,7 +75,7 @@ namespace Nova
 				app.Resources.MergedDictionaries.Add(dictionary);
 			}
 		}
-
+        
 		/// <summary>
 		/// Initiates the event handlers.
 		/// </summary>

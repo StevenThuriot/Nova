@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>R:\Solution Items\Basic Rules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -212,13 +212,14 @@
     <Compile Include="Controls\IView.cs" />
     <Compile Include="Controls\ImageButton.cs" />
     <Compile Include="Controls\AnimatedLoader.cs" />
-    <Compile Include="Controls\PasswordBoxMonitor.cs" />
+    <Compile Include="Helpers\PasswordBoxMonitor.cs" />
     <Compile Include="Controls\SearchTextBox.xaml.cs">
       <DependentUpon>SearchTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WindowControlBox.xaml.cs">
       <DependentUpon>WindowControlBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AutoScrollHandler.cs" />
     <Compile Include="Nova.cs" />
     <Compile Include="Properties\NamespaceDefinitions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

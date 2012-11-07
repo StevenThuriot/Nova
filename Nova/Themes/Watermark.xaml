@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-					xmlns:Base="http://nova.thuriot.be/Base" xmlns:Controls="http://nova.thuriot.be/Controls">
+					xmlns:Base="http://nova.thuriot.be/Base"
+                    xmlns:Helpers="http://nova.thuriot.be/Helpers">
 
   <Style x:Key="WatermarkBaseStyle" TargetType="{x:Type TextBlock}">
     <Setter Property="FontFamily" Value="{DynamicResource WatermarkFont}" />
@@ -31,7 +32,7 @@
   
 	<Style x:Key="PasswordWatermarkStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource WatermarkBaseStyle}">
 		<Style.Triggers>
-      <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type PasswordBox}}, Path=(Controls:PasswordBoxMonitor.PasswordLength), Mode=OneWay}" Value="0">
+      <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type PasswordBox}}, Path=(Helpers:PasswordBoxMonitor.PasswordLength), Mode=OneWay}" Value="0">
 				<Setter Property="Visibility" Value="Visible" />
 			</DataTrigger>
 			<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type PasswordBox}}, Path=IsKeyboardFocusWithin}" Value="True">

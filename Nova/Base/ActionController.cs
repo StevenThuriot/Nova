@@ -38,7 +38,7 @@ namespace Nova.Base
 		private readonly TView _View;
 		private readonly TViewModel _ViewModel;
 	    private readonly IActionQueueManager _ActionQueueManager;
-	    private readonly ICollection<BaseAction<TView, TViewModel>> _Actions;
+        private readonly ICollection<BaseAction<TView, TViewModel>> _Actions;
 
 	    /// <summary>
 	    /// Default ctor.
@@ -50,8 +50,8 @@ namespace Nova.Base
 		{
 			_View = view;
 			_ViewModel = viewModel;
-	        _ActionQueueManager = actionQueueManager;
-	        _Actions = new List<BaseAction<TView, TViewModel>>();
+            _ActionQueueManager = actionQueueManager; 
+            _Actions = new List<BaseAction<TView, TViewModel>>();
 		}
         
 		/// <summary>
@@ -71,27 +71,27 @@ namespace Nova.Base
 			if (actionToRun.CanExecute())
 			{
 				OnActionMethodRepository.OnBefore<T, TView, TViewModel>(actionToRun);
+                
+                var sessionID = actionToRun.View.SessionID;
+                var queueID = actionToRun.View.ID;
 
-				if (!_Actions.Any())
+				if (_Actions.All(x => x.View.SessionID == sessionID))
 					_View.StartLoading();
 
-				_Actions.Add(actionToRun);
+                _Actions.Add(actionToRun);
 
 				Action executedCompleteAction = () =>
 				{
 					actionToRun.InternalExecuteCompleted();
 					CleanUp(actionToRun, executeCompleted, disposeActionDuringCleanup);
 				};
-                
-			    var executeAction = new Action(actionToRun.InternalExecute);
 
-			    var sessionID = actionToRun.View.SessionID;
-			    var queueID = actionToRun.View.ID;
+			    var executeAction = new Action(actionToRun.InternalExecute);
 
                 var action = executeAction.Wrap(sessionID, queueID)
                                           .ContinueOnMainThreadWith(executedCompleteAction);
 
-			    action.Options = actionToRun.GetActionFlags();
+			    action.Options = actionToRun.GetActionFlags() | ActionFlags.EnterStep; //TODO: Temp fix so the queues get created.
 
 			    _ActionQueueManager.Queue(action);
 			}
@@ -140,13 +140,15 @@ namespace Nova.Base
 				executeCompleted();
 
 			OnActionMethodRepository.OnAfter<T, TView, TViewModel>(actionToRun);
+            
+            _Actions.Remove(actionToRun);
 
-			_Actions.Remove(actionToRun);
+            var sessionID = actionToRun.View.SessionID;
 
 			if (dispose)
 				actionToRun.Dispose();
 
-			if (!_Actions.Any())
+            if (_Actions.All(x => x.View.SessionID != sessionID))
 				_View.StopLoading();
 		}
 

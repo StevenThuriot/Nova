@@ -74,4 +74,4 @@ using System.Windows;
 [assembly: AssemblyFileVersion("0.5.0.0")]
 
 [assembly: NeutralResourcesLanguage("en")]
-[assembly: GuidAttribute("BA5AA402-F9A9-11E0-B218-E9C04824019B")]
+[assembly: Guid("BA5AA402-F9A9-11E0-B218-E9C04824019B")]

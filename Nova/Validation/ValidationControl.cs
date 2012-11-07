@@ -26,6 +26,7 @@ using Nova.Base;
 using System.Windows.Data;
 using System;
 using Nova.Controls;
+using Nova.Helpers;
 
 namespace Nova.Validation
 {
