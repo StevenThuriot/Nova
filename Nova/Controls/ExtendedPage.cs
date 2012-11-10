@@ -26,6 +26,11 @@ using Nova.Threading;
 
 namespace Nova.Controls
 {
+    /// <summary>
+    /// A default Page class that has added logic for MVVM.
+    /// </summary>
+    /// <typeparam name="TView">The type of the view.</typeparam>
+    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     public abstract class ExtendedPage<TView, TViewModel> : Page, IView, IDisposable
         where TViewModel : BaseViewModel<TView, TViewModel>, new()
         where TView : ExtendedPage<TView, TViewModel>, IView, new()
