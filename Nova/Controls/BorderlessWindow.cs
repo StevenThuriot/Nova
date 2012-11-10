@@ -33,7 +33,7 @@ namespace Nova.Controls
 	/// <typeparam name="TViewModel">The type of ViewModel.</typeparam>
 	public abstract class BorderlessWindow<TView, TViewModel> : ExtendedWindow<TView, TViewModel>
 		where TViewModel : BaseViewModel<TView, TViewModel>, new()
-		where TView : class, IView
+        where TView : BorderlessWindow<TView, TViewModel>, IView
 	{
 		private readonly AnimatedLoader _AnimatedLoader;
 		private Menu _Menu;

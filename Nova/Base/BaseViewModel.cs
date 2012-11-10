@@ -206,9 +206,11 @@ namespace Nova.Base
         /// <returns></returns>
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
 		internal static TViewModel Create(TView view, IActionQueueManager actionQueueManager)
-		{
-			if (view == null)
-				throw new ArgumentNullException("view");
+        {
+            if (view == null)
+                throw new ArgumentNullException("view");
+            if (actionQueueManager == null)
+                throw new ArgumentNullException("actionQueueManager");
 
 		    var viewModel = new TViewModel {View = view};
             

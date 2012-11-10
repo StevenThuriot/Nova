@@ -212,6 +212,7 @@
     <Compile Include="Controls\ExceptionHandler\ExceptionHandlerWindow.xaml.cs">
       <DependentUpon>ExceptionHandlerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ExtendedPage.cs" />
     <Compile Include="Controls\ExtendedWindow.cs" />
     <Compile Include="Controls\IView.cs" />
     <Compile Include="Controls\ImageButton.cs" />

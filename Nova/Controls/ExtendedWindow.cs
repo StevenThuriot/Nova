@@ -34,7 +34,7 @@ namespace Nova.Controls
 	/// <typeparam name="TViewModel">The type of the view model.</typeparam>
 	public abstract class ExtendedWindow<TView, TViewModel> : Window, IView, IDisposable
 		where TViewModel : BaseViewModel<TView, TViewModel>, new()
-		where TView : class, IView
+        where TView : ExtendedWindow<TView, TViewModel>, IView
 	{
         /// <summary>
         /// The action queue manager
