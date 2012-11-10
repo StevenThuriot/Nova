@@ -125,9 +125,9 @@ namespace Nova.Base
 		}
 
 		/// <summary>
-		/// Executes this instance.
+		/// Executes async.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>A value indicating wether to continue execution.</returns>
 		public virtual bool Execute()
 		{
 			return true;

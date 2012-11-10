@@ -24,6 +24,7 @@ using System.Windows.Threading;
 using Nova.Base;
 using Nova.Threading;
 using RESX = Nova.Properties.Resources;
+using Nova.Base.Actions;
 
 namespace Nova.Controls
 {
@@ -91,9 +92,9 @@ namespace Nova.Controls
 	        ID = Guid.NewGuid();
 
             _ActionQueueManager = new ActionQueueManager();
-            ViewModel = BaseViewModel<TView, TViewModel>.Create(this as TView, _ActionQueueManager);
+            ViewModel = BaseViewModel<TView, TViewModel>.Create((TView)this, _ActionQueueManager);
 
-			Closed += (sender, args) => ViewModel.Dispose();
+	        Closed += (sender, args) => ViewModel.InvokeAction<LeaveStepAction<TView,TViewModel>>();
 		}
 
 

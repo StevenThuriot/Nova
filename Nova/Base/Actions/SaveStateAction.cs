@@ -19,18 +19,32 @@ using Nova.Controls;
 
 namespace Nova.Base.Actions
 {
+    /// <summary>
+    /// An action used to save the state of the View Model.
+    /// </summary>
+    /// <typeparam name="TView">The type of the view.</typeparam>
+    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
 	internal class SaveStateAction<TView, TViewModel> : BaseAction<TView, TViewModel>
 		where TView : class, IView
 		where TViewModel : BaseViewModel<TView, TViewModel>, new()
 	{
 		private DynamicContext _ObjectToSave;
 
+        /// <summary>
+        /// Determines whether this instance can execute.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if this instance can execute; otherwise, <c>false</c>.
+        /// </returns>
 		public override bool CanExecute()
 		{
 		    _ObjectToSave = ActionContext.GetValue<DynamicContext>("ObjectToSave");
-			return !_ObjectToSave.IsEmpty;
+			return _ObjectToSave != null && !_ObjectToSave.IsEmpty;
 		}
 
+        /// <summary>
+        /// Executes when the async execution succesfully completed.
+        /// </summary>
 		public override bool Execute()
 		{
 			DynamicContext.Save<TViewModel>(_ObjectToSave);

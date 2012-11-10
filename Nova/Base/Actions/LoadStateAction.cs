@@ -19,18 +19,30 @@ using Nova.Controls;
 
 namespace Nova.Base.Actions
 {
+    /// <summary>
+    /// An action used to load the state of the View Model.
+    /// </summary>
+    /// <typeparam name="TView">The type of the view.</typeparam>
+    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
 	internal class LoadStateAction<TView, TViewModel> : BaseAction<TView, TViewModel>
 		where TView : class, IView
 		where TViewModel : BaseViewModel<TView, TViewModel>, new()
 	{
 		private DynamicContext _ObjectToLoad;
 
+        /// <summary>
+        /// Executes async.
+        /// </summary>
+        /// <returns>A value indicating wether to continue execution.</returns>
 		public override bool Execute()
 		{
 			_ObjectToLoad = DynamicContext.Load<TViewModel>();
 			return !_ObjectToLoad.IsEmpty;
 		}
 
+        /// <summary>
+        /// Executes when the async execution succesfully completed.
+        /// </summary>
 		public override void ExecuteCompleted()
 		{
 			ViewModel.Load(_ObjectToLoad);

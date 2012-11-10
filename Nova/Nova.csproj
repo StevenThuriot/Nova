@@ -183,6 +183,8 @@
     <Compile Include="Base\ActionContext.cs" />
     <Compile Include="Base\ActionController.cs" />
     <Compile Include="Base\ActionManager.cs" />
+    <Compile Include="Base\Actions\EnterStepAction.cs" />
+    <Compile Include="Base\Actions\LeaveStepAction.cs" />
     <Compile Include="Base\Actions\LoadStateAction.cs" />
     <Compile Include="Base\Actions\SaveStateAction.cs" />
     <Compile Include="Base\BaseAction.cs" />

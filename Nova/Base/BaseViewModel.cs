@@ -191,6 +191,16 @@ namespace Nova.Base
 			return SetValue(ref privateMember, value, propertyName);
 		}
 
+
+        /// <summary>
+        /// Called when [created], for internal use.
+        /// </summary>
+        internal void InternalOncreated()
+        {
+            ActionController.InvokeAction<EnterStepAction<TView, TViewModel>>();
+            OnCreated();
+        }
+
 		/// <summary>
 		/// Called when [created].
 		/// </summary>
@@ -217,7 +227,7 @@ namespace Nova.Base
 			viewModel.ActionController = new ActionController<TView, TViewModel>(view, viewModel, actionQueueManager);
 			viewModel.ActionManager = new ActionManager<TView, TViewModel>(view, viewModel);
 
-			viewModel.OnCreated();
+            viewModel.InternalOncreated();
 
 		    return viewModel;
 		}

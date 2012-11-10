@@ -343,7 +343,9 @@ namespace Nova.Controls
 		public override void StartLoading()
 		{
 			base.StartLoading();
-			_AnimatedLoader.Start();
+
+			if (_AnimatedLoader != null)
+                _AnimatedLoader.Start();
 		}
 
 		/// <summary>
@@ -352,7 +354,9 @@ namespace Nova.Controls
 		public override void StopLoading()
 		{
 			base.StopLoading();
-			_AnimatedLoader.Stop();
+
+            if (_AnimatedLoader != null)
+			    _AnimatedLoader.Stop();
 		}
 
 		#endregion  Methods

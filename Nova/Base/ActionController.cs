@@ -91,7 +91,7 @@ namespace Nova.Base
                 var action = executeAction.Wrap(sessionID, queueID)
                                           .ContinueOnMainThreadWith(executedCompleteAction);
 
-			    action.Options = actionToRun.GetActionFlags() | ActionFlags.EnterStep; //TODO: Temp fix so the queues get created.
+			    action.Options = actionToRun.GetActionFlags();
 
 			    _ActionQueueManager.Queue(action);
 			}
