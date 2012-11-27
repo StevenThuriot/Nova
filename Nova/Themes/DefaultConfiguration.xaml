@@ -42,6 +42,9 @@
 	</ImageSource>
 
 	<!-- Colors -->
+
+  <Color x:Key="WhiteColor">#FDFDFD</Color>
+  <Color x:Key="LightBlueColor">#66119EDA</Color>
 	<Color x:Key="ControlBorderColor">#636363</Color>
 	<Color x:Key="UnfocusedControlBorderColor">#bbb</Color>
 	<Color x:Key="BorderColor">#555555</Color>

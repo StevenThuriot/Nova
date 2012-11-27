@@ -134,16 +134,13 @@
               Margin="0" />
       </Button>
 
-      <Border Grid.Row="1" Grid.ColumnSpan="5"
-          Margin="4,3,4,4"
-          Padding="2"
-          CornerRadius="0"
-          BorderThickness="1" BorderBrush="{StaticResource LightBlue}"
-          Background="{StaticResource White}">
-
-        <Frame Source="TestPage.xaml" />
-
-      </Border>
+      <TabControl Grid.Row="1" Grid.ColumnSpan="5" Margin="4">
+        <Controls:ClosableTabItem Header="[ SESSION ]">
+          <Controls:ClosableTabItem.Content>
+            <Frame Source="TestPage.xaml" />
+          </Controls:ClosableTabItem.Content>
+        </Controls:ClosableTabItem>
+      </TabControl>
 
       <Grid Grid.Row="2" Grid.ColumnSpan="5" Background="{Binding ElementName=_WindowBorder, Path=Background}">
         <Controls:ProgressIndicator Visibility="{Binding View.IsLoading, Converter={StaticResource _BooleanToVisibilityConverter}}" />

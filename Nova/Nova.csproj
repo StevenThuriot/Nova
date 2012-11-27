@@ -82,6 +82,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\ClosableTabItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ExceptionHandler\ExceptionHandlerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -206,6 +210,9 @@
     <Compile Include="Base\RelayCommand.cs" />
     <Compile Include="Base\ViewMode.cs" />
     <Compile Include="Controls\BorderlessWindow.cs" />
+    <Compile Include="Controls\ClosableTabItem.xaml.cs">
+      <DependentUpon>ClosableTabItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DataGridHeaderBorder.cs" />
     <Compile Include="Controls\ExceptionHandler\ExceptionHandlerView.cs">
       <DependentUpon>ExceptionHandlerWindow.xaml</DependentUpon>

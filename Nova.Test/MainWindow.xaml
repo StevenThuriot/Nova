@@ -84,6 +84,11 @@
          Validation:Validation.FieldName="SearchTextBox" />
 
 			<Separator />
+
+      <TabControl Height="80" Width="400">
+        <Nova:ClosableTabItem Header="First Item" />
+        <TabItem Header="Second Item" />
+      </TabControl>
 		</StackPanel>
 		<!--
 		<Grid.RowDefinitions>

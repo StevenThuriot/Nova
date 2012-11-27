@@ -8,6 +8,9 @@
 	<FontFamily x:Key="AgencyFB">/Nova;component/Fonts//#Agency FB</FontFamily>
 	
 	<!-- Brushes -->
+
+  <SolidColorBrush ice:Freeze="True" x:Key="LightBlueBrush" Color="{DynamicResource LightBlueColor}"/>
+  <SolidColorBrush ice:Freeze="True" x:Key="WhiteBrush" Color="{DynamicResource WhiteColor}" />
 	<SolidColorBrush ice:Freeze="True" x:Key="LightShadeBrush" Color="{DynamicResource LightShadeColor}" />
 	<SolidColorBrush ice:Freeze="True" x:Key="LightGradientBrush" Color="{DynamicResource LightGradientColor}" />
 	<SolidColorBrush ice:Freeze="True" x:Key="SolidMenuFontBrush" Color="{DynamicResource ForegroundColor}" />
