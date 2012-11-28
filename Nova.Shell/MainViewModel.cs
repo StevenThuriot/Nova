@@ -21,6 +21,11 @@
 using System.Windows.Media;
 using Nova.Base;
 using Nova.Shell.Actions.MainWindow;
+using Nova.Controls;
+using System.Windows.Data;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows.Controls;
 
 namespace Nova.Shell
 {
@@ -32,10 +37,7 @@ namespace Nova.Shell
             get { return _HasOpenDocuments; }
             set
             {
-                if (_HasOpenDocuments == value) return;
-
-                _HasOpenDocuments = value;
-                OnPropertyChanged(() => HasOpenDocuments);
+                SetValue(ref _HasOpenDocuments, value, () => HasOpenDocuments);
             }
         }
 
@@ -45,8 +47,7 @@ namespace Nova.Shell
             get { return _Icon; }
             set
             {
-                _Icon = value;
-                OnPropertyChanged(() => Icon);
+                SetValue(ref _Icon, value, () => Icon);
             }
         }
 
@@ -56,16 +57,27 @@ namespace Nova.Shell
             get { return _Title; }
             set
             {
-                if (_Title == value) return;
-
-                _Title = value;
-                OnPropertyChanged(() => Title);
+                SetValue(ref _Title, value, () => Title);
             }
         }
 
-        protected override void OnCreated()
+        private readonly ObservableCollection<SessionView> _Sessions;
+        public ObservableCollection<SessionView> Sessions
+        {
+            get { return _Sessions; }
+        }
+
+        public MainViewModel()
+        {
+            _Sessions = new ObservableCollection<SessionView>();
+        }
+
+        protected internal override void OnCreated()
         {
             InvokeAction<ReadConfigurationAction>();
+            
+            var intialSession = SessionView.Create(View, View._ActionQueueManager);
+            Sessions.Add(intialSession);
         }
 
         public void OnBeforeCloseApplication(ActionContext context)

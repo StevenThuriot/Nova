@@ -121,7 +121,7 @@ namespace Nova.Base
 		/// </summary>
 		/// <param name="propertyExpression">The property expression.</param>
 		/// <returns></returns>
-		private static string GetPropertyName(Expression<Func<object>> propertyExpression)
+		private static string GetPropertyName<T>(Expression<Func<T>> propertyExpression)
 		{
 			MemberExpression memberExpression = propertyExpression.Body as MemberExpression ??
 			                                    ((UnaryExpression) propertyExpression.Body).Operand as MemberExpression;
@@ -185,7 +185,7 @@ namespace Nova.Base
 		/// <param name="propertyExpression">The property that changed.</param>
 		/// <returns>True if the property changed.</returns>
 		[SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-		protected bool SetValue<TMember>(ref TMember privateMember, TMember value, Expression<Func<object>> propertyExpression)
+        protected bool SetValue<TMember>(ref TMember privateMember, TMember value, Expression<Func<TMember>> propertyExpression)
 		{
 			var propertyName = GetPropertyName(propertyExpression);
 			return SetValue(ref privateMember, value, propertyName);
@@ -292,7 +292,7 @@ namespace Nova.Base
         {
             ActionController.InvokeAction<T>(sender, arguments);
         }
-
+        
 		/// <summary>
 		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
 		/// </summary>

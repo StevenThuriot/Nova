@@ -61,8 +61,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Actions\MainWindow\ReadConfigurationAction.cs" />
-    <Compile Include="TestPage.xaml.cs">
-      <DependentUpon>TestPage.xaml</DependentUpon>
+    <Compile Include="SessionView.xaml.cs">
+      <DependentUpon>SessionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SessionViewBase.cs">
+      <DependentUpon>SessionView.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SessionViewModel.cs">
+      <DependentUpon>SessionView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -87,7 +93,7 @@
     <Compile Include="MainViewModel.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="TestPage.xaml">
+    <Page Include="SessionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -119,6 +125,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nova.Threading\Nova.Threading.csproj">
+      <Project>{28f961f0-1305-46ee-bc24-0a04d89f1e9e}</Project>
+      <Name>Nova.Threading</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nova\Nova.csproj">
       <Project>{4841a375-36ee-4458-8f61-ad9bb0c634f5}</Project>
       <Name>Nova</Name>

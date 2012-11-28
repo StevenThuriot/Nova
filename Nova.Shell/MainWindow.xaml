@@ -134,17 +134,29 @@
               Margin="0" />
       </Button>
 
-      <TabControl Grid.Row="1" Grid.ColumnSpan="5" Margin="4">
-        <Controls:ClosableTabItem Header="[ SESSION ]">
-          <Controls:ClosableTabItem.Content>
-            <Frame Source="TestPage.xaml" />
-          </Controls:ClosableTabItem.Content>
-        </Controls:ClosableTabItem>
-      </TabControl>
+      <!-- Sessions -->
+      <Controls:ClosableTabControl Grid.Row="1"
+                  Grid.ColumnSpan="5"
+                  Margin="4"
+                  ItemsSource="{Binding Sessions}">
+
+        <TabControl.ContentTemplate>
+          <DataTemplate>
+            <Frame Content="{Binding}" />
+          </DataTemplate>
+        </TabControl.ContentTemplate>
+
+        <TabControl.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:ClosableTabItem}}, Path=DataContext.Title}" />
+          </DataTemplate>
+        </TabControl.ItemTemplate>
+      </Controls:ClosableTabControl>
 
       <Grid Grid.Row="2" Grid.ColumnSpan="5" Background="{Binding ElementName=_WindowBorder, Path=Background}">
         <Controls:ProgressIndicator Visibility="{Binding View.IsLoading, Converter={StaticResource _BooleanToVisibilityConverter}}" />
       </Grid>
-    </Grid>
+    
+  </Grid>
   </Border>
 </Shell:BaseMainView>

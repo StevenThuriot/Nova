@@ -40,7 +40,7 @@ namespace Nova.Controls
         /// <summary>
         /// The action queue manager
         /// </summary>
-	    private readonly IActionQueueManager _ActionQueueManager;
+	    internal readonly IActionQueueManager _ActionQueueManager;
 
 		private bool _Disposed;
 
@@ -180,7 +180,7 @@ namespace Nova.Controls
 				Base.ExceptionHandler.Handle(exception, RESX.ErrorTitle);
 			}
 		}
-
+        
 		/// <summary>
 		/// Releases unmanaged resources and performs other cleanup operations before the
 		/// <see cref="ExtendedWindow&lt;TView, TViewModel&gt;"/> is reclaimed by garbage collection.

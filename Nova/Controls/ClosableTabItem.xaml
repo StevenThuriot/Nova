@@ -33,11 +33,7 @@
       </Setter>
     </Style>
     
-    <Style x:Key="ClosableTabItem" TargetType="{x:Type Controls:ClosableTabItem}">
-      <Setter Property="Background" Value="{DynamicResource PushedDownStateButton}" />
-
-      <Setter Property="FocusVisualStyle" Value="{DynamicResource MyFocusVisual}" />
-
+    <Style x:Key="ClosableTabItem" TargetType="{x:Type Controls:ClosableTabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="TabItem">
@@ -59,7 +55,7 @@
 
                   <Button Grid.Column="1" 
                           Style="{StaticResource CloseableTabItemButton}"
-                          x:Name="PART_CloseTab" />
+                          Click="CloseTabItem" />
 
                 </Grid>
 
