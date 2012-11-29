@@ -8,5 +8,19 @@
       d:DesignHeight="300" d:DesignWidth="300"
 	    Title="{Binding Title}">
 
-  <TextBlock>This is the session page. Still needs some work.</TextBlock>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="111" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="175" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <TextBlock Grid.Row="0" Grid.ColumnSpan="2">Identification goes here.</TextBlock>
+    
+    <TextBlock Grid.Row="1" Grid.Column="0">Navigation goes here.</TextBlock>
+    <TextBlock Grid.Row="1" Grid.Column="1">Content goes here.</TextBlock>
+  </Grid>
 </Shell:SessionViewBase>
