@@ -38,7 +38,7 @@ namespace Nova.Controls
         /// <summary>
         /// The close tab event
         /// </summary>
-        public static readonly RoutedEvent CloseTabEvent = EventManager.RegisterRoutedEvent("CloseTab", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ClosableTabItem));
+        public static readonly RoutedEvent CloseTabEvent = EventManager.RegisterRoutedEvent("CloseTab", RoutingStrategy.Tunnel, typeof(RoutedEventHandler), typeof(ClosableTabItem));
 
         /// <summary>
         /// Occurs when a tab item needs to be closed.
@@ -85,7 +85,7 @@ namespace Nova.Controls
         private void RaiseCloseEvent(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
-            RaiseEvent(new RoutedEventArgs(CloseTabEvent, this));
+            RaiseEvent(new RoutedEventArgs(CloseTabEvent, this.DataContext));
         }
 
         /// <summary>
@@ -95,14 +95,16 @@ namespace Nova.Controls
         /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private static void CloseCurrentTabItem(object sender, RoutedEventArgs e)
         {
+            if (e.Handled) return; //Parent has already handled it.
+
             var tabItem = sender as TabItem;
             if (tabItem == null) return;
 
             TabControl tabControl = tabItem.Parent as TabControl;
             if (tabControl != null)
             {
-                var items = (IEditableCollectionView)tabControl.Items;
-                if (items.CanRemove)
+                var items = tabControl.Items as IEditableCollectionView;
+                if (items != null && items.CanRemove)
                 {
                     items.Remove(tabItem);
                     return;

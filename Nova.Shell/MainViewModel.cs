@@ -26,6 +26,7 @@ using System.Windows.Data;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
+using System.Windows;
 
 namespace Nova.Shell
 {
@@ -78,6 +79,20 @@ namespace Nova.Shell
             
             var intialSession = SessionView.Create(View, View._ActionQueueManager);
             Sessions.Add(intialSession);
+
+
+            View.AddHandler(ClosableTabItem.CloseTabEvent, new RoutedEventHandler(CloseSession));
+        }
+
+        private void CloseSession(object sender, RoutedEventArgs e)
+        {
+            var session = e.OriginalSource as SessionView;
+            if (session != null)
+            {
+                Sessions.Remove(session);
+                session.Dispose();
+                e.Handled = true;
+            }
         }
 
         public void OnBeforeCloseApplication(ActionContext context)
