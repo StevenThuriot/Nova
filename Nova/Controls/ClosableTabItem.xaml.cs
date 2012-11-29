@@ -17,8 +17,11 @@
 // 
 
 #endregion
+using System.Collections;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Nova.Controls
 {
@@ -95,10 +98,36 @@ namespace Nova.Controls
             var tabItem = sender as TabItem;
             if (tabItem == null) return;
 
-            var tabControl = tabItem.Parent as TabControl;
-            if (tabControl == null) return;
+            TabControl tabControl = tabItem.Parent as TabControl;
+            if (tabControl != null)
+            {
+                var items = (IEditableCollectionView)tabControl.Items;
+                if (items.CanRemove)
+                {
+                    items.Remove(tabItem);
+                    return;
+                }
+            }
 
-            tabControl.Items.Remove(tabItem);
+            if (tabControl == null)
+            {
+                DependencyObject previous = tabItem;
+                for (int i = 0; i < 5; i++)
+                {
+                    previous = VisualTreeHelper.GetParent(previous);
+                    tabControl = previous as TabControl;
+                    if (tabControl != null) break;
+                }
+            }
+
+            if (tabControl != null)
+            {
+                var items = tabControl.ItemsSource as IList;
+                if (items != null) //If null, the bound source is one that doesn't support removing items.
+                {
+                    items.Remove(tabItem.DataContext);
+                }
+            }
         }
     }
 }
