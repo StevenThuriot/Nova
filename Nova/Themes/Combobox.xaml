@@ -116,9 +116,9 @@
 
 						<Path x:Name="ErrorTriangle"
 									  Data="{DynamicResource ErrorIcon}"
-									  Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}, Path=(Validation:Validation.Severity)}"
+									  Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}, Path=(Validation:NovaValidation.Severity)}"
 									  Visibility="Collapsed"
-									  ToolTip="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}, Path=(Validation:Validation.ValidationTooltip)}" />
+									  ToolTip="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}, Path=(Validation:NovaValidation.ValidationTooltip)}" />
 					</Grid>
 					<ControlTemplate.Triggers>
 						<Trigger Property="ItemsControl.HasItems" Value="False">
@@ -138,21 +138,21 @@
 						<Trigger Property="IsKeyboardFocusWithin" Value="True">
 							<Setter Property="BorderBrush" Value="{DynamicResource FocusedInputBorderBrush}" />
 						</Trigger>
-						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.IsValid)}" Value="False">
-							<Setter TargetName="ValidationBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}, Path=(Validation:Validation.Severity)}" />
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:NovaValidation.IsValid)}" Value="False">
+							<Setter TargetName="ValidationBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}, Path=(Validation:NovaValidation.Severity)}" />
 							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Visible" />
 						</DataTrigger>
-						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.ValidationTooltip)}" Value="{x:Null}">
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:NovaValidation.ValidationTooltip)}" Value="{x:Null}">
 							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Collapsed" />
 						</DataTrigger>
-						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.ValidationTooltip).Length}" Value="0">
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:NovaValidation.ValidationTooltip).Length}" Value="0">
 							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Collapsed" />
 						</DataTrigger>
             <MultiDataTrigger>
               <MultiDataTrigger.Conditions>
                 <!-- Only show black border if the validation hasn't triggered yet. -->
-                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.IsValid)}" Value="True" />
-                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.IsRequired)}" Value="True" />
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:NovaValidation.IsValid)}" Value="True" />
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:NovaValidation.IsRequired)}" Value="True" />
                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text.Length}" Value="0" />
               </MultiDataTrigger.Conditions>
               <MultiDataTrigger.Setters>
@@ -230,9 +230,9 @@
 
 						<Path x:Name="ErrorTriangle"
 									  Data="{DynamicResource ErrorIcon}"
-									  Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}, Path=(Validation:Validation.Severity)}"
+									  Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}, Path=(Validation:NovaValidation.Severity)}"
 									  Visibility="Collapsed"
-									  ToolTip="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}, Path=(Validation:Validation.ValidationTooltip)}" />
+									  ToolTip="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}, Path=(Validation:NovaValidation.ValidationTooltip)}" />
 					</Grid>
 					<ControlTemplate.Triggers>
 						<Trigger Property="ItemsControl.HasItems" Value="False">
@@ -252,21 +252,21 @@
 						<Trigger Property="IsKeyboardFocusWithin" Value="True">
 							<Setter Property="BorderBrush" Value="{DynamicResource FocusedInputBorderBrush}" />
 						</Trigger>
-						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.IsValid)}" Value="False">
-							<Setter TargetName="ValidationBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}, Path=(Validation:Validation.Severity)}" />
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:NovaValidation.IsValid)}" Value="False">
+							<Setter TargetName="ValidationBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}, Path=(Validation:NovaValidation.Severity)}" />
 							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Visible" />
 						</DataTrigger>
-						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.ValidationTooltip)}" Value="{x:Null}">
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:NovaValidation.ValidationTooltip)}" Value="{x:Null}">
 							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Collapsed" />
 						</DataTrigger>
-						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.ValidationTooltip).Length}" Value="0">
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:NovaValidation.ValidationTooltip).Length}" Value="0">
 							<Setter TargetName="ErrorTriangle" Property="Visibility" Value="Collapsed" />
 						</DataTrigger>
             <MultiDataTrigger>
               <MultiDataTrigger.Conditions>
                 <!-- Only show black border if the validation hasn't triggered yet. -->
-                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.IsValid)}" Value="True" />
-                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:Validation.IsRequired)}" Value="True" />
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:NovaValidation.IsValid)}" Value="True" />
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:NovaValidation.IsRequired)}" Value="True" />
                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text.Length}" Value="0" />
               </MultiDataTrigger.Conditions>
               <MultiDataTrigger.Setters>

@@ -34,7 +34,6 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://nova.thuriot.be/Language", "Nova.Properties")]
 [assembly: XmlnsPrefix("http://nova.thuriot.be/Language", "Language")]
 
-/*
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "Nova")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "Nova.Base")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "Nova.Helpers")]
@@ -42,4 +41,3 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "Nova.Controls.ExceptionHandler")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "Nova.Validation")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "Nova.Properties")]
-*/

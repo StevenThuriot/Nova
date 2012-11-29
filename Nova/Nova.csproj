@@ -264,7 +264,7 @@
     <Compile Include="Validation\BaseValidator.cs" />
     <Compile Include="Validation\IValidator.cs" />
     <Compile Include="Validation\ReadOnlyErrorCollection.cs" />
-    <Compile Include="Validation\Validation.cs" />
+    <Compile Include="Validation\NovaValidation.cs" />
     <Compile Include="Validation\ValidationControl.cs" />
     <Compile Include="Validation\ValidationError.cs" />
     <Compile Include="Validation\ValidationFactory.cs" />

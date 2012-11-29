@@ -239,7 +239,7 @@ namespace Nova.Validation
 				var uiElement = child as UIElement;
 				if (uiElement != null)
 				{
-					var fieldName = Validation.GetFieldName(child);
+					var fieldName = NovaValidation.GetFieldName(child);
 					if (!string.IsNullOrEmpty(fieldName))
 					{
 						fields.Add(uiElement);
@@ -262,7 +262,7 @@ namespace Nova.Validation
 				var uiElement = child as UIElement;
 				if (uiElement != null)
 				{
-					var fieldName = Validation.GetFieldName(child);
+					var fieldName = NovaValidation.GetFieldName(child);
 					if (!string.IsNullOrEmpty(fieldName))
 					{
 						fields.Add(uiElement);
@@ -315,27 +315,27 @@ namespace Nova.Validation
 			if (element == null)
 				return;
 
-			var field = Validation.GetFieldName(element);
+			var field = NovaValidation.GetFieldName(element);
 
 			if (string.IsNullOrEmpty(field))
 				return;
 
 			if (errors != null)
 			{
-				var entityID = Validation.GetEntityID(element);
+				var entityID = NovaValidation.GetEntityID(element);
                 
                 var validations = errors.GetValidations(field, entityID).ToList();
 				if (validations.Count > 0)
 				{
-					Validation.SetIsValid(element, false);
+					NovaValidation.SetIsValid(element, false);
 
 					//Don't get max ranking/put bullets in front of lines when there is only one message to show.
 					if (validations.Count == 1)
 					{
 						var validation = validations.First();
 
-						Validation.SetValidationTooltip(element, validation.Message);
-						Validation.SetSeverity(element, validation.SeverityBrush);
+						NovaValidation.SetValidationTooltip(element, validation.Message);
+						NovaValidation.SetSeverity(element, validation.SeverityBrush);
 
 						return;
 					}
@@ -343,12 +343,12 @@ namespace Nova.Validation
 					var mostSevereValidationRanking = validations.Max(x => x.Ranking);
 					var mostSevereValidation = validations.First(x => x.Ranking == mostSevereValidationRanking);
 
-					Validation.SetSeverity(element, mostSevereValidation.SeverityBrush);
+					NovaValidation.SetSeverity(element, mostSevereValidation.SeverityBrush);
 
 					//Since we are showing the most severe brush, show the most severe messages first as well.
 					validations = validations.OrderByDescending(x => x.Ranking).ToList();
 
-					if (Validation.GetConcatToolTip(element))
+					if (NovaValidation.GetConcatToolTip(element))
 					{
 						var builder = new StringBuilder();
 
@@ -363,19 +363,19 @@ namespace Nova.Validation
 							}
 						}
 
-						Validation.SetValidationTooltip(element, builder.ToString());
+						NovaValidation.SetValidationTooltip(element, builder.ToString());
 					}
 					else
 					{
-						Validation.SetValidationTooltip(element, mostSevereValidation.Message);
+						NovaValidation.SetValidationTooltip(element, mostSevereValidation.Message);
 					}
 
 					return;
 				}
 			}
 
-			Validation.SetIsValid(element, true);
-			Validation.SetValidationTooltip(element, null);
+			NovaValidation.SetIsValid(element, true);
+			NovaValidation.SetValidationTooltip(element, null);
 		}
 
         internal IEnumerable<KeyValuePair<Guid, string>> ValidateRequiredFields()
@@ -403,8 +403,8 @@ namespace Nova.Validation
             {
                 if (!CheckIfFilledIn(child as UIElement))
                 {
-                    var entityID = Validation.GetEntityID(child);
-                    var field = Validation.GetFieldName(child);
+                    var entityID = NovaValidation.GetEntityID(child);
+                    var field = NovaValidation.GetFieldName(child);
                     var kvp = new KeyValuePair<Guid, string>(entityID, field);
                     fields.Add(kvp);
                 }
@@ -426,8 +426,8 @@ namespace Nova.Validation
 
                 if (!CheckIfFilledIn(child as UIElement))
                 {
-                    var entityID = Validation.GetEntityID(child);
-                    var field = Validation.GetFieldName(child);
+                    var entityID = NovaValidation.GetEntityID(child);
+                    var field = NovaValidation.GetFieldName(child);
 
                     var kvp = new KeyValuePair<Guid, string>(entityID, field);
                     fields.Add(kvp);
@@ -448,7 +448,7 @@ namespace Nova.Validation
             }
 
             return _Fields.Where(x => !CheckIfFilledIn(x))
-                          .Select(x => new KeyValuePair<Guid, string>(Validation.GetEntityID(x), Validation.GetFieldName(x)))
+                          .Select(x => new KeyValuePair<Guid, string>(NovaValidation.GetEntityID(x), NovaValidation.GetFieldName(x)))
                           .ToList();
         }
 
@@ -460,7 +460,7 @@ namespace Nova.Validation
             if (ViewMode.GetIsReadOnly(element)) //Read Only elements can't be required.
                 return true;
 
-            if (!Validation.GetIsRequired(element))
+            if (!NovaValidation.GetIsRequired(element))
                 return true;
 
             var textbox = element as TextBox;

@@ -29,7 +29,7 @@
 
 
 	<Validation:ValidationControl MapVisualTreeOnce="True">
-		<Grid.RowDefinitions>
+		<!--<Grid.RowDefinitions>
 			<RowDefinition Height="50" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
@@ -58,18 +58,18 @@
 			<Button Content="Run Action" Command="{Binding ActionManager.ThrowException}" />
 			<TextBox Margin="10,0,0,0" Width="120" Text="Lalala"
 					 Base:ViewMode.Watermark="Put text here"
-           Validation:Validation.FieldName="TextBox"
-           Validation:Validation.IsRequired="True" />
+           Validation:NovaValidation.FieldName="TextBox"
+           Validation:NovaValidation.IsRequired="True" />
 
 			<PasswordBox Margin="10,0,0,0" Height="23" Width="120"
-					 Validation:Validation.FieldName="Password"
+					 Validation:NovaValidation.FieldName="Password"
 					  Base:ViewMode.Watermark="Pass watermark"
-           Validation:Validation.IsRequired="True"  />
+           Validation:NovaValidation.IsRequired="True"  />
 
 			<ComboBox Margin="10,0,0,0" Width="120"
-					 Validation:Validation.FieldName="ComboBox"
-					 Validation:Validation.ConcatToolTip="False"
-           Validation:Validation.IsRequired="True" 
+					 Validation:NovaValidation.FieldName="ComboBox"
+					 Validation:NovaValidation.ConcatToolTip="False"
+           Validation:NovaValidation.IsRequired="True" 
 					  Base:ViewMode.Watermark="ComboBox"
 					 SelectedIndex="1">
 				<ComboBoxItem>Item 1</ComboBoxItem>
@@ -80,8 +80,8 @@
 			<Nova:SearchTextBox Width="150" Command="{Binding SearchCommand}"
 									  Text="{Binding SearchText}"
       Base:ViewMode.Watermark="Searchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
-         Validation:Validation.IsRequired="True"
-         Validation:Validation.FieldName="SearchTextBox" />
+         Validation:NovaValidation.IsRequired="True"
+         Validation:NovaValidation.FieldName="SearchTextBox" />
 
 			<Separator />
 
@@ -89,8 +89,8 @@
         <Nova:ClosableTabItem Header="First Item" />
         <TabItem Header="Second Item" />
       </TabControl>
-		</StackPanel>
-		<!--
+		</StackPanel>-->
+		
 		<Grid.RowDefinitions>
 			<RowDefinition Height="30" />
 			<RowDefinition Height="*" />
@@ -126,18 +126,18 @@
 			</StackPanel>
 			<StackPanel  Margin="10" Orientation="Horizontal">
 				<PasswordBox Margin="10,0,0,0" Height="23" Width="120"
-						 Validation:Validation.FieldName="Password" />
+						 Validation:NovaValidation.FieldName="Password" />
 				
 				<CheckBox Content="Null CheckBox" Height="16" IsChecked="{x:Null}"
-						 Validation:Validation.FieldName="CheckBox2" />
+						 Validation:NovaValidation.FieldName="CheckBox2" />
 				<CheckBox Content="Disabled CheckBox" IsChecked="True" IsEnabled="False" Margin="10,0,0,0"  />
 			</StackPanel>
 
 			<StackPanel  Margin="10" Orientation="Horizontal">
 				<CheckBox Content="CheckBox" />
 				<ComboBox Margin="10,0,0,0" Width="120" 
-						 Validation:Validation.FieldName="ComboBox" 
-						 Validation:Validation.ConcatToolTip="False" 
+						 Validation:NovaValidation.FieldName="ComboBox" 
+						 Validation:NovaValidation.ConcatToolTip="False" 
 						  Base:ViewMode.Watermark="ComboBox"
 						 SelectedIndex="1">
 					<ComboBoxItem>Item 1</ComboBoxItem>
@@ -146,15 +146,15 @@
 				</ComboBox>
 				
 				<RadioButton GroupName="Nova" Margin="10,0,0,0" Content="RadioButton 1"
-						 Validation:Validation.FieldName="RadioButton"
-						 Validation:Validation.EntityID="de475614-6405-414b-8e38-73b3953136aa" />
+						 Validation:NovaValidation.FieldName="RadioButton"
+						 Validation:NovaValidation.EntityID="de475614-6405-414b-8e38-73b3953136aa" />
 				<RadioButton GroupName="Nova" Margin="10,0,0,0" Content="RadioButton 2"
-						 Validation:Validation.FieldName="RadioButton"
-						 Validation:Validation.EntityID="1ff8e3f3-09c7-424f-8aff-9559cbbf1243"
+						 Validation:NovaValidation.FieldName="RadioButton"
+						 Validation:NovaValidation.EntityID="1ff8e3f3-09c7-424f-8aff-9559cbbf1243"
 						   />
 				<TextBox Margin="10,0,0,0" Width="120" Text="Lalala" 
 						 Base:ViewMode.Watermark="Put text here"
-						 Validation:Validation.FieldName="TextBox" />
+						 Validation:NovaValidation.FieldName="TextBox" />
 			</StackPanel>
 
 			<StackPanel  Height="300" Margin="10" Orientation="Horizontal">
@@ -165,7 +165,7 @@
 				<Nova:SearchTextBox Width="150" Command="{Binding SearchCommand}"
 										  Text="{Binding SearchText}"
                     Base:ViewMode.Watermark="Searchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
-						 Validation:Validation.FieldName="SearchTextBox"
+						 Validation:NovaValidation.FieldName="SearchTextBox"
 						  />
 				<ListBox Width="150">
 					<ListBox.ContextMenu>
@@ -183,6 +183,5 @@
 
 			</StackPanel>
 		</StackPanel> 
-		-->
 	</Validation:ValidationControl>
 </Test:MainView>

@@ -3,8 +3,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                    xmlns:Converters="clr-namespace:Nova.Shell.Converters" xmlns:Shell="clr-namespace:Nova.Shell"
-                    xmlns:Controls="http://nova.thuriot.be/Controls" mc:Ignorable="d"
+                    mc:Ignorable="d"
+                    xmlns:Converters="clr-namespace:Nova.Shell.Converters" 
+                    xmlns:Shell="clr-namespace:Nova.Shell"
                     x:Name="_this"
         
                     Width="1024"
@@ -135,26 +136,26 @@
       </Button>
 
       <!-- Sessions -->
-      <Controls:ClosableTabControl Grid.Row="1"
+      <ClosableTabControl Grid.Row="1"
                   Grid.ColumnSpan="5"
                   Margin="4"
                   ItemsSource="{Binding Sessions}">
 
         <TabControl.ContentTemplate>
           <DataTemplate>
-            <Frame Content="{Binding}" />
+            <Frame NavigationUIVisibility="Hidden" Content="{Binding}" />
           </DataTemplate>
         </TabControl.ContentTemplate>
 
         <TabControl.ItemTemplate>
           <DataTemplate>
-            <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:ClosableTabItem}}, Path=DataContext.Title}" />
+            <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ClosableTabItem}}, Path=DataContext.Title}" />
           </DataTemplate>
         </TabControl.ItemTemplate>
-      </Controls:ClosableTabControl>
+      </ClosableTabControl>
 
       <Grid Grid.Row="2" Grid.ColumnSpan="5" Background="{Binding ElementName=_WindowBorder, Path=Background}">
-        <Controls:ProgressIndicator Visibility="{Binding View.IsLoading, Converter={StaticResource _BooleanToVisibilityConverter}}" />
+        <ProgressIndicator Visibility="{Binding View.IsLoading, Converter={StaticResource _BooleanToVisibilityConverter}}" />
       </Grid>
     
   </Grid>

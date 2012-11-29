@@ -77,11 +77,13 @@ namespace Nova.Shell
         {
             InvokeAction<ReadConfigurationAction>();
             
-            var intialSession = SessionView.Create(View, View._ActionQueueManager);
-            Sessions.Add(intialSession);
-
-
             View.AddHandler(ClosableTabItem.CloseTabEvent, new RoutedEventHandler(CloseSession));
+
+            var intialSession = SessionView.Create(View, View._ActionQueueManager);
+            Sessions.Add(intialSession); 
+            
+            intialSession = SessionView.Create(View, View._ActionQueueManager);
+            Sessions.Add(intialSession);
         }
 
         private void CloseSession(object sender, RoutedEventArgs e)

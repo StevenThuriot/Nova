@@ -63,7 +63,7 @@
             </Grid>
             <ControlTemplate.Triggers>
               <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Margin" Value="0,-3,0,0" />
+                <Setter Property="Margin" Value="0,-4,0,0" />
                 <Setter Property="Panel.ZIndex" Value="100" />
                 <Setter Property="Background" Value="{DynamicResource WhiteBrush}" />
                 <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource LightBlueBrush}" />
