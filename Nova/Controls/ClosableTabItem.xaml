@@ -55,7 +55,7 @@
 
                   <Button Grid.Column="1" 
                           Style="{StaticResource CloseableTabItemButton}"
-                          Click="CloseTabItem" />
+                          x:Name="PART_CloseTab" />
 
                 </Grid>
 
