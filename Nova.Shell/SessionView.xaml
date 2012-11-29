@@ -21,6 +21,14 @@
     <TextBlock Grid.Row="0" Grid.ColumnSpan="2">Identification goes here.</TextBlock>
     
     <TextBlock Grid.Row="1" Grid.Column="0">Navigation goes here.</TextBlock>
-    <TextBlock Grid.Row="1" Grid.Column="1">Content goes here.</TextBlock>
+
+    <Border Grid.Row="1" Grid.Column="1"
+            BorderThickness="1 1 0 0"
+            BorderBrush="{DynamicResource LightBlueBrush}"
+            CornerRadius="1 0 0 0"
+            Margin="0 0 -3 -3"
+            Padding="3">
+      <Frame Source="TestPage.xaml" />
+    </Border>
   </Grid>
 </Shell:SessionViewBase>

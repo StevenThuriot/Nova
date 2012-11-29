@@ -15,7 +15,7 @@
 						          Background="Transparent" />
             <Border Grid.Row="1"
                     Margin="0"
-                    Padding="2"
+                    Padding="3"
                     CornerRadius="0"
                     BorderThickness="1" BorderBrush="{DynamicResource LightBlueBrush}"
                     Background="{DynamicResource WhiteBrush}">
