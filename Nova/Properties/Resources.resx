@@ -121,6 +121,9 @@
     <value>The Action Controller was not found on the view specified.
 Please check if your view contains an actioncontroller or pass one to the constructor manually.</value>
   </data>
+  <data name="AddItemTabControl" xml:space="preserve">
+    <value>+</value>
+  </data>
   <data name="Clear" xml:space="preserve">
     <value>Clear</value>
   </data>

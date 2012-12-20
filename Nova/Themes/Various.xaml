@@ -10,6 +10,7 @@
 	<!-- Brushes -->
 
   <SolidColorBrush ice:Freeze="True" x:Key="LightBlueBrush" Color="{DynamicResource LightBlueColor}"/>
+  <SolidColorBrush ice:Freeze="True" x:Key="DarkBlueBrush" Color="{DynamicResource DarkBlueColor}"/>
   <SolidColorBrush ice:Freeze="True" x:Key="WhiteBrush" Color="{DynamicResource WhiteColor}" />
 	<SolidColorBrush ice:Freeze="True" x:Key="LightShadeBrush" Color="{DynamicResource LightShadeColor}" />
 	<SolidColorBrush ice:Freeze="True" x:Key="LightGradientBrush" Color="{DynamicResource LightGradientColor}" />
@@ -52,8 +53,9 @@
 
 	<SolidColorBrush ice:Freeze="True" x:Key="SeparatorBackgroundBrush" Color="{DynamicResource SeparatorBackgroundColor}" />
 	<SolidColorBrush ice:Freeze="True" x:Key="SeparatorBorderBrush" Color="{DynamicResource SeparatorBorderColor}" />
-	
-	<LinearGradientBrush ice:Freeze="True" x:Key="grayGradient" EndPoint="0.5,1" StartPoint="0.5,0">
+  <SolidColorBrush ice:Freeze="True" x:Key="CloseButtonBrush" Color="{DynamicResource CloseButtonColor}" />
+
+  <LinearGradientBrush ice:Freeze="True" x:Key="grayGradient" EndPoint="0.5,1" StartPoint="0.5,0">
 		<GradientStop Color="{DynamicResource Gray1}" Offset="0"/>
 		<GradientStop Color="{DynamicResource Gray2}" Offset="0.171"/>
 		<GradientStop Color="{DynamicResource Gray3}" Offset="0.5"/>

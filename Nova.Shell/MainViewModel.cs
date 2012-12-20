@@ -22,10 +22,7 @@ using System.Windows.Media;
 using Nova.Base;
 using Nova.Shell.Actions.MainWindow;
 using Nova.Controls;
-using System.Windows.Data;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Controls;
 using System.Windows;
 
 namespace Nova.Shell
@@ -62,6 +59,16 @@ namespace Nova.Shell
             }
         }
 
+        private SessionView _CurrentSession;
+        public SessionView CurrentSession
+        {
+            get { return _CurrentSession; }
+            set
+            {
+                SetValue(ref _CurrentSession, value, () => CurrentSession);
+            }
+        }
+
         private readonly ObservableCollection<SessionView> _Sessions;
         public ObservableCollection<SessionView> Sessions
         {
@@ -81,18 +88,15 @@ namespace Nova.Shell
 
             var intialSession = SessionView.Create(View, View._ActionQueueManager);
             Sessions.Add(intialSession); 
-            
-            intialSession = SessionView.Create(View, View._ActionQueueManager);
-            Sessions.Add(intialSession);
         }
 
         private void CloseSession(object sender, RoutedEventArgs e)
         {
-            var session = e.OriginalSource as SessionView;
-            if (session != null)
+            using (var session = e.OriginalSource as SessionView)
             {
+                if (session == null) return;
+
                 Sessions.Remove(session);
-                session.Dispose();
                 e.Handled = true;
             }
         }

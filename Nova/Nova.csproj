@@ -236,6 +236,7 @@
     <Compile Include="Controls\ProgressIndicator.xaml.cs">
       <DependentUpon>ProgressIndicator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\IsNotNullToVisibilityConverter.cs" />
     <Compile Include="Converters\WidthPercentageConverter.cs" />
     <Compile Include="Helpers\PasswordBoxMonitor.cs" />
     <Compile Include="Controls\SearchTextBox.xaml.cs">

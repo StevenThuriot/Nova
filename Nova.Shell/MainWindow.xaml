@@ -6,7 +6,7 @@
                     mc:Ignorable="d"
                     xmlns:Converters="clr-namespace:Nova.Shell.Converters" 
                     xmlns:Shell="clr-namespace:Nova.Shell"
-                    x:Name="_this"
+                    x:Name="_This"
         
                     Width="1024"
                     Height="768"
@@ -138,8 +138,11 @@
       <!-- Sessions -->
       <ClosableTabControl Grid.Row="1"
                   Grid.ColumnSpan="5"
+                          x:Name="_TabControl"
                   Margin="4"
-                  ItemsSource="{Binding Sessions}">
+                  ItemsSource="{Binding Sessions}"
+                  AddItemCommand="{Binding ActionManager.CreateNewSession}"
+                  SelectedItem="{Binding CurrentSession}">
 
         <TabControl.ContentTemplate>
           <DataTemplate>
@@ -153,6 +156,15 @@
           </DataTemplate>
         </TabControl.ItemTemplate>
       </ClosableTabControl>
+
+      <TextBlock Grid.Row="1"
+                  Grid.ColumnSpan="5"
+                  Margin="4"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center"
+                 FontSize="16"
+                 Text="There are currently no sessions running. You can open a new session by clicking the + button at the top."
+                 Visibility="{Binding ElementName=_TabControl, Path=IsEmpty, Converter={StaticResource _BooleanToVisibilityConverter}}" />
 
       <Grid Grid.Row="2" Grid.ColumnSpan="5" Background="{Binding ElementName=_WindowBorder, Path=Background}">
         <ProgressIndicator Visibility="{Binding View.IsLoading, Converter={StaticResource _BooleanToVisibilityConverter}}" />

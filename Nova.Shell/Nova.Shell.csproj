@@ -60,6 +60,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Actions\MainWindow\CreateNewSessionAction.cs" />
     <Compile Include="Actions\MainWindow\ReadConfigurationAction.cs" />
     <Compile Include="SessionView.xaml.cs">
       <DependentUpon>SessionView.xaml</DependentUpon>

@@ -28,7 +28,7 @@ namespace Nova.Controls
     /// <summary>
     /// Interaction logic for ClosableTabItem.xaml
     /// </summary>
-    public partial class ClosableTabItem : TabItem
+    public partial class ClosableTabItem
     {
         /// <summary>
         /// The close button
@@ -71,6 +71,7 @@ namespace Nova.Controls
             }
 
             _CloseButton = GetTemplateChild("PART_CloseTab") as Button;
+
             if (_CloseButton != null)
             {
                 _CloseButton.Click += RaiseCloseEvent;
@@ -85,7 +86,7 @@ namespace Nova.Controls
         private void RaiseCloseEvent(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
-            RaiseEvent(new RoutedEventArgs(CloseTabEvent, this.DataContext));
+            RaiseEvent(new RoutedEventArgs(CloseTabEvent, DataContext));
         }
 
         /// <summary>
@@ -100,7 +101,7 @@ namespace Nova.Controls
             var tabItem = sender as TabItem;
             if (tabItem == null) return;
 
-            TabControl tabControl = tabItem.Parent as TabControl;
+            var tabControl = tabItem.Parent as TabControl;
             if (tabControl != null)
             {
                 var items = tabControl.Items as IEditableCollectionView;

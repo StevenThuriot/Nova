@@ -45,6 +45,7 @@
 
   <Color x:Key="WhiteColor">#FDFDFD</Color>
   <Color x:Key="LightBlueColor">#66119EDA</Color>
+  <Color x:Key="DarkBlueColor">#0077CC</Color>
 	<Color x:Key="ControlBorderColor">#636363</Color>
 	<Color x:Key="UnfocusedControlBorderColor">#bbb</Color>
 	<Color x:Key="BorderColor">#555555</Color>
@@ -147,6 +148,8 @@
 	<Color x:Key="ButtonBackground_overlayColor2">#72FFFFFF</Color>
 	<Color x:Key="ButtonBackground_overlayColor3">#72FFFFFF</Color>
 	<Color x:Key="ButtonBackground_overlayColor4">#00FFFFFF</Color>
+  
+	<Color x:Key="CloseButtonColor">Red</Color>
 	
 	<!-- Radius -->
 	<Thickness x:Key="ValidationBorderThickness">1</Thickness>
