@@ -1,8 +1,7 @@
 ﻿<TabItem x:Class="Nova.Controls.ClosableTabItem"
          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-         xmlns:Controls="clr-namespace:Nova.Controls"
-         Style="{DynamicResource ClosableTabItem}">
+         xmlns:Controls="clr-namespace:Nova.Controls">
   
   <TabItem.Resources>
     <Style x:Key="CloseableTabItemButton" TargetType="{x:Type Button}">
@@ -30,7 +29,10 @@
       </Setter>
     </Style>
     
-    <Style x:Key="ClosableTabItem" TargetType="{x:Type Controls:ClosableTabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
+    <Style TargetType="{x:Type Controls:ClosableTabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
+      <Setter Property="MaxWidth" Value="150" />
+      <Setter Property="MinWidth" Value="40" />
+      
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="{x:Type Controls:ClosableTabItem}">
@@ -48,7 +50,13 @@
                                     HorizontalAlignment="Center"
                                     Grid.Column="0"
                                     Margin="0 -1 0 0"
-                                    VerticalAlignment="Center" />
+                                    VerticalAlignment="Center">
+                    <ContentPresenter.Resources>
+                      <Style TargetType="TextBlock">
+                        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                      </Style>
+                    </ContentPresenter.Resources>
+                  </ContentPresenter>
 
                   <Button Grid.Column="1" 
                           Style="{StaticResource CloseableTabItemButton}"
