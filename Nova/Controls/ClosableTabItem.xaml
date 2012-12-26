@@ -52,8 +52,9 @@
                                     Margin="0 -1 0 0"
                                     VerticalAlignment="Center">
                     <ContentPresenter.Resources>
-                      <Style TargetType="TextBlock">
+                      <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                        <Setter Property="TextWrapping" Value="NoWrap" />
                       </Style>
                     </ContentPresenter.Resources>
                   </ContentPresenter>

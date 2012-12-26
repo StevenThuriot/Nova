@@ -8,9 +8,10 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type controls:ClosableTabControl}">
-                        <Grid>
+                        <Grid x:Name="_MainGrid">
                             <Grid.Resources>
                               <converters:IsNotNullToVisibilityConverter x:Key="_IsNotNullToVisibilityConverter" />
+                              <converters:SubtractionConverter x:Key="_SubtractionConverter" />
                             </Grid.Resources>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -18,7 +19,9 @@
                             </Grid.RowDefinitions>
 
                             <StackPanel Grid.Row="0" Panel.ZIndex="1" Margin="0,0,4,-1" Background="Transparent" Orientation="Horizontal">
-                              <TabPanel IsItemsHost="True" Background="Transparent" />
+                              <UniformGrid IsItemsHost="True" Background="Transparent" 
+                                           Rows="1" MaxWidth="{Binding ElementName=_MainGrid, Path=ActualWidth, Converter={StaticResource _SubtractionConverter}, ConverterParameter=50}"
+                                           />
                               
                               <Button Command="{TemplateBinding AddItemCommand}"
                                       Visibility="{TemplateBinding AddItemCommand, Converter={StaticResource _IsNotNullToVisibilityConverter}}">
