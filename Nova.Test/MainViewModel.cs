@@ -50,7 +50,7 @@ namespace Nova.Test
 		public string SearchText
 		{
 			get { return _SearchText; }
-			set { SetValue(ref _SearchText, value, () => SearchText); }
+			set { SetValue(ref _SearchText, value); }
 		}
 
 
@@ -59,7 +59,7 @@ namespace Nova.Test
 		public ObservableCollection<Change> Changes
 		{
 			get { return _Changes; }
-			set { SetValue(ref _Changes, value, () => Changes); }
+			set { SetValue(ref _Changes, value); }
 		}
 
 
@@ -67,7 +67,7 @@ namespace Nova.Test
 		public ICommand SearchCommand
 		{
 			get { return _SearchCommand; }
-			set { SetValue(ref _SearchCommand, value, () => SearchCommand); }
+			set { SetValue(ref _SearchCommand, value); }
 		}
 		/*
 		public void OnBeforeThrowExceptionAction(ActionContext context)
@@ -97,7 +97,7 @@ namespace Nova.Test
 		protected override void Load(dynamic value)
 		{
 			if (string.IsNullOrWhiteSpace(value.Test))
-				throw new ArgumentNullException("Test");
+				throw new ArgumentNullException("value.Test");
 		}
 	}
 }

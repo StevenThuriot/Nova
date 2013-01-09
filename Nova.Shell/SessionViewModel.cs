@@ -18,10 +18,6 @@
 
 #endregion
 using Nova.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Nova.Shell
 {
@@ -33,7 +29,7 @@ namespace Nova.Shell
             get { return _Title; }
             set
             {
-                SetValue(ref _Title, value, () => Title);
+                SetValue(ref _Title, value);
             }
         }
     }

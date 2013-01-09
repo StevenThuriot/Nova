@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using Nova.Base.Actions;
 using Nova.Controls;
@@ -79,7 +80,7 @@ namespace Nova.Base
 			get { return _ErrorCollection; }
 			internal set
 			{
-                if (SetValue(ref _ErrorCollection, value, "ErrorCollection"))
+                if (SetValue(ref _ErrorCollection, value))
                 {
                     IsValid = _ErrorCollection == null || _ErrorCollection.Count == 0;
                 }
@@ -99,7 +100,7 @@ namespace Nova.Base
         public bool IsValid
 	    {
 	        get { return _IsValid; }
-	        private set { SetValue(ref _IsValid, value, "IsValid"); }
+	        private set { SetValue(ref _IsValid, value); }
 	    }
 
         /// <summary>
@@ -133,7 +134,7 @@ namespace Nova.Base
 		/// Notifies clients that propertyName has changed.
 		/// </summary>
 		/// <param name="propertyName">The property that changed.</param>
-		protected void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			var handler = PropertyChanged;
 
@@ -144,17 +145,6 @@ namespace Nova.Base
 		}
 
 		/// <summary>
-		/// Notifies clients that propertyName has changed.
-		/// </summary>
-		/// <param name="propertyExpression">The property that changed.</param>
-		[SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-		protected void OnPropertyChanged(Expression<Func<object>> propertyExpression)
-		{
-			var propertyName = GetPropertyName(propertyExpression);
-			OnPropertyChanged(propertyName);
-		}
-
-		/// <summary>
 		/// Checks if the private member changed. If it did, it will set the new value and call the PropertyChanged event handler
 		/// </summary>
 		/// <typeparam name="TMember">The type of the member.</typeparam>
@@ -162,33 +152,17 @@ namespace Nova.Base
 		/// <param name="value">The new value.</param>
 		/// <param name="propertyName">The property that changed.</param>
 		/// <returns>True if the property changed.</returns>
-		protected bool SetValue<TMember>(ref TMember privateMember, TMember value, string propertyName)
+        protected bool SetValue<TMember>(ref TMember privateMember, TMember value, [CallerMemberName] string propertyName = null)
 		{
-			var returnValue = false;
+		    if (EqualityComparer<TMember>.Default.Equals(privateMember, value))
+		    {
+		        return false;
+		    }
 
-			if (!Equals(privateMember, value))
-			{
-				privateMember = value;
-				OnPropertyChanged(propertyName);
-				returnValue = true;
-			}
+		    privateMember = value;
+		    OnPropertyChanged(propertyName);
 
-			return returnValue;
-		}
-
-		/// <summary>
-		/// Checks if the private member changed. If it did, it will set the new value and call the PropertyChanged event handler
-		/// </summary>
-		/// <typeparam name="TMember">The type of the member.</typeparam>
-		/// <param name="privateMember">The member that is being set.</param>
-		/// <param name="value">The new value.</param>
-		/// <param name="propertyExpression">The property that changed.</param>
-		/// <returns>True if the property changed.</returns>
-		[SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        protected bool SetValue<TMember>(ref TMember privateMember, TMember value, Expression<Func<TMember>> propertyExpression)
-		{
-			var propertyName = GetPropertyName(propertyExpression);
-			return SetValue(ref privateMember, value, propertyName);
+		    return true;
 		}
 
 

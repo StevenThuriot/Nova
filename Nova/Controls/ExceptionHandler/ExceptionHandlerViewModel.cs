@@ -34,7 +34,7 @@ namespace Nova.Controls.ExceptionHandler
 		public string FormattedMessage
 		{
 			get { return _FormattedMessage; }
-			set { SetValue(ref _FormattedMessage, value, "FormattedMessage"); }
+			set { SetValue(ref _FormattedMessage, value); }
 		}
 
 		private string _Information;
@@ -47,7 +47,7 @@ namespace Nova.Controls.ExceptionHandler
 		public string Information
 		{
 			get { return _Information; }
-			set { SetValue(ref _Information, value, () => Information); }
+			set { SetValue(ref _Information, value); }
 		}
 	}
 }
