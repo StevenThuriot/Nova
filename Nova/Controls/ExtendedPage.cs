@@ -31,10 +31,26 @@ namespace Nova.Controls
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class ExtendedPage<TView, TViewModel> : Page, IView, IDisposable
+    public abstract class ExtendedPage<TView, TViewModel> : Page, IInternalView, IDisposable
         where TViewModel : BaseViewModel<TView, TViewModel>, new()
         where TView : ExtendedPage<TView, TViewModel>, IView, new()
     {
+        /// <summary>
+        ///     The action queue manager
+        /// </summary>
+        private IActionQueueManager _ActionQueueManager;
+
+        /// <summary>
+        /// Gets the action queue manager.
+        /// </summary>
+        /// <value>
+        /// The action queue manager.
+        /// </value>
+        IActionQueueManager IInternalView.ActionQueueManager
+        {
+            get { return _ActionQueueManager; }
+        }
+
         /// <summary>
         /// Flag wether this instance is disposed.
         /// </summary>
@@ -87,6 +103,32 @@ namespace Nova.Controls
             ID = Guid.NewGuid();
         }
 
+        /// <summary>
+        /// Creates the specified page.
+        /// </summary>
+        /// <param name="parent">The parent view.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">window</exception>
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
+        internal static TView Create(IInternalView parent)
+        {
+            if (parent == null)
+                throw new ArgumentNullException("parent");
+
+            return Create(parent, parent.ActionQueueManager);
+        }
+
+        /// <summary>
+        /// Creates a new page with the current page as parent.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        public TPageView CreatePage<TPageView, TPageViewModel>()
+            where TPageViewModel : BaseViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, IView, new()
+        {
+            return ExtendedPage<TPageView, TPageViewModel>.Create(this);
+        }
 
         /// <summary>
         /// Creates the specified page.
@@ -106,7 +148,8 @@ namespace Nova.Controls
 
             var page = new TView
                 {
-                    _Parent = parent
+                    _Parent = parent,
+                    _ActionQueueManager = actionQueueManager
                 };
 
             page.ViewModel = BaseViewModel<TView, TViewModel>.Create(page, actionQueueManager);

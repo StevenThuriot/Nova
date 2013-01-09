@@ -236,6 +236,7 @@
     </Compile>
     <Compile Include="Controls\ExtendedPage.cs" />
     <Compile Include="Controls\ExtendedWindow.cs" />
+    <Compile Include="Controls\IInternalView.cs" />
     <Compile Include="Controls\IView.cs" />
     <Compile Include="Controls\ImageButton.cs" />
     <Compile Include="Controls\AnimatedLoader.cs" />

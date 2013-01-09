@@ -26,7 +26,7 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: InternalsVisibleTo("Nova.Shell, PublicKey=\"0024000004800000940000000602000000240000525341310004000001000100556792329e7d6cd241381073e9a2272a3fd6692a5812eda3f0306b37f9a46719982184a50bcc909efe39da614ce5a1a359cdfd5177bd8b6c9ee67cae3e2cc77e5c00defa3de0c684c840d7175c676ecb29daa94b09f3994bb4fc0ec4bd81df17eb10ab247ec7e08379e16ecbfef9479b87c262695d69623fc2fe43d2465ab5bb\", PublicKeyToken=\"03252df91086a919\"")]
+//[assembly: InternalsVisibleTo("Nova.Shell, PublicKey=\"0024000004800000940000000602000000240000525341310004000001000100556792329e7d6cd241381073e9a2272a3fd6692a5812eda3f0306b37f9a46719982184a50bcc909efe39da614ce5a1a359cdfd5177bd8b6c9ee67cae3e2cc77e5c00defa3de0c684c840d7175c676ecb29daa94b09f3994bb4fc0ec4bd81df17eb10ab247ec7e08379e16ecbfef9479b87c262695d69623fc2fe43d2465ab5bb\", PublicKeyToken=\"03252df91086a919\"")]
 
 [assembly: AssemblyTitle("Nova")]
 [assembly: AssemblyDescription("Small graphical framework to quickly start developing your apps without having to worry too much about controls and looks.")]

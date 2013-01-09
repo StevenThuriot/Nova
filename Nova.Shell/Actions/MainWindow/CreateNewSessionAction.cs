@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Windows.Input;
 using Nova.Base;
 
 namespace Nova.Shell.Actions.MainWindow
@@ -15,10 +16,10 @@ namespace Nova.Shell.Actions.MainWindow
 
         public override void ExecuteCompleted()
         {
-            var session = SessionView.Create(View, View.ActionQueueManager);
+            var session = View.CreatePage<SessionView, SessionViewModel>();
             ViewModel.Sessions.Add(session);
 
-            if (!_HasOpenSessions)
+            if (!_HasOpenSessions || Keyboard.Modifiers != ModifierKeys.Control)
             {
                 ViewModel.CurrentSession = session;
             }

@@ -35,6 +35,7 @@ namespace Nova.Base
 		where TViewModel : BaseViewModel<TView, TViewModel>, new()
 		where TView : class, IView
 	{
+	    private readonly object _Lock = new object();
 		private readonly TView _View;
 		private readonly TViewModel _ViewModel;
 	    private readonly IActionQueueManager _ActionQueueManager;
@@ -75,12 +76,15 @@ namespace Nova.Base
                 var sessionID = actionToRun.View.SessionID;
                 var queueID = actionToRun.View.ID;
 
-				if (_Actions.All(x => x.View.SessionID == sessionID))
-					_View.StartLoading();
+			    lock (_Lock)
+			    {
+			        if (_Actions.All(x => x.View.SessionID == sessionID))
+			            _View.StartLoading();
 
-                _Actions.Add(actionToRun);
+			        _Actions.Add(actionToRun);
+			    }
 
-				Action executedCompleteAction = () =>
+			    Action executedCompleteAction = () =>
 				{
 					actionToRun.InternalExecuteCompleted();
 					CleanUp(actionToRun, executeCompleted, disposeActionDuringCleanup);
@@ -140,16 +144,19 @@ namespace Nova.Base
 				executeCompleted();
 
 			OnActionMethodRepository.OnAfter<T, TView, TViewModel>(actionToRun);
-            
-            _Actions.Remove(actionToRun);
 
-            var sessionID = actionToRun.View.SessionID;
+		    lock (_Lock)
+		    {
+		        _Actions.Remove(actionToRun);
 
-			if (dispose)
-				actionToRun.Dispose();
+		        var sessionID = actionToRun.View.SessionID;
 
-            if (_Actions.All(x => x.View.SessionID != sessionID))
-				_View.StopLoading();
+		        if (dispose)
+		            actionToRun.Dispose();
+
+		        if (_Actions.All(x => x.View.SessionID != sessionID))
+		            _View.StopLoading();
+		    }
 		}
 
 		/// <summary>

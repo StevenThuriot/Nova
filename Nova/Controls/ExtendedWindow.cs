@@ -36,7 +36,7 @@ namespace Nova.Controls
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class ExtendedWindow<TView, TViewModel> : Window, IView, IDisposable
+    public abstract class ExtendedWindow<TView, TViewModel> : Window, IInternalView, IDisposable
         where TViewModel : BaseViewModel<TView, TViewModel>, new()
         where TView : ExtendedWindow<TView, TViewModel>, IView
     {
@@ -52,10 +52,8 @@ namespace Nova.Controls
         /// <summary>
         ///     The action queue manager
         /// </summary>
-        internal readonly IActionQueueManager ActionQueueManager;
-
+        private readonly IActionQueueManager _ActionQueueManager;
         private bool _Disposed;
-
         private TViewModel _ViewModel;
 
         /// <summary>
@@ -74,8 +72,9 @@ namespace Nova.Controls
             SessionID = Guid.NewGuid();
             ID = Guid.NewGuid();
 
-            ActionQueueManager = new ActionQueueManager();
-            ViewModel = BaseViewModel<TView, TViewModel>.Create((TView) this, ActionQueueManager);
+            _ActionQueueManager = new ActionQueueManager();
+
+            ViewModel = BaseViewModel<TView, TViewModel>.Create((TView) this, _ActionQueueManager);
 
             Closed += (sender, args) => ViewModel.InvokeAction<LeaveStepAction<TView, TViewModel>>();
         }
@@ -118,6 +117,17 @@ namespace Nova.Controls
         }
 
         /// <summary>
+        /// Gets the action queue manager.
+        /// </summary>
+        /// <value>
+        /// The action queue manager.
+        /// </value>
+        IActionQueueManager IInternalView.ActionQueueManager
+        {
+            get { return _ActionQueueManager; }
+        }
+
+        /// <summary>
         ///     Gets the session ID.
         /// </summary>
         /// <value>
@@ -149,6 +159,18 @@ namespace Nova.Controls
         {
             IsLoading = false;
             Cursor = Cursors.Arrow;
+        }
+
+        /// <summary>
+        /// Creates a new page with the current window as parent.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        public TPageView CreatePage<TPageView, TPageViewModel>()
+            where TPageViewModel : BaseViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, IView, new()
+        {
+            return ExtendedPage<TPageView, TPageViewModel>.Create(this);
         }
 
         /// <summary>
@@ -220,9 +242,9 @@ namespace Nova.Controls
                     _ViewModel.Dispose();
                 }
 
-                if (ActionQueueManager != null)
+                if (_ActionQueueManager != null)
                 {
-                    ActionQueueManager.Dispose();
+                    _ActionQueueManager.Dispose();
                 }
             }
 

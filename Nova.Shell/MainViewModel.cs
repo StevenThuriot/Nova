@@ -127,7 +127,7 @@ namespace Nova.Shell
 
             View.AddHandler(ClosableTabItem.CloseTabEvent, new RoutedEventHandler(CloseSession));
 
-            var intialSession = SessionView.Create(View, View.ActionQueueManager);
+            var intialSession = View.CreatePage<SessionView, SessionViewModel>();
             Sessions.Add(intialSession);
         }
 
