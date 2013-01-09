@@ -121,7 +121,7 @@ namespace Nova.Shell
         /// <summary>
         /// Called when [created].
         /// </summary>
-        protected internal override void OnCreated()
+        protected override void OnCreated()
         {
             InvokeAction<ReadConfigurationAction>();
 

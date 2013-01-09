@@ -178,7 +178,7 @@ namespace Nova.Base
 		/// <summary>
 		/// Called when [created].
 		/// </summary>
-		protected internal virtual void OnCreated()
+		protected virtual void OnCreated()
 		{
 		}
 
