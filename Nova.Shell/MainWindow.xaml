@@ -57,7 +57,7 @@
     <Border.Background>
       <MultiBinding Converter="{StaticResource _BrushStateConverter}">
         <Binding Path="HasOpenDocuments" />
-        <Binding Path="IsValid" />
+        <Binding Path="CurrentSession.ViewModel.IsValid" />
       </MultiBinding>
     </Border.Background>
     <Border.Effect>

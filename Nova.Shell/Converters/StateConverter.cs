@@ -33,10 +33,11 @@ namespace Nova.Shell.Converters
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var isExecuting = values[0] as bool?;
-            if (isExecuting.GetValueOrDefault()) return HasOpenDocumentsResource;
             var isValid = values[1] as bool?;
             if (!isValid.GetValueOrDefault(true)) return IsInErrorResource;
+
+            var isExecuting = values[0] as bool?;
+            if (isExecuting.GetValueOrDefault()) return HasOpenDocumentsResource;
 
             return IsWaitingResource;
         }

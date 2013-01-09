@@ -24,6 +24,8 @@ using Nova.Shell.Actions.MainWindow;
 using Nova.Controls;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Collections;
+using System.Linq;
 
 namespace Nova.Shell
 {
@@ -78,6 +80,13 @@ namespace Nova.Shell
         public MainViewModel()
         {
             _Sessions = new ObservableCollection<SessionView>();
+            _Sessions.CollectionChanged += SessionsChanged;
+        }
+
+        private void SessionsChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            var list = sender as IList;
+            HasOpenDocuments = list != null && list.Count > 0;
         }
 
         protected internal override void OnCreated()
