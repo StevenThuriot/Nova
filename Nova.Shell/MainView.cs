@@ -15,7 +15,9 @@
 // limitations under the License.
 #endregion
 
+using System.Windows;
 using System.Windows.Input;
+using Nova.Shell.Actions.MainWindow;
 
 namespace Nova.Shell
 {
