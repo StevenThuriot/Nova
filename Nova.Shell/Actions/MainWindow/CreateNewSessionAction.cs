@@ -15,7 +15,7 @@ namespace Nova.Shell.Actions.MainWindow
 
         public override void ExecuteCompleted()
         {
-            var session = SessionView.Create(View, View._ActionQueueManager);
+            var session = SessionView.Create(View, View.ActionQueueManager);
             ViewModel.Sessions.Add(session);
 
             if (!_HasOpenSessions)

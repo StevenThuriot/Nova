@@ -1,4 +1,5 @@
 ﻿#region License
+
 // 
 //  Copyright 2012 Steven Thuriot
 // 
@@ -14,7 +15,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
+
 #endregion
+
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
@@ -22,205 +25,208 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Nova.Base;
+using Nova.Base.Actions;
 using Nova.Threading;
 using RESX = Nova.Properties.Resources;
-using Nova.Base.Actions;
 
 namespace Nova.Controls
 {
-	/// <summary>
-	/// A default Window class that has added logic for MVVM.
-	/// </summary>
-	/// <typeparam name="TView">The type of the view.</typeparam>
-	/// <typeparam name="TViewModel">The type of the view model.</typeparam>
-	public abstract class ExtendedWindow<TView, TViewModel> : Window, IView, IDisposable
-		where TViewModel : BaseViewModel<TView, TViewModel>, new()
+    /// <summary>
+    ///     A default Window class that has added logic for MVVM.
+    /// </summary>
+    /// <typeparam name="TView">The type of the view.</typeparam>
+    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+    public abstract class ExtendedWindow<TView, TViewModel> : Window, IView, IDisposable
+        where TViewModel : BaseViewModel<TView, TViewModel>, new()
         where TView : ExtendedWindow<TView, TViewModel>, IView
-	{
+    {
         /// <summary>
-        /// The action queue manager
+        ///     A value indicating whether this instance is loading.
         /// </summary>
-	    internal readonly IActionQueueManager _ActionQueueManager;
+        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")] public static readonly
+// ReSharper disable StaticFieldInGenericType
+            DependencyProperty IsLoadingProperty = DependencyProperty.Register("IsLoading", typeof (bool), typeof (ExtendedWindow<TView, TViewModel>), new PropertyMetadata(false));
 
-		private bool _Disposed;
-
-		private TViewModel _ViewModel;
-		/// <summary>
-		/// Gets the view model.
-		/// </summary>
-		public TViewModel ViewModel
-		{
-			get { return _ViewModel; }
-			private set
-			{
-				if (_ViewModel != value)
-				{
-					_ViewModel = value;
-					DataContext = value;
-				}
-			}
-		}
+// ReSharper restore StaticFieldInGenericType
 
         /// <summary>
-        /// Gets the session ID.
+        ///     The action queue manager
+        /// </summary>
+        internal readonly IActionQueueManager ActionQueueManager;
+
+        private bool _Disposed;
+
+        private TViewModel _ViewModel;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ExtendedWindow&lt;TView, TViewModel&gt;" /> class.
+        /// </summary>
+        protected ExtendedWindow()
+        {
+            UseLayoutRounding = true;
+            TextOptions.SetTextRenderingMode(this, TextRenderingMode.ClearType);
+            TextOptions.SetTextFormattingMode(this, TextFormattingMode.Display);
+            RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
+            VisualTextRenderingMode = TextRenderingMode.ClearType;
+
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+            SessionID = Guid.NewGuid();
+            ID = Guid.NewGuid();
+
+            ActionQueueManager = new ActionQueueManager();
+            ViewModel = BaseViewModel<TView, TViewModel>.Create((TView) this, ActionQueueManager);
+
+            Closed += (sender, args) => ViewModel.InvokeAction<LeaveStepAction<TView, TViewModel>>();
+        }
+
+        /// <summary>
+        ///     Gets the view model.
+        /// </summary>
+        public TViewModel ViewModel
+        {
+            get { return _ViewModel; }
+            private set
+            {
+                if (_ViewModel != value)
+                {
+                    _ViewModel = value;
+                    DataContext = value;
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance is loading.
         /// </summary>
         /// <value>
-        /// The session ID.
+        ///     <c>true</c> if this instance is loading; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsLoading
+        {
+            get { return (bool) GetValue(IsLoadingProperty); }
+            set { SetValue(IsLoadingProperty, value); }
+        }
+
+        /// <summary>
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        ///     Gets the session ID.
+        /// </summary>
+        /// <value>
+        ///     The session ID.
         /// </value>
         public Guid SessionID { get; private set; }
 
         /// <summary>
-        /// Gets the unique step ID for this View/ViewModel.
+        ///     Gets the unique step ID for this View/ViewModel.
         /// </summary>
         /// <value>
-        /// The ID.
+        ///     The ID.
         /// </value>
         public Guid ID { get; private set; }
-        
-	    /// <summary>
-		/// Initializes a new instance of the <see cref="ExtendedWindow&lt;TView, TViewModel&gt;"/> class.
-		/// </summary>
-		protected ExtendedWindow()
-		{
-			UseLayoutRounding = true;
-			RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
-			VisualTextRenderingMode = TextRenderingMode.ClearType;
 
-			WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        /// <summary>
+        ///     Starts the animated loading.
+        /// </summary>
+        public virtual void StartLoading()
+        {
+            IsLoading = true;
+            Cursor = Cursors.AppStarting;
+        }
 
-	        SessionID = Guid.NewGuid();
-	        ID = Guid.NewGuid();
+        /// <summary>
+        ///     Stops the animated loading.
+        /// </summary>
+        public virtual void StopLoading()
+        {
+            IsLoading = false;
+            Cursor = Cursors.Arrow;
+        }
 
-            _ActionQueueManager = new ActionQueueManager();
-            ViewModel = BaseViewModel<TView, TViewModel>.Create((TView)this, _ActionQueueManager);
+        /// <summary>
+        ///     Invokes the specified action on the main thread.
+        /// </summary>
+        /// <param name="work">The work.</param>
+        public void InvokeOnMainThread(Action work)
+        {
+            InvokeOnMainThread(work, DispatcherPriority.Normal);
+        }
 
-	        Closed += (sender, args) => ViewModel.InvokeAction<LeaveStepAction<TView,TViewModel>>();
-		}
+        /// <summary>
+        ///     Invokes the specified action on the main thread.
+        /// </summary>
+        /// <param name="work">The work.</param>
+        /// <param name="priority">The priority.</param>
+        public void InvokeOnMainThread(Action work, DispatcherPriority priority)
+        {
+            if (Dispatcher.CheckAccess())
+            {
+                RunMethodSafely(work);
+            }
+            else
+            {
+                Dispatcher.BeginInvoke(priority, new Action(() => RunMethodSafely(work)));
+            }
+        }
 
+        /// <summary>
+        ///     Runs the method safely.
+        /// </summary>
+        /// <param name="work">The work.</param>
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        private static void RunMethodSafely(Action work)
+        {
+            try
+            {
+                work();
+            }
+            catch (Exception exception)
+            {
+                Base.ExceptionHandler.Handle(exception, RESX.ErrorTitle);
+            }
+        }
 
-// ReSharper disable StaticFieldInGenericType
-		/// <summary>
-		/// A value indicating whether this instance is loading.
-		/// </summary>
-		[SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
-		public static readonly DependencyProperty IsLoadingProperty =
-			DependencyProperty.Register("IsLoading", typeof(bool), typeof(ExtendedWindow<TView, TViewModel>), new PropertyMetadata(false));
+        /// <summary>
+        ///     Releases unmanaged resources and performs other cleanup operations before the
+        ///     <see cref="ExtendedWindow&lt;TView, TViewModel&gt;" /> is reclaimed by garbage collection.
+        /// </summary>
+        ~ExtendedWindow()
+        {
+            Dispose(false);
+        }
 
-		/// <summary>
-		/// Gets or sets a value indicating whether this instance is loading.
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if this instance is loading; otherwise, <c>false</c>.
-		/// </value>
-		public bool IsLoading
-		{
-			get { return (bool)GetValue(IsLoadingProperty); }
-			set { SetValue(IsLoadingProperty, value); }
-		}
+        /// <summary>
+        ///     Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing">
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
+        /// </param>
+        private void Dispose(bool disposing)
+        {
+            if (_Disposed) return;
 
-// ReSharper restore StaticFieldInGenericType
-
-		/// <summary>
-		/// Starts the animated loading.
-		/// </summary>
-		public virtual void StartLoading()
-		{
-			IsLoading = true;
-			Cursor = Cursors.AppStarting;
-		}
-
-		/// <summary>
-		/// Stops the animated loading.
-		/// </summary>
-		public virtual void StopLoading()
-		{
-			IsLoading = false;
-			Cursor = Cursors.Arrow;
-		}
-		
-		/// <summary>
-		/// Invokes the specified action on the main thread.
-		/// </summary>
-		/// <param name="work">The work.</param>
-		public void InvokeOnMainThread(Action work)
-		{
-			InvokeOnMainThread(work, DispatcherPriority.Normal);
-		}
-
-		/// <summary>
-		/// Invokes the specified action on the main thread.
-		/// </summary>
-		/// <param name="work">The work.</param>
-		/// <param name="priority">The priority.</param>
-		public void InvokeOnMainThread(Action work, DispatcherPriority priority)
-		{
-			if (Dispatcher.CheckAccess())
-			{
-				RunMethodSafely(work);
-			}
-			else
-			{
-				Dispatcher.BeginInvoke(priority, new Action(() => RunMethodSafely(work)));
-			}
-		}
-
-		/// <summary>
-		/// Runs the method safely.
-		/// </summary>
-		/// <param name="work">The work.</param>
-		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-		private static void RunMethodSafely(Action work)
-		{
-			try
-			{
-				work();
-			}
-			catch (Exception exception)
-			{
-				Base.ExceptionHandler.Handle(exception, RESX.ErrorTitle);
-			}
-		}
-        
-		/// <summary>
-		/// Releases unmanaged resources and performs other cleanup operations before the
-		/// <see cref="ExtendedWindow&lt;TView, TViewModel&gt;"/> is reclaimed by garbage collection.
-		/// </summary>
-		~ExtendedWindow()
-		{
-			Dispose(false);
-		}
-
-		/// <summary>
-		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-		/// </summary>
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		/// <summary>
-		/// Releases unmanaged and - optionally - managed resources
-		/// </summary>
-		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-		private void Dispose(bool disposing)
-		{
-			if (_Disposed) return;
-			
-			if (disposing)
-			{
-				if (_ViewModel != null)
-				{
-					_ViewModel.Dispose();
-				}
-
-                if (_ActionQueueManager != null)
+            if (disposing)
+            {
+                if (_ViewModel != null)
                 {
-                    _ActionQueueManager.Dispose();
+                    _ViewModel.Dispose();
                 }
-			}
 
-			_Disposed = true;
-		}
-	}
+                if (ActionQueueManager != null)
+                {
+                    ActionQueueManager.Dispose();
+                }
+            }
+
+            _Disposed = true;
+        }
+    }
 }

@@ -202,6 +202,7 @@
     <Compile Include="Base\Actions\SaveStateAction.cs" />
     <Compile Include="Base\BaseAction.cs" />
     <Compile Include="Base\BaseValidatableAction.cs" />
+    <Compile Include="Base\CommandBinding.cs" />
     <Compile Include="Base\OnActionMethodRepository.OnAction.cs">
       <DependentUpon>OnActionMethodRepository.cs</DependentUpon>
     </Compile>
@@ -289,8 +290,6 @@
     <Resource Include="Fonts\segoeuib.ttf" />
     <Resource Include="Fonts\segoeuii.ttf" />
     <Resource Include="Fonts\segoeuiz.ttf" />
-    <Resource Include="Fonts\nevis.ttf" />
-    <Resource Include="Fonts\AgencyFB.TTF" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

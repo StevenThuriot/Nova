@@ -27,7 +27,7 @@ namespace Nova.Shell.Actions.MainWindow
     {
         public override void ExecuteCompleted()
         {
-            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+            SystemCommands.MinimizeWindow(View);
         }
     }
 }

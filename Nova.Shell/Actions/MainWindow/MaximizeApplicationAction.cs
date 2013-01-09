@@ -26,11 +26,14 @@ namespace Nova.Shell.Actions.MainWindow
     {
         public override void ExecuteCompleted()
         {
-            var mainWindow = Application.Current.MainWindow;
-
-            mainWindow.WindowState = mainWindow.WindowState == WindowState.Maximized
-                                         ? WindowState.Normal
-                                         : WindowState.Maximized;
+            if (View.WindowState == WindowState.Normal)
+            {
+                SystemCommands.MaximizeWindow(View);
+            }
+            else
+            {
+                SystemCommands.RestoreWindow(View);
+            }
         }
     }
 }

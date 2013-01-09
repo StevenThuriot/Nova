@@ -1,22 +1,20 @@
 #region License
-
 // 
-//  Copyright 2012 Steven Thuriot
-// 
+// Copyright 2013 Steven Thuriot
+//  
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
-//   http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// 
-
 #endregion
+
 using System.Windows.Input;
 
 namespace Nova.Shell
@@ -24,7 +22,7 @@ namespace Nova.Shell
     public partial class MainView
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MainView" /> class.
+        ///     Initializes a new instance of the <see cref="MainView" /> class.
         /// </summary>
         public MainView()
         {
@@ -32,10 +30,12 @@ namespace Nova.Shell
         }
 
         /// <summary>
-        /// Moves the window.
+        ///     Moves the window.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="MouseButtonEventArgs" /> instance containing the event data.</param>
+        /// <param name="e">
+        ///     The <see cref="MouseButtonEventArgs" /> instance containing the event data.
+        /// </param>
         private void MoveWindow(object sender, MouseButtonEventArgs e)
         {
             DragMove();

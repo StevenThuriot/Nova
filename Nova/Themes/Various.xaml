@@ -4,8 +4,6 @@
 	
 	<!-- Fonts -->
 	<FontFamily x:Key="SegoeUI">/Nova;component/Fonts/#Segoe UI</FontFamily>
-	<FontFamily x:Key="Nevis">/Nova;component/Fonts/#Nevis</FontFamily>
-	<FontFamily x:Key="AgencyFB">/Nova;component/Fonts//#Agency FB</FontFamily>
 	
 	<!-- Brushes -->
 
