@@ -23,7 +23,7 @@ namespace Nova.Shell
 {
     public class SessionViewModel : BaseViewModel<SessionView, SessionViewModel>
     {
-        private string _Title = "[ Empty Session ]";
+        private string _Title = SessionViewResources.EmptySession;
         public string Title
         {
             get { return _Title; }

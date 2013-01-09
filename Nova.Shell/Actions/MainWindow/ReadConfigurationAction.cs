@@ -34,25 +34,29 @@ namespace Nova.Shell.Actions.MainWindow
 
         public override bool Execute()
         {
-            var appSettings = ConfigurationManager.AppSettings;
-            if (!appSettings.AllKeys.Contains("Icon")) return false;
+            SetIcon();
 
-            var settings = appSettings.GetValues("Icon");
-            if (settings == null) return false;
+            return true;
+        }
 
-            var iconString = settings.FirstOrDefault();
+        private void SetIcon()
+        {
+            var value = GetAppSettingsFor("Icon");
+            if (string.IsNullOrWhiteSpace(value)) return;
 
-            if (string.IsNullOrWhiteSpace(iconString)) return false;
-
-            var iconUri = new Uri(iconString);
+            var iconUri = new Uri(value);
 
             _Icon = new BitmapImage();
             _Icon.BeginInit();
             _Icon.UriSource = iconUri;
             _Icon.EndInit();
             _Icon.Freeze();
+        }
 
-            return true;
+        private static string GetAppSettingsFor(string key)
+        {
+            var settings = ConfigurationManager.AppSettings.GetValues(key);
+            return settings == null ? "" : settings.FirstOrDefault();
         }
 
         public override void ExecuteCompleted()

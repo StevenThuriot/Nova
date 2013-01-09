@@ -164,7 +164,7 @@
                  VerticalAlignment="Center"
                  HorizontalAlignment="Center"
                  FontSize="16"
-                 Text="There are currently no sessions running. You can open a new session by clicking the + button at the top."
+                 Text="{x:Static shell:MainViewResources.NoOpenSessions}"
                  Visibility="{Binding ElementName=_TabControl, Path=IsEmpty, Converter={StaticResource _BooleanToVisibilityConverter}}" />
 
       <Grid Grid.Row="2" Grid.ColumnSpan="5" Background="{Binding ElementName=_WindowBorder, Path=Background}">

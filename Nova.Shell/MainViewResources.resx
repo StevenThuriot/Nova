@@ -117,4 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Empty" xml:space="preserve">
+    <value>[ Empty ]</value>
+  </data>
+  <data name="NoOpenSessions" xml:space="preserve">
+    <value>There are currently no sessions running. You can open a new session by clicking the + button at the top.</value>
+  </data>
 </root>

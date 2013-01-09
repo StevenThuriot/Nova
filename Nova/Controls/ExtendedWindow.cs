@@ -88,16 +88,16 @@ namespace Nova.Controls
             get { return _ViewModel; }
             private set
             {
-                if (_ViewModel != value)
-                {
-                    _ViewModel = value;
-                    DataContext = value;
-                }
+                if (_ViewModel == value) return;
+
+                _ViewModel = value;
+                DataContext = value;
             }
         }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance is loading.
+        ///     This can also be interpreted as "busy".
         /// </summary>
         /// <value>
         ///     <c>true</c> if this instance is loading; otherwise, <c>false</c>.

@@ -37,7 +37,7 @@ namespace Nova.Shell
         private SessionView _CurrentSession;
         private bool _HasOpenDocuments;
         private ImageSource _Icon;
-        private string _Title = "[ Empty ]";
+        private string _Title = MainViewResources.Empty;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel" /> class.
@@ -153,7 +153,8 @@ namespace Nova.Shell
         /// <param name="context">The context.</param>
         public void OnBeforeCloseApplication(ActionContext context)
         {
-            context.Add("IsLoading", View.IsLoading);
+            //We have to pass it through the context because we don't want to wait until the action's ExecuteCompleted triggers to handle the event.
+            context.Add("IsLoading", View.IsLoading); 
         }
     }
 }
