@@ -17,7 +17,7 @@
                     Title="{Binding Title}"
                     Icon="{Binding Icon}"
                     
-                    Background="Transparent"                    
+                    Background="Transparent"
                     WindowStartupLocation="CenterScreen"
                     
                     MouseLeftButtonDown="MoveWindow" 
@@ -59,7 +59,19 @@
                      ProgressValue="1" />
   </Window.TaskbarItemInfo>
 
-  <Border x:Name="_WindowBorder" Padding="1">
+  <Border x:Name="_WindowBorder" 
+          Padding="1">
+    <Border.Style>
+      <Style TargetType="Border">
+        <Setter Property="Margin" Value="0" />
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding ElementName=_This, Path=WindowState}" Value="Maximized">
+            <Setter Property="Margin" Value="{x:Static SystemParameters.WindowResizeBorderThickness}" />
+          </DataTrigger>
+        </Style.Triggers>
+      </Style>
+    </Border.Style>
+    
     <Border.Background>
       <MultiBinding Converter="{StaticResource _BrushStateConverter}">
         <Binding Path="HasOpenDocuments" />
