@@ -46,7 +46,7 @@
   <WindowChrome.WindowChrome>
     <WindowChrome
         CornerRadius="0"
-        GlassFrameThickness="0,0,0,1"
+        GlassFrameThickness="0"
         ResizeBorderThickness="5"
         CaptionHeight="0"
     />

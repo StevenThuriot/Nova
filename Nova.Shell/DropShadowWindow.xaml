@@ -1,0 +1,31 @@
+﻿<Window x:Class="Nova.Shell.DropShadowWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+        
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        
+        ShowInTaskbar="False"
+        IsHitTestVisible="False"
+        Focusable="False"
+        ShowActivated="False"
+        
+        Visibility="{Binding Visibility}" 
+        
+        d:DataContext="{d:DesignInstance Window}">
+  
+  <Border Margin="5" Background="{Binding Background}"
+        IsHitTestVisible="False"
+        Focusable="False">
+    <Border.Effect>
+      <DropShadowEffect Color="{Binding Background.Color}"
+                        ShadowDepth="0"
+                        Opacity="0.7"
+                        BlurRadius="7" />
+    </Border.Effect>
+  </Border>
+  
+</Window>
