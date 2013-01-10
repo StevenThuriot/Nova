@@ -17,7 +17,6 @@
                     Title="{Binding Title}"
                     Icon="{Binding Icon}"
                     
-                    Background="Transparent"
                     WindowStartupLocation="CenterScreen"
                     
                     MouseLeftButtonDown="MoveWindow" 
@@ -59,8 +58,15 @@
                      ProgressValue="1" />
   </Window.TaskbarItemInfo>
 
-  <Border x:Name="_WindowBorder" 
-          Padding="1">
+  <Window.Background>
+    <MultiBinding Converter="{StaticResource _BrushStateConverter}">
+      <Binding Path="HasOpenDocuments" />
+      <Binding Path="CurrentSession.ViewModel.IsValid" />
+    </MultiBinding>
+  </Window.Background>
+
+  <Border Padding="1" Background="{Binding ElementName=_This, Path=Background}">
+    
     <Border.Style>
       <Style TargetType="Border">
         <Setter Property="Margin" Value="0" />
@@ -71,13 +77,6 @@
         </Style.Triggers>
       </Style>
     </Border.Style>
-    
-    <Border.Background>
-      <MultiBinding Converter="{StaticResource _BrushStateConverter}">
-        <Binding Path="HasOpenDocuments" />
-        <Binding Path="CurrentSession.ViewModel.IsValid" />
-      </MultiBinding>
-    </Border.Background>
     
     <Grid Background="{StaticResource Background}">
       <Grid.RowDefinitions>
@@ -188,7 +187,7 @@
                  Text="{x:Static shell:MainViewResources.NoOpenSessions}"
                  Visibility="{Binding ElementName=_TabControl, Path=IsEmpty, Converter={StaticResource _BooleanToVisibilityConverter}}" />
 
-      <Grid Grid.Row="2" Grid.ColumnSpan="5" Background="{Binding ElementName=_WindowBorder, Path=Background}">
+      <Grid Grid.Row="2" Grid.ColumnSpan="5" Background="{Binding ElementName=_This, Path=Background}">
         <ProgressIndicator Visibility="{Binding View.IsLoading, Converter={StaticResource _BooleanToVisibilityConverter}}" />
       </Grid>
     
