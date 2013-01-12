@@ -67,8 +67,8 @@
     </ApplicationDefinition>
     <Compile Include="Actions\MainWindow\CreateNewSessionAction.cs" />
     <Compile Include="Actions\MainWindow\ReadConfigurationAction.cs" />
-    <Compile Include="DropShadowWindow.xaml.cs">
-      <DependentUpon>DropShadowWindow.xaml</DependentUpon>
+    <Compile Include="DropShadow.xaml.cs">
+      <DependentUpon>DropShadow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainViewResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -92,7 +92,7 @@
     <Compile Include="TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
-    <Page Include="DropShadowWindow.xaml">
+    <Page Include="DropShadow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

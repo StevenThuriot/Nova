@@ -26,8 +26,8 @@ namespace Nova.Shell
         /// </summary>
         public MainView()
         {
-            new DropShadowWindow(this);
             InitializeComponent();
+            DropShadow.ForWindow(this);
         }
 
         /// <summary>

@@ -36,6 +36,7 @@
     <converters:BoolToProgressStateConverter x:Key="_ProgressConverter" />
 
     <converters:StateConverter x:Key="_BrushStateConverter"
+                               Unfocused="{StaticResource Unfocused}"
                                HasOpenDocumentsResource="{StaticResource Blue}"
                                IsWaitingResource="{StaticResource Purple}"
                                IsInErrorResource="{StaticResource RedBrush}"/>
@@ -62,6 +63,7 @@
     <MultiBinding Converter="{StaticResource _BrushStateConverter}">
       <Binding Path="HasOpenDocuments" />
       <Binding Path="CurrentSession.ViewModel.IsValid" />
+      <Binding Path="View.IsKeyboardFocusWithin" />
     </MultiBinding>
   </Window.Background>
 

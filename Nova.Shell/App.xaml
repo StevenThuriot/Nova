@@ -11,6 +11,7 @@
     <Color x:Key="RedColor">#E62020</Color>
 
     <SolidColorBrush x:Key="Gray">#FF1E1E1E</SolidColorBrush>
+    <SolidColorBrush x:Key="Unfocused">#999999</SolidColorBrush>
     <SolidColorBrush x:Key="LightBlue">#66119EDA</SolidColorBrush>
     <SolidColorBrush x:Key="Blue" Color="{StaticResource BlueColor}" />
     <SolidColorBrush x:Key="Purple" Color="{StaticResource PurpleColor}" />

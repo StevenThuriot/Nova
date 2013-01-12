@@ -30,9 +30,13 @@ namespace Nova.Shell.Converters
         public SolidColorBrush HasOpenDocumentsResource { get; set; }
         public SolidColorBrush IsWaitingResource { get; set; }
         public SolidColorBrush IsInErrorResource { get; set; }
+        public SolidColorBrush Unfocused { get; set; }
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
+            var focused = values[2] as bool?;
+            if (!focused.GetValueOrDefault(true)) return Unfocused;
+
             var isValid = values[1] as bool?;
             if (!isValid.GetValueOrDefault(true)) return IsInErrorResource;
 
