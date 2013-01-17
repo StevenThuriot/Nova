@@ -36,7 +36,7 @@
     <converters:BoolToProgressStateConverter x:Key="_ProgressConverter" />
 
     <converters:StateConverter x:Key="_BrushStateConverter"
-                               Unfocused="{StaticResource Unfocused}"
+                               UnfocusedResource="{StaticResource Unfocused}"
                                HasOpenDocumentsResource="{StaticResource Blue}"
                                IsWaitingResource="{StaticResource Purple}"
                                IsInErrorResource="{StaticResource RedBrush}"/>
@@ -189,7 +189,13 @@
                  Text="{x:Static shell:MainViewResources.NoOpenSessions}"
                  Visibility="{Binding ElementName=_TabControl, Path=IsEmpty, Converter={StaticResource _BooleanToVisibilityConverter}}" />
 
-      <Grid Grid.Row="2" Grid.ColumnSpan="5" Background="{Binding ElementName=_This, Path=Background}">
+      <Grid Grid.Row="2" Grid.ColumnSpan="5">
+        <Grid.Background>
+          <MultiBinding Converter="{StaticResource _BrushStateConverter}">
+            <Binding Path="HasOpenDocuments" />
+            <Binding Path="CurrentSession.ViewModel.IsValid" />
+          </MultiBinding>
+        </Grid.Background>
         <ProgressIndicator Visibility="{Binding View.IsLoading, Converter={StaticResource _BooleanToVisibilityConverter}}" />
       </Grid>
     

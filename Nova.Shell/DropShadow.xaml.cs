@@ -21,7 +21,7 @@
 using System;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Threading;
+using Nova.Helpers;
 
 namespace Nova.Shell
 {
@@ -30,7 +30,6 @@ namespace Nova.Shell
     /// </summary>
     public partial class DropShadow
     {
-
         /// <summary>
         /// Prevents a default instance of the <see cref="DropShadow" /> class from being created.
         /// </summary>
@@ -42,6 +41,8 @@ namespace Nova.Shell
             InitializeComponent();
 
             window.Loaded += OnLoaded;
+            Left = window.Left + 1;
+            Top = window.Top + 1;
         }
 
         /// <summary>
@@ -60,7 +61,9 @@ namespace Nova.Shell
                     break;
 
                 // partially hardware rendering
+// ReSharper disable RedundantCaseLabel
                 case 1:
+// ReSharper restore RedundantCaseLabel
                 // software rendering
                 default:
                     enableShadow = false;
@@ -93,16 +96,17 @@ namespace Nova.Shell
 
             if (window == null) return;
 
-            switch (window.WindowState)
+            if (window.WindowState == WindowState.Normal)
             {
-                case WindowState.Normal:
-                case WindowState.Minimized:
+                Dispatcher.DelayInvoke(TimeSpan.FromMilliseconds(400), new Action(() =>
+                {
                     Visibility = Visibility.Visible;
                     OnLocationChanged(sender, null);
-                    break;
-                case WindowState.Maximized:
-                    Visibility = Visibility.Hidden;
-                    break;
+                }));
+            }
+            else
+            {
+                Visibility = Visibility.Collapsed;
             }
         }
 
@@ -118,11 +122,8 @@ namespace Nova.Shell
             Show();
             window.Owner = this;
 
-            Left = window.Left + 1;
-            Top = window.Top + 1;
-
             window.Focus();
-            Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new Action<Window>(Initialize), window);
+            Dispatcher.DelayInvoke(TimeSpan.FromMilliseconds(250), new Action<Window>(Initialize), window);
         }
 
         private void Initialize(Window window)
