@@ -76,7 +76,23 @@ namespace Nova.Base
 		/// <param name="binder">Provides information about the object that called the dynamic operation. The binder.Name property provides the name of the member to which the value is being assigned. For example, for the statement sampleObject.SampleProperty = "Test", where sampleObject is an instance of the class derived from the <see cref="T:System.Dynamic.DynamicObject"/> class, binder.Name returns "SampleProperty". The binder.IgnoreCase property specifies whether the member name is case-sensitive.</param><param name="value">The value to set to the member. For example, for sampleObject.SampleProperty = "Test", where sampleObject is an instance of the class derived from the <see cref="T:System.Dynamic.DynamicObject"/> class, the <paramref name="value"/> is "Test".</param>
 		public override bool TrySetMember(SetMemberBinder binder, object value)
 		{
-			throw new NotSupportedException("Setting values is not supported.");
+		    var name = binder.Name;
+
+		    if (string.IsNullOrWhiteSpace(name))
+		        return false;
+
+		    if (_Actions.ContainsKey(name))
+                throw new NotSupportedException("Resolved values cannot be set.");
+
+		    var command = value as ICommand;
+            if (command == null)
+            {
+                return false;
+            }
+
+            _Actions.Add(name, command);
+
+		    return true;
 		}
 
 		/// <summary>
