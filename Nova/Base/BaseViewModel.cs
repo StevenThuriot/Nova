@@ -116,20 +116,7 @@ namespace Nova.Base
 		/// Notifies clients that propertyName has changed.
 		/// </summary>
 		public event PropertyChangedEventHandler PropertyChanged;
-
-		/// <summary>
-		/// Gets the name of the property.
-		/// </summary>
-		/// <param name="propertyExpression">The property expression.</param>
-		/// <returns></returns>
-		private static string GetPropertyName<T>(Expression<Func<T>> propertyExpression)
-		{
-			MemberExpression memberExpression = propertyExpression.Body as MemberExpression ??
-			                                    ((UnaryExpression) propertyExpression.Body).Operand as MemberExpression;
-
-			return memberExpression == null ? string.Empty : memberExpression.Member.Name;
-		}
-
+		
 		/// <summary>
 		/// Notifies clients that propertyName has changed.
 		/// </summary>

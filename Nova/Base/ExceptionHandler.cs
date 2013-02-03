@@ -33,25 +33,42 @@ namespace Nova.Base
 	/// The Exception Handler
 	/// </summary>
 	public static class ExceptionHandler
-	{
-		private static readonly StringBuilder Builder = new StringBuilder();
+    {
+        private static readonly StringBuilder Builder;
 
-		private static bool _LogStackTrace = true;
-		private static bool _ShowExceptionInfo = true;
+        /// <summary>
+        /// Initializes the <see cref="ExceptionHandler" /> class.
+        /// </summary>
+	    static ExceptionHandler()
+        {
+            Builder = new StringBuilder();
+            DefaultExceptionHandler = InternalHandle;
+            LogStackTrace = true;
+            ShowExceptionInfo = true;
+        }
 
-		/// <summary>
-		/// Gets or sets a value indicating whether to [log stack trace].
-		/// </summary>
-		/// <value>
-		///   <c>true</c> if [log stack trace]; otherwise, <c>false</c>.
-		/// </value>
-		public static bool LogStackTrace
-		{
-			get { return _LogStackTrace; }
-			set { _LogStackTrace = value; }
-		}
+	    /// <summary>
+        /// Gets or sets the exception handler.
+        /// </summary>
+        /// <value>
+        /// The exception handler.
+        /// </value>
+        public static Action<Exception, string, string> HandleException { get; set; }
 
-		/// <summary>
+        /// <summary>
+        /// The default exception handler
+        /// </summary>
+        public static readonly Action<Exception, string, string> DefaultExceptionHandler;
+
+	    /// <summary>
+	    /// Gets or sets a value indicating whether to [log stack trace].
+	    /// </summary>
+	    /// <value>
+	    ///   <c>true</c> if [log stack trace]; otherwise, <c>false</c>.
+	    /// </value>
+	    public static bool LogStackTrace { get; set; }
+
+	    /// <summary>
 		/// Gets or sets a value indicating whether to [show stack trace] in the exception handler window.
 		/// </summary>
 		/// <value>
@@ -59,19 +76,15 @@ namespace Nova.Base
 		/// </value>
 		public static bool ShowStackTrace { get; set; }
 
-		/// <summary>
-		/// Gets or sets a value indicating whether to [show exception info].
-		/// </summary>
-		/// <value>
-		///   <c>true</c> if [show exception info]; otherwise, <c>false</c>.
-		/// </value>
-		public static bool ShowExceptionInfo
-		{
-			get { return _ShowExceptionInfo; }
-			set { _ShowExceptionInfo = value; }
-		}
+	    /// <summary>
+	    /// Gets or sets a value indicating whether to [show exception info].
+	    /// </summary>
+	    /// <value>
+	    ///   <c>true</c> if [show exception info]; otherwise, <c>false</c>.
+	    /// </value>
+	    public static bool ShowExceptionInfo { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the exception info visibility.
 		/// </summary>
 		public static Visibility ExceptionInfoVisibility
@@ -79,25 +92,26 @@ namespace Nova.Base
 			get { return ShowExceptionInfo ? Visibility.Visible : Visibility.Collapsed; }
 		}
 
-		/// <summary>
-		/// Handles the specified exception.
-		/// </summary>
-		/// <param name="exception">The exception.</param>
-		/// <param name="title">The title.</param>
-		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-		public static void Handle(Exception exception, string title)
-		{
-			Handle(exception, title, null);
-		}
+        /// <summary>
+        /// Handles the specified exception.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="informationalMessage">The informational message.</param>
+        public static void Handle(Exception exception, string title, string informationalMessage = null)
+	    {
+	        var handler = HandleException ?? DefaultExceptionHandler;
+	        handler(exception, title, informationalMessage);
+	    }
 
-		/// <summary>
+	    /// <summary>
 		/// Handles the specified exception.
 		/// </summary>
 		/// <param name="exception">The exception.</param>
 		/// <param name="title">The title.</param>
 		/// <param name="informationalMessage">The informational message.</param>
 		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        public static void Handle(Exception exception, string title, string informationalMessage)
+        private static void InternalHandle(Exception exception, string title, string informationalMessage)
 		{
 			var handler = new Action(() =>
 			                         	{
