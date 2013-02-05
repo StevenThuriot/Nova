@@ -65,6 +65,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Actions\MainWindow\CloseSession.cs" />
     <Compile Include="Actions\MainWindow\CreateNewSessionAction.cs" />
     <Compile Include="Actions\MainWindow\ReadConfigurationAction.cs" />
     <Compile Include="DropShadow.xaml.cs">

@@ -23,6 +23,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Nova.Base;
 using System.Threading;
+using System.Globalization;
 
 namespace Nova
 {
@@ -63,6 +64,9 @@ namespace Nova
 				currentThread.Name = "Nova GUI Thread";
 			}
 
+	        CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CurrentCulture;
+	        CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.CurrentUICulture;
+            
             app.DispatcherUnhandledException += ExceptionHandler.DispatcherUnhandledException;
 			AppDomain.CurrentDomain.UnhandledException += ExceptionHandler.UnhandledException;
 

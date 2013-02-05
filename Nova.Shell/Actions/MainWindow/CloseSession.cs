@@ -1,7 +1,7 @@
 ﻿#region License
 
 // 
-//  Copyright 2012 Steven Thuriot
+//  Copyright 2013 Steven Thuriot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,32 +17,31 @@
 // 
 
 #endregion
-using System.Windows;
+
+using System.Linq;
 using Nova.Base;
+using System;
 
 namespace Nova.Shell.Actions.MainWindow
 {
-    public class CloseApplicationAction : BaseAction<MainView, MainViewModel>
+    public class CloseSession : BaseAction<MainView, MainViewModel>
     {
+        private SessionView _Session;
+
         public override bool Execute()
         {
-            var isLoading = ActionContext.GetValue<bool>("IsLoading");
-            if (isLoading)
-            {
-                var dialog = MessageBox.Show("Close app?", "Exit", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var sessionID = ActionContext.GetValue<Guid>("SessionID");
+            var id = ActionContext.GetValue<Guid>("PageID");
 
-                if (dialog == MessageBoxResult.No)
-                    return false;
-            }
+            _Session = ViewModel.Sessions.FirstOrDefault(x => x.SessionID == sessionID && x.ID == id);
 
-            return true;
+            return _Session != null;
         }
 
         public override void ExecuteCompleted()
         {
-            //TODO: Close sessions properly.
-
-            Application.Current.Shutdown();
+            //TODO: Invoke and await Session.LeaveStep.
+            ViewModel.Sessions.Remove(_Session);
         }
     }
 }

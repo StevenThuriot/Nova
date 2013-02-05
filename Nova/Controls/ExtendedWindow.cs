@@ -76,7 +76,7 @@ namespace Nova.Controls
 
             ViewModel = BaseViewModel<TView, TViewModel>.Create((TView) this, _ActionQueueManager);
 
-            Closed += (sender, args) => ViewModel.InvokeAction<LeaveStepAction<TView, TViewModel>>();
+            Closing += (sender, args) => ViewModel.InvokeAction<LeaveStepAction<TView, TViewModel>>();
         }
 
         /// <summary>

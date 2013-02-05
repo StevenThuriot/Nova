@@ -18,6 +18,7 @@
 #endregion
 
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
@@ -138,13 +139,15 @@ namespace Nova.Shell
         /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private void CloseSession(object sender, RoutedEventArgs e)
         {
-            using (var session = e.OriginalSource as SessionView)
-            {
-                if (session == null) return;
+            var sessionView = e.OriginalSource as SessionView;
 
-                Sessions.Remove(session);
-                e.Handled = true;
-            }
+            if (sessionView == null) return;
+
+            var sessionKVP = new KeyValuePair<string, object>("SessionID", sessionView.SessionID);
+            var pageKVP = new KeyValuePair<string, object>("PageID", sessionView.ID);
+
+            InvokeAction<CloseSession>(sessionKVP, pageKVP);
+            e.Handled = true; 
         }
 
         /// <summary>
