@@ -20,7 +20,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Nova.Controls;
+using Nova.Properties;
 
 namespace Nova.Base
 {
@@ -29,6 +31,8 @@ namespace Nova.Base
 	/// </summary>
 	internal static partial class OnActionMethodRepository
 	{
+        private static readonly Mutex _Lock = new Mutex();
+
 		/// <summary>
 		/// A cache for View and ViewModel OnBefore methods so they can be called through reflection.
 		/// </summary>
@@ -38,82 +42,85 @@ namespace Nova.Base
 		/// A cache for View and ViewModel OnAfter methods so they can be called through reflection.
 		/// </summary>
 		private static readonly IDictionary<Type, IEnumerable<OnAction>> OnAfterMethods = new Dictionary<Type, IEnumerable<OnAction>>();
-		
-		/// <summary>
-		/// Gets the OnBefore methods for a defined type.
-		/// </summary>
-		/// <typeparam name="TViewModel">The view</typeparam>
-		/// <typeparam name="TView">The viewmodel</typeparam>
-		/// <typeparam name="TAction">The action</typeparam>
-		/// <returns>A read-only list of methods.</returns>
-		private static IEnumerable<OnAction> GetOnBeforeViewMethods<TView, TViewModel, TAction>()
+
+	    /// <summary>
+	    /// Gets the OnBefore methods for a defined type.
+	    /// </summary>
+	    /// <typeparam name="TViewModel">The view</typeparam>
+	    /// <typeparam name="TView">The viewmodel</typeparam>
+	    /// <param name="actionType">The type of the action.</param>
+	    /// <returns>A read-only list of methods.</returns>
+	    private static IEnumerable<OnAction> GetOnBeforeViewMethods<TView, TViewModel>(Type actionType)
 			where TView : class, IView
 			where TViewModel : BaseViewModel<TView, TViewModel>, new()
-			where TAction : BaseAction<TView, TViewModel>
 		{
 			var onBeforeViewMethods = GetOnBeforeMethods<TView>();
-			return GetRelevantMethods<TAction>("OnBefore", onBeforeViewMethods);
+            return GetRelevantMethods(actionType, "OnBefore", onBeforeViewMethods);
 		}
 
-		/// <summary>
-		/// Gets the OnBefore methods for a defined type.
-		/// </summary>
-		/// <typeparam name="TViewModel">The view</typeparam>
-		/// <typeparam name="TView">The viewmodel</typeparam>
-		/// <typeparam name="TAction">The action</typeparam>
-		/// <returns>A read-only list of methods.</returns>
-		private static IEnumerable<OnAction> GetOnBeforeViewModelMethods<TView, TViewModel, TAction>()
+	    /// <summary>
+	    /// Gets the OnBefore methods for a defined type.
+	    /// </summary>
+	    /// <typeparam name="TViewModel">The view</typeparam>
+	    /// <typeparam name="TView">The viewmodel</typeparam>
+	    /// <param name="actionType">The type of the action.</param>
+	    /// <returns>A read-only list of methods.</returns>
+	    private static IEnumerable<OnAction> GetOnBeforeViewModelMethods<TView, TViewModel>(Type actionType)
 			where TView : class, IView
 			where TViewModel : BaseViewModel<TView, TViewModel>, new()
-			where TAction : BaseAction<TView, TViewModel>
 		{
 			var onBeforeViewModelMethods = GetOnBeforeMethods<TViewModel>();
-			return GetRelevantMethods<TAction>("OnBefore", onBeforeViewModelMethods);
+            return GetRelevantMethods(actionType, "OnBefore", onBeforeViewModelMethods);
 		}
 
-		/// <summary>
-		/// Gets the OnAfter methods for a defined type.
-		/// </summary>
-		/// <typeparam name="TViewModel">The view</typeparam>
-		/// <typeparam name="TView">The viewmodel</typeparam>
-		/// <typeparam name="TAction">The action</typeparam>
-		/// <returns>A read-only list of methods.</returns>
-		private static IEnumerable<OnAction> GetOnAfterViewMethods<TView, TViewModel, TAction>()
+	    /// <summary>
+	    /// Gets the OnAfter methods for a defined type.
+	    /// </summary>
+	    /// <typeparam name="TViewModel">The view</typeparam>
+	    /// <typeparam name="TView">The viewmodel</typeparam>
+	    /// <param name="actionType">The type of the action.</param>
+	    /// <returns>A read-only list of methods.</returns>
+	    private static IEnumerable<OnAction> GetOnAfterViewMethods<TView, TViewModel>(Type actionType)
 			where TView : class, IView
 			where TViewModel : BaseViewModel<TView, TViewModel>, new()
-			where TAction : BaseAction<TView, TViewModel>
 		{
 			var onAfterViewMethods = GetOnAfterMethods<TView>();
-			return GetRelevantMethods<TAction>("OnAfter", onAfterViewMethods);
+			return GetRelevantMethods(actionType, "OnAfter", onAfterViewMethods);
 		}
 
-		/// <summary>
-		/// Gets the OnAfter methods for a defined type.
-		/// </summary>
-		/// <typeparam name="TViewModel">The view</typeparam>
-		/// <typeparam name="TView">The viewmodel</typeparam>
-		/// <typeparam name="TAction">The action</typeparam>
-		/// <returns>A read-only list of methods.</returns>
-		private static IEnumerable<OnAction> GetOnAfterViewModelMethods<TView, TViewModel, TAction>()
+	    /// <summary>
+	    /// Gets the OnAfter methods for a defined type.
+	    /// </summary>
+	    /// <typeparam name="TViewModel">The view</typeparam>
+	    /// <typeparam name="TView">The viewmodel</typeparam>
+	    /// <param name="actionType">The type of the action.</param>
+	    /// <returns>A read-only list of methods.</returns>
+	    private static IEnumerable<OnAction> GetOnAfterViewModelMethods<TView, TViewModel>(Type actionType)
 			where TView : class, IView
 			where TViewModel : BaseViewModel<TView, TViewModel>, new()
-			where TAction : BaseAction<TView, TViewModel>
 		{
 			var onAfterViewModelMethods = GetOnAfterMethods<TViewModel>();
-			return GetRelevantMethods<TAction>("OnAfter", onAfterViewModelMethods);
+			return GetRelevantMethods(actionType, "OnAfter", onAfterViewModelMethods);
 		}
 
 
 		/// <summary>
 		/// Gets the relevant methods.
 		/// </summary>
-		/// <typeparam name="TAction">The type of the action.</typeparam>
+		/// <param name="actionType">The type of the action.</param>
 		/// <param name="prefix">The OnBefore or OnAfter prefix, depending on the situation.</param>
 		/// <param name="methods">The methods.</param>
 		/// <returns></returns>
-		private static IEnumerable<OnAction> GetRelevantMethods<TAction>(string prefix, IEnumerable<OnAction> methods)
+		private static IEnumerable<OnAction> GetRelevantMethods(Type actionType, string prefix, IEnumerable<OnAction> methods)
 		{
-			var name = prefix + typeof(TAction).Name.ToString(CultureInfo.InvariantCulture);
+		    var typeName = actionType.Name;
+		    var generic = typeName.IndexOf('`');
+            if (generic > 0)
+            {
+                typeName = typeName.Substring(0, generic);
+            }
+
+		    var name = prefix + typeName.ToString(CultureInfo.InvariantCulture);
 			if (name.EndsWith("action", StringComparison.OrdinalIgnoreCase))
 			{
 				var shortName = name.Substring(0, name.Length - 6);
@@ -126,30 +133,36 @@ namespace Nova.Base
 		}
 
 
-		/// <summary>
-		/// Gets the OnBefore methods.
-		/// </summary>
-		/// <typeparam name="T">The type to get the methods for.</typeparam>
-		/// <returns>A list of OnBefore methods.</returns>
-		private static IEnumerable<OnAction> GetOnBeforeMethods<T>() where T : class
-		{
-			IEnumerable<OnAction> methods;
-			return OnBeforeMethods.TryGetValue(typeof (T), out methods)
-			       	? methods
-			       	: CacheMethods<T>().Item1;
-		}
+	    /// <summary>
+	    /// Gets the OnBefore methods.
+	    /// </summary>
+	    /// <typeparam name="T">The type to get the methods for.</typeparam>
+	    /// <returns>A list of OnBefore methods.</returns>
+	    private static IEnumerable<OnAction> GetOnBeforeMethods<T>() where T : class
+	    {
+	        lock (_Lock)
+	        {
+	            IEnumerable<OnAction> methods;
+	            return OnBeforeMethods.TryGetValue(typeof (T), out methods)
+	                       ? methods
+	                       : CacheMethods<T>().Item1;
+	        }
+	    }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the OnAfter methods.
 		/// </summary>
 		/// <typeparam name="T">The type to get the methods for.</typeparam>
 		/// <returns>A list of OnBefore methods.</returns>
 		private static IEnumerable<OnAction> GetOnAfterMethods<T>() where T : class
 		{
-			IEnumerable<OnAction> methods;
-			return OnAfterMethods.TryGetValue(typeof (T), out methods)
-			       	? methods
-			       	: CacheMethods<T>().Item2;
+	        lock (_Lock)
+	        {
+	            IEnumerable<OnAction> methods;
+	            return OnAfterMethods.TryGetValue(typeof (T), out methods)
+	                       ? methods
+	                       : CacheMethods<T>().Item2;
+	        }
 		}
 
 		/// <summary>
@@ -159,24 +172,27 @@ namespace Nova.Base
 		private static Tuple<IEnumerable<OnAction>, IEnumerable<OnAction>> CacheMethods<T>() 
 			where T : class
 		{
-			var type = typeof(T);
+		    lock (_Lock)
+		    {
+		        var type = typeof (T);
 
-			var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
-			
-			var onBeforeMethods = methods.Where(x => x.Name.StartsWith("onbefore", StringComparison.OrdinalIgnoreCase))
-										 .Select(OnAction.Create<T>)
-										 .Where(x => x != null)
-										 .ToList();
+		        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
 
-			var onAfterMethods = methods.Where(x => x.Name.StartsWith("onafter", StringComparison.OrdinalIgnoreCase))
-										.Select(OnAction.Create<T>)
-										.Where(x => x != null)
-										.ToList();
-			
-			OnBeforeMethods.Add(type, onBeforeMethods);
-			OnAfterMethods.Add(type, onAfterMethods);
+		        var onBeforeMethods = methods.Where(x => x.Name.StartsWith("onbefore", StringComparison.OrdinalIgnoreCase))
+		                                     .Select(OnAction.Create<T>)
+		                                     .Where(x => x != null)
+		                                     .ToList();
 
-			return new Tuple<IEnumerable<OnAction>, IEnumerable<OnAction>>(onBeforeMethods, onAfterMethods);
+		        var onAfterMethods = methods.Where(x => x.Name.StartsWith("onafter", StringComparison.OrdinalIgnoreCase))
+		                                    .Select(OnAction.Create<T>)
+		                                    .Where(x => x != null)
+		                                    .ToList();
+
+		        OnBeforeMethods.Add(type, onBeforeMethods);
+		        OnAfterMethods.Add(type, onAfterMethods);
+
+		        return new Tuple<IEnumerable<OnAction>, IEnumerable<OnAction>>(onBeforeMethods, onAfterMethods);
+		    }
 		}
 
 		/// <summary>
@@ -190,17 +206,29 @@ namespace Nova.Base
 			where TAction : BaseAction<TView, TViewModel>
 			where TViewModel : BaseViewModel<TView, TViewModel>, new()
 			where TView : class, IView
-		{
-			var viewMethods = GetOnBeforeViewMethods<TView, TViewModel, TAction>();
-			foreach (var viewMethod in viewMethods)
-			{
-				viewMethod.Invoke(action.View, action.ActionContext);
-			}
+        {
+            if (action == null)
+                throw new ArgumentNullException("action");
 
-			var viewModelMethods = GetOnBeforeViewModelMethods<TView, TViewModel, TAction>();
-			foreach (var viewModelMethod in viewModelMethods)
+			try
 			{
-				viewModelMethod.Invoke(action.ViewModel, action.ActionContext);
+			    var actionType = action.GetType();
+
+				var viewMethods = GetOnBeforeViewMethods<TView, TViewModel>(actionType);
+				foreach (var viewMethod in viewMethods)
+				{
+					viewMethod.Invoke(action.View, action.ActionContext);
+				}
+
+                var viewModelMethods = GetOnBeforeViewModelMethods<TView, TViewModel>(actionType);
+				foreach (var viewModelMethod in viewModelMethods)
+				{
+					viewModelMethod.Invoke(action.ViewModel, action.ActionContext);
+				}
+			}
+			catch (Exception exception)
+			{
+				ExceptionHandler.Handle(exception, Resources.ErrorMessageMainThread);
 			}
 		}
 		
@@ -215,17 +243,29 @@ namespace Nova.Base
 			where TAction : BaseAction<TView, TViewModel>
 			where TViewModel : BaseViewModel<TView, TViewModel>, new()
 			where TView : class, IView
-		{
-			var viewMethods = GetOnAfterViewMethods<TView, TViewModel, TAction>();
-			foreach (var viewMethod in viewMethods)
-			{
-				viewMethod.Invoke(action.View, action.ActionContext);
-			}
+        {
+            if (action == null)
+                throw new ArgumentNullException("action");
 
-			var viewModelMethods = GetOnAfterViewModelMethods<TView, TViewModel, TAction>();
-			foreach (var viewModelMethod in viewModelMethods)
+			try
+            {
+                var actionType = action.GetType();
+
+				var viewMethods = GetOnAfterViewMethods<TView, TViewModel>(actionType);
+				foreach (var viewMethod in viewMethods)
+				{
+					viewMethod.Invoke(action.View, action.ActionContext);
+				}
+
+                var viewModelMethods = GetOnAfterViewModelMethods<TView, TViewModel>(actionType);
+				foreach (var viewModelMethod in viewModelMethods)
+				{
+					viewModelMethod.Invoke(action.ViewModel, action.ActionContext);
+				}
+			}
+			catch (Exception exception)
 			{
-				viewModelMethod.Invoke(action.ViewModel, action.ActionContext);
+                ExceptionHandler.Handle(exception, Resources.ErrorMessageMainThread);
 			}
 		}
 	}

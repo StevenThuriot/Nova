@@ -1,6 +1,7 @@
 #region License
+
 // 
-//  Copyright 2012 Steven Thuriot
+//  Copyright 2013 Steven Thuriot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,11 +15,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
+
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using Nova.Controls;
 using Nova.Properties;
@@ -26,198 +30,200 @@ using Nova.Threading;
 
 namespace Nova.Base
 {
-	/// <summary>
-	/// The controller that handles actions.
-	/// </summary>
-	/// <typeparam name="TView">The View.</typeparam>
-	/// <typeparam name="TViewModel">The ViewModel.</typeparam>
-	public class ActionController<TView, TViewModel>
-		where TViewModel : BaseViewModel<TView, TViewModel>, new()
-		where TView : class, IView
-	{
-	    private readonly object _Lock = new object();
-		private readonly TView _View;
-		private readonly TViewModel _ViewModel;
-	    private readonly IActionQueueManager _ActionQueueManager;
+    /// <summary>
+    ///     The controller that handles actions.
+    /// </summary>
+    /// <typeparam name="TView">The View.</typeparam>
+    /// <typeparam name="TViewModel">The ViewModel.</typeparam>
+    public class ActionController<TView, TViewModel>
+        where TViewModel : BaseViewModel<TView, TViewModel>, new()
+        where TView : class, IView
+    {
+        private readonly IActionQueueManager _ActionQueueManager;
         private readonly ICollection<BaseAction<TView, TViewModel>> _Actions;
+        private readonly Mutex _Lock;
+        private readonly TView _View;
+        private readonly TViewModel _ViewModel;
 
-	    /// <summary>
-	    /// Default ctor.
-	    /// </summary>
-	    /// <param name="view">The View.</param>
-	    /// <param name="viewModel">The ViewModel.</param>
-	    /// <param name="actionQueueManager">The Action Queue Manager</param>
-	    public ActionController(TView view, TViewModel viewModel, IActionQueueManager actionQueueManager)
-		{
-			_View = view;
-			_ViewModel = viewModel;
-            _ActionQueueManager = actionQueueManager; 
+        /// <summary>
+        ///     Default ctor.
+        /// </summary>
+        /// <param name="view">The View.</param>
+        /// <param name="viewModel">The ViewModel.</param>
+        /// <param name="actionQueueManager">The Action Queue Manager</param>
+        public ActionController(TView view, TViewModel viewModel, IActionQueueManager actionQueueManager)
+        {
+            _Lock = new Mutex();
+            _View = view;
+            _ViewModel = viewModel;
+            _ActionQueueManager = actionQueueManager;
             _Actions = new List<BaseAction<TView, TViewModel>>();
-		}
-        
-		/// <summary>
-		/// Invokes the specified action.
-		/// </summary>
-		/// <typeparam name="T">The type of action to invoke.</typeparam>
-		/// <param name="actionToRun">The action to execute.</param>
-		/// <param name="disposeActionDuringCleanup">Dispose the action after execution, during cleanup.</param>
-		/// <param name="executeCompleted">The action to invoke when the async execution completes.</param>
-		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-		private void Invoke<T>(T actionToRun, bool disposeActionDuringCleanup, Action executeCompleted = null)
-			where T : BaseAction<TView, TViewModel>
-		{
-			if (actionToRun == null)
-				return;
+        }
 
-			if (actionToRun.CanExecute())
-			{
-				OnActionMethodRepository.OnBefore<T, TView, TViewModel>(actionToRun);
-                
-                var sessionID = actionToRun.View.SessionID;
-                var queueID = actionToRun.View.ID;
+        /// <summary>
+        ///     Invokes the specified action.
+        /// </summary>
+        /// <typeparam name="T">The type of action to invoke.</typeparam>
+        /// <param name="actionToRun">The action to execute.</param>
+        /// <param name="disposeActionDuringCleanup">Dispose the action after execution, during cleanup.</param>
+        /// <param name="executeCompleted">The action to invoke when the async execution completes.</param>
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        private void Invoke<T>(T actionToRun, bool disposeActionDuringCleanup, Action executeCompleted = null)
+            where T : BaseAction<TView, TViewModel>
+        {
+            if (actionToRun == null)
+                return;
 
-			    lock (_Lock)
-			    {
-			        if (_Actions.All(x => x.View.SessionID == sessionID))
-			            _View.StartLoading();
+            lock (_Lock)
+            {
+                _View.StartLoading();
+                _Actions.Add(actionToRun);
+            }
 
-			        _Actions.Add(actionToRun);
-			    }
+            IAction action = PrepareAction(actionToRun, disposeActionDuringCleanup, executeCompleted);
 
-			    Action executedCompleteAction = () =>
-				{
-					actionToRun.InternalExecuteCompleted();
-					CleanUp(actionToRun, executeCompleted, disposeActionDuringCleanup);
-				};
+            _ActionQueueManager.Queue(action);
+        }
 
-			    var executeAction = new Action(actionToRun.InternalExecute);
+        /// <summary>
+        ///     Wraps the action into an IAction format so we can pass it on to the Queue Manager.
+        /// </summary>
+        /// <typeparam name="T">The type of action to invoke.</typeparam>
+        /// <param name="actionToRun">The action to execute.</param>
+        /// <param name="disposeActionDuringCleanup">Dispose the action after execution, during cleanup.</param>
+        /// <param name="executeCompleted">The action to invoke when the async execution completes.</param>
+        /// <returns>The action to run in an IAction format.</returns>
+        private IAction PrepareAction<T>(T actionToRun, bool disposeActionDuringCleanup, Action executeCompleted)
+            where T : BaseAction<TView, TViewModel>
+        {
+            if (actionToRun == null)
+                return null;
 
-                var action = executeAction.Wrap(sessionID, queueID)
-                                          .ContinueOnMainThreadWith(executedCompleteAction);
+            var id = actionToRun.View.ID;
+            var action = new Action(actionToRun.InternalOnBefore).Wrap(id, mainThread: true)
+                                                         
+                                                         .CanExecute(actionToRun.CanExecute)
+                                                         
+                                                         .ContinueWith(actionToRun.InternalExecute)
+                                                         .ContinueWith(actionToRun.InternalExecuteCompleted, mainThread: true)
+                                                         
+                                                         .ContinueWith(actionToRun.InternalOnAfter, mainThread: true)
+                                                         
+                                                         .FinishWith(() => CleanUp(actionToRun, disposeActionDuringCleanup), mainThread: true); //Main Thread because view logic in clean up. (e.g. IsLoading)
 
-			    action.Options = actionToRun.GetActionFlags();
+            if (executeCompleted != null)
+            {
+                action.ContinueWith(executeCompleted);
+            }
 
-			    _ActionQueueManager.Queue(action);
-			}
-			else
-			{
-				CleanUp(actionToRun, executeCompleted, disposeActionDuringCleanup);
-			}
-		}
+            action.Options = actionToRun.GetActionFlags();
+            return action;
+        }
 
+        /// <summary>
+        ///     Invokes the specified action.
+        /// </summary>
+        /// <typeparam name="T">The type of action to invoke.</typeparam>
+        /// <param name="actionContext">The action context.</param>
+        /// <param name="executeCompleted">The action to invoke when the async execution completes.</param>
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        private void Invoke<T>(ActionContext actionContext, Action executeCompleted = null)
+            where T : BaseAction<TView, TViewModel>, new()
+        {
+            T actionToRun = null;
 
-		/// <summary>
-		/// Invokes the specified action.
-		/// </summary>
-		/// <typeparam name="T">The type of action to invoke.</typeparam>
-		/// <param name="actionContext">The action context.</param>
-		/// <param name="executeCompleted">The action to invoke when the async execution completes.</param>
-		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-		private void Invoke<T>(ActionContext actionContext, Action executeCompleted = null)
-			where T : BaseAction<TView, TViewModel>, new()
-		{
-			T actionToRun = null;
+            try
+            {
+                actionToRun = BaseAction<TView, TViewModel>.New<T>(_View, _ViewModel, actionContext);
+            }
+            catch (Exception exception)
+            {
+                ExceptionHandler.Handle(exception, Resources.ErrorMessageAction);
+            }
 
-			try
-			{
-				actionToRun = BaseAction<TView, TViewModel>.New<T>(_View, _ViewModel, actionContext);
-			}
-			catch (Exception exception)
-			{
-				ExceptionHandler.Handle(exception, Resources.ErrorMessageAction);
-			}
+            Invoke(actionToRun, true, executeCompleted);
+        }
 
-			Invoke(actionToRun, true, executeCompleted);
-		}
+        /// <summary>
+        ///     Cleans up the specified action.
+        /// </summary>
+        /// <typeparam name="T">The type of action to clean up.</typeparam>
+        /// <param name="actionToRun">The action to run.</param>
+        /// <param name="dispose">Dispose the action.</param>
+        private void CleanUp<T>(T actionToRun, bool dispose)
+            where T : BaseAction<TView, TViewModel>
+        {
+            lock (_Lock)
+            {
+                _Actions.Remove(actionToRun);
+                _View.StopLoading();
+            }
 
-		/// <summary>
-		/// Cleans up the specified action.
-		/// </summary>
-		/// <typeparam name="T">The type of action to clean up.</typeparam>
-		/// <param name="actionToRun">The action to run.</param>
-		/// <param name="executeCompleted">The action to invoke when the async execution completes.</param>
-		/// <param name="dispose">Dispose the action.</param>
-		private void CleanUp<T>(T actionToRun, Action executeCompleted, bool dispose) 
-			where T : BaseAction<TView, TViewModel>
-		{
-			if (executeCompleted != null)
-				executeCompleted();
+            if (dispose)
+                actionToRun.Dispose();
+        }
 
-			OnActionMethodRepository.OnAfter<T, TView, TViewModel>(actionToRun);
+        /// <summary>
+        ///     Prepares the action context.
+        /// </summary>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns>The action context.</returns>
+        private static ActionContext PrepareActionContext(params KeyValuePair<string, object>[] arguments)
+        {
+            var actionContext = new ActionContext();
 
-		    lock (_Lock)
-		    {
-		        _Actions.Remove(actionToRun);
+            if (arguments != null)
+            {
+                foreach (var argument in arguments)
+                {
+                    actionContext.Add(argument.Key, argument.Value);
+                }
+            }
 
-		        var sessionID = actionToRun.View.SessionID;
+            return actionContext;
+        }
 
-		        if (dispose)
-		            actionToRun.Dispose();
+        /// <summary>
+        ///     Invokes the action.
+        /// </summary>
+        /// <typeparam name="T">The type of action to invoke.</typeparam>
+        /// <param name="arguments">The arguments.</param>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter",
+            Justification = "Required by called method.")]
+        public void InvokeAction<T>(params KeyValuePair<string, object>[] arguments)
+            where T : BaseAction<TView, TViewModel>, new()
+        {
+            ActionContext actionContext = PrepareActionContext(arguments);
+            Invoke<T>(actionContext);
+        }
 
-		        if (_Actions.All(x => x.View.SessionID != sessionID))
-		            _View.StopLoading();
-		    }
-		}
+        /// <summary>
+        ///     Invokes the action.
+        /// </summary>
+        /// <typeparam name="T">The type of action to invoke.</typeparam>
+        /// <param name="sender">The sender.</param>
+        /// <param name="arguments">The arguments.</param>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter",
+            Justification = "Required by called method.")]
+        public void InvokeAction<T>(UIElement sender, params KeyValuePair<string, object>[] arguments)
+            where T : BaseAction<TView, TViewModel>, new()
+        {
+            sender.IsEnabled = false;
+            ActionContext actionContext = PrepareActionContext(arguments);
+            Invoke<T>(actionContext, () => sender.IsEnabled = true);
+        }
 
-		/// <summary>
-		/// Prepares the action context.
-		/// </summary>
-		/// <param name="arguments">The arguments.</param>
-		/// <returns>The action context.</returns>
-		private static ActionContext PrepareActionContext(params KeyValuePair<string, object>[] arguments)
-		{
-			var actionContext = new ActionContext();
-
-			if (arguments != null)
-			{
-				foreach (var argument in arguments)
-				{
-					actionContext.Add(argument.Key, argument.Value);
-				}
-			}
-
-			return actionContext;
-		}
-
-		/// <summary>
-		/// Invokes the action.
-		/// </summary>
-		/// <typeparam name="T">The type of action to invoke.</typeparam>
-		/// <param name="arguments">The arguments.</param>
-		[SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Required by called method.")]
-		public void InvokeAction<T>(params KeyValuePair<string, object>[] arguments)
-			where T : BaseAction<TView, TViewModel>, new()
-		{
-			var actionContext = PrepareActionContext(arguments);
-			Invoke<T>(actionContext);
-		}
-
-		/// <summary>
-		/// Invokes the action.
-		/// </summary>
-		/// <typeparam name="T">The type of action to invoke.</typeparam>
-		/// <param name="sender">The sender.</param>
-		/// <param name="arguments">The arguments.</param>
-		[SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Required by called method.")]
-		public void InvokeAction<T>(UIElement sender, params KeyValuePair<string, object>[] arguments)
-			where T : BaseAction<TView, TViewModel>, new()
-		{
-			sender.IsEnabled = false;
-			var actionContext = PrepareActionContext(arguments);
-			Invoke<T>(actionContext, () => sender.IsEnabled = true);
-		}
-
-		/// <summary>
-		/// Invokes the action. 
-		/// This call is for internal means only. It is used to make routed actions work through the action controller's logic.
-		/// </summary>
-		/// <typeparam name="T">The type of action to invoke.</typeparam>
-		/// <param name="actionToRun">The action to run.</param>
-		/// <param name="executeCompleted">The action to execute after completion.</param>
-		internal void InternalInvokeRoutedAction<T>(T actionToRun, Action executeCompleted)
-			where T : BaseAction<TView, TViewModel>, new()
-		{
-			Invoke(actionToRun, true, executeCompleted);
-		}
-	}
+        /// <summary>
+        ///     Invokes the action.
+        ///     This call is for internal means only. It is used to make routed actions work through the action controller's logic.
+        /// </summary>
+        /// <typeparam name="T">The type of action to invoke.</typeparam>
+        /// <param name="actionToRun">The action to run.</param>
+        /// <param name="executeCompleted">The action to execute after completion.</param>
+        internal void InternalInvokeRoutedAction<T>(T actionToRun, Action executeCompleted)
+            where T : BaseAction<TView, TViewModel>, new()
+        {
+            Invoke(actionToRun, true, executeCompleted);
+        }
+    }
 }

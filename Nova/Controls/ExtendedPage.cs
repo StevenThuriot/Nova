@@ -19,6 +19,8 @@
 #endregion
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using Nova.Base;
@@ -35,6 +37,16 @@ namespace Nova.Controls
         where TViewModel : BaseViewModel<TView, TViewModel>, new()
         where TView : ExtendedPage<TView, TViewModel>, IView, new()
     {
+        /// <summary>
+        ///     A value indicating whether this instance is loading.
+        /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
+        public static readonly
+            // ReSharper disable StaticFieldInGenericType
+            DependencyProperty IsLoadingProperty = DependencyProperty.Register("IsLoading", typeof(bool), typeof(ExtendedPage<TView, TViewModel>), new PropertyMetadata(false));
+
+        // ReSharper restore StaticFieldInGenericType
+
         /// <summary>
         ///     The action queue manager
         /// </summary>
@@ -62,14 +74,6 @@ namespace Nova.Controls
         private IView _Parent;
 
         /// <summary>
-        /// Gets the session ID.
-        /// </summary>
-        /// <value>
-        /// The session ID.
-        /// </value>
-        public Guid SessionID { get; private set; }
-
-        /// <summary>
         /// Gets the unique step ID for this View/ViewModel.
         /// </summary>
         /// <value>
@@ -95,11 +99,23 @@ namespace Nova.Controls
         }
 
         /// <summary>
+        ///     Gets or sets a value indicating whether this instance is loading.
+        ///     This can also be interpreted as "busy".
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is loading; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsLoading
+        {
+            get { return (bool)GetValue(IsLoadingProperty); }
+            set { SetValue(IsLoadingProperty, value); }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ExtendedPage{TViewModel}" /> class.
         /// </summary>
         protected ExtendedPage()
         {
-            SessionID = Guid.NewGuid();
             ID = Guid.NewGuid();
         }
 
@@ -155,22 +171,39 @@ namespace Nova.Controls
             page.ViewModel = BaseViewModel<TView, TViewModel>.Create(page, actionQueueManager);
 
             return page;
+        }        
+        
+        
+        private int _LoadingCounter;
+
+        /// <summary>
+        ///     Starts the animated loading.
+        /// </summary>
+        public virtual void StartLoading()
+        {
+            var isLoading = Interlocked.Increment(ref _LoadingCounter) > 0;
+
+            if (isLoading)
+            {
+                _Parent.StartLoading();
+            }
+
+            IsLoading = isLoading;
         }
 
         /// <summary>
-        /// Starts the loading.
+        ///     Stops the animated loading.
         /// </summary>
-        public void StartLoading()
+        public virtual void StopLoading()
         {
-            _Parent.StartLoading();
-        }
+            var isLoading = Interlocked.Decrement(ref _LoadingCounter) > 0;
 
-        /// <summary>
-        /// Stops the loading.
-        /// </summary>
-        public void StopLoading()
-        {
-            _Parent.StopLoading();
+            if (!isLoading)
+            {
+                _Parent.StopLoading();
+            }
+
+            IsLoading = isLoading;
         }
 
         /// <summary>

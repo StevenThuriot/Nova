@@ -28,6 +28,7 @@ using Nova.Base;
 using Nova.Base.Actions;
 using Nova.Threading;
 using RESX = Nova.Properties.Resources;
+using System.Threading;
 
 namespace Nova.Controls
 {
@@ -69,7 +70,6 @@ namespace Nova.Controls
 
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            SessionID = Guid.NewGuid();
             ID = Guid.NewGuid();
 
             _ActionQueueManager = new ActionQueueManager();
@@ -126,15 +126,7 @@ namespace Nova.Controls
         {
             get { return _ActionQueueManager; }
         }
-
-        /// <summary>
-        ///     Gets the session ID.
-        /// </summary>
-        /// <value>
-        ///     The session ID.
-        /// </value>
-        public Guid SessionID { get; private set; }
-
+        
         /// <summary>
         ///     Gets the unique step ID for this View/ViewModel.
         /// </summary>
@@ -143,12 +135,15 @@ namespace Nova.Controls
         /// </value>
         public Guid ID { get; private set; }
 
+
+        private int _LoadingCounter;
+        
         /// <summary>
         ///     Starts the animated loading.
         /// </summary>
         public virtual void StartLoading()
         {
-            IsLoading = true;
+            IsLoading = Interlocked.Increment(ref _LoadingCounter) > 0;
             Cursor = Cursors.AppStarting;
         }
 
@@ -157,7 +152,7 @@ namespace Nova.Controls
         /// </summary>
         public virtual void StopLoading()
         {
-            IsLoading = false;
+            IsLoading = Interlocked.Decrement(ref _LoadingCounter) > 0;
             Cursor = Cursors.Arrow;
         }
 

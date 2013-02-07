@@ -101,9 +101,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Actions\MainWindow\CloseApplicationAction.cs" />
-    <Compile Include="Actions\MainWindow\MaximizeApplicationAction.cs" />
-    <Compile Include="Actions\MainWindow\MinimizeApplicationAction.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>

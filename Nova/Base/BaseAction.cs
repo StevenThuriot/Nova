@@ -179,6 +179,14 @@ namespace Nova.Base
 		}
 		
 		/// <summary>
+		/// The logic that runs before the action.
+		/// </summary>
+		internal void InternalOnBefore()
+		{
+            OnActionMethodRepository.OnBefore<BaseAction<TView, TViewModel>, TView, TViewModel>(this);
+		}
+		
+		/// <summary>
 		/// Runs the execute action.
 		/// </summary>
 		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
@@ -212,6 +220,14 @@ namespace Nova.Base
 		    {
 		        ExceptionHandler.Handle(exception, Resources.ErrorMessageMainThread);
 		    }
+		}
+		
+		/// <summary>
+		/// The logic that runs after the action.
+		/// </summary>
+		internal void InternalOnAfter()
+		{
+            OnActionMethodRepository.OnAfter<BaseAction<TView, TViewModel>, TView, TViewModel>(this);
 		}
 
 	    #endregion

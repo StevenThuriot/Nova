@@ -47,14 +47,6 @@ namespace Nova.Controls
         /// <param name="work">The work.</param>
         /// <param name="priority">The priority.</param>
         void InvokeOnMainThread(Action work, DispatcherPriority priority);
-
-        /// <summary>
-        /// Gets the session ID.
-        /// </summary>
-        /// <value>
-        /// The session ID.
-        /// </value>
-        Guid SessionID { get; }
         
         /// <summary>
         /// Gets the unique step ID for this View/ViewModel.

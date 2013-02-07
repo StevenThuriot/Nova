@@ -30,10 +30,9 @@ namespace Nova.Shell.Actions.MainWindow
 
         public override bool Execute()
         {
-            var sessionID = ActionContext.GetValue<Guid>("SessionID");
             var id = ActionContext.GetValue<Guid>("PageID");
 
-            _Session = ViewModel.Sessions.FirstOrDefault(x => x.SessionID == sessionID && x.ID == id);
+            _Session = ViewModel.Sessions.FirstOrDefault(x => x.ID == id);
 
             return _Session != null;
         }

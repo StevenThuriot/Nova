@@ -110,13 +110,13 @@
               Grid.Column="0"
               Background="Transparent">
         <Border.InputBindings>
-          <MouseBinding Gesture="LeftDoubleClick" Command="{CommandBinding MaximizeApplication}" />
+          <MouseBinding Gesture="LeftDoubleClick" Command="{Binding MaximizeCommand}" />
         </Border.InputBindings>
       </Border>
       
       <Button Grid.Row="0" Grid.Column="2"
           Style="{StaticResource _MetroButtonStyle}"
-          Command="{CommandBinding MinimizeApplication}">
+          Command="{Binding MinimizeCommand}">
         <Path Data="F1M0,6L0,9 9,9 9,6 0,6z"
               Stretch="Uniform"
               VerticalAlignment="Bottom"
@@ -128,7 +128,7 @@
 
       <Button Grid.Row="0" Grid.Column="3"
           Style="{StaticResource _MetroButtonStyle}"
-          Command="{CommandBinding MaximizeApplication}">
+          Command="{Binding MaximizeCommand}">
         <Path Stretch="Uniform"
               Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
               Width="10"
@@ -149,7 +149,7 @@
 
       <Button Grid.Row="0" Grid.Column="4"
           Style="{StaticResource _MetroButtonStyle}"
-          Command="{CommandBinding CloseApplication}">
+          Command="{Binding ShutDownCommand}">
         <Path Data="F1M0,0L2,0 5,3 8,0 10,0 6,4 10,8 8,8 5,5 2,8 0,8 4,4 0,0z"
               Stretch="Uniform"
               Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"

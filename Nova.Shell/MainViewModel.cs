@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using Nova.Base;
 using Nova.Controls;
@@ -45,9 +46,35 @@ namespace Nova.Shell
         /// </summary>
         public MainViewModel()
         {
+            ShutDownCommand = new RelayCommand(ShutDown);
+            MaximizeCommand = new RelayCommand(MaximizeView);
+            MinimizeCommand = new RelayCommand(MinimizeView);
+
             _Sessions = new ObservableCollection<SessionView>();
             _Sessions.CollectionChanged += SessionsChanged;
         }
+
+        /// <summary>
+        /// Gets the shut down command.
+        /// </summary>
+        /// <value>
+        /// The shut down command.
+        /// </value>
+        public ICommand ShutDownCommand { get; private set; }
+        /// <summary>
+        /// Gets the maximize command.
+        /// </summary>
+        /// <value>
+        /// The maximize command.
+        /// </value>
+        public ICommand MaximizeCommand { get; private set; }
+        /// <summary>
+        /// Gets the minimize command.
+        /// </summary>
+        /// <value>
+        /// The minimize command.
+        /// </value>
+        public ICommand MinimizeCommand { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance has open documents.
@@ -143,21 +170,53 @@ namespace Nova.Shell
 
             if (sessionView == null) return;
 
-            var sessionKVP = new KeyValuePair<string, object>("SessionID", sessionView.SessionID);
             var pageKVP = new KeyValuePair<string, object>("PageID", sessionView.ID);
 
-            InvokeAction<CloseSession>(sessionKVP, pageKVP);
-            e.Handled = true; 
+            InvokeAction<CloseSession>(pageKVP);
+            e.Handled = true;
         }
 
         /// <summary>
-        /// Called before closing the application so we can pass parameters to the action.
+        /// Minimizes the view.
         /// </summary>
-        /// <param name="context">The context.</param>
-        public void OnBeforeCloseApplication(ActionContext context)
+        /// <param name="obj">The obj.</param>
+        private void MinimizeView(object obj)
         {
-            //We have to pass it through the context because we don't want to wait until the action's ExecuteCompleted triggers to handle the event.
-            context.Add("IsLoading", View.IsLoading); 
+            SystemCommands.MinimizeWindow(View);
+        }
+
+        /// <summary>
+        /// Maximizes or restores the view.
+        /// </summary>
+        /// <param name="obj">The obj.</param>
+        /// <exception cref="System.NotImplementedException"></exception>
+        private void MaximizeView(object obj)
+        {
+            if (View.WindowState == WindowState.Normal)
+            {
+                SystemCommands.MaximizeWindow(View);
+            }
+            else
+            {
+                SystemCommands.RestoreWindow(View);
+            }
+        }
+
+        /// <summary>
+        /// Shuts down.
+        /// </summary>
+        /// <param name="obj">The obj.</param>
+        private void ShutDown(object obj)
+        {
+            if (View.IsLoading)
+            {
+                var dialog = MessageBox.Show("Close app?", "Exit", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (dialog == MessageBoxResult.No)
+                    return;
+            }
+
+            Application.Current.Shutdown();
         }
     }
 }
