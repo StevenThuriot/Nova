@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using Nova.Base.Actions;
@@ -201,8 +200,8 @@ namespace Nova.Base
 		    var objectToSave = new DynamicContext();
             Save(objectToSave);
 
-            var parameters = new KeyValuePair<string, object>("ObjectToSave", objectToSave);
-			ActionController.InvokeAction<SaveStateAction<TView, TViewModel>>(parameters);
+            var parameter = ActionContextEntry.Create("ObjectToSave", objectToSave);
+			ActionController.InvokeAction<SaveStateAction<TView, TViewModel>>(parameter);
 		}
 
 		/// <summary>
@@ -235,7 +234,7 @@ namespace Nova.Base
         /// <typeparam name="T">The type of action to invoke.</typeparam>
         /// <param name="arguments">The arguments.</param>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
-        public void InvokeAction<T>(params KeyValuePair<string, object>[] arguments)
+        public void InvokeAction<T>(params ActionContextEntry[] arguments)
             where T : BaseAction<TView, TViewModel>, new()
         {
             ActionController.InvokeAction<T>(arguments);
@@ -248,7 +247,7 @@ namespace Nova.Base
         /// <param name="sender">The sender.</param>
         /// <param name="arguments">The arguments.</param>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
-        public void InvokeAction<T>(UIElement sender, params KeyValuePair<string, object>[] arguments)
+        public void InvokeAction<T>(UIElement sender, params ActionContextEntry[] arguments)
             where T : BaseAction<TView, TViewModel>, new()
         {
             ActionController.InvokeAction<T>(sender, arguments);

@@ -18,7 +18,6 @@
 #endregion
 
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
@@ -170,9 +169,9 @@ namespace Nova.Shell
 
             if (sessionView == null) return;
 
-            var pageKVP = new KeyValuePair<string, object>("PageID", sessionView.ID);
+            var entry = ActionContextEntry.Create(sessionView, false);
 
-            InvokeAction<CloseSession>(pageKVP);
+            InvokeAction<CloseSession>(entry);
             e.Handled = true;
         }
 

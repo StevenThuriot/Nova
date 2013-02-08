@@ -18,28 +18,27 @@
 
 #endregion
 
-using System.Linq;
 using Nova.Base;
-using System;
 
 namespace Nova.Shell.Actions.MainWindow
 {
+    /// <summary>
+    /// Action to close a session.
+    /// </summary>
     public class CloseSession : BaseAction<MainView, MainViewModel>
     {
         private SessionView _Session;
 
         public override bool Execute()
         {
-            var id = ActionContext.GetValue<Guid>("PageID");
-
-            _Session = ViewModel.Sessions.FirstOrDefault(x => x.ID == id);
-
+            _Session = ActionContext.GetValue<SessionView>();
             return _Session != null;
         }
 
         public override void ExecuteCompleted()
         {
-            //TODO: Invoke and await Session.LeaveStep.
+            //TODO: Invoke Session.LeaveStep.
+            _Session.Dispose();
             ViewModel.Sessions.Remove(_Session);
         }
     }

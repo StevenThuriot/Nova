@@ -167,16 +167,13 @@ namespace Nova.Base
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The action context.</returns>
-        private static ActionContext PrepareActionContext(params KeyValuePair<string, object>[] arguments)
+        private static ActionContext PrepareActionContext(params ActionContextEntry[] arguments)
         {
             var actionContext = new ActionContext();
 
             if (arguments != null)
             {
-                foreach (var argument in arguments)
-                {
-                    actionContext.Add(argument.Key, argument.Value);
-                }
+                actionContext.AddRange(arguments);
             }
 
             return actionContext;
@@ -189,7 +186,7 @@ namespace Nova.Base
         /// <param name="arguments">The arguments.</param>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter",
             Justification = "Required by called method.")]
-        public void InvokeAction<T>(params KeyValuePair<string, object>[] arguments)
+        public void InvokeAction<T>(params ActionContextEntry[] arguments)
             where T : BaseAction<TView, TViewModel>, new()
         {
             ActionContext actionContext = PrepareActionContext(arguments);
@@ -204,7 +201,7 @@ namespace Nova.Base
         /// <param name="arguments">The arguments.</param>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter",
             Justification = "Required by called method.")]
-        public void InvokeAction<T>(UIElement sender, params KeyValuePair<string, object>[] arguments)
+        public void InvokeAction<T>(UIElement sender, params ActionContextEntry[] arguments)
             where T : BaseAction<TView, TViewModel>, new()
         {
             sender.IsEnabled = false;
