@@ -337,6 +337,10 @@
     <Resource Include="Resources\ErrorBackground.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nova.Threading.Implementations.WPF\Nova.Threading.Implementations.WPF.csproj">
+      <Project>{f06c5e0a-cac4-42ca-ae16-32fc0a219b34}</Project>
+      <Name>Nova.Threading.Implementations.WPF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nova.Threading\Nova.Threading.csproj">
       <Project>{28f961f0-1305-46ee-bc24-0a04d89f1e9e}</Project>
       <Name>Nova.Threading</Name>

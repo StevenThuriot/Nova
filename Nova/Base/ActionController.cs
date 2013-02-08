@@ -21,12 +21,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Threading;
 using System.Windows;
 using Nova.Controls;
 using Nova.Properties;
 using Nova.Threading;
+using Nova.Threading.Implementations.WPF;
 
 namespace Nova.Base
 {
@@ -99,8 +99,8 @@ namespace Nova.Base
             if (actionToRun == null)
                 return null;
 
-            var id = actionToRun.View.ID;
-            var action = new Action(actionToRun.InternalOnBefore).Wrap(id, mainThread: true)
+
+            var action = actionToRun.Wrap(x => x.View.ID, x => x.InternalOnBefore, mainThread: true)
                                                          
                                                          .CanExecute(actionToRun.CanExecute)
                                                          
@@ -116,7 +116,6 @@ namespace Nova.Base
                 action.ContinueWith(executeCompleted);
             }
 
-            action.Options = actionToRun.GetActionFlags();
             return action;
         }
 
