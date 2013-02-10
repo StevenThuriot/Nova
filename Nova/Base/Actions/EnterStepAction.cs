@@ -27,7 +27,7 @@ namespace Nova.Base.Actions
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    [EnterStep]
+    [Creational]
     internal class EnterStepAction<TView, TViewModel> : BaseAction<TView, TViewModel>
 		where TView : class, IView
 		where TViewModel : BaseViewModel<TView, TViewModel>, new()
