@@ -4,11 +4,10 @@
 						     xmlns:Language="http://nova.thuriot.be/Language"
                              xmlns:Base="http://nova.thuriot.be/Base"
 						     xmlns:Nova="clr-namespace:Nova.Controls.ExceptionHandler" MinWidth="600" MaxWidth="600" MaxHeight="550"
-							 WindowRadius="3"
 							 SizeToContent="Height"
-							 CloseOnCancel="True"
-							 BackgroundImage="{DynamicResource ErrorBackgroundImageBrush}">	
-	<Grid>
+                           WindowStyle="ToolWindow"
+                            WindowStartupLocation="CenterOwner">	
+	<Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="100" />
 			<RowDefinition Height="30" />

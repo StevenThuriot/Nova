@@ -20,7 +20,7 @@ using Nova.Controls;
 
 namespace Nova.Test
 {
-	public class MainView : BorderlessWindow<MainWindow, MainViewModel>
+	public class MainView : ExtendedWindow<MainWindow, MainViewModel>
 	{
 
 	}

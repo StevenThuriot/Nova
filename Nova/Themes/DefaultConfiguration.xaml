@@ -1,16 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-	<FontFamily x:Key="Font">/Nova;component/Fonts/#Segoe UI</FontFamily>
-	<FontFamily x:Key="WatermarkFont">/Nova;component/Fonts/#Segoe UI</FontFamily>
+	<FontFamily x:Key="Font">/Nova;component/Fonts/#Segoe WP</FontFamily>
+	<FontFamily x:Key="WatermarkFont">/Nova;component/Fonts/#Segoe WP</FontFamily>
 	
 	<!-- Images -->
-	<ImageSource x:Key="WindowBackgroundImage">
-		/Nova;component/Resources/ModernBlue.png
-	</ImageSource>
-	<ImageSource x:Key="ErrorBackgroundImage">
-		/Nova;component/Resources/ErrorBackground.png
-	</ImageSource>
 	<ImageSource x:Key="ErrorImage">
 		/Nova;component/Resources/Error.png
 	</ImageSource>

@@ -20,7 +20,7 @@ namespace Nova.Controls.ExceptionHandler
 	/// <summary>
 	/// The view for the exception handler.
 	/// </summary>
-	public class ExceptionHandlerView : BorderlessWindow<ExceptionHandlerView, ExceptionHandlerViewModel>
+	public class ExceptionHandlerView : ExtendedWindow<ExceptionHandlerView, ExceptionHandlerViewModel>
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ExceptionHandlerView"/> class.

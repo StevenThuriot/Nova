@@ -7,11 +7,6 @@
 
 		<ResourceDictionary>
 
-
-			<ImageSource x:Key="WindowBackgroundImage">
-				/Nova;component/Resources/ErrorBackground.png
-			</ImageSource>
-
 		</ResourceDictionary>
 		
 	</Application.Resources>

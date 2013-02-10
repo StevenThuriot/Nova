@@ -220,7 +220,6 @@
     <Compile Include="Base\ExceptionHandler.cs" />
     <Compile Include="Base\RelayCommand.cs" />
     <Compile Include="Base\ViewMode.cs" />
-    <Compile Include="Controls\BorderlessWindow.cs" />
     <Compile Include="Controls\ClosableTabControl.xaml.cs">
       <DependentUpon>ClosableTabControl.xaml</DependentUpon>
     </Compile>
@@ -289,10 +288,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Resource Include="Fonts\segoeui.ttf" />
-    <Resource Include="Fonts\segoeuib.ttf" />
-    <Resource Include="Fonts\segoeuii.ttf" />
-    <Resource Include="Fonts\segoeuiz.ttf" />
+    <Resource Include="Fonts\SegoeWP.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -304,7 +300,6 @@
     <Resource Include="Resources\Check-icon.png" />
     <Resource Include="Resources\Delete-icon.png" />
     <Resource Include="Resources\double_arrow.png" />
-    <Resource Include="Resources\ModernBlue.png" />
     <Resource Include="Resources\Minimize.png" />
   </ItemGroup>
   <ItemGroup>
@@ -319,12 +314,6 @@
     <Resource Include="Resources\loader.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\loader1.gif" />
-    <Resource Include="Resources\loader2.gif" />
-    <Resource Include="Resources\loader3.gif" />
-    <Resource Include="Resources\loader4.gif" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\clear.png" />
     <Resource Include="Resources\search.png" />
   </ItemGroup>
@@ -333,9 +322,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Error.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\ErrorBackground.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nova.Threading.Implementations.WPF\Nova.Threading.Implementations.WPF.csproj">

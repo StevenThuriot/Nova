@@ -132,18 +132,6 @@
 		<GradientStop Color="{DynamicResource ButtonBackground_overlayColor4}" Offset="0.51"/>
 	</LinearGradientBrush>
 	
-	<ImageBrush ice:Freeze="True" x:Key="WindowBackgroundImageBrush" 
-              AlignmentX="Right" 
-              AlignmentY="Bottom" 
-              Stretch="Uniform"
-	            ImageSource="{DynamicResource WindowBackgroundImage}" />
-	
-	<ImageBrush ice:Freeze="True" x:Key="ErrorBackgroundImageBrush" 
-              AlignmentX="Right" 
-              AlignmentY="Bottom" 
-              Stretch="Uniform"
-	            ImageSource="{DynamicResource ErrorBackgroundImage}" />
-
 	<ImageBrush ice:Freeze="True" x:Key="CheckIconBrush" ImageSource="{DynamicResource CheckIcon}" />
 	<ImageBrush ice:Freeze="True" x:Key="DeleteIconBrush" ImageSource="{DynamicResource DeleteIcon}" />
 

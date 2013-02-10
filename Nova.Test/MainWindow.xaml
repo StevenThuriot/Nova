@@ -6,27 +6,8 @@
 		xmlns:Test="clr-namespace:Nova.Test" xmlns:Validation="http://nova.thuriot.be/Validation" Height="666"
         Width="624"
 		x:Name="TheCurrentView"
-		CloseOnCancel="True"
-		Logo="/Nova;component/Resources/Check-icon.png">
+		>
 	
-	<Test:MainView.Menu>
-		<MenuItem Header="File">
-			<MenuItem Header="Option 1" />
-			<MenuItem Header="Option 2" />
-			<MenuItem Header="Option 3" />
-			<Separator />
-			<MenuItem Header="Exit" Click="CloseWindow" />
-		</MenuItem>
-		<MenuItem Header="Help">
-			<MenuItem Header="Help" />
-			<MenuItem Header="About">
-				<MenuItem.Icon>
-					<Image Source="/Nova;component/Resources/Check-icon.png" />
-				</MenuItem.Icon>
-			</MenuItem>
-		</MenuItem>
-	</Test:MainView.Menu>
-
 
 	<Validation:ValidationControl MapVisualTreeOnce="True">
 		<!--<Grid.RowDefinitions>
@@ -112,8 +93,6 @@
 				</TabControl>
 			</StackPanel>
 			<StackPanel  Margin="10" Orientation="Horizontal">
-				<Button Content="Toggle CanMaximize" Click="ToggleMaximize" />
-				
 				<Nova:ImageButton Margin="10,0,0,0" Icon="/Nova;component/Resources/Check-icon.png"
 										Click="OpenExceptionWindow">
 					Start

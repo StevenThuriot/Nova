@@ -36,11 +36,6 @@ namespace Nova.Test
 			Close();
 		}
 
-		private void ToggleMaximize(object sender, RoutedEventArgs e)
-		{
-			CanMaximize = !CanMaximize;
-		}
-
 		private void OpenNewWindow(object sender, RoutedEventArgs e)
 		{
 			var mainWindow = new MainWindow();
