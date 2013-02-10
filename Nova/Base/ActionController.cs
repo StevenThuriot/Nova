@@ -74,13 +74,7 @@ namespace Nova.Base
             if (actionToRun == null)
                 return;
 
-            lock (_Lock)
-            {
-                _View.StartLoading();
-                _Actions.Add(actionToRun);
-            }
-
-            IAction action = PrepareAction(actionToRun, disposeActionDuringCleanup, executeCompleted);
+            var action = PrepareAction(actionToRun, disposeActionDuringCleanup, executeCompleted);
 
             _ActionQueueManager.Queue(action);
         }
@@ -98,12 +92,12 @@ namespace Nova.Base
         {
             if (actionToRun == null)
                 return null;
-
-
-            var action = actionToRun.Wrap(x => x.View.ID, x => x.InternalOnBefore, mainThread: true)
+                        
+            var action = actionToRun.Wrap(x => x.View.ID, x => GetInitializationMethod(x), mainThread: true)
                                                          
                                                          .CanExecute(actionToRun.CanExecute)
                                                          
+                                                         .ContinueWith(actionToRun.InternalOnBefore, mainThread: true)
                                                          .ContinueWith(actionToRun.InternalExecute)
                                                          .ContinueWith(actionToRun.InternalExecuteCompleted, mainThread: true)
                                                          
@@ -144,6 +138,28 @@ namespace Nova.Base
         }
 
         /// <summary>
+        /// Initiation method that needs to run when an action starts executing.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="actionToRun">The action to run.</param>
+        private Func<bool> GetInitializationMethod<T>(T actionToRun)
+            where T : BaseAction<TView, TViewModel>
+        {
+
+            return () =>
+                {
+                    lock (_Lock)
+                    {
+                        actionToRun.View.StartLoading();
+                        _Actions.Add(actionToRun);
+                    }
+
+                    return true;
+                };
+
+        }
+
+        /// <summary>
         ///     Cleans up the specified action.
         /// </summary>
         /// <typeparam name="T">The type of action to clean up.</typeparam>
@@ -155,7 +171,7 @@ namespace Nova.Base
             lock (_Lock)
             {
                 _Actions.Remove(actionToRun);
-                _View.StopLoading();
+                actionToRun.View.StopLoading();
             }
 
             if (dispose)
