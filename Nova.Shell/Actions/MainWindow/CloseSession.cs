@@ -19,6 +19,7 @@
 #endregion
 
 using Nova.Base;
+using Nova.Shell.Actions.Session;
 
 namespace Nova.Shell.Actions.MainWindow
 {
@@ -37,8 +38,7 @@ namespace Nova.Shell.Actions.MainWindow
 
         public override void ExecuteCompleted()
         {
-            //TODO: Invoke Session.LeaveStep.
-            _Session.Dispose();
+            _Session.ViewModel.InvokeAction<SessionLeaveStep>();
             ViewModel.Sessions.Remove(_Session);
         }
     }

@@ -31,7 +31,7 @@ namespace Nova.Base
 		/// <summary>
 		/// The key used to inject the ICommand parameter into the actioncontext.
 		/// </summary>
-		public const string CommandParameter = "CommandParameter";
+        public const string CommandParameter = "#RoutedAction.CommandParameter#";
 
 		/// <summary>
 		/// Creates a new action with a wrapper which implements the ICommand interface.

@@ -33,7 +33,7 @@ namespace Nova.Controls
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class ExtendedPage<TView, TViewModel> : Page, IInternalView, IDisposable
+    public abstract class ExtendedPage<TView, TViewModel> : Page, IInternalView
         where TViewModel : BaseViewModel<TView, TViewModel>, new()
         where TView : ExtendedPage<TView, TViewModel>, IView, new()
     {
@@ -183,7 +183,7 @@ namespace Nova.Controls
         {
             var isLoading = Interlocked.Increment(ref _LoadingCounter) > 0;
 
-            if (isLoading)
+            if (isLoading && _Parent != null)
             {
                 _Parent.StartLoading();
             }
@@ -198,7 +198,7 @@ namespace Nova.Controls
         {
             var isLoading = Interlocked.Decrement(ref _LoadingCounter) > 0;
 
-            if (!isLoading)
+            if (!isLoading && _Parent != null)
             {
                 _Parent.StopLoading();
             }
@@ -253,7 +253,16 @@ namespace Nova.Controls
 
             if (disposing)
             {
-                _Parent = null;
+                if (_Parent != null)
+                {
+                    if (IsLoading)
+                    {
+                        //Make sure the parent doesn't keep thinking the child is still loading yet unexistant.
+                        _Parent.StopLoading();
+                    }
+
+                    _Parent = null;
+                }
 
                 if (_ViewModel != null)
                 {

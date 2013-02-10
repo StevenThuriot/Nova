@@ -176,6 +176,19 @@ namespace Nova.Shell
         }
 
         /// <summary>
+        /// Sets the current session in the action context.
+        /// </summary>
+        /// <param name="actionContext">The action context.</param>
+        public void OnBeforeCloseSession(ActionContext actionContext)
+        {
+            //Check if already added by our event handler. If not, insert the current session.
+            if (actionContext.ContainsKey(typeof (SessionView).FullName)) return;
+
+            var entry = ActionContextEntry.Create(CurrentSession, false);
+            actionContext.Add(entry);
+        }
+
+        /// <summary>
         /// Minimizes the view.
         /// </summary>
         /// <param name="obj">The obj.</param>

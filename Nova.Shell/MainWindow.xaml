@@ -66,6 +66,24 @@
       <Binding Path="View.IsKeyboardFocusWithin" />
     </MultiBinding>
   </Window.Background>
+  
+  <Window.InputBindings>
+    <KeyBinding Command="{CommandBinding FocusTab}" Key="F1" Modifiers="Control" CommandParameter="0" />
+    <KeyBinding Command="{CommandBinding FocusTab}" Key="F2" Modifiers="Control" CommandParameter="1" />
+    <KeyBinding Command="{CommandBinding FocusTab}" Key="F3" Modifiers="Control" CommandParameter="2" />
+    <KeyBinding Command="{CommandBinding FocusTab}" Key="F4" Modifiers="Control" CommandParameter="3" />
+    <KeyBinding Command="{CommandBinding FocusTab}" Key="F5" Modifiers="Control" CommandParameter="4" />
+    <KeyBinding Command="{CommandBinding FocusTab}" Key="F6" Modifiers="Control" CommandParameter="5" />
+    <KeyBinding Command="{CommandBinding FocusTab}" Key="F7" Modifiers="Control" CommandParameter="6" />
+    <KeyBinding Command="{CommandBinding FocusTab}" Key="F8" Modifiers="Control" CommandParameter="7" />
+    <KeyBinding Command="{CommandBinding FocusTab}" Key="F9" Modifiers="Control" CommandParameter="8" />
+    <KeyBinding Command="{CommandBinding FocusTab}" Key="F10" Modifiers="Control" CommandParameter="9" />
+    <KeyBinding Command="{CommandBinding FocusTab}" Key="F11" Modifiers="Control" CommandParameter="10" />
+    <KeyBinding Command="{CommandBinding FocusTab}" Key="F12" Modifiers="Control" CommandParameter="11" />
+    
+    <KeyBinding Command="{CommandBinding CloseSession}" Key="W" Modifiers="Control" />
+    <KeyBinding Command="{CommandBinding CreateNewSession}" Key="T" Modifiers="Control" />
+  </Window.InputBindings>
 
   <Border Padding="1" Background="{Binding ElementName=_This, Path=Background}">
     

@@ -76,7 +76,7 @@ namespace Nova.Base
         /// Itself.
         /// </returns>
         /// <exception cref="ArgumentException">Throws an exception in case the type is not serializable and ICloneable is not implemented.</exception>
-		public ActionContext AddRange(IEnumerable<ActionContextEntry> entries)
+		public ActionContext AddRange(params ActionContextEntry[] entries)
 		{
             if (entries != null)
             {
@@ -135,8 +135,22 @@ namespace Nova.Base
 			{
 				value = default(T);
 			}
-
+            
 			return result;
 		}
+        
+        /// <summary>
+        /// Determines whether the <see cref="ActionContext"/> contains the specified key.
+        /// </summary>
+        /// 
+        /// <returns>
+        /// true if the <see cref="ActionContext"/> contains an element with the specified key; otherwise, false.
+        /// </returns>
+        /// <param name="key">The key to locate in the <see cref="ActionContext"/>.</param>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
+        public bool ContainsKey(string key)
+        {
+            return _Context.ContainsKey(key);
+        }
     }
 }

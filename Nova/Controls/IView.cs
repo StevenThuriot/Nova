@@ -23,7 +23,7 @@ namespace Nova.Controls
     /// <summary>
     /// The interface for a view used in this framework.
     /// </summary>
-    public interface IView
+    public interface IView : IDisposable
     {
         /// <summary>
         /// Starts the loading.

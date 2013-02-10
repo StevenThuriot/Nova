@@ -162,11 +162,10 @@ namespace Nova.Base
 		{
             _Action.ActionContext.Clear();
 
-		    if (parameter != null)
-		    {
-		        var entry = ActionContextEntry.Create(RoutedAction.CommandParameter, parameter);
-		        _Action.ActionContext.Add(entry);
-		    }
+		    if (parameter == null) return;
+
+		    var entry = ActionContextEntry.Create(RoutedAction.CommandParameter, parameter);
+		    _Action.ActionContext.Add(entry);
 		}
 
 		/// <summary>

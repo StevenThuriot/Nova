@@ -37,7 +37,7 @@ namespace Nova.Base.Actions
         /// </summary>
         public override void ExecuteCompleted()
         {
-            ViewModel.Dispose();
+            View.Dispose();
         }
     }
 }

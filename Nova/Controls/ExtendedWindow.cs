@@ -37,7 +37,7 @@ namespace Nova.Controls
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class ExtendedWindow<TView, TViewModel> : Window, IInternalView, IDisposable
+    public abstract class ExtendedWindow<TView, TViewModel> : Window, IInternalView
         where TViewModel : BaseViewModel<TView, TViewModel>, new()
         where TView : ExtendedWindow<TView, TViewModel>, IView
     {

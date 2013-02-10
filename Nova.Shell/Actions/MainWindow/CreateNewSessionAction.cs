@@ -38,8 +38,8 @@ namespace Nova.Shell.Actions.MainWindow
         {
             var session = View.CreatePage<SessionView, SessionViewModel>();
             ViewModel.Sessions.Add(session);
-
-            if (!_HasOpenSessions || Keyboard.Modifiers != ModifierKeys.Control)
+            
+            if (!_HasOpenSessions || Keyboard.Modifiers != (ModifierKeys.Control | ModifierKeys.Shift))
             {
                 ViewModel.CurrentSession = session;
             }
