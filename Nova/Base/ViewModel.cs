@@ -21,7 +21,6 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Threading;
 using Nova.Base.Actions;
 using Nova.Controls;
 using Nova.Threading;
@@ -168,7 +167,10 @@ namespace Nova.Base
 		    }
 
 		    privateMember = value;
+
+// ReSharper disable ExplicitCallerInfoArgument
 		    OnPropertyChanged(propertyName);
+// ReSharper restore ExplicitCallerInfoArgument
 
 		    return true;
 		}

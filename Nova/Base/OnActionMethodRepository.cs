@@ -31,7 +31,7 @@ namespace Nova.Base
 	/// </summary>
 	internal static partial class OnActionMethodRepository
 	{
-        private static readonly Mutex _Lock = new Mutex();
+        private static readonly Mutex Lock = new Mutex();
 
 		/// <summary>
 		/// A cache for View and ViewModel OnBefore methods so they can be called through reflection.
@@ -140,7 +140,7 @@ namespace Nova.Base
 	    /// <returns>A list of OnBefore methods.</returns>
 	    private static IEnumerable<OnAction> GetOnBeforeMethods<T>() where T : class
 	    {
-	        lock (_Lock)
+	        lock (Lock)
 	        {
 	            IEnumerable<OnAction> methods;
 	            return OnBeforeMethods.TryGetValue(typeof (T), out methods)
@@ -156,7 +156,7 @@ namespace Nova.Base
 		/// <returns>A list of OnBefore methods.</returns>
 		private static IEnumerable<OnAction> GetOnAfterMethods<T>() where T : class
 		{
-	        lock (_Lock)
+	        lock (Lock)
 	        {
 	            IEnumerable<OnAction> methods;
 	            return OnAfterMethods.TryGetValue(typeof (T), out methods)
@@ -172,7 +172,7 @@ namespace Nova.Base
 		private static Tuple<IEnumerable<OnAction>, IEnumerable<OnAction>> CacheMethods<T>() 
 			where T : class
 		{
-		    lock (_Lock)
+		    lock (Lock)
 		    {
 		        var type = typeof (T);
 

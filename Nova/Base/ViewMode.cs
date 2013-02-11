@@ -108,7 +108,5 @@ namespace Nova.Base
         }
 
         #endregion Watermark
-
-        
     }
 }
