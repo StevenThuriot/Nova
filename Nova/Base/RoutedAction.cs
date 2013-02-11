@@ -49,7 +49,7 @@ namespace Nova.Base
 		 SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Need TResult to know which action to create.")]
 		public static ICommand New<TResult, TView, TViewModel>(TView view, TViewModel viewModel)
 			where TView : class, IView
-			where TViewModel : BaseViewModel<TView, TViewModel>, new()
+			where TViewModel : ViewModel<TView, TViewModel>, new()
 			where TResult : BaseAction<TView, TViewModel>, new()
 		{
 			ICommand routedAction = null;
@@ -80,7 +80,7 @@ namespace Nova.Base
 		 SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Need TResult to know which action to create.")]
 		public static ICommand New<TResult, TView, TViewModel>(TView view, TViewModel viewModel, ActionController<TView, TViewModel> actionController)
 			where TView : class, IView
-			where TViewModel : BaseViewModel<TView, TViewModel>, new()
+			where TViewModel : ViewModel<TView, TViewModel>, new()
 			where TResult : BaseAction<TView, TViewModel>, new()
 		{
 			ICommand routedAction = null;

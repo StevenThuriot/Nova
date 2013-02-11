@@ -4,7 +4,7 @@
 		xmlns:Nova="http://nova.thuriot.be/Controls"
 		xmlns:Base="http://nova.thuriot.be/Base"
 		xmlns:Test="clr-namespace:Nova.Test" xmlns:Validation="http://nova.thuriot.be/Validation" Height="666"
-        Width="624"
+        Width="650"
 		x:Name="TheCurrentView"
 		>
 	

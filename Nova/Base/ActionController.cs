@@ -36,7 +36,7 @@ namespace Nova.Base
     /// <typeparam name="TView">The View.</typeparam>
     /// <typeparam name="TViewModel">The ViewModel.</typeparam>
     public class ActionController<TView, TViewModel>
-        where TViewModel : BaseViewModel<TView, TViewModel>, new()
+        where TViewModel : ViewModel<TView, TViewModel>, new()
         where TView : class, IView
     {
         private readonly IActionQueueManager _ActionQueueManager;
@@ -93,7 +93,7 @@ namespace Nova.Base
             if (actionToRun == null)
                 return null;
                         
-            var action = actionToRun.Wrap(x => x.View.ID, x => GetInitializationMethod(x), mainThread: true)
+            var action = actionToRun.Wrap(x => x.ViewModel.ID, x => GetInitializationMethod(x), mainThread: true)
                                                          
                                                          .CanExecute(actionToRun.CanExecute)
                                                          

@@ -22,7 +22,7 @@ namespace Nova.Controls.ExceptionHandler
 	/// <summary>
 	/// The viewmodel for the exception handler.
 	/// </summary>
-	public class ExceptionHandlerViewModel : BaseViewModel<ExceptionHandlerView, ExceptionHandlerViewModel>
+	public class ExceptionHandlerViewModel : ViewModel<ExceptionHandlerView, ExceptionHandlerViewModel>
 	{
 		private string _FormattedMessage;
 		/// <summary>

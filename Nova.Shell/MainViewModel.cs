@@ -32,7 +32,7 @@ namespace Nova.Shell
     /// <summary>
     /// The main view.
     /// </summary>
-    public class MainViewModel : BaseViewModel<MainView, MainViewModel>
+    public class MainViewModel : ViewModel<MainView, MainViewModel>
     {
         private readonly ObservableCollection<SessionView> _Sessions;
         private SessionView _CurrentSession;
@@ -154,8 +154,17 @@ namespace Nova.Shell
 
             View.AddHandler(ClosableTabItem.CloseTabEvent, new RoutedEventHandler(CloseSession));
 
+            SetInitialSession();
+        }
+
+        /// <summary>
+        /// Sets the initial session.
+        /// </summary>
+        private void SetInitialSession()
+        {
             var intialSession = View.CreatePage<SessionView, SessionViewModel>();
             Sessions.Add(intialSession);
+            CurrentSession = intialSession;
         }
 
         /// <summary>

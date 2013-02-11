@@ -16,7 +16,6 @@
 // 
 #endregion
 using System;
-using System.Windows.Threading;
 
 namespace Nova.Controls
 {
@@ -34,26 +33,5 @@ namespace Nova.Controls
         /// Stops the loading.
         /// </summary>
         void StopLoading();
-
-        /// <summary>
-        /// Invokes the specified action on the main thread.
-        /// </summary>
-        /// <param name="work">The work.</param>
-        void InvokeOnMainThread(Action work);
-
-        /// <summary>
-        /// Invokes the specified action on the main thread.
-        /// </summary>
-        /// <param name="work">The work.</param>
-        /// <param name="priority">The priority.</param>
-        void InvokeOnMainThread(Action work, DispatcherPriority priority);
-        
-        /// <summary>
-        /// Gets the unique step ID for this View/ViewModel.
-        /// </summary>
-        /// <value>
-        /// The ID.
-        /// </value>
-        Guid ID { get; }
     }
 }

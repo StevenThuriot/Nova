@@ -24,7 +24,7 @@ using Nova.Base;
 
 namespace Nova.Test
 {
-	public class MainViewModel : BaseViewModel<MainWindow, MainViewModel>
+	public class MainViewModel : ViewModel<MainWindow, MainViewModel>
 	{
 		protected override void OnCreated()
 		{

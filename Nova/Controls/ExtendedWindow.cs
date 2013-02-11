@@ -23,7 +23,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 using Nova.Base;
 using Nova.Base.Actions;
 using Nova.Threading;
@@ -38,8 +37,8 @@ namespace Nova.Controls
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     public abstract class ExtendedWindow<TView, TViewModel> : Window, IInternalView
-        where TViewModel : BaseViewModel<TView, TViewModel>, new()
-        where TView : ExtendedWindow<TView, TViewModel>, IView
+        where TViewModel : ViewModel<TView, TViewModel>, new()
+        where TView : ExtendedWindow<TView, TViewModel>
     {
         /// <summary>
         ///     A value indicating whether this instance is loading.
@@ -69,14 +68,12 @@ namespace Nova.Controls
             VisualTextRenderingMode = TextRenderingMode.ClearType;
 
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
-
-            ID = Guid.NewGuid();
-
+            
             _ActionQueueManager = new ActionQueueManager();
 
-            ViewModel = BaseViewModel<TView, TViewModel>.Create((TView) this, _ActionQueueManager);
+            ViewModel = ViewModel<TView, TViewModel>.Create((TView) this, _ActionQueueManager);
 
-            Closing += (sender, args) => ViewModel.InvokeAction<LeaveStepAction<TView, TViewModel>>();
+            Closing += (sender, args) => ViewModel.InvokeAction<LeaveAction<TView, TViewModel>>();
         }
 
         /// <summary>
@@ -127,15 +124,6 @@ namespace Nova.Controls
             get { return _ActionQueueManager; }
         }
         
-        /// <summary>
-        ///     Gets the unique step ID for this View/ViewModel.
-        /// </summary>
-        /// <value>
-        ///     The ID.
-        /// </value>
-        public Guid ID { get; private set; }
-
-
         private int _LoadingCounter;
         
         /// <summary>
@@ -162,36 +150,10 @@ namespace Nova.Controls
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         public TPageView CreatePage<TPageView, TPageViewModel>()
-            where TPageViewModel : BaseViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, IView, new()
+            where TPageViewModel : ViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
             return ExtendedPage<TPageView, TPageViewModel>.Create(this);
-        }
-
-        /// <summary>
-        ///     Invokes the specified action on the main thread.
-        /// </summary>
-        /// <param name="work">The work.</param>
-        public void InvokeOnMainThread(Action work)
-        {
-            InvokeOnMainThread(work, DispatcherPriority.Normal);
-        }
-
-        /// <summary>
-        ///     Invokes the specified action on the main thread.
-        /// </summary>
-        /// <param name="work">The work.</param>
-        /// <param name="priority">The priority.</param>
-        public void InvokeOnMainThread(Action work, DispatcherPriority priority)
-        {
-            if (Dispatcher.CheckAccess())
-            {
-                RunMethodSafely(work);
-            }
-            else
-            {
-                Dispatcher.BeginInvoke(priority, new Action(() => RunMethodSafely(work)));
-            }
         }
 
         /// <summary>

@@ -28,9 +28,9 @@ namespace Nova.Base.Actions
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     [Terminating]
-    internal class LeaveStepAction<TView, TViewModel> : BaseAction<TView, TViewModel>
+    internal class LeaveAction<TView, TViewModel> : BaseAction<TView, TViewModel>
         where TView : class, IView
-        where TViewModel : BaseViewModel<TView, TViewModel>, new()
+        where TViewModel : ViewModel<TView, TViewModel>, new()
     {
         /// <summary>
         /// Executes when the async execution succesfully completed.

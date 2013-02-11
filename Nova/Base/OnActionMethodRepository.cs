@@ -52,7 +52,7 @@ namespace Nova.Base
 	    /// <returns>A read-only list of methods.</returns>
 	    private static IEnumerable<OnAction> GetOnBeforeViewMethods<TView, TViewModel>(Type actionType)
 			where TView : class, IView
-			where TViewModel : BaseViewModel<TView, TViewModel>, new()
+			where TViewModel : ViewModel<TView, TViewModel>, new()
 		{
 			var onBeforeViewMethods = GetOnBeforeMethods<TView>();
             return GetRelevantMethods(actionType, "OnBefore", onBeforeViewMethods);
@@ -67,7 +67,7 @@ namespace Nova.Base
 	    /// <returns>A read-only list of methods.</returns>
 	    private static IEnumerable<OnAction> GetOnBeforeViewModelMethods<TView, TViewModel>(Type actionType)
 			where TView : class, IView
-			where TViewModel : BaseViewModel<TView, TViewModel>, new()
+			where TViewModel : ViewModel<TView, TViewModel>, new()
 		{
 			var onBeforeViewModelMethods = GetOnBeforeMethods<TViewModel>();
             return GetRelevantMethods(actionType, "OnBefore", onBeforeViewModelMethods);
@@ -82,7 +82,7 @@ namespace Nova.Base
 	    /// <returns>A read-only list of methods.</returns>
 	    private static IEnumerable<OnAction> GetOnAfterViewMethods<TView, TViewModel>(Type actionType)
 			where TView : class, IView
-			where TViewModel : BaseViewModel<TView, TViewModel>, new()
+			where TViewModel : ViewModel<TView, TViewModel>, new()
 		{
 			var onAfterViewMethods = GetOnAfterMethods<TView>();
 			return GetRelevantMethods(actionType, "OnAfter", onAfterViewMethods);
@@ -97,7 +97,7 @@ namespace Nova.Base
 	    /// <returns>A read-only list of methods.</returns>
 	    private static IEnumerable<OnAction> GetOnAfterViewModelMethods<TView, TViewModel>(Type actionType)
 			where TView : class, IView
-			where TViewModel : BaseViewModel<TView, TViewModel>, new()
+			where TViewModel : ViewModel<TView, TViewModel>, new()
 		{
 			var onAfterViewModelMethods = GetOnAfterMethods<TViewModel>();
 			return GetRelevantMethods(actionType, "OnAfter", onAfterViewModelMethods);
@@ -204,7 +204,7 @@ namespace Nova.Base
 		/// <param name="action">The action to run.</param>
 		public static void OnBefore<TAction, TView, TViewModel>(TAction action)
 			where TAction : BaseAction<TView, TViewModel>
-			where TViewModel : BaseViewModel<TView, TViewModel>, new()
+			where TViewModel : ViewModel<TView, TViewModel>, new()
 			where TView : class, IView
         {
             if (action == null)
@@ -241,7 +241,7 @@ namespace Nova.Base
 		/// <param name="action">The action to run.</param>
 		public static void OnAfter<TAction, TView, TViewModel>(TAction action) 
 			where TAction : BaseAction<TView, TViewModel>
-			where TViewModel : BaseViewModel<TView, TViewModel>, new()
+			where TViewModel : ViewModel<TView, TViewModel>, new()
 			where TView : class, IView
         {
             if (action == null)

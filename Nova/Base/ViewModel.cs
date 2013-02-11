@@ -21,6 +21,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Threading;
 using Nova.Base.Actions;
 using Nova.Controls;
 using Nova.Threading;
@@ -33,16 +34,39 @@ namespace Nova.Base
     /// </summary>
     /// <typeparam name="TView">The type of the linked View.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-	public abstract class BaseViewModel<TView, TViewModel> : INotifyPropertyChanged, IDisposable
+	public abstract class ViewModel<TView, TViewModel> : INotifyPropertyChanged, IDisposable
 		where TView : class, IView
-        where TViewModel : BaseViewModel<TView, TViewModel>, new()
+        where TViewModel : ViewModel<TView, TViewModel>, new()
     {
+        private bool _IsValid;
+        private bool _Disposed;
+        private Guid _ID;
+
         /// <summary>
 		/// Gets the view.
 		/// </summary>
-		public TView View { get; private set; }
+        public TView View { get; private set; }
 
-		/// <summary>
+        /// <summary>
+        /// Gets or sets the ViewModel ID.
+        /// </summary>
+        /// <value>
+        /// The ID.
+        /// </value>
+        /// <exception cref="System.ArgumentNullException">value</exception>
+        public Guid ID
+        {
+            get { return _ID; }
+            protected set
+            {
+                if (value == Guid.Empty)
+                    throw new ArgumentNullException("value");
+                
+                _ID = value;
+            }
+        }
+
+        /// <summary>
 		/// Gets the action controller.
 		/// </summary>
         internal ActionController<TView, TViewModel> ActionController { get; private set; }
@@ -87,9 +111,6 @@ namespace Nova.Base
 			}
 		}
 
-	    private bool _IsValid;
-    	private bool _Disposed;
-
         /// <summary>
 	    /// Gets a value indicating whether this instance is valid.
 	    /// </summary>
@@ -103,13 +124,14 @@ namespace Nova.Base
 	    }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseViewModel&lt;TView, TViewModel&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ViewModel{TView,TViewModel}"/> class.
         /// </summary>
-		protected BaseViewModel()
+		protected ViewModel()
         {
 			_ErrorCollection = new ReadOnlyErrorCollection();
 		    _IsValid = true;
-		}
+            _ID = Guid.NewGuid();
+        }
 
 		/// <summary>
 		/// Notifies clients that propertyName has changed.
@@ -157,8 +179,7 @@ namespace Nova.Base
         /// </summary>
         internal void InternalOncreated()
         {
-            ActionController.InvokeAction<EnterStepAction<TView, TViewModel>>();
-            OnCreated();
+            InvokeAction<EnterAction<TView, TViewModel>>();
         }
 
 		/// <summary>
@@ -264,9 +285,9 @@ namespace Nova.Base
 
 		/// <summary>
 		/// Releases unmanaged resources and performs other cleanup operations before the
-		/// <see cref="BaseViewModel&lt;TView, TViewModel&gt;"/> is reclaimed by garbage collection.
+		/// <see cref="ViewModel{TView,TViewModel}"/> is reclaimed by garbage collection.
 		/// </summary>
-		~BaseViewModel()
+		~ViewModel()
 		{
 			Dispose(false);
 		}

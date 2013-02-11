@@ -26,7 +26,7 @@ namespace Nova.Base.Actions
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
 	internal class LoadStateAction<TView, TViewModel> : BaseAction<TView, TViewModel>
 		where TView : class, IView
-		where TViewModel : BaseViewModel<TView, TViewModel>, new()
+		where TViewModel : ViewModel<TView, TViewModel>, new()
 	{
 		private DynamicContext _ObjectToLoad;
 

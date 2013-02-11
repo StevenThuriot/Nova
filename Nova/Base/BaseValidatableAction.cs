@@ -35,7 +35,7 @@ namespace Nova.Base
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     public abstract class BaseValidatableAction<TView, TViewModel> : BaseAction<TView, TViewModel> 
         where TView : class, IView
-        where TViewModel : BaseViewModel<TView, TViewModel>, new()
+        where TViewModel : ViewModel<TView, TViewModel>, new()
     {
         private ValidationResults _ValidationResults;
 

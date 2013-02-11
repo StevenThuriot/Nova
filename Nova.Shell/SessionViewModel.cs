@@ -21,7 +21,7 @@ using Nova.Base;
 
 namespace Nova.Shell
 {
-    public class SessionViewModel : BaseViewModel<SessionView, SessionViewModel>
+    public class SessionViewModel : ViewModel<SessionView, SessionViewModel>
     {
         private string _Title = SessionViewResources.EmptySession;
         public string Title

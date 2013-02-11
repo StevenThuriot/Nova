@@ -125,7 +125,8 @@ namespace Nova.Base
 												{
 													FormatException(exception);
 													message = Builder.ToString();
-													Builder.Length = 0;
+
+													Builder.Clear();
 												}
 
 												Log(exception);

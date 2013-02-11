@@ -197,8 +197,8 @@
     <Compile Include="Base\ActionContextEntry.cs" />
     <Compile Include="Base\ActionController.cs" />
     <Compile Include="Base\ActionManager.cs" />
-    <Compile Include="Base\Actions\EnterStepAction.cs" />
-    <Compile Include="Base\Actions\LeaveStepAction.cs" />
+    <Compile Include="Base\Actions\EnterAction.cs" />
+    <Compile Include="Base\Actions\LeaveAction.cs" />
     <Compile Include="Base\Actions\LoadStateAction.cs" />
     <Compile Include="Base\Actions\SaveStateAction.cs" />
     <Compile Include="Base\BaseAction.cs" />
@@ -214,7 +214,7 @@
     <Compile Include="Base\RoutedAction.Generic.cs">
       <DependentUpon>RoutedAction.cs</DependentUpon>
     </Compile>
-    <Compile Include="Base\BaseViewModel.cs" />
+    <Compile Include="Base\ViewModel.cs" />
     <Compile Include="Base\BindableRun.cs" />
     <Compile Include="Base\ErrorBinding.cs" />
     <Compile Include="Base\ExceptionHandler.cs" />

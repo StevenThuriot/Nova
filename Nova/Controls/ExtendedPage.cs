@@ -22,7 +22,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 using Nova.Base;
 using Nova.Threading;
 
@@ -34,8 +33,8 @@ namespace Nova.Controls
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     public abstract class ExtendedPage<TView, TViewModel> : Page, IInternalView
-        where TViewModel : BaseViewModel<TView, TViewModel>, new()
-        where TView : ExtendedPage<TView, TViewModel>, IView, new()
+        where TViewModel : ViewModel<TView, TViewModel>, new()
+        where TView : ExtendedPage<TView, TViewModel>, new()
     {
         /// <summary>
         ///     A value indicating whether this instance is loading.
@@ -73,14 +72,6 @@ namespace Nova.Controls
         /// </summary>
         private IView _Parent;
 
-        /// <summary>
-        /// Gets the unique step ID for this View/ViewModel.
-        /// </summary>
-        /// <value>
-        /// The ID.
-        /// </value>
-        public Guid ID { get; private set; }
-
         private TViewModel _ViewModel;
         /// <summary>
         /// Gets the view model.
@@ -112,14 +103,6 @@ namespace Nova.Controls
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtendedPage{TViewModel}" /> class.
-        /// </summary>
-        protected ExtendedPage()
-        {
-            ID = Guid.NewGuid();
-        }
-
-        /// <summary>
         /// Creates the specified page.
         /// </summary>
         /// <param name="parent">The parent view.</param>
@@ -140,8 +123,8 @@ namespace Nova.Controls
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         public TPageView CreatePage<TPageView, TPageViewModel>()
-            where TPageViewModel : BaseViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, IView, new()
+            where TPageViewModel : ViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
             return ExtendedPage<TPageView, TPageViewModel>.Create(this);
         }
@@ -154,7 +137,7 @@ namespace Nova.Controls
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">window</exception>
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
-        internal static TView Create(IView parent, IActionQueueManager actionQueueManager)
+        internal static TView Create(IInternalView parent, IActionQueueManager actionQueueManager)
         {
             if (parent == null)
                 throw new ArgumentNullException("parent");
@@ -168,7 +151,7 @@ namespace Nova.Controls
                     _ActionQueueManager = actionQueueManager
                 };
 
-            page.ViewModel = BaseViewModel<TView, TViewModel>.Create(page, actionQueueManager);
+            page.ViewModel = ViewModel<TView, TViewModel>.Create(page, actionQueueManager);
 
             return page;
         }        
@@ -204,25 +187,6 @@ namespace Nova.Controls
             }
 
             IsLoading = isLoading;
-        }
-
-        /// <summary>
-        /// Invokes the specified action on the main thread.
-        /// </summary>
-        /// <param name="work">The work.</param>
-        public void InvokeOnMainThread(Action work)
-        {
-            _Parent.InvokeOnMainThread(work);
-        }
-
-        /// <summary>
-        /// Invokes the specified action on the main thread.
-        /// </summary>
-        /// <param name="work">The work.</param>
-        /// <param name="priority">The priority.</param>
-        public void InvokeOnMainThread(Action work, DispatcherPriority priority)
-        {
-            _Parent.InvokeOnMainThread(work, priority);
         }
 
         /// <summary>

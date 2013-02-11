@@ -30,7 +30,7 @@ namespace Nova.Validation
 	/// <typeparam name="TView">The type of the view.</typeparam>
 	/// <typeparam name="TViewModel">The type of the view model.</typeparam>
 	public class Validator<TView, TViewModel> : IValidator 
-		where TViewModel : BaseViewModel<TView, TViewModel>, new()
+		where TViewModel : ViewModel<TView, TViewModel>, new()
 		where TView : class, IView
 	{
 		/// <summary>

@@ -29,7 +29,7 @@ namespace Nova.Base
 	/// <typeparam name="TViewModel">The type of the view model.</typeparam>
 	public abstract class BaseAction<TView, TViewModel> : IDisposable
 		where TView : class, IView
-		where TViewModel : BaseViewModel<TView, TViewModel>, new()
+		where TViewModel : ViewModel<TView, TViewModel>, new()
 	{
 		private bool _CanComplete;
 		private bool _Disposed;

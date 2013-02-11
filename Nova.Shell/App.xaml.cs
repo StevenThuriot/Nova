@@ -19,6 +19,7 @@
 #endregion
 using System;
 using System.Diagnostics;
+using Nova.Base;
 
 namespace Nova.Shell
 {
@@ -29,12 +30,16 @@ namespace Nova.Shell
     {
         public App()
         {
+            Startup += NovaFramework.Initialize;
+
 #if DEBUG
             DispatcherUnhandledException += (sender, args) => Debugger.Break();
             AppDomain.CurrentDomain.UnhandledException += (sender, args) => Debugger.Break();
+
+            ExceptionHandler.ShowStackTrace = true;
+#else   
+            ExceptionHandler.ShowStackTrace = false;
 #endif
-            
-            Startup += NovaFramework.Initialize;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Nova.Base
 	/// </summary>
 	public class ActionManager<TView, TViewModel> : DynamicObject, IDisposable
 		where TView : class, IView
-		where TViewModel : BaseViewModel<TView, TViewModel>, new()
+		where TViewModel : ViewModel<TView, TViewModel>, new()
 	{
 		private bool _IsDisposed;
 
