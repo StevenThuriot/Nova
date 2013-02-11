@@ -28,7 +28,7 @@ namespace Nova.Base.Actions
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     [Terminating]
-    internal class LeaveAction<TView, TViewModel> : BaseAction<TView, TViewModel>
+    internal class LeaveAction<TView, TViewModel> : Actionflow<TView, TViewModel>
         where TView : class, IView
         where TViewModel : ViewModel<TView, TViewModel>, new()
     {

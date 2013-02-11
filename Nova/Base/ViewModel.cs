@@ -258,7 +258,7 @@ namespace Nova.Base
         /// <param name="arguments">The arguments.</param>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public void InvokeAction<T>(params ActionContextEntry[] arguments)
-            where T : BaseAction<TView, TViewModel>, new()
+            where T : Actionflow<TView, TViewModel>, new()
         {
             ActionController.InvokeAction<T>(arguments);
         }
@@ -271,7 +271,7 @@ namespace Nova.Base
         /// <param name="arguments">The arguments.</param>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public void InvokeAction<T>(UIElement sender, params ActionContextEntry[] arguments)
-            where T : BaseAction<TView, TViewModel>, new()
+            where T : Actionflow<TView, TViewModel>, new()
         {
             ActionController.InvokeAction<T>(sender, arguments);
         }

@@ -24,7 +24,7 @@ using Nova.Base;
 
 namespace Nova.Shell.Actions.MainWindow
 {
-    public class CreateNewSessionAction : BaseAction<MainView, MainViewModel>
+    public class CreateNewSessionAction : Actionflow<MainView, MainViewModel>
     {
         private bool _HasOpenSessions;
 

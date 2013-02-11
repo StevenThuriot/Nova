@@ -18,7 +18,6 @@
 
 #endregion
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Windows.Threading;
 using Nova.Controls;
@@ -33,13 +32,13 @@ namespace Nova.Base
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class BaseValidatableAction<TView, TViewModel> : BaseAction<TView, TViewModel> 
+    public abstract class ValidatableActionflow<TView, TViewModel> : Actionflow<TView, TViewModel> 
         where TView : class, IView
         where TViewModel : ViewModel<TView, TViewModel>, new()
     {
         private ValidationResults _ValidationResults;
 
-        protected BaseValidatableAction()
+        protected ValidatableActionflow()
         {
             _ValidationResults = new ValidationResults();
         }
@@ -90,44 +89,27 @@ namespace Nova.Base
         {
         }
 
-
         /// <summary>
-        /// Runs the execute action.
+        /// Method so inheriting classes may add extra internal logic during the InternalExecute stage.
         /// </summary>
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        internal override void InternalExecute()
+        internal override void SafeInternalExecute()
         {
-            try
+            ValidateRequiredFields();
+            Validate(_ValidationResults);
+            CanComplete = _ValidationResults.IsValid;
+
+            if (CanComplete)
             {
-                ValidateRequiredFields();
-                Validate(_ValidationResults);
-                CanComplete = _ValidationResults.IsValid && Execute();
-            }
-            catch (Exception exception)
-            {
-                CanComplete = false;
-                ExceptionHandler.Handle(exception, Resources.ErrorMessageAsync);
+                base.SafeInternalExecute();
             }
         }
 
         /// <summary>
-        /// Runs the execute completed action.
+        /// Method so inheriting classes may add extra internal logic during the InternalExecuteCompleted stage.
         /// </summary>
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        internal override void InternalExecuteCompleted()
+        internal override void SafeInternalExecuteCompleted()
         {
-            if (CanComplete)
-            {
-                try
-                {
-                    ExecuteCompleted();
-                    ActionContext.IsSuccessful = true;
-                }
-                catch (Exception exception)
-                {
-                    ExceptionHandler.Handle(exception, Resources.ErrorMessageMainThread);
-                }
-            }
+            base.SafeInternalExecuteCompleted();
 
             var validationMessages = _ValidationResults.InternalGetValidations();
             ViewModel.ErrorCollection = new ReadOnlyErrorCollection(validationMessages);

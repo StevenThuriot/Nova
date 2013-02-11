@@ -201,8 +201,8 @@
     <Compile Include="Base\Actions\LeaveAction.cs" />
     <Compile Include="Base\Actions\LoadStateAction.cs" />
     <Compile Include="Base\Actions\SaveStateAction.cs" />
-    <Compile Include="Base\BaseAction.cs" />
-    <Compile Include="Base\BaseValidatableAction.cs" />
+    <Compile Include="Base\Actionflow.cs" />
+    <Compile Include="Base\ValidatableActionflow.cs" />
     <Compile Include="Base\CommandBinding.cs" />
     <Compile Include="Base\OnActionMethodRepository.OnAction.cs">
       <DependentUpon>OnActionMethodRepository.cs</DependentUpon>

@@ -26,14 +26,13 @@ namespace Nova.Shell.Actions.MainWindow
     /// <summary>
     /// Action to close a session.
     /// </summary>
-    public class CloseSession : BaseAction<MainView, MainViewModel>
+    public class CloseSession : Actionflow<MainView, MainViewModel>
     {
         private SessionView _Session;
 
         public override bool Execute()
         {
-            _Session = ActionContext.GetValue<SessionView>();
-            return _Session != null;
+            return ActionContext.TryGetValue(out _Session) && _Session != null;
         }
 
         public override void ExecuteCompleted()

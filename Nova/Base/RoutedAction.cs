@@ -50,7 +50,7 @@ namespace Nova.Base
 		public static ICommand New<TResult, TView, TViewModel>(TView view, TViewModel viewModel)
 			where TView : class, IView
 			where TViewModel : ViewModel<TView, TViewModel>, new()
-			where TResult : BaseAction<TView, TViewModel>, new()
+			where TResult : Actionflow<TView, TViewModel>, new()
 		{
 			ICommand routedAction = null;
 
@@ -81,7 +81,7 @@ namespace Nova.Base
 		public static ICommand New<TResult, TView, TViewModel>(TView view, TViewModel viewModel, ActionController<TView, TViewModel> actionController)
 			where TView : class, IView
 			where TViewModel : ViewModel<TView, TViewModel>, new()
-			where TResult : BaseAction<TView, TViewModel>, new()
+			where TResult : Actionflow<TView, TViewModel>, new()
 		{
 			ICommand routedAction = null;
 

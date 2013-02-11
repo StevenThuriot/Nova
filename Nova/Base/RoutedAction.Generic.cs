@@ -34,7 +34,7 @@ namespace Nova.Base
 	internal class RoutedAction<T, TView, TViewModel> : ICommand, IDisposable
 		where TView : class, IView
 		where TViewModel : ViewModel<TView, TViewModel>, new()
-		where T : BaseAction<TView, TViewModel>, new()
+		where T : Actionflow<TView, TViewModel>, new()
 	{
 		private T _Action;
 		private ActionController<TView, TViewModel> _Controller;
@@ -55,7 +55,7 @@ namespace Nova.Base
 
 			try
 			{
-				_Action = BaseAction<TView, TViewModel>.New<T>(view, viewModel, new ActionContext());
+				_Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel, new ActionContext());
 				_Controller = actionController;
 			}
 			catch (Exception exception)
@@ -74,7 +74,7 @@ namespace Nova.Base
 		{
 			try
 			{
-				_Action = BaseAction<TView, TViewModel>.New<T>(view, viewModel, new ActionContext());
+				_Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel, new ActionContext());
 				FindController(viewModel);
 			}
 			catch (Exception exception)
@@ -133,7 +133,7 @@ namespace Nova.Base
 			                                                		var view = _Action.View;
 			                                                		var viewModel = _Action.ViewModel;
 
-			                                                		_Action = BaseAction<TView, TViewModel>.New<T>(view, viewModel, new ActionContext());
+			                                                		_Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel, new ActionContext());
 			                                                	});
 		}
 

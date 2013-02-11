@@ -203,7 +203,7 @@ namespace Nova.Base
 		/// <typeparam name="TViewModel">The type of the view model.</typeparam>
 		/// <param name="action">The action to run.</param>
 		public static void OnBefore<TAction, TView, TViewModel>(TAction action)
-			where TAction : BaseAction<TView, TViewModel>
+			where TAction : Actionflow<TView, TViewModel>
 			where TViewModel : ViewModel<TView, TViewModel>, new()
 			where TView : class, IView
         {
@@ -240,7 +240,7 @@ namespace Nova.Base
 		/// <typeparam name="TViewModel">The type of the view model.</typeparam>
 		/// <param name="action">The action to run.</param>
 		public static void OnAfter<TAction, TView, TViewModel>(TAction action) 
-			where TAction : BaseAction<TView, TViewModel>
+			where TAction : Actionflow<TView, TViewModel>
 			where TViewModel : ViewModel<TView, TViewModel>, new()
 			where TView : class, IView
         {

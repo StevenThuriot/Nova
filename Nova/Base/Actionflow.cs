@@ -27,17 +27,16 @@ namespace Nova.Base
 	/// </summary>
 	/// <typeparam name="TView">The type of the view.</typeparam>
 	/// <typeparam name="TViewModel">The type of the view model.</typeparam>
-	public abstract class BaseAction<TView, TViewModel> : IDisposable
+	public abstract class Actionflow<TView, TViewModel> : IDisposable
 		where TView : class, IView
 		where TViewModel : ViewModel<TView, TViewModel>, new()
 	{
-		private bool _CanComplete;
 		private bool _Disposed;
 
-        /// <summary>
-        /// Gets or sets the ability to complete. For Internal use only!
-        /// </summary>
-	    internal bool CanComplete { get; set; }
+	    /// <summary>
+	    /// Gets or sets the ability to complete. For Internal use only!
+	    /// </summary>
+	    protected bool CanComplete;
 
 	    /// <summary>
 		/// Gets the action context.
@@ -55,11 +54,11 @@ namespace Nova.Base
 		public TViewModel ViewModel { get; private set; }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="BaseAction&lt;TView, TViewModel&gt;"/> class.
+		/// Initializes a new instance of the <see cref="Actionflow{TView,TViewModel}"/> class.
 		/// </summary>
-		protected BaseAction()
+		protected Actionflow()
 		{
-			_CanComplete = false;
+			CanComplete = false;
 		}
 		
 		#region IDisposable Members
@@ -76,9 +75,9 @@ namespace Nova.Base
 
 		/// <summary>
 		/// Releases unmanaged resources and performs other cleanup operations before the
-		/// <see cref="BaseAction&lt;TView, TViewModel&gt;"/> is reclaimed by garbage collection.
+		/// <see cref="Actionflow{TView,TViewModel}"/> is reclaimed by garbage collection.
 		/// </summary>
-		~BaseAction()
+		~Actionflow()
 		{
 			Dispose(false);
 		}
@@ -166,7 +165,7 @@ namespace Nova.Base
 		/// <param name="viewModel">The view model.</param>
 		/// <param name="actionContext">The action context.</param>
 		internal static TResult New<TResult>(TView view, TViewModel viewModel, ActionContext actionContext)
-			where TResult : BaseAction<TView, TViewModel>, new()
+			where TResult : Actionflow<TView, TViewModel>, new()
 		{
 			var action = new TResult
 			             	{
@@ -183,7 +182,7 @@ namespace Nova.Base
 		/// </summary>
 		internal void InternalOnBefore()
 		{
-            OnActionMethodRepository.OnBefore<BaseAction<TView, TViewModel>, TView, TViewModel>(this);
+            OnActionMethodRepository.OnBefore<Actionflow<TView, TViewModel>, TView, TViewModel>(this);
 		}
 		
 		/// <summary>
@@ -194,40 +193,57 @@ namespace Nova.Base
 		{
 			try
 			{
-				_CanComplete = Execute();
+                SafeInternalExecute();
 			}
 			catch (Exception exception)
 			{
-				_CanComplete = false;
+				CanComplete = false;
 				ExceptionHandler.Handle(exception, Resources.ErrorMessageAsync);
 			}
 		}
 
-		/// <summary>
+        /// <summary>
+        /// Method so inheriting classes may add extra internal logic during the InternalExecute stage.
+        /// </summary>
+	    internal virtual void SafeInternalExecute()
+	    {
+	        CanComplete = Execute();
+	    }
+
+	    /// <summary>
 		/// Runs the execute completed action.
 		/// </summary>
 		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
 		internal virtual void InternalExecuteCompleted()
 		{
-		    if (!_CanComplete) return;
+	            try
+                {
+                    SafeInternalExecuteCompleted();
+	            }
+	            catch (Exception exception)
+	            {
+	                ExceptionHandler.Handle(exception, Resources.ErrorMessageMainThread);
+	            }
 
-		    try
-		    {
-		        ExecuteCompleted();
-		        ActionContext.IsSuccessful = true;
-		    }
-		    catch (Exception exception)
-		    {
-		        ExceptionHandler.Handle(exception, Resources.ErrorMessageMainThread);
-		    }
 		}
-		
-		/// <summary>
+
+        /// <summary>
+        /// Method so inheriting classes may add extra internal logic during the InternalExecuteCompleted stage.
+        /// </summary>
+	    internal virtual void SafeInternalExecuteCompleted()
+        {
+            if (!CanComplete) return;
+
+            ExecuteCompleted();
+            ActionContext.IsSuccessful = true;
+        }
+
+	    /// <summary>
 		/// The logic that runs after the action.
 		/// </summary>
 		internal void InternalOnAfter()
 		{
-            OnActionMethodRepository.OnAfter<BaseAction<TView, TViewModel>, TView, TViewModel>(this);
+            OnActionMethodRepository.OnAfter<Actionflow<TView, TViewModel>, TView, TViewModel>(this);
 		}
 
 	    #endregion

@@ -40,7 +40,7 @@ namespace Nova.Base
         where TView : class, IView
     {
         private readonly IActionQueueManager _ActionQueueManager;
-        private readonly ICollection<BaseAction<TView, TViewModel>> _Actions;
+        private readonly ICollection<Actionflow<TView, TViewModel>> _Actions;
         private readonly Mutex _Lock;
         private readonly TView _View;
         private readonly TViewModel _ViewModel;
@@ -57,7 +57,7 @@ namespace Nova.Base
             _View = view;
             _ViewModel = viewModel;
             _ActionQueueManager = actionQueueManager;
-            _Actions = new List<BaseAction<TView, TViewModel>>();
+            _Actions = new List<Actionflow<TView, TViewModel>>();
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Nova.Base
         /// <param name="executeCompleted">The action to invoke when the async execution completes.</param>
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         private void Invoke<T>(T actionToRun, bool disposeActionDuringCleanup, Action executeCompleted = null)
-            where T : BaseAction<TView, TViewModel>
+            where T : Actionflow<TView, TViewModel>
         {
             if (actionToRun == null)
                 return;
@@ -88,7 +88,7 @@ namespace Nova.Base
         /// <param name="executeCompleted">The action to invoke when the async execution completes.</param>
         /// <returns>The action to run in an IAction format.</returns>
         private IAction PrepareAction<T>(T actionToRun, bool disposeActionDuringCleanup, Action executeCompleted)
-            where T : BaseAction<TView, TViewModel>
+            where T : Actionflow<TView, TViewModel>
         {
             if (actionToRun == null)
                 return null;
@@ -121,13 +121,13 @@ namespace Nova.Base
         /// <param name="executeCompleted">The action to invoke when the async execution completes.</param>
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         private void Invoke<T>(ActionContext actionContext, Action executeCompleted = null)
-            where T : BaseAction<TView, TViewModel>, new()
+            where T : Actionflow<TView, TViewModel>, new()
         {
             T actionToRun = null;
 
             try
             {
-                actionToRun = BaseAction<TView, TViewModel>.New<T>(_View, _ViewModel, actionContext);
+                actionToRun = Actionflow<TView, TViewModel>.New<T>(_View, _ViewModel, actionContext);
             }
             catch (Exception exception)
             {
@@ -143,7 +143,7 @@ namespace Nova.Base
         /// <typeparam name="T"></typeparam>
         /// <param name="actionToRun">The action to run.</param>
         private Func<bool> GetInitializationMethod<T>(T actionToRun)
-            where T : BaseAction<TView, TViewModel>
+            where T : Actionflow<TView, TViewModel>
         {
 
             return () =>
@@ -166,7 +166,7 @@ namespace Nova.Base
         /// <param name="actionToRun">The action to run.</param>
         /// <param name="dispose">Dispose the action.</param>
         private void CleanUp<T>(T actionToRun, bool dispose)
-            where T : BaseAction<TView, TViewModel>
+            where T : Actionflow<TView, TViewModel>
         {
             lock (_Lock)
             {
@@ -203,7 +203,7 @@ namespace Nova.Base
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter",
             Justification = "Required by called method.")]
         public void InvokeAction<T>(params ActionContextEntry[] arguments)
-            where T : BaseAction<TView, TViewModel>, new()
+            where T : Actionflow<TView, TViewModel>, new()
         {
             ActionContext actionContext = PrepareActionContext(arguments);
             Invoke<T>(actionContext);
@@ -218,7 +218,7 @@ namespace Nova.Base
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter",
             Justification = "Required by called method.")]
         public void InvokeAction<T>(UIElement sender, params ActionContextEntry[] arguments)
-            where T : BaseAction<TView, TViewModel>, new()
+            where T : Actionflow<TView, TViewModel>, new()
         {
             sender.IsEnabled = false;
             ActionContext actionContext = PrepareActionContext(arguments);
@@ -233,7 +233,7 @@ namespace Nova.Base
         /// <param name="actionToRun">The action to run.</param>
         /// <param name="executeCompleted">The action to execute after completion.</param>
         internal void InternalInvokeRoutedAction<T>(T actionToRun, Action executeCompleted)
-            where T : BaseAction<TView, TViewModel>, new()
+            where T : Actionflow<TView, TViewModel>, new()
         {
             Invoke(actionToRun, true, executeCompleted);
         }

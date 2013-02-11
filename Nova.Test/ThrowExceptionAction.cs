@@ -22,7 +22,7 @@ using Nova.Validation;
 
 namespace Nova.Test
 {
-	public class ThrowExceptionAction : BaseValidatableAction<MainWindow, MainViewModel>
+	public class ThrowExceptionAction : ValidatableActionflow<MainWindow, MainViewModel>
 	{
 		public override void Validate(ValidationResults results)
 		{

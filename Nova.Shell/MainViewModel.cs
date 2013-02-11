@@ -193,6 +193,8 @@ namespace Nova.Shell
             //Check if already added by our event handler. If not, insert the current session.
             if (actionContext.ContainsKey(typeof (SessionView).FullName)) return;
 
+            if (CurrentSession == null) return;
+
             var entry = ActionContextEntry.Create(CurrentSession, false);
             actionContext.Add(entry);
         }

@@ -4,7 +4,7 @@ using Nova.Threading;
 namespace Nova.Shell.Actions.Session
 {
     [Terminating]
-    public class SessionLeaveStep : BaseAction<SessionView, SessionViewModel>
+    public class SessionLeaveStep : Actionflow<SessionView, SessionViewModel>
     {
         public override bool Execute()
         {

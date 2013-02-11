@@ -115,6 +115,19 @@ namespace Nova.Base
 		}
 
 		/// <summary>
+        /// Tries to get a value from the actioncontext.
+        /// This method uses the requested type as the key.
+		/// </summary>
+		/// <typeparam name="T">The type of value.</typeparam>
+		/// <param name="value">The requested value.</param>
+		/// <returns>True if the value is found.</returns>
+		public bool TryGetValue<T>(out T value)
+        {
+            var key = typeof(T).FullName;
+		    return TryGetValue(key, out value);
+        }
+
+		/// <summary>
 		/// Tries to get a value from the actioncontext.
 		/// </summary>
 		/// <typeparam name="T">The type of value.</typeparam>

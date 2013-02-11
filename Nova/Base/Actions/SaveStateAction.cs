@@ -24,7 +24,7 @@ namespace Nova.Base.Actions
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-	internal class SaveStateAction<TView, TViewModel> : BaseAction<TView, TViewModel>
+	internal class SaveStateAction<TView, TViewModel> : Actionflow<TView, TViewModel>
 		where TView : class, IView
 		where TViewModel : ViewModel<TView, TViewModel>, new()
 	{

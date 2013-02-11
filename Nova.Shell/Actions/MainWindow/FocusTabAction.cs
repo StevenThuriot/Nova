@@ -5,7 +5,7 @@ namespace Nova.Shell.Actions.MainWindow
     /// <summary>
     /// Action to focus a certain tab of choice.
     /// </summary>
-    public class FocusTabAction : BaseAction<MainView, MainViewModel>
+    public class FocusTabAction : Actionflow<MainView, MainViewModel>
     {
         private SessionView _Session;
 

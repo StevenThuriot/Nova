@@ -119,12 +119,12 @@ namespace Nova.Base
 
 		private class OnActionWithParameters<T> : OnAction
 		{
-			private readonly Action<T, ActionContext> _Action;
+			private readonly System.Action<T, ActionContext> _Action;
 
 			public OnActionWithParameters(MethodInfo method)
 				: base(method)
 			{
-				_Action = (Action<T, ActionContext>)Delegate.CreateDelegate(typeof(Action<T, ActionContext>), null, method);
+				_Action = (System.Action<T, ActionContext>)Delegate.CreateDelegate(typeof(System.Action<T, ActionContext>), null, method);
 			}
 
 			public override void Invoke(object instance, ActionContext context)
