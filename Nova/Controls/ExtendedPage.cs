@@ -257,7 +257,7 @@ namespace Nova.Controls
                 {
                     if (IsLoading)
                     {
-                        //Make sure the parent doesn't keep thinking the child is still loading yet unexistant.
+                        //Make sure the parent doesn't keep thinking the child is still loading yet unexistent.
                         _Parent.StopLoading();
                     }
 
