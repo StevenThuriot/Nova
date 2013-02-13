@@ -118,18 +118,6 @@ namespace Nova.Controls
         }
 
         /// <summary>
-        /// Creates a new page with the current page as parent.
-        /// </summary>
-        /// <typeparam name="TPageView">The type of the page view.</typeparam>
-        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        public TPageView CreatePage<TPageView, TPageViewModel>()
-            where TPageViewModel : ViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
-        {
-            return ExtendedPage<TPageView, TPageViewModel>.Create(this);
-        }
-
-        /// <summary>
         /// Creates the specified page.
         /// </summary>
         /// <param name="parent">The parent view.</param>
@@ -190,12 +178,11 @@ namespace Nova.Controls
         }
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="ExtendedPage{TViewModel}" /> is reclaimed by garbage collection.
+        /// Leaves the current view.
         /// </summary>
-        ~ExtendedPage()
+        public void Leave()
         {
-            Dispose(false);
+            _ViewModel.Leave();
         }
 
         /// <summary>
@@ -205,6 +192,15 @@ namespace Nova.Controls
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="ExtendedPage{TViewModel}" /> is reclaimed by garbage collection.
+        /// </summary>
+        ~ExtendedPage()
+        {
+            Dispose(false);
         }
 
         /// <summary>

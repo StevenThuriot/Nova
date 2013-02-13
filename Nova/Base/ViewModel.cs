@@ -193,6 +193,7 @@ namespace Nova.Base
         /// </summary>
         internal void InternalOncreated()
         {
+            OnCreated();
             Enter();
         }
 
@@ -317,8 +318,21 @@ namespace Nova.Base
         {
             ActionController.InvokeAction<T>(sender, arguments);
         }
-        
-		/// <summary>
+
+        /// <summary>
+        /// Creates a new page with the current window as parent.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        public TPageView CreatePage<TPageView, TPageViewModel>()
+            where TPageViewModel : ViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
+        {
+            var internalView = (IInternalView) View;
+            return ExtendedPage<TPageView, TPageViewModel>.Create(internalView);
+        }
+
+        /// <summary>
 		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
 		/// </summary>
     	public void Dispose()

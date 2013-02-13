@@ -151,7 +151,6 @@ namespace Nova.Shell
         protected override void OnCreated()
         {
             InvokeAction<ReadConfigurationAction>();
-
             View.AddHandler(ClosableTabItem.CloseTabEvent, new RoutedEventHandler(CloseSession));
 
             SetInitialSession();
@@ -162,7 +161,7 @@ namespace Nova.Shell
         /// </summary>
         private void SetInitialSession()
         {
-            var intialSession = View.CreatePage<SessionView, SessionViewModel>();
+            var intialSession = CreatePage<SessionView, SessionViewModel>();
             Sessions.Add(intialSession);
             CurrentSession = intialSession;
         }

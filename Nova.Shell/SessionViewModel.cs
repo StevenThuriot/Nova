@@ -18,11 +18,17 @@
 
 #endregion
 using Nova.Base;
+using Nova.Shell.Actions.Session;
 
 namespace Nova.Shell
 {
     public class SessionViewModel : ViewModel<SessionView, SessionViewModel>
     {
+        protected override void OnCreated()
+        {
+            LeaveAction = Actionflow<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
+        }
+
         private string _Title = SessionViewResources.EmptySession;
         public string Title
         {

@@ -33,5 +33,10 @@ namespace Nova.Controls
         /// Stops the loading.
         /// </summary>
         void StopLoading();
+
+        /// <summary>
+        /// Leaves the current view.
+        /// </summary>
+        void Leave();
     }
 }

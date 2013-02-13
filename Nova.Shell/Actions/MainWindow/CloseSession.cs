@@ -37,7 +37,7 @@ namespace Nova.Shell.Actions.MainWindow
 
         public override void ExecuteCompleted()
         {
-            _Session.ViewModel.InvokeAction<SessionLeaveStep>();
+            _Session.Leave();
             ViewModel.Sessions.Remove(_Session);
         }
     }

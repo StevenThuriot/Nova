@@ -1,12 +1,12 @@
-﻿using Nova.Base;
+﻿using Nova.Base.Actions;
 using Nova.Threading;
 
 namespace Nova.Shell.Actions.Session
 {
     [Terminating]
-    public class SessionLeaveStep : Actionflow<SessionView, SessionViewModel>
+    public class SessionLeaveStep : LeaveAction<SessionView, SessionViewModel>
     {
-        public override bool Execute()
+        public override bool Leave()
         {
             if (!ViewModel.IsValid)
             {
@@ -18,12 +18,7 @@ namespace Nova.Shell.Actions.Session
             //    //Todo: Handle dirty state.
             //}
 
-            return base.Execute();
-        }
-
-        public override void ExecuteCompleted()
-        {
-            View.Dispose();
+            return base.Leave();
         }
     }
 }

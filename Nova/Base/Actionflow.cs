@@ -156,15 +156,14 @@ namespace Nova.Base
 		#endregion
 
 		#region Internal logic
-		
-		/// <summary>
+        
+	    /// <summary>
 		/// Creates a new instance and sets the required data.
-		/// This is used to easily create new instances of baseaction inside of the framework using generics rather than reflection.
 		/// </summary>
 		/// <param name="view">The view.</param>
 		/// <param name="viewModel">The view model.</param>
 		/// <param name="actionContext">The action context.</param>
-		internal static TResult New<TResult>(TView view, TViewModel viewModel, ActionContext actionContext = null)
+		public static TResult New<TResult>(TView view, TViewModel viewModel, ActionContext actionContext = null)
 			where TResult : Actionflow<TView, TViewModel>, new()
 		{
             if (view == null)

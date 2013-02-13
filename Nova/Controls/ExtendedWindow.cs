@@ -26,7 +26,6 @@ using System.Windows.Media;
 using Nova.Base;
 using Nova.Base.Actions;
 using Nova.Threading;
-using RESX = Nova.Properties.Resources;
 using System.Threading;
 
 namespace Nova.Controls
@@ -105,15 +104,6 @@ namespace Nova.Controls
         }
 
         /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
         /// Gets the action queue manager.
         /// </summary>
         /// <value>
@@ -145,32 +135,20 @@ namespace Nova.Controls
         }
 
         /// <summary>
-        /// Creates a new page with the current window as parent.
+        /// Leaves the current view.
         /// </summary>
-        /// <typeparam name="TPageView">The type of the page view.</typeparam>
-        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        public TPageView CreatePage<TPageView, TPageViewModel>()
-            where TPageViewModel : ViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
+        public void Leave()
         {
-            return ExtendedPage<TPageView, TPageViewModel>.Create(this);
+            _ViewModel.Leave();
         }
 
         /// <summary>
-        ///     Runs the method safely.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        /// <param name="work">The work.</param>
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        private static void RunMethodSafely(Action work)
+        public void Dispose()
         {
-            try
-            {
-                work();
-            }
-            catch (Exception exception)
-            {
-                Base.ExceptionHandler.Handle(exception, RESX.ErrorTitle);
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>

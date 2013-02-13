@@ -36,7 +36,7 @@ namespace Nova.Shell.Actions.MainWindow
 
         public override void ExecuteCompleted()
         {
-            var session = View.CreatePage<SessionView, SessionViewModel>();
+            var session = ViewModel.CreatePage<SessionView, SessionViewModel>();
             ViewModel.Sessions.Add(session);
             
             if (!_HasOpenSessions || Keyboard.Modifiers != (ModifierKeys.Control | ModifierKeys.Shift))

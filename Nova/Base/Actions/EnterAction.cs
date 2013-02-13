@@ -47,7 +47,6 @@ namespace Nova.Base.Actions
         public sealed override void ExecuteCompleted()
         {
             EnterCompleted();
-            ViewModel.OnCreated();
         }
 
         /// <summary>
