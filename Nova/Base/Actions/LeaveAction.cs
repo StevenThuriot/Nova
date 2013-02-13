@@ -28,16 +28,42 @@ namespace Nova.Base.Actions
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     [Terminating]
-    internal class LeaveAction<TView, TViewModel> : Actionflow<TView, TViewModel>
+    public class LeaveAction<TView, TViewModel> : Actionflow<TView, TViewModel>
         where TView : class, IView
         where TViewModel : ViewModel<TView, TViewModel>, new()
     {
         /// <summary>
+        /// Executes async.
+        /// </summary>
+        /// <returns>A value indicating wether to continue execution.</returns>
+        public sealed override bool Execute()
+        {
+            return base.Execute() && Leave();
+        }
+
+        /// <summary>
         /// Executes when the async execution succesfully completed.
         /// </summary>
-        public override void ExecuteCompleted()
+        public sealed override void ExecuteCompleted()
         {
+            LeaveCompleted();
             View.Dispose();
+        }
+
+        /// <summary>
+        /// Called when leaving a step.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool Leave()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Called when leaving the step has completed.
+        /// </summary>
+        public virtual void LeaveCompleted()
+        {
         }
     }
 }

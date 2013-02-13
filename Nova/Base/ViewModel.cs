@@ -41,10 +41,24 @@ namespace Nova.Base
         private bool _Disposed;
         private Guid _ID;
 
+        private ReadOnlyErrorCollection _ErrorCollection;
+
         /// <summary>
 		/// Gets the view.
 		/// </summary>
         public TView View { get; private set; }
+
+        /// <summary>
+        /// The viewmodel's EnterAction, which triggers when entering this view.
+        /// If not set, the default EnterAction will be used.
+        /// </summary>
+        protected EnterAction<TView, TViewModel> EnterAction { get; set; }
+
+        /// <summary>
+        /// The viewmodel's LeaveAction, which triggers when leaving this view.
+        /// If not set, the default EnterAction will be used.
+        /// </summary>
+        protected LeaveAction<TView, TViewModel> LeaveAction { get; set; }
 
         /// <summary>
         /// Gets or sets the ViewModel ID.
@@ -93,8 +107,7 @@ namespace Nova.Base
 			ActionManager.SetKnownTypes(knownTypes);
 		}
 
-		private ReadOnlyErrorCollection _ErrorCollection;
-		/// <summary>
+        /// <summary>
 		/// Gets the error collection.
 		/// </summary>
 		public ReadOnlyErrorCollection ErrorCollection
@@ -174,18 +187,47 @@ namespace Nova.Base
 
 		    return true;
 		}
-
-
+        
         /// <summary>
         /// Called when [created], for internal use.
         /// </summary>
         internal void InternalOncreated()
         {
-            InvokeAction<EnterAction<TView, TViewModel>>();
+            Enter();
+        }
+
+        /// <summary>
+        /// Called to trigger all the Entering logic for this ViewModel.
+        /// </summary>
+        internal void Enter()
+        {
+            if (EnterAction == null)
+            {
+                InvokeAction<EnterAction<TView, TViewModel>>();
+            }
+            else
+            {
+                ActionController.InternalInvokeAction(EnterAction);
+            }
+        }
+
+        /// <summary>
+        /// Called to trigger all the Leaving logic for this ViewModel.
+        /// </summary>
+        internal void Leave()
+        {
+            if (LeaveAction == null)
+            {
+                InvokeAction<LeaveAction<TView, TViewModel>>();
+            }
+            else
+            {
+                ActionController.InternalInvokeAction(LeaveAction);
+            }
         }
 
 		/// <summary>
-		/// Called when [created].
+		/// Called when this viewmodel is created.
 		/// </summary>
 		protected internal virtual void OnCreated()
 		{

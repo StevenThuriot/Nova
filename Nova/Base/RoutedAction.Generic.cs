@@ -55,7 +55,7 @@ namespace Nova.Base
 
 			try
 			{
-				_Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel, new ActionContext());
+				_Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel);
 				_Controller = actionController;
 			}
 			catch (Exception exception)
@@ -74,7 +74,7 @@ namespace Nova.Base
 		{
 			try
 			{
-				_Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel, new ActionContext());
+				_Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel);
 				FindController(viewModel);
 			}
 			catch (Exception exception)
@@ -126,14 +126,14 @@ namespace Nova.Base
 			_IsExecuting = true;
 			SetActionContext(parameter);
 
-			_Controller.InternalInvokeRoutedAction(_Action, () =>
+			_Controller.InternalInvokeAction(_Action, executeCompleted: () =>
 			                                                	{
 			                                                		_IsExecuting = false;
 
 			                                                		var view = _Action.View;
 			                                                		var viewModel = _Action.ViewModel;
 
-			                                                		_Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel, new ActionContext());
+			                                                		_Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel);
 			                                                	});
 		}
 

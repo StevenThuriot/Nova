@@ -227,15 +227,16 @@ namespace Nova.Base
 
         /// <summary>
         ///     Invokes the action.
-        ///     This call is for internal means only. It is used to make routed actions work through the action controller's logic.
+        ///     This call is for internal means only.
         /// </summary>
         /// <typeparam name="T">The type of action to invoke.</typeparam>
         /// <param name="actionToRun">The action to run.</param>
+        /// <param name="disposeActionDuringCleanup">Dispose the action after execution, during cleanup.</param>
         /// <param name="executeCompleted">The action to execute after completion.</param>
-        internal void InternalInvokeRoutedAction<T>(T actionToRun, Action executeCompleted)
+        internal void InternalInvokeAction<T>(T actionToRun, bool disposeActionDuringCleanup = true, Action executeCompleted = null)
             where T : Actionflow<TView, TViewModel>, new()
         {
-            Invoke(actionToRun, true, executeCompleted);
+            Invoke(actionToRun, disposeActionDuringCleanup, executeCompleted);
         }
     }
 }

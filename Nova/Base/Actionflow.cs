@@ -164,14 +164,20 @@ namespace Nova.Base
 		/// <param name="view">The view.</param>
 		/// <param name="viewModel">The view model.</param>
 		/// <param name="actionContext">The action context.</param>
-		internal static TResult New<TResult>(TView view, TViewModel viewModel, ActionContext actionContext)
+		internal static TResult New<TResult>(TView view, TViewModel viewModel, ActionContext actionContext = null)
 			where TResult : Actionflow<TView, TViewModel>, new()
 		{
+            if (view == null)
+                throw new ArgumentNullException("view");
+
+            if (viewModel == null)
+                throw new ArgumentNullException("viewModel");
+
 			var action = new TResult
 			             	{
 			             		View = view,
 			             		ViewModel = viewModel,
-			             		ActionContext = actionContext
+			             		ActionContext = actionContext ?? new ActionContext()
 			             	};
 
 			return action;

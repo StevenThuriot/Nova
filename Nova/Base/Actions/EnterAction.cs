@@ -28,13 +28,42 @@ namespace Nova.Base.Actions
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     [Creational]
-    internal class EnterAction<TView, TViewModel> : Actionflow<TView, TViewModel>
+    public class EnterAction<TView, TViewModel> : Actionflow<TView, TViewModel>
 		where TView : class, IView
 		where TViewModel : ViewModel<TView, TViewModel>, new()
-	{
-        public override void ExecuteCompleted()
+    {
+        /// <summary>
+        /// Executes async.
+        /// </summary>
+        /// <returns>A value indicating wether to continue execution.</returns>
+        public sealed override bool Execute()
         {
+            return base.Execute() && Enter();
+        }
+
+        /// <summary>
+        /// Executes when the async execution succesfully completed.
+        /// </summary>
+        public sealed override void ExecuteCompleted()
+        {
+            EnterCompleted();
             ViewModel.OnCreated();
+        }
+
+        /// <summary>
+        /// Called when entering a step.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool Enter()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Called when entering the step has completed.
+        /// </summary>
+        public virtual void EnterCompleted()
+        {
         }
 	}
 }
