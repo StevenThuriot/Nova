@@ -11,17 +11,29 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Nova.Base;
+using Nova.Controls;
 
 namespace Nova.Shell
 {
     /// <summary>
     /// Interaction logic for TestPage.xaml
     /// </summary>
-    public partial class TestPage : Page
+    public partial class TestPage
     {
         public TestPage()
         {
             InitializeComponent();
         }
+    }
+
+    public abstract class TestPageBase : ExtendedPage<TestPage, TestPageViewModel>
+    {
+
+    }
+
+    public class TestPageViewModel : ViewModel<TestPage, TestPageViewModel> 
+    {
+        
     }
 }

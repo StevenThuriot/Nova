@@ -146,20 +146,26 @@ namespace Nova.Controls
         
         
         private int _LoadingCounter;
+        private readonly Mutex _Lock = new Mutex();
 
         /// <summary>
         ///     Starts the animated loading.
         /// </summary>
         public virtual void StartLoading()
         {
-            var isLoading = Interlocked.Increment(ref _LoadingCounter) > 0;
-
-            if (isLoading && _Parent != null)
+            lock (_Lock)
             {
-                _Parent.StartLoading();
-            }
+                var isLoading = Interlocked.Increment(ref _LoadingCounter) > 0;
 
-            IsLoading = isLoading;
+                if (IsLoading == isLoading) return;
+
+                IsLoading = isLoading;
+
+                if (isLoading && _Parent != null)
+                {
+                    _Parent.StartLoading();
+                }
+            }
         }
 
         /// <summary>
@@ -167,14 +173,19 @@ namespace Nova.Controls
         /// </summary>
         public virtual void StopLoading()
         {
-            var isLoading = Interlocked.Decrement(ref _LoadingCounter) > 0;
-
-            if (!isLoading && _Parent != null)
+            lock (_Lock)
             {
-                _Parent.StopLoading();
-            }
+                var isLoading = Interlocked.Decrement(ref _LoadingCounter) > 0;
 
-            IsLoading = isLoading;
+                if (IsLoading == isLoading) return;
+
+                IsLoading = isLoading;
+
+                if (!isLoading && _Parent != null)
+                {
+                    _Parent.StopLoading();
+                }
+            }
         }
 
         /// <summary>
@@ -221,6 +232,8 @@ namespace Nova.Controls
                     _ViewModel.Dispose();
                     _ViewModel = null;
                 }
+
+                _Lock.Dispose();
             }
 
             _Disposed = true;

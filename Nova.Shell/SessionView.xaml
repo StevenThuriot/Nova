@@ -28,7 +28,7 @@
             CornerRadius="1 0 0 0"
             Margin="0 0 -3 -3"
             Padding="3">
-      <Frame NavigationUIVisibility="Hidden" Source="TestPage.xaml" />
+      <Frame NavigationUIVisibility="Hidden" x:Name="_CurrentViewFrame" />
     </Border>
   </Grid>
 </shell:SessionViewBase>

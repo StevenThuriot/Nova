@@ -17,19 +17,25 @@
 // 
 
 #endregion
+
 using Nova.Base;
+using Nova.Controls;
 using Nova.Shell.Actions.Session;
 
 namespace Nova.Shell
 {
     public class SessionViewModel : ViewModel<SessionView, SessionViewModel>
     {
+        private IView _CurrentView;
         protected override void OnCreated()
         {
+            //TODO: Temporary default
+            Navigate<TestPage, TestPageViewModel>();
             LeaveAction = Actionflow<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
         }
 
         private string _Title = SessionViewResources.EmptySession;
+
         public string Title
         {
             get { return _Title; }
@@ -37,6 +43,20 @@ namespace Nova.Shell
             {
                 SetValue(ref _Title, value);
             }
+        }
+        
+        public void Navigate<TPageView, TPageViewModel>() 
+            where TPageViewModel : ViewModel<TPageView, TPageViewModel>, new() 
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
+        {
+            //TODO: Extract into service.
+            if (_CurrentView != null)
+            {
+                //CurrentView.ViewModel.Leave();
+            }
+
+            _CurrentView = CreatePage<TPageView, TPageViewModel>();
+            View._CurrentViewFrame.Navigate(_CurrentView);
         }
     }
 }
