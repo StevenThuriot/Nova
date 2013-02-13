@@ -178,14 +178,6 @@ namespace Nova.Controls
         }
 
         /// <summary>
-        /// Leaves the current view.
-        /// </summary>
-        public void Leave()
-        {
-            _ViewModel.Leave();
-        }
-
-        /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
         public void Dispose()

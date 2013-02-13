@@ -187,20 +187,11 @@ namespace Nova.Base
 
 		    return true;
 		}
-        
-        /// <summary>
-        /// Called when [created], for internal use.
-        /// </summary>
-        internal void InternalOncreated()
-        {
-            OnCreated();
-            Enter();
-        }
 
         /// <summary>
         /// Called to trigger all the Entering logic for this ViewModel.
         /// </summary>
-        internal void Enter()
+        public void Enter()
         {
             if (EnterAction == null)
             {
@@ -215,7 +206,7 @@ namespace Nova.Base
         /// <summary>
         /// Called to trigger all the Leaving logic for this ViewModel.
         /// </summary>
-        internal void Leave()
+        public void Leave()
         {
             if (LeaveAction == null)
             {
@@ -248,15 +239,31 @@ namespace Nova.Base
             if (actionQueueManager == null)
                 throw new ArgumentNullException("actionQueueManager");
 
-		    var viewModel = new TViewModel {View = view};
-            
-			viewModel.ActionController = new ActionController<TView, TViewModel>(view, viewModel, actionQueueManager);
-			viewModel.ActionManager = new ActionManager<TView, TViewModel>(view, viewModel);
-
-            viewModel.InternalOncreated();
+		    var viewModel = new TViewModel();
+            viewModel.Initialize(view, actionQueueManager);
 
 		    return viewModel;
 		}
+
+        /// <summary>
+        /// Initializes the viewmodel and triggers all the needed logic.
+        /// </summary>
+        internal void Initialize(TView view, IActionQueueManager actionQueueManager)
+        {
+            if (view == null)
+                throw new ArgumentNullException("view");
+            if (actionQueueManager == null)
+                throw new ArgumentNullException("actionQueueManager");
+
+            var viewModel = (TViewModel)this;
+
+            View = view;
+            ActionController = new ActionController<TView, TViewModel>(view, viewModel, actionQueueManager);
+            ActionManager = new ActionManager<TView, TViewModel>(view, viewModel);
+
+            OnCreated();
+            Enter();
+        }
 
         /// <summary>
 		/// Saves this instance.
