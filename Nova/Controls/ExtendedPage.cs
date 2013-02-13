@@ -155,7 +155,7 @@ namespace Nova.Controls
         {
             lock (_Lock)
             {
-                var isLoading = Interlocked.Increment(ref _LoadingCounter) > 0;
+                var isLoading = ++_LoadingCounter > 0;
 
                 if (IsLoading == isLoading) return;
 
@@ -175,7 +175,7 @@ namespace Nova.Controls
         {
             lock (_Lock)
             {
-                var isLoading = Interlocked.Decrement(ref _LoadingCounter) > 0;
+                var isLoading = --_LoadingCounter > 0;
 
                 if (IsLoading == isLoading) return;
 
