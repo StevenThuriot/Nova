@@ -150,6 +150,11 @@ namespace Nova.Shell
         /// </summary>
         protected override void OnCreated()
         {
+            SetKnownActionTypes(typeof(CloseSessionAction),
+                                typeof(CreateNewSessionAction),
+                                typeof(FocusTabAction),
+                                typeof(ReadConfigurationAction));
+
             InvokeAction<ReadConfigurationAction>();
             View.AddHandler(ClosableTabItem.CloseTabEvent, new RoutedEventHandler(CloseSession));
 
@@ -179,7 +184,7 @@ namespace Nova.Shell
 
             var entry = ActionContextEntry.Create(sessionView, false);
 
-            InvokeAction<CloseSession>(entry);
+            InvokeAction<CloseSessionAction>(entry);
             e.Handled = true;
         }
 

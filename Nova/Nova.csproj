@@ -202,6 +202,7 @@
     <Compile Include="Base\Actions\LoadStateAction.cs" />
     <Compile Include="Base\Actions\SaveStateAction.cs" />
     <Compile Include="Base\Actionflow.cs" />
+    <Compile Include="Base\IViewModel.cs" />
     <Compile Include="Base\ValidatableActionflow.cs" />
     <Compile Include="Base\CommandBinding.cs" />
     <Compile Include="Base\OnActionMethodRepository.OnAction.cs">
@@ -236,7 +237,6 @@
     </Compile>
     <Compile Include="Controls\ExtendedPage.cs" />
     <Compile Include="Controls\ExtendedWindow.cs" />
-    <Compile Include="Controls\IInternalView.cs" />
     <Compile Include="Controls\IView.cs" />
     <Compile Include="Controls\ImageButton.cs" />
     <Compile Include="Controls\AnimatedLoader.cs" />

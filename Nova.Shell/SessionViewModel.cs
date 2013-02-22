@@ -26,35 +26,73 @@ namespace Nova.Shell
 {
     public class SessionViewModel : ViewModel<SessionView, SessionViewModel>
     {
-        private IView _CurrentView;
-        protected override void OnCreated()
-        {
-            LeaveAction = Actionflow<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
-
-            //TODO: Temporary default
-            Navigate<TestPage, TestPageViewModel>();
-        }
+        internal const string CurrentViewConstant = "CurrentView";
+        internal const string NextViewConstant = "NextView";
 
         private string _Title = SessionViewResources.EmptySession;
+        private IView _CurrentView;
 
+        /// <summary>
+        /// Called when [created].
+        /// </summary>
+        protected override void OnCreated()
+        {
+            SetKnownActionTypes(typeof(SessionLeaveStep));
+
+            LeaveAction = Actionflow<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
+        }
+
+        /// <summary>
+        /// Gets the title.
+        /// </summary>
+        /// <value>
+        /// The title.
+        /// </value>
         public string Title
         {
             get { return _Title; }
-            set { SetValue(ref _Title, value); }
+            private set { SetValue(ref _Title, value); }
         }
-        
+
+        /// <summary>
+        /// Gets or sets the current view.
+        /// </summary>
+        /// <value>
+        /// The current view.
+        /// </value>
+        internal IView CurrentView
+        {
+            get { return _CurrentView; }
+            set
+            {
+                if (value == null || !SetValue(ref _CurrentView, value)) return;
+
+                Title = _CurrentView.Title;
+                View._ContentZone.Navigate(_CurrentView);
+            }
+        }
+
+        /// <summary>
+        /// Navigates this instance to the specified page.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         public void Navigate<TPageView, TPageViewModel>() 
             where TPageViewModel : ViewModel<TPageView, TPageViewModel>, new() 
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
-            //TODO: Extract into service.
-            if (_CurrentView != null)
-            {
-                //CurrentView.ViewModel.Leave();
-            }
+            var nextView = CreatePage<TPageView, TPageViewModel>(enterOnInitialize: false);
 
-            _CurrentView = CreatePage<TPageView, TPageViewModel>();
-            View._CurrentViewFrame.Navigate(_CurrentView);
+            var current = ActionContextEntry.Create(CurrentViewConstant, _CurrentView, false);
+            var next = ActionContextEntry.Create(NextViewConstant, nextView, false);
+
+            InvokeAction<NavigationAction>(current, next);
+        }
+
+        public void OnAfterEnter()
+        {
+            //TODO: Temporary default
+            Navigate<TestPage, TestPageViewModel>();
         }
     }
 }

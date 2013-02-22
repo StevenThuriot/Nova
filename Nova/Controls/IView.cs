@@ -16,6 +16,7 @@
 // 
 #endregion
 using System;
+using Nova.Base;
 
 namespace Nova.Controls
 {
@@ -33,5 +34,21 @@ namespace Nova.Controls
         /// Stops the loading.
         /// </summary>
         void StopLoading();
+
+        /// <summary>
+        /// Gets the view model.
+        /// </summary>
+        /// <value>
+        /// The view model.
+        /// </value>
+        IViewModel ViewModel { get; }
+
+        /// <summary>
+        /// Gets the title.
+        /// </summary>
+        /// <value>
+        /// The title.
+        /// </value>
+        string Title { get; }
     }
 }

@@ -35,7 +35,7 @@ namespace Nova.Controls
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class ExtendedWindow<TView, TViewModel> : Window, IInternalView
+    public abstract class ExtendedWindow<TView, TViewModel> : Window, IView
         where TViewModel : ViewModel<TView, TViewModel>, new()
         where TView : ExtendedWindow<TView, TViewModel>
     {
@@ -48,10 +48,6 @@ namespace Nova.Controls
 
 // ReSharper restore StaticFieldInGenericType
 
-        /// <summary>
-        ///     The action queue manager
-        /// </summary>
-        private readonly IActionQueueManager _ActionQueueManager;
         private bool _Disposed;
         private TViewModel _ViewModel;
 
@@ -68,16 +64,20 @@ namespace Nova.Controls
 
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             
-            _ActionQueueManager = new ActionQueueManager();
+            var actionQueueManager = new ActionQueueManager();
 
-            ViewModel = ViewModel<TView, TViewModel>.Create((TView) this, _ActionQueueManager);
+            ViewModel = ViewModel<TView, TViewModel>.Create((TView) this, actionQueueManager);
+            ViewModel.DisposeActionQueueManager = true; //Queue manager should stay alive on window level. Pages should not influence it.
 
             Closing += (sender, args) => ViewModel.InvokeAction<LeaveAction<TView, TViewModel>>();
         }
 
         /// <summary>
-        ///     Gets the view model.
+        /// Gets the view model.
         /// </summary>
+        /// <value>
+        /// The view model.
+        /// </value>
         public TViewModel ViewModel
         {
             get { return _ViewModel; }
@@ -91,6 +91,17 @@ namespace Nova.Controls
         }
 
         /// <summary>
+        /// Gets the view model.
+        /// </summary>
+        /// <value>
+        /// The view model.
+        /// </value>
+        IViewModel IView.ViewModel
+        {
+            get { return ViewModel; }
+        }
+
+        /// <summary>
         ///     Gets or sets a value indicating whether this instance is loading.
         ///     This can also be interpreted as "busy".
         /// </summary>
@@ -101,17 +112,6 @@ namespace Nova.Controls
         {
             get { return (bool) GetValue(IsLoadingProperty); }
             set { SetValue(IsLoadingProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets the action queue manager.
-        /// </summary>
-        /// <value>
-        /// The action queue manager.
-        /// </value>
-        IActionQueueManager IInternalView.ActionQueueManager
-        {
-            get { return _ActionQueueManager; }
         }
         
         private int _LoadingCounter;
@@ -167,11 +167,6 @@ namespace Nova.Controls
                 if (_ViewModel != null)
                 {
                     _ViewModel.Dispose();
-                }
-
-                if (_ActionQueueManager != null)
-                {
-                    _ActionQueueManager.Dispose();
                 }
             }
 

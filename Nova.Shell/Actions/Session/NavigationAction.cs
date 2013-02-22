@@ -19,26 +19,40 @@
 #endregion
 
 using Nova.Base;
+using Nova.Controls;
+using Nova.Threading;
 
-namespace Nova.Shell.Actions.MainWindow
+namespace Nova.Shell.Actions.Session
 {
     /// <summary>
-    /// Action to close a session.
+    /// Navigational action
     /// </summary>
-    public class CloseSession : Actionflow<MainView, MainViewModel>
+    [Blocking]
+    public class NavigationAction : Actionflow<SessionView, SessionViewModel>
     {
-        private SessionView _Session;
+        private IView _NextView;
 
         public override bool Execute()
         {
-            return ActionContext.TryGetValue(out _Session) && _Session != null;
+            _NextView = ActionContext.GetValue<IView>(SessionViewModel.NextViewConstant);
+
+            if (_NextView == null)
+                return false;
+            
+            var current = ActionContext.GetValue<IView>(SessionViewModel.CurrentViewConstant);
+            
+            if (current != null)
+            {
+                current.ViewModel.Leave();
+            }
+
+            return base.Execute();
         }
 
         public override void ExecuteCompleted()
         {
-            //TODO: Check if leave was successful.
-            _Session.ViewModel.Leave();
-            ViewModel.Sessions.Remove(_Session);
+            _NextView.ViewModel.Enter();
+            ViewModel.CurrentView = _NextView;
         }
     }
 }

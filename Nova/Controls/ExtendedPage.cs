@@ -32,7 +32,7 @@ namespace Nova.Controls
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class ExtendedPage<TView, TViewModel> : Page, IInternalView
+    public abstract class ExtendedPage<TView, TViewModel> : Page, IView
         where TViewModel : ViewModel<TView, TViewModel>, new()
         where TView : ExtendedPage<TView, TViewModel>, new()
     {
@@ -45,22 +45,6 @@ namespace Nova.Controls
             DependencyProperty IsLoadingProperty = DependencyProperty.Register("IsLoading", typeof(bool), typeof(ExtendedPage<TView, TViewModel>), new PropertyMetadata(false));
 
         // ReSharper restore StaticFieldInGenericType
-
-        /// <summary>
-        ///     The action queue manager
-        /// </summary>
-        private IActionQueueManager _ActionQueueManager;
-
-        /// <summary>
-        /// Gets the action queue manager.
-        /// </summary>
-        /// <value>
-        /// The action queue manager.
-        /// </value>
-        IActionQueueManager IInternalView.ActionQueueManager
-        {
-            get { return _ActionQueueManager; }
-        }
 
         /// <summary>
         /// Flag wether this instance is disposed.
@@ -76,6 +60,9 @@ namespace Nova.Controls
         /// <summary>
         /// Gets the view model.
         /// </summary>
+        /// <value>
+        /// The view model.
+        /// </value>
         public TViewModel ViewModel
         {
             get { return _ViewModel; }
@@ -90,6 +77,17 @@ namespace Nova.Controls
         }
 
         /// <summary>
+        /// Gets the view model.
+        /// </summary>
+        /// <value>
+        /// The view model.
+        /// </value>
+        IViewModel IView.ViewModel
+        {
+            get { return ViewModel; }
+        }
+
+        /// <summary>
         ///     Gets or sets a value indicating whether this instance is loading.
         ///     This can also be interpreted as "busy".
         /// </summary>
@@ -101,31 +99,17 @@ namespace Nova.Controls
             get { return (bool)GetValue(IsLoadingProperty); }
             set { SetValue(IsLoadingProperty, value); }
         }
-
-        /// <summary>
-        /// Creates the specified page.
-        /// </summary>
-        /// <param name="parent">The parent view.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">window</exception>
-        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
-        internal static TView Create(IInternalView parent)
-        {
-            if (parent == null)
-                throw new ArgumentNullException("parent");
-
-            return Create(parent, parent.ActionQueueManager);
-        }
-
+        
         /// <summary>
         /// Creates the specified page.
         /// </summary>
         /// <param name="parent">The parent view.</param>
         /// <param name="actionQueueManager">The action queue manager.</param>
+        /// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">window</exception>
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
-        internal static TView Create(IInternalView parent, IActionQueueManager actionQueueManager)
+        internal static TView Create(IView parent, IActionQueueManager actionQueueManager, bool enterOnInitialize)
         {
             if (parent == null)
                 throw new ArgumentNullException("parent");
@@ -135,8 +119,7 @@ namespace Nova.Controls
 
             var page = new TView
                 {
-                    _Parent = parent,
-                    _ActionQueueManager = actionQueueManager
+                    _Parent = parent
                 };
 
             page.ViewModel = ViewModel<TView, TViewModel>.Create(page, actionQueueManager);

@@ -70,12 +70,13 @@ namespace Nova.Base
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException("key");
-
-            if (value == null)
-                throw new ArgumentNullException("value");
-
+            
             _Key = key;
-            _Value = cloneValue ? BruteClone(value) : value;
+            _Value = value == null
+                         ? null
+                         : cloneValue
+                               ? BruteClone(value)
+                               : value;
         }
 
         /// <summary>

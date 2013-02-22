@@ -33,8 +33,8 @@ namespace Nova.Base
     /// </summary>
     /// <typeparam name="TView">The type of the linked View.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-	public abstract class ViewModel<TView, TViewModel> : INotifyPropertyChanged, IDisposable
-		where TView : class, IView
+	public abstract class ViewModel<TView, TViewModel> : IViewModel
+        where TView : class, IView
         where TViewModel : ViewModel<TView, TViewModel>, new()
     {
         private bool _IsValid;
@@ -42,11 +42,29 @@ namespace Nova.Base
         private Guid _ID;
 
         private ReadOnlyErrorCollection _ErrorCollection;
+        private ActionManager<TView, TViewModel> _ActionManager;
+        private IActionQueueManager _ActionQueueManager;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to dispose the action queue manager on disposal of the ViewModel.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [dispose action queue manager]; otherwise, <c>false</c>.
+        /// </value>
+        internal bool DisposeActionQueueManager { get; set; }
 
         /// <summary>
 		/// Gets the view.
 		/// </summary>
         public TView View { get; private set; }
+
+        /// <summary>
+        /// Gets the view.
+        /// </summary>
+        IView IViewModel.View
+        {
+            get { return View; }
+        }
 
         /// <summary>
         /// The viewmodel's EnterAction, which triggers when entering this view.
@@ -95,16 +113,19 @@ namespace Nova.Base
         /// <summary>
 		/// Gets the action manager.
 		/// </summary>
-		public dynamic ActionManager { get; private set; }
+		public dynamic ActionManager
+        {
+            get { return _ActionManager; }
+        }
 
-		/// <summary>
+        /// <summary>
 		/// Sets the known action types.
 		/// The action manager will choose from these types to initiate an action.
 		/// </summary>
 		/// <param name="knownTypes">The known types.</param>
 		protected void SetKnownActionTypes(params Type[] knownTypes)
 		{
-			ActionManager.SetKnownTypes(knownTypes);
+			_ActionManager.SetKnownTypes(knownTypes);
 		}
 
         /// <summary>
@@ -221,7 +242,7 @@ namespace Nova.Base
 		/// <summary>
 		/// Called when this viewmodel is created.
 		/// </summary>
-		protected internal virtual void OnCreated()
+		protected virtual void OnCreated()
 		{
 		}
 
@@ -229,10 +250,12 @@ namespace Nova.Base
         /// Creates the specified viewmodel.
         /// </summary>
         /// <param name="view">The view.</param>
-        /// <param name="actionQueueManager"> </param>
+        /// <param name="actionQueueManager">The action queue manager.</param>
+        /// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
         /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">view</exception>
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
-		internal static TViewModel Create(TView view, IActionQueueManager actionQueueManager)
+        internal static TViewModel Create(TView view, IActionQueueManager actionQueueManager, bool enterOnInitialize = true)
         {
             if (view == null)
                 throw new ArgumentNullException("view");
@@ -240,7 +263,7 @@ namespace Nova.Base
                 throw new ArgumentNullException("actionQueueManager");
 
 		    var viewModel = new TViewModel();
-            viewModel.Initialize(view, actionQueueManager);
+            viewModel.Initialize(view, actionQueueManager, enterOnInitialize);
 
 		    return viewModel;
 		}
@@ -248,7 +271,11 @@ namespace Nova.Base
         /// <summary>
         /// Initializes the viewmodel and triggers all the needed logic.
         /// </summary>
-        internal void Initialize(TView view, IActionQueueManager actionQueueManager)
+        /// <param name="view">The view.</param>
+        /// <param name="actionQueueManager">The action queue manager.</param>
+        /// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
+        /// <exception cref="System.ArgumentNullException">view</exception>
+        internal void Initialize(TView view, IActionQueueManager actionQueueManager, bool enterOnInitialize)
         {
             if (view == null)
                 throw new ArgumentNullException("view");
@@ -257,12 +284,17 @@ namespace Nova.Base
 
             var viewModel = (TViewModel)this;
 
+            _ActionQueueManager = actionQueueManager;
             View = view;
             ActionController = new ActionController<TView, TViewModel>(view, viewModel, actionQueueManager);
-            ActionManager = new ActionManager<TView, TViewModel>(view, viewModel);
+            _ActionManager = new ActionManager<TView, TViewModel>(view, viewModel);
 
             OnCreated();
-            Enter();
+
+            if (enterOnInitialize)
+            {
+                Enter();
+            }
         }
 
         /// <summary>
@@ -329,14 +361,14 @@ namespace Nova.Base
         /// <summary>
         /// Creates a new page with the current window as parent.
         /// </summary>
+        /// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        public TPageView CreatePage<TPageView, TPageViewModel>()
+        public TPageView CreatePage<TPageView, TPageViewModel>(bool enterOnInitialize = true)
             where TPageViewModel : ViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
-            var internalView = (IInternalView) View;
-            return ExtendedPage<TPageView, TPageViewModel>.Create(internalView);
+            return ExtendedPage<TPageView, TPageViewModel>.Create(View, _ActionQueueManager, enterOnInitialize);
         }
 
         /// <summary>
@@ -369,10 +401,19 @@ namespace Nova.Base
 			{
 				DisposeManagedResources();
 
-				if (ActionManager != null)
-					ActionManager.Dispose();
-				
-				ActionManager = null;
+			    if (_ActionManager != null)
+			    {
+			        _ActionManager.Dispose();
+                    _ActionManager = null;
+			    }
+
+                if (DisposeActionQueueManager && _ActionQueueManager != null)
+                {
+                    _ActionQueueManager.Dispose();
+                }
+
+			    _ActionQueueManager = null;
+
 			    View = null;
 			    _ErrorCollection = null;
 			}

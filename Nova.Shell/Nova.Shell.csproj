@@ -65,10 +65,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Actions\MainWindow\CloseSession.cs" />
+    <Compile Include="Actions\MainWindow\CloseSessionAction.cs" />
     <Compile Include="Actions\MainWindow\CreateNewSessionAction.cs" />
     <Compile Include="Actions\MainWindow\FocusTabAction.cs" />
     <Compile Include="Actions\MainWindow\ReadConfigurationAction.cs" />
+    <Compile Include="Actions\Session\NavigationAction.cs" />
     <Compile Include="Actions\Session\SessionLeaveStep.cs" />
     <Compile Include="DropShadow.xaml.cs">
       <DependentUpon>DropShadow.xaml</DependentUpon>
