@@ -43,6 +43,7 @@ namespace Nova.Shell.Actions.Session
             
             if (current != null)
             {
+                //TODO: Research if possible to wait here.
                 current.ViewModel.Leave();
             }
 
