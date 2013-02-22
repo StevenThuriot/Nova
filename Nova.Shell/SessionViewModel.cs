@@ -29,9 +29,10 @@ namespace Nova.Shell
         private IView _CurrentView;
         protected override void OnCreated()
         {
+            LeaveAction = Actionflow<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
+
             //TODO: Temporary default
             Navigate<TestPage, TestPageViewModel>();
-            LeaveAction = Actionflow<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
         }
 
         private string _Title = SessionViewResources.EmptySession;
@@ -39,10 +40,7 @@ namespace Nova.Shell
         public string Title
         {
             get { return _Title; }
-            set
-            {
-                SetValue(ref _Title, value);
-            }
+            set { SetValue(ref _Title, value); }
         }
         
         public void Navigate<TPageView, TPageViewModel>() 
