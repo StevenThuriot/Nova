@@ -306,7 +306,7 @@ namespace Nova.Base
             Save(objectToSave);
 
             var parameter = ActionContextEntry.Create("ObjectToSave", objectToSave);
-			ActionController.InvokeAction<SaveStateAction<TView, TViewModel>>(parameter);
+			InvokeAction<SaveStateAction<TView, TViewModel>>(parameter);
 		}
 
 		/// <summary>
@@ -315,7 +315,7 @@ namespace Nova.Base
 		/// </summary>
 		public void Load()
 		{
-			ActionController.InvokeAction<LoadStateAction<TView, TViewModel>>();
+			InvokeAction<LoadStateAction<TView, TViewModel>>();
 		}
 
     	/// <summary>
