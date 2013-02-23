@@ -28,7 +28,7 @@ namespace Nova.Shell.Actions.MainWindow
     /// <summary>
     /// Action To read in App.Config
     /// </summary>
-    public class ReadConfigurationAction : Base.Actionflow<MainView, MainViewModel>
+    public class ReadConfigurationAction : Actionflow<MainView, MainViewModel>
     {
         private BitmapImage _Icon;
 
