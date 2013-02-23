@@ -34,19 +34,19 @@ namespace Nova.Base
 	{
 		private bool _IsDisposed;
 
-		private IDictionary<string, ICommand> _Actions;
+		private readonly IDictionary<string, ICommand> _Actions;
 
-		private List<Type> _KnownTypes;
+		private readonly List<Type> _KnownTypes;
 		private List<Type> _ViewAndViewModelTypes;
 		private List<Type> _LoadedTypes;
 
-		private TView _View;
-		private TViewModel _ViewModel;
-
-		private MethodInfo _CreateAction;
+		private readonly TView _View;
+		private readonly TViewModel _ViewModel;
 
 		private readonly Type _ViewType;
-		private readonly Type _ViewModelType;
+        private readonly Type _ViewModelType;
+
+        private MethodInfo _CreateAction;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ActionManager&lt;TView, TViewModel&gt;"/> class.
@@ -286,31 +286,22 @@ namespace Nova.Base
 					}
 
 					_Actions.Clear();
-					_Actions = null;
 				}
 
 				if (_KnownTypes != null)
 				{
 					_KnownTypes.Clear();
-					_KnownTypes = null;
 				}
 
 				if (_ViewAndViewModelTypes != null)
 				{
 					_ViewAndViewModelTypes.Clear();
-					_ViewAndViewModelTypes = null;
 				}
 
 				if (_LoadedTypes != null)
 				{
 					_LoadedTypes.Clear();
-					_LoadedTypes = null;
 				}
-
-				_View = null;
-				_ViewModel = null;
-
-				_CreateAction = null;
 			}
 
 			_IsDisposed = true;

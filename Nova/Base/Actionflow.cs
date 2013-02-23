@@ -93,15 +93,6 @@ namespace Nova.Base
 			if (disposing)
 			{
 				DisposeManagedResources();
-                
-				View = null;
-				ViewModel = null;
-
-				if (ActionContext != null)
-				{
-					ActionContext.Clear();
-					ActionContext = null;
-				}
 			}
 
 			DisposeUnmanagedResources();
@@ -110,7 +101,15 @@ namespace Nova.Base
 
 		#endregion
 
-		#region Virtuals 
+		#region Virtuals
+
+        /// <summary>
+        /// Called before the action actually starts executing.
+        /// </summary>
+        public virtual void OnBefore()
+        {
+            
+        }
 
 		/// <summary>
 		/// Determines whether this instance can execute.
@@ -138,6 +137,14 @@ namespace Nova.Base
 		public virtual void ExecuteCompleted()
 		{
 		}
+
+        /// <summary>
+        /// Called after the action finishes executing.
+        /// </summary>
+        public virtual void OnAfter()
+        {
+
+        }
 
 		/// <summary>
 		/// Disposes the managed resources.
@@ -188,6 +195,7 @@ namespace Nova.Base
 		internal void InternalOnBefore()
 		{
             OnActionMethodRepository.OnBefore<Actionflow<TView, TViewModel>, TView, TViewModel>(this);
+		    OnBefore();
 		}
 		
 		/// <summary>
@@ -247,7 +255,8 @@ namespace Nova.Base
 		/// The logic that runs after the action.
 		/// </summary>
 		internal void InternalOnAfter()
-		{
+        {
+            OnAfter();
             OnActionMethodRepository.OnAfter<Actionflow<TView, TViewModel>, TView, TViewModel>(this);
 		}
 

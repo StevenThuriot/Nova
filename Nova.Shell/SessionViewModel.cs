@@ -18,6 +18,7 @@
 
 #endregion
 
+using System;
 using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
@@ -39,7 +40,8 @@ namespace Nova.Shell
         {
             SetKnownActionTypes(typeof(SessionLeaveStep));
 
-            LeaveAction = Actionflow<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
+            var leaveAction = Actionflow<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
+            SetLeaveAction(leaveAction);
         }
 
         /// <summary>
@@ -81,10 +83,10 @@ namespace Nova.Shell
             where TPageViewModel : ViewModel<TPageView, TPageViewModel>, new() 
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
-            var nextView = CreatePage<TPageView, TPageViewModel>(enterOnInitialize: false);
-
             var current = ActionContextEntry.Create(CurrentViewConstant, _CurrentView, false);
-            var next = ActionContextEntry.Create(NextViewConstant, nextView, false);
+
+            var createNextView = new Func<IView>(() => CreatePage<TPageView, TPageViewModel>(enterOnInitialize: false));
+            var next = ActionContextEntry.Create(NextViewConstant, createNextView, false);
 
             InvokeAction<NavigationAction>(current, next);
         }

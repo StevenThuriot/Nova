@@ -208,10 +208,7 @@ namespace Nova.Base
 				if (_Action != null)
 				{
 					_Action.Dispose();
-					_Action = null;
 				}
-
-				_Controller = null;
 			}
 
 			_Disposed = true;

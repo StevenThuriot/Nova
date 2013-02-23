@@ -70,13 +70,13 @@ namespace Nova.Base
         /// The viewmodel's EnterAction, which triggers when entering this view.
         /// If not set, the default EnterAction will be used.
         /// </summary>
-        protected EnterAction<TView, TViewModel> EnterAction { get; set; }
+        private EnterAction<TView, TViewModel> _EnterAction;
 
         /// <summary>
         /// The viewmodel's LeaveAction, which triggers when leaving this view.
         /// If not set, the default EnterAction will be used.
         /// </summary>
-        protected LeaveAction<TView, TViewModel> LeaveAction { get; set; }
+        private LeaveAction<TView, TViewModel> _LeaveAction;
 
         /// <summary>
         /// Gets or sets the ViewModel ID.
@@ -214,13 +214,13 @@ namespace Nova.Base
         /// </summary>
         public void Enter()
         {
-            if (EnterAction == null)
+            if (_EnterAction == null)
             {
                 InvokeAction<EnterAction<TView, TViewModel>>();
             }
             else
             {
-                ActionController.InternalInvokeAction(EnterAction);
+                ActionController.InternalInvokeAction(_EnterAction);
             }
         }
 
@@ -229,14 +229,42 @@ namespace Nova.Base
         /// </summary>
         public void Leave()
         {
-            if (LeaveAction == null)
+            if (_LeaveAction == null)
             {
                 InvokeAction<LeaveAction<TView, TViewModel>>();
             }
             else
             {
-                ActionController.InternalInvokeAction(LeaveAction);
+                ActionController.InternalInvokeAction(_LeaveAction);
             }
+        }
+
+        /// <summary>
+        /// Sets the enter action.
+        /// </summary>
+        /// <param name="enterAction">The enter action.</param>
+        protected void SetEnterAction(EnterAction<TView, TViewModel> enterAction)
+        {
+            if (_EnterAction != null)
+            {
+                _EnterAction.Dispose();
+            }
+
+            _EnterAction = enterAction;
+        }
+
+        /// <summary>
+        /// Sets the leave action.
+        /// </summary>
+        /// <param name="leaveAction">The leave action.</param>
+        protected void SetLeaveAction(LeaveAction<TView, TViewModel> leaveAction)
+        {
+            if (_LeaveAction != null)
+            {
+                _LeaveAction.Dispose();
+            }
+
+            _LeaveAction = leaveAction;
         }
 
 		/// <summary>
@@ -404,7 +432,6 @@ namespace Nova.Base
 			    if (_ActionManager != null)
 			    {
 			        _ActionManager.Dispose();
-                    _ActionManager = null;
 			    }
 
                 if (DisposeActionQueueManager && _ActionQueueManager != null)
@@ -412,10 +439,15 @@ namespace Nova.Base
                     _ActionQueueManager.Dispose();
                 }
 
-			    _ActionQueueManager = null;
+                if (_EnterAction != null)
+                {
+                    _EnterAction.Dispose();
+                }
 
-			    View = null;
-			    _ErrorCollection = null;
+                if (_LeaveAction != null)
+                {
+                    _LeaveAction.Dispose();
+                }
 			}
 
 		    DisposeUnmanagedResources();

@@ -38,6 +38,9 @@ namespace Nova.Base
     {
         private ValidationResults _ValidationResults;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValidatableActionflow{TViewModel}" /> class.
+        /// </summary>
         protected ValidatableActionflow()
         {
             _ValidationResults = new ValidationResults();

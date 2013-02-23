@@ -18,6 +18,7 @@
 
 #endregion
 
+using System;
 using Nova.Base;
 using Nova.Controls;
 using Nova.Threading;
@@ -32,10 +33,18 @@ namespace Nova.Shell.Actions.Session
     {
         private IView _NextView;
 
+        public override void OnBefore()
+        {
+            var createNextView = ActionContext.GetValue<Func<IView>>(SessionViewModel.NextViewConstant);
+
+            if (createNextView != null)
+            {
+                _NextView = createNextView();
+            }
+        }
+
         public override bool Execute()
         {
-            _NextView = ActionContext.GetValue<IView>(SessionViewModel.NextViewConstant);
-
             if (_NextView == null)
                 return false;
             
@@ -43,7 +52,7 @@ namespace Nova.Shell.Actions.Session
             
             if (current != null)
             {
-                //TODO: Research if possible to wait here.
+                //TODO: Research if possible to wait here. Should also check if action could leave successfuly or not.
                 current.ViewModel.Leave();
             }
 

@@ -213,7 +213,6 @@ namespace Nova.Controls
                 if (_ViewModel != null)
                 {
                     _ViewModel.Dispose();
-                    _ViewModel = null;
                 }
 
                 _Lock.Dispose();
