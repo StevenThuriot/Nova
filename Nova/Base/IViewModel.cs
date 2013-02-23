@@ -20,6 +20,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Nova.Controls;
 using Nova.Validation;
 
@@ -65,12 +66,13 @@ namespace Nova.Base
         /// <summary>
         /// Called to trigger all the Entering logic for this ViewModel.
         /// </summary>
-        void Enter();
+        Task<bool> Enter();
 
         /// <summary>
         /// Called to trigger all the Leaving logic for this ViewModel.
         /// </summary>
-        void Leave();
+        /// <returns>True if leaving was successful.</returns>
+        Task<bool> Leave();
 
         /// <summary>
         /// Saves this instance.

@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Nova.Controls;
 using Nova.Properties;
@@ -68,15 +69,17 @@ namespace Nova.Base
         /// <param name="disposeActionDuringCleanup">Dispose the action after execution, during cleanup.</param>
         /// <param name="executeCompleted">The action to invoke when the async execution completes.</param>
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        private void Invoke<T>(T actionToRun, bool disposeActionDuringCleanup, Action executeCompleted = null)
+        private IAction Invoke<T>(T actionToRun, bool disposeActionDuringCleanup, Action executeCompleted = null)
             where T : Actionflow<TView, TViewModel>
         {
             if (actionToRun == null)
-                return;
+                return null;
 
             var action = PrepareAction(actionToRun, disposeActionDuringCleanup, executeCompleted);
 
             _ActionQueueManager.Queue(action);
+
+            return action;
         }
 
         /// <summary>
@@ -93,7 +96,7 @@ namespace Nova.Base
             if (actionToRun == null)
                 return null;
                         
-            var action = actionToRun.Wrap(x => x.ViewModel.ID, x => GetInitializationMethod(x), mainThread: true)
+            var action = actionToRun.Wrap(x => x.ViewModel.ID, x => GetInitializationMethod(x), actionToRun.RanSuccesfully, mainThread: true)
                                                          
                                                          .CanExecute(actionToRun.CanExecute)
                                                          
@@ -120,7 +123,7 @@ namespace Nova.Base
         /// <param name="actionContext">The action context.</param>
         /// <param name="executeCompleted">The action to invoke when the async execution completes.</param>
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        private void Invoke<T>(ActionContext actionContext, Action executeCompleted = null)
+        private IAction Invoke<T>(ActionContext actionContext, Action executeCompleted = null)
             where T : Actionflow<TView, TViewModel>, new()
         {
             T actionToRun = null;
@@ -134,7 +137,7 @@ namespace Nova.Base
                 ExceptionHandler.Handle(exception, Resources.ErrorMessageAction);
             }
 
-            Invoke(actionToRun, true, executeCompleted);
+            return Invoke(actionToRun, true, executeCompleted);
         }
 
         /// <summary>
@@ -195,6 +198,18 @@ namespace Nova.Base
             return actionContext;
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
         /// <summary>
         ///     Invokes the action.
         /// </summary>
@@ -237,6 +252,77 @@ namespace Nova.Base
             where T : Actionflow<TView, TViewModel>, new()
         {
             Invoke(actionToRun, disposeActionDuringCleanup, executeCompleted);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        ///     Invokes the action.
+        /// </summary>
+        /// <typeparam name="T">The type of action to invoke.</typeparam>
+        /// <param name="arguments">The arguments.</param>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter",
+            Justification = "Required by called method.")]
+        public async Task<bool> InvokeActionAsync<T>(params ActionContextEntry[] arguments)
+            where T : Actionflow<TView, TViewModel>, new()
+        {
+            ActionContext actionContext = PrepareActionContext(arguments);
+            var action = Invoke<T>(actionContext);
+
+            if (action == null)
+                return false;
+
+            return await action.GetSuccessAsync();
+        }
+
+        /// <summary>
+        ///     Invokes the action.
+        /// </summary>
+        /// <typeparam name="T">The type of action to invoke.</typeparam>
+        /// <param name="sender">The sender.</param>
+        /// <param name="arguments">The arguments.</param>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter",
+            Justification = "Required by called method.")]
+        public async Task<bool> InvokeActionAsync<T>(UIElement sender, params ActionContextEntry[] arguments)
+            where T : Actionflow<TView, TViewModel>, new()
+        {
+            sender.IsEnabled = false;
+            ActionContext actionContext = PrepareActionContext(arguments);
+            var action = Invoke<T>(actionContext, () => sender.IsEnabled = true);
+
+            if (action == null)
+                return false;
+
+            return await action.GetSuccessAsync();
+        }
+
+        /// <summary>
+        ///     Invokes the action.
+        ///     This call is for internal means only.
+        /// </summary>
+        /// <typeparam name="T">The type of action to invoke.</typeparam>
+        /// <param name="actionToRun">The action to run.</param>
+        /// <param name="disposeActionDuringCleanup">Dispose the action after execution, during cleanup.</param>
+        /// <param name="executeCompleted">The action to execute after completion.</param>
+        internal async Task<bool> InternalInvokeActionAsync<T>(T actionToRun, bool disposeActionDuringCleanup = true, Action executeCompleted = null)
+            where T : Actionflow<TView, TViewModel>, new()
+        {
+            var action = Invoke(actionToRun, disposeActionDuringCleanup, executeCompleted);
+
+            if (action == null)
+                return false;
+
+            return await action.GetSuccessAsync();
         }
     }
 }

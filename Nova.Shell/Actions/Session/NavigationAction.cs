@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Threading.Tasks;
 using Nova.Base;
 using Nova.Controls;
 using Nova.Threading;
@@ -32,11 +33,12 @@ namespace Nova.Shell.Actions.Session
     public class NavigationAction : Actionflow<SessionView, SessionViewModel>
     {
         private IView _NextView;
+        private IView _Current;
 
         public override void OnBefore()
         {
             var createNextView = ActionContext.GetValue<Func<IView>>(SessionViewModel.NextViewConstant);
-
+            
             if (createNextView != null)
             {
                 _NextView = createNextView();
@@ -47,21 +49,40 @@ namespace Nova.Shell.Actions.Session
         {
             if (_NextView == null)
                 return false;
-            
-            var current = ActionContext.GetValue<IView>(SessionViewModel.CurrentViewConstant);
-            
-            if (current != null)
+
+            _Current = ActionContext.GetValue<IView>(SessionViewModel.CurrentViewConstant);
+
+            return EnterCurrentAndLeaveOldStep().Result;
+        }
+
+        private async Task<bool> EnterCurrentAndLeaveOldStep()
+        {
+            var result = await _NextView.ViewModel.Enter();
+
+            if (!result)
             {
-                //TODO: Research if possible to wait here. Should also check if action could leave successfuly or not.
-                current.ViewModel.Leave();
+                //Can't enter the new step.
+                await _NextView.ViewModel.Leave();
+                return false;
             }
 
-            return base.Execute();
+            if (_Current == null)
+                return true;
+
+            result = await _Current.ViewModel.Leave(); 
+            
+            if (!result)
+            {
+                //Leaving the old step has been blocked by the leave action (e.g. by a dirty viewmodel that requires saving first).
+                await _NextView.ViewModel.Leave();
+                return false;
+            }
+            
+            return true;
         }
 
         public override void ExecuteCompleted()
         {
-            _NextView.ViewModel.Enter();
             ViewModel.CurrentView = _NextView;
         }
     }

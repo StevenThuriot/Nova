@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using Nova.Base.Actions;
 using Nova.Controls;
@@ -212,31 +213,21 @@ namespace Nova.Base
         /// <summary>
         /// Called to trigger all the Entering logic for this ViewModel.
         /// </summary>
-        public void Enter()
+        public async Task<bool> Enter()
         {
-            if (_EnterAction == null)
-            {
-                InvokeAction<EnterAction<TView, TViewModel>>();
-            }
-            else
-            {
-                ActionController.InternalInvokeAction(_EnterAction);
-            }
+            return _EnterAction == null
+                       ? await ActionController.InvokeActionAsync<EnterAction<TView, TViewModel>>()
+                       : await ActionController.InternalInvokeActionAsync(_EnterAction);
         }
 
         /// <summary>
         /// Called to trigger all the Leaving logic for this ViewModel.
         /// </summary>
-        public void Leave()
+        public async Task<bool> Leave()
         {
-            if (_LeaveAction == null)
-            {
-                InvokeAction<LeaveAction<TView, TViewModel>>();
-            }
-            else
-            {
-                ActionController.InternalInvokeAction(_LeaveAction);
-            }
+            return _LeaveAction == null
+                       ? await ActionController.InvokeActionAsync<LeaveAction<TView, TViewModel>>()
+                       : await ActionController.InternalInvokeActionAsync(_LeaveAction);
         }
 
         /// <summary>
@@ -321,7 +312,10 @@ namespace Nova.Base
 
             if (enterOnInitialize)
             {
+                //Ignore warning because we don't want to keep waiting for this result.
+#pragma warning disable 4014
                 Enter();
+#pragma warning restore 4014
             }
         }
 

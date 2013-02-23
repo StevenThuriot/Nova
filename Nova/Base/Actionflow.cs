@@ -260,6 +260,15 @@ namespace Nova.Base
             OnActionMethodRepository.OnAfter<Actionflow<TView, TViewModel>, TView, TViewModel>(this);
 		}
 
+        /// <summary>
+        /// Returns a value wheter this instance ran successfully.
+        /// </summary>
+        /// <returns></returns>
+        internal bool RanSuccesfully()
+        {
+            return ActionContext.IsSuccessful;
+        }
+
 	    #endregion
 	}
 }
