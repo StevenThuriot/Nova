@@ -155,14 +155,11 @@ namespace Nova.Shell
                                 typeof(FocusTabAction),
                                 typeof(ReadConfigurationAction));
 
+            InvokeAction<ReadConfigurationAction>();
+
             View.AddHandler(ClosableTabItem.CloseTabEvent, new RoutedEventHandler(CloseSession));
 
             SetInitialSession();
-        }
-
-        public void OnAfterEnter()
-        {
-            InvokeAction<ReadConfigurationAction>();
         }
 
         /// <summary>

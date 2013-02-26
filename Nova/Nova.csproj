@@ -193,6 +193,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Base\ActionContext.cs" />
     <Compile Include="Base\ActionContextEntry.cs" />
     <Compile Include="Base\ActionController.cs" />

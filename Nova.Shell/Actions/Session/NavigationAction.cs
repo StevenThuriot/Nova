@@ -57,6 +57,8 @@ namespace Nova.Shell.Actions.Session
 
         private async Task<bool> EnterCurrentAndLeaveOldStep()
         {
+            //TODO: Check if leaving the old step is possible. (e.g. dirty state etc). If false, we don't have to do any of the below and just warn the user.
+
             var result = await _NextView.ViewModel.Enter();
 
             if (!result)
