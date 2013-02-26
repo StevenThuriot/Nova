@@ -22,14 +22,12 @@ using System.Configuration;
 using System.Linq;
 using System.Windows.Media.Imaging;
 using Nova.Base;
-using Nova.Threading;
 
 namespace Nova.Shell.Actions.MainWindow
 {
     /// <summary>
     /// Action To read in App.Config
     /// </summary>
-    [Unqueued]
     public class ReadConfigurationAction : Actionflow<MainView, MainViewModel>
     {
         private BitmapImage _Icon;

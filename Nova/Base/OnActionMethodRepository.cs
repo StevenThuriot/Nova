@@ -17,6 +17,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -249,6 +250,10 @@ namespace Nova.Base
 
 			try
             {
+
+#if DEBUG
+                var sw = Stopwatch.StartNew();
+#endif
                 var actionType = action.GetType();
 
 				var viewMethods = GetOnAfterViewMethods<TView, TViewModel>(actionType);
@@ -261,12 +266,20 @@ namespace Nova.Base
 				foreach (var viewModelMethod in viewModelMethods)
 				{
 					viewModelMethod.Invoke(action.ViewModel, action.ActionContext);
-				}
+                }
+
+#if DEBUG
+                sw.Stop();
+
+                Debug.Write("Executed OnBefore/OnAfter methods for type " + actionType.FullName + ": ");
+                Debug.Write(sw.ElapsedMilliseconds);
+                Debug.WriteLine(" ms.");
+#endif
 			}
 			catch (Exception exception)
 			{
                 ExceptionHandler.Handle(exception, Resources.ErrorMessageMainThread);
-			}
+            }
 		}
 	}
 }

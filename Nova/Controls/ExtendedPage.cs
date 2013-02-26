@@ -122,7 +122,7 @@ namespace Nova.Controls
                     _Parent = parent
                 };
 
-            page.ViewModel = ViewModel<TView, TViewModel>.Create(page, actionQueueManager);
+            page.ViewModel = ViewModel<TView, TViewModel>.Create(page, actionQueueManager, enterOnInitialize);
 
             return page;
         }        
