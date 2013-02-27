@@ -18,30 +18,12 @@
 
 #endregion
 
-using Nova.Base;
-using Nova.Controls;
-using Nova.Shell.Library;
+using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
-namespace Nova.Shell
-{
-    /// <summary>
-    /// Interaction logic for TestPage.xaml
-    /// </summary>
-    public partial class TestPage
-    {
-        public TestPage()
-        {
-            InitializeComponent();
-        }
-    }
-
-    public abstract class TestPageBase : ExtendedPage<TestPage, TestPageViewModel>
-    {
-
-    }
-
-    public class TestPageViewModel : SessionViewModel<TestPage, TestPageViewModel> 
-    {
-        
-    }
-}
+[assembly: AssemblyTitle("Nova.Shell.Library")]
+[assembly: AssemblyProduct("Nova.Shell.Library")]
+[assembly: ComVisible(false)]
+[assembly: CLSCompliant(true)]
+[assembly: Guid("87ac3ac4-240d-4d53-bf22-59934c261af7")]

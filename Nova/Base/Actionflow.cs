@@ -28,8 +28,8 @@ namespace Nova.Base
 	/// <typeparam name="TView">The type of the view.</typeparam>
 	/// <typeparam name="TViewModel">The type of the view model.</typeparam>
 	public abstract class Actionflow<TView, TViewModel> : IDisposable
-		where TView : class, IView
-		where TViewModel : ViewModel<TView, TViewModel>, new()
+		where TView : IView
+		where TViewModel : IViewModel
 	{
 		private bool _Disposed;
 

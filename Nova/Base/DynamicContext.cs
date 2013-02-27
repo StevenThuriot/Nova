@@ -22,6 +22,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Permissions;
+using System.Threading.Tasks;
 
 namespace Nova.Base
 {
@@ -126,14 +127,17 @@ namespace Nova.Base
 		/// </summary>
 		/// <typeparam name="T">The type of class this object is saved on. Used to derive a filename.</typeparam>
 		/// <param name="objectToSave">The object to save.</param>
-		public static void Save<T>(DynamicContext objectToSave)
+		public async static Task Save<T>(DynamicContext objectToSave)
 		{
-			var type = GetSerializationName(typeof(T));
-			using (var file = File.Create(type))
-			{
-				var formatter = new BinaryFormatter();
-				formatter.Serialize(file, objectToSave);
-			}
+		    await Task.Run(() =>
+		        {
+		            var type = GetSerializationName(typeof (T));
+		            using (var file = File.Create(type))
+		            {
+		                var formatter = new BinaryFormatter();
+		                formatter.Serialize(file, objectToSave);
+		            }
+		        });
 		}
 
 		/// <summary>
@@ -141,17 +145,20 @@ namespace Nova.Base
 		/// </summary>
 		/// <typeparam name="T">The type of class this object is saved on. Used to derive a filename.</typeparam>
 		/// <returns>The deserialized instance.</returns>
-		public static DynamicContext Load<T>()
+		public async static Task<DynamicContext> Load<T>()
 		{
-			var fileName = GetSerializationName(typeof (T));
+		    return await Task.Run(() =>
+		        {
+		            var fileName = GetSerializationName(typeof (T));
 
-			if (!File.Exists(fileName)) return new DynamicContext();
+		            if (!File.Exists(fileName)) return new DynamicContext();
 
-			using (var file = File.OpenRead(fileName))
-			{
-				var formatter = new BinaryFormatter();
-				return (DynamicContext)formatter.Deserialize(file);
-			}
+		            using (var file = File.OpenRead(fileName))
+		            {
+		                var formatter = new BinaryFormatter();
+		                return (DynamicContext) formatter.Deserialize(file);
+		            }
+		        });
 		}
 
 		/// <summary>

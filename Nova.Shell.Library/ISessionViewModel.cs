@@ -19,29 +19,20 @@
 #endregion
 
 using Nova.Base;
-using Nova.Controls;
-using Nova.Shell.Library;
 
-namespace Nova.Shell
+namespace Nova.Shell.Library
 {
     /// <summary>
-    /// Interaction logic for TestPage.xaml
+    /// The interface for a session viewmodel.
     /// </summary>
-    public partial class TestPage
+    public interface ISessionViewModel : IViewModel
     {
-        public TestPage()
-        {
-            InitializeComponent();
-        }
-    }
-
-    public abstract class TestPageBase : ExtendedPage<TestPage, TestPageViewModel>
-    {
-
-    }
-
-    public class TestPageViewModel : SessionViewModel<TestPage, TestPageViewModel> 
-    {
-        
+        /// <summary>
+        /// Gets or sets the session model.
+        /// </summary>
+        /// <value>
+        /// The session model.
+        /// </value>
+        dynamic SessionModel { get; }
     }
 }

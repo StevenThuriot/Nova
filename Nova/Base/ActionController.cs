@@ -37,8 +37,8 @@ namespace Nova.Base
     /// <typeparam name="TView">The View.</typeparam>
     /// <typeparam name="TViewModel">The ViewModel.</typeparam>
     public class ActionController<TView, TViewModel>
-        where TViewModel : ViewModel<TView, TViewModel>, new()
-        where TView : class, IView
+        where TViewModel : IViewModel
+        where TView : IView
     {
         private readonly IActionQueueManager _ActionQueueManager;
         private readonly ICollection<Actionflow<TView, TViewModel>> _Actions;

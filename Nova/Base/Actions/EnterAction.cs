@@ -30,8 +30,8 @@ namespace Nova.Base.Actions
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     [Creational]
     public class EnterAction<TView, TViewModel> : Actionflow<TView, TViewModel>
-		where TView : class, IView
-		where TViewModel : ViewModel<TView, TViewModel>, new()
+		where TView : IView
+		where TViewModel : IViewModel
     {
         /// <summary>
         /// Executes async.

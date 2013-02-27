@@ -169,6 +169,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nova.Shell.Library\Nova.Shell.Library.csproj">
+      <Project>{cbccf92e-bd4f-4a85-b10f-14686cda7d81}</Project>
+      <Name>Nova.Shell.Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nova.Threading\Nova.Threading.csproj">
       <Project>{28f961f0-1305-46ee-bc24-0a04d89f1e9e}</Project>
       <Name>Nova.Threading</Name>

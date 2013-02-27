@@ -22,6 +22,7 @@ using System;
 using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
+using Nova.Shell.Library;
 
 namespace Nova.Shell
 {
@@ -80,7 +81,7 @@ namespace Nova.Shell
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         public void Navigate<TPageView, TPageViewModel>() 
-            where TPageViewModel : ViewModel<TPageView, TPageViewModel>, new() 
+            where TPageViewModel : SessionViewModel<TPageView, TPageViewModel>, new() 
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
             var current = ActionContextEntry.Create(CurrentViewConstant, _CurrentView, false);

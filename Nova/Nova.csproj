@@ -202,8 +202,6 @@
     <Compile Include="Base\ActionManager.cs" />
     <Compile Include="Base\Actions\EnterAction.cs" />
     <Compile Include="Base\Actions\LeaveAction.cs" />
-    <Compile Include="Base\Actions\LoadStateAction.cs" />
-    <Compile Include="Base\Actions\SaveStateAction.cs" />
     <Compile Include="Base\Actionflow.cs" />
     <Compile Include="Base\IViewModel.cs" />
     <Compile Include="Base\ValidatableActionflow.cs" />

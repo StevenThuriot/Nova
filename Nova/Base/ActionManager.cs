@@ -29,8 +29,8 @@ namespace Nova.Base
 	/// The action manager, to dynamically create and cache RoutedActions.
 	/// </summary>
 	public class ActionManager<TView, TViewModel> : DynamicObject, IDisposable
-		where TView : class, IView
-		where TViewModel : ViewModel<TView, TViewModel>, new()
+		where TView : IView
+		where TViewModel : IViewModel
 	{
 		private bool _IsDisposed;
 

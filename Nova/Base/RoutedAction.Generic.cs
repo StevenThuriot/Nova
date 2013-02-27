@@ -33,7 +33,7 @@ namespace Nova.Base
 	/// <typeparam name="TViewModel">The type of the view model.</typeparam>
 	internal class RoutedAction<T, TView, TViewModel> : ICommand, IDisposable
 		where TView : class, IView
-		where TViewModel : ViewModel<TView, TViewModel>, new()
+		where TViewModel : ViewModel<TView,TViewModel>, new()
 		where T : Actionflow<TView, TViewModel>, new()
 	{
 		private T _Action;
@@ -88,7 +88,7 @@ namespace Nova.Base
 
 		private void FindController(TViewModel viewModel)
 		{
-			var extendedView = viewModel as ViewModel<TView, TViewModel>;
+			var extendedView = viewModel as IViewModel;
 
 			if (extendedView != null)
 			{

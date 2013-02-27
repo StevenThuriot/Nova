@@ -88,6 +88,9 @@ namespace Nova.Test
 		public void OnAfterThrowException(ActionContext context)
 		{
 			MessageBox.Show("On After VM");
+
+            Save();
+            Load();
 		}
 		protected override void Save(dynamic value)
 		{

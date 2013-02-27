@@ -322,22 +322,28 @@ namespace Nova.Base
         /// <summary>
 		/// Saves this instance.
 		/// </summary>
-		public void Save()
+		public async void Save()
 		{
 		    var objectToSave = new DynamicContext();
             Save(objectToSave);
 
-            var parameter = ActionContextEntry.Create("ObjectToSave", objectToSave);
-			InvokeAction<SaveStateAction<TView, TViewModel>>(parameter);
+            if (!objectToSave.IsEmpty)
+            {
+                await DynamicContext.Save<TViewModel>(objectToSave);
+            }
 		}
 
 		/// <summary>
 		/// Loads this instance.
 		/// Load(value) will only trigger in case the ViewModel has been saved before.
 		/// </summary>
-		public void Load()
+		public async void Load()
 		{
-			InvokeAction<LoadStateAction<TView, TViewModel>>();
+			var dynamicContext = await DynamicContext.Load<TViewModel>();
+
+		    if (dynamicContext.IsEmpty) return;
+
+		    Load(dynamicContext);
 		}
 
     	/// <summary>
@@ -346,14 +352,14 @@ namespace Nova.Base
 		/// All the parameters added should be serializable.
 		/// </summary>
 		/// <param name="value">The object to save.</param>
-		protected internal virtual void Save(dynamic value) { }
+		protected virtual void Save(dynamic value) { }
 
 		/// <summary>
 		/// You can use this method to specify what exactly you want to load.
 		/// Retreive everything to the object and load it back onto your ViewModel.
 		/// </summary>
 		/// <param name="value">The object to load.</param>
-		protected internal virtual void Load(dynamic value) { }
+		protected virtual void Load(dynamic value) { }
 
         /// <summary>
         /// Invokes the specified action.
