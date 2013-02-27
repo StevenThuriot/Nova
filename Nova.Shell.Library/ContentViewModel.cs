@@ -19,20 +19,30 @@
 #endregion
 
 using Nova.Base;
+using Nova.Controls;
 
 namespace Nova.Shell.Library
 {
     /// <summary>
-    /// The interface for a session viewmodel.
+    /// A viewmodel for pages that belong to a session.
     /// </summary>
-    public interface ISessionViewModel : IViewModel
+    /// <typeparam name="TView">The type of the view.</typeparam>
+    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+    public abstract class ContentViewModel<TView, TViewModel> : ViewModel<TView, TViewModel>, IContentViewModel 
+        where TView : class, IView
+        where TViewModel : ViewModel<TView, TViewModel>, new()
     {
+        private dynamic _SessionModel;
         /// <summary>
         /// Gets or sets the session model.
         /// </summary>
         /// <value>
         /// The session model.
         /// </value>
-        dynamic SessionModel { get; }
+        public dynamic SessionModel
+        {
+            get { return _SessionModel; }
+            internal set { SetValue(ref _SessionModel, value); }
+        }
     }
 }

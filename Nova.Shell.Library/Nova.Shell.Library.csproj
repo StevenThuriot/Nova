@@ -54,8 +54,8 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="SessionViewModel.cs" />
-    <Compile Include="ISessionViewModel.cs" />
+    <Compile Include="ContentViewModel.cs" />
+    <Compile Include="IContentViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

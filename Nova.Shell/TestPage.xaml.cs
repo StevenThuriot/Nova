@@ -40,7 +40,7 @@ namespace Nova.Shell
 
     }
 
-    public class TestPageViewModel : SessionViewModel<TestPage, TestPageViewModel> 
+    public class TestPageViewModel : ContentViewModel<TestPage, TestPageViewModel> 
     {
         
     }

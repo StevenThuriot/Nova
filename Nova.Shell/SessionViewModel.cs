@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Dynamic;
 using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
@@ -28,6 +29,14 @@ namespace Nova.Shell
 {
     public class SessionViewModel : ViewModel<SessionView, SessionViewModel>
     {
+        /// <summary>
+        /// Gets the session model.
+        /// </summary>
+        /// <value>
+        /// The session model.
+        /// </value>
+        public dynamic SessionModel { get; private set; }
+
         internal const string CurrentViewConstant = "CurrentView";
         internal const string NextViewConstant = "NextView";
 
@@ -35,12 +44,20 @@ namespace Nova.Shell
         private IView _CurrentView;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SessionViewModel" /> class.
+        /// </summary>
+        public SessionViewModel()
+        {
+            SessionModel = new ExpandoObject();
+        }
+
+        /// <summary>
         /// Called when [created].
         /// </summary>
         protected override void OnCreated()
         {
             SetKnownActionTypes(typeof(SessionLeaveStep));
-
+            
             var leaveAction = Actionflow<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
             SetLeaveAction(leaveAction);
         }
@@ -81,15 +98,31 @@ namespace Nova.Shell
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         public void Navigate<TPageView, TPageViewModel>() 
-            where TPageViewModel : SessionViewModel<TPageView, TPageViewModel>, new() 
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new() 
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
             var current = ActionContextEntry.Create(CurrentViewConstant, _CurrentView, false);
 
-            var createNextView = new Func<IView>(() => CreatePage<TPageView, TPageViewModel>(enterOnInitialize: false));
+            var createNextView = new Func<IView>(CreatePage<TPageView, TPageViewModel>);
             var next = ActionContextEntry.Create(NextViewConstant, createNextView, false);
 
             InvokeAction<NavigationAction>(current, next);
+        }
+
+        /// <summary>
+        /// Creates a page specifically for the content zone and fills in the session model.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <returns></returns>
+        private TPageView CreatePage<TPageView, TPageViewModel>()
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
+        {
+            var page = CreatePage<TPageView, TPageViewModel>(false);
+            page.ViewModel.SessionModel = SessionModel;
+
+            return page;
         }
 
         public void OnAfterEnter()
