@@ -20,9 +20,11 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shell;
 using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Actions.MainWindow;
@@ -215,6 +217,8 @@ namespace Nova.Shell
         private void MinimizeView(object obj)
         {
             SystemCommands.MinimizeWindow(View);
+
+            FixWindowChromeBug();
         }
 
         /// <summary>
@@ -232,6 +236,24 @@ namespace Nova.Shell
             {
                 SystemCommands.RestoreWindow(View);
             }
+
+            FixWindowChromeBug();
+        }
+
+        /// <summary>
+        /// Fixes the window chrome bug.
+        /// When minimizing and maximizing a lot, the icon disappears from the task bar.
+        /// 
+        /// Removing WindowChrome, waiting a little bit and setting it again seems to resolve it.
+        /// </summary>
+        private async void FixWindowChromeBug()
+        {
+            var chrome = WindowChrome.GetWindowChrome(View);
+            WindowChrome.SetWindowChrome(View, null);
+
+            await Task.Delay(10);
+
+            WindowChrome.SetWindowChrome(View, chrome);
         }
 
         /// <summary>

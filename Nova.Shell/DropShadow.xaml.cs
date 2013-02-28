@@ -121,8 +121,6 @@ namespace Nova.Shell
             Show();
             window.Owner = this;
 
-            window.Focus();
-
             await Task.Delay(250);
             Initialize(window);
         }
