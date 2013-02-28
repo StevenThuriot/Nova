@@ -19,9 +19,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Nova.Controls;
@@ -41,8 +39,6 @@ namespace Nova.Base
         where TView : IView
     {
         private readonly IActionQueueManager _ActionQueueManager;
-        private readonly ICollection<Actionflow<TView, TViewModel>> _Actions;
-        private readonly object _Lock;
         private readonly TView _View;
         private readonly TViewModel _ViewModel;
 
@@ -54,11 +50,9 @@ namespace Nova.Base
         /// <param name="actionQueueManager">The Action Queue Manager</param>
         public ActionController(TView view, TViewModel viewModel, IActionQueueManager actionQueueManager)
         {
-            _Lock = new object();
             _View = view;
             _ViewModel = viewModel;
             _ActionQueueManager = actionQueueManager;
-            _Actions = new List<Actionflow<TView, TViewModel>>();
         }
 
         /// <summary>
@@ -90,23 +84,30 @@ namespace Nova.Base
         /// <param name="disposeActionDuringCleanup">Dispose the action after execution, during cleanup.</param>
         /// <param name="executeCompleted">The action to invoke when the async execution completes.</param>
         /// <returns>The action to run in an IAction format.</returns>
-        private IAction PrepareAction<T>(T actionToRun, bool disposeActionDuringCleanup, Action executeCompleted)
+        private static IAction PrepareAction<T>(T actionToRun, bool disposeActionDuringCleanup, Action executeCompleted)
             where T : Actionflow<TView, TViewModel>
         {
             if (actionToRun == null)
                 return null;
-                        
-            var action = actionToRun.Wrap(x => x.ViewModel.ID, x => GetInitializationMethod(x), actionToRun.RanSuccesfully, mainThread: true)
-                                                         
-                                                         .CanExecute(actionToRun.CanExecute)
-                                                         
-                                                         .ContinueWith(actionToRun.InternalOnBefore, mainThread: true)
-                                                         .ContinueWith(actionToRun.InternalExecute)
-                                                         .ContinueWith(actionToRun.InternalExecuteCompleted, mainThread: true)
-                                                         
-                                                         .ContinueWith(actionToRun.InternalOnAfter, mainThread: true)
-                                                         
-                                                         .FinishWith(() => CleanUp(actionToRun, disposeActionDuringCleanup), mainThread: true); //Main Thread because view logic in clean up. (e.g. IsLoading)
+
+            var action = actionToRun.Wrap(x => x.ViewModel.ID, x => x.View.StartLoading, x => x.RanSuccesfully, mainThread: true)
+
+                                    .CanExecute(actionToRun.CanExecute)
+
+                                    .ContinueWith(actionToRun.InternalOnBefore, mainThread: true)
+                                    .ContinueWith(actionToRun.InternalExecute)
+                                    .ContinueWith(actionToRun.InternalExecuteCompleted, mainThread: true)
+
+                                    .ContinueWith(actionToRun.InternalOnAfter, mainThread: true)
+
+                                    .FinishWith(() =>
+                                        {
+                                            actionToRun.View.StopLoading();
+
+                                            if (disposeActionDuringCleanup)
+                                                actionToRun.Dispose();
+
+                                        }, mainThread: true); //Main Thread because view logic in clean up. (e.g. IsLoading)
 
             if (executeCompleted != null)
             {
@@ -139,48 +140,7 @@ namespace Nova.Base
 
             return Invoke(actionToRun, true, executeCompleted);
         }
-
-        /// <summary>
-        /// Initiation method that needs to run when an action starts executing.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="actionToRun">The action to run.</param>
-        private Func<bool> GetInitializationMethod<T>(T actionToRun)
-            where T : Actionflow<TView, TViewModel>
-        {
-
-            return () =>
-                {
-                    lock (_Lock)
-                    {
-                        actionToRun.View.StartLoading();
-                        _Actions.Add(actionToRun);
-                    }
-
-                    return true;
-                };
-
-        }
-
-        /// <summary>
-        ///     Cleans up the specified action.
-        /// </summary>
-        /// <typeparam name="T">The type of action to clean up.</typeparam>
-        /// <param name="actionToRun">The action to run.</param>
-        /// <param name="dispose">Dispose the action.</param>
-        private void CleanUp<T>(T actionToRun, bool dispose)
-            where T : Actionflow<TView, TViewModel>
-        {
-            lock (_Lock)
-            {
-                _Actions.Remove(actionToRun);
-                actionToRun.View.StopLoading();
-            }
-
-            if (dispose)
-                actionToRun.Dispose();
-        }
-
+        
         /// <summary>
         ///     Prepares the action context.
         /// </summary>
