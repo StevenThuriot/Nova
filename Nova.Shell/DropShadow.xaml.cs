@@ -19,9 +19,9 @@
 #endregion
 
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using Nova.Helpers;
 
 namespace Nova.Shell
 {
@@ -90,7 +90,7 @@ namespace Nova.Shell
             SetVisibilityDependingOn(sender);
         }
 
-        private void SetVisibilityDependingOn(object sender)
+        private async void SetVisibilityDependingOn(object sender)
         {
             var window = sender as Window;
 
@@ -98,11 +98,10 @@ namespace Nova.Shell
 
             if (window.WindowState == WindowState.Normal)
             {
-                Dispatcher.DelayInvoke(TimeSpan.FromMilliseconds(400), new Action(() =>
-                {
-                    Visibility = Visibility.Visible;
-                    OnLocationChanged(sender, null);
-                }));
+                await Task.Delay(400); //Default Windows animation speed.
+
+                Visibility = Visibility.Visible;
+                OnLocationChanged(sender);
             }
             else
             {
@@ -110,7 +109,7 @@ namespace Nova.Shell
             }
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        private async void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             var window = sender as Window;
 
@@ -123,7 +122,9 @@ namespace Nova.Shell
             window.Owner = this;
 
             window.Focus();
-            Dispatcher.DelayInvoke(TimeSpan.FromMilliseconds(250), new Action<Window>(Initialize), window);
+
+            await Task.Delay(250);
+            Initialize(window);
         }
 
         private void Initialize(Window window)
@@ -154,7 +155,7 @@ namespace Nova.Shell
             Height = window.Height + 10;
         }
 
-        private void OnLocationChanged(object sender, EventArgs eventArgs)
+        private void OnLocationChanged(object sender, EventArgs eventArgs = null)
         {
             if (Visibility != Visibility.Visible) return;
 
