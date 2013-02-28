@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using Nova.Controls;
 using Nova.Properties;
 
@@ -31,7 +30,7 @@ namespace Nova.Base
 	/// </summary>
 	internal static partial class OnActionMethodRepository
 	{
-        private static readonly Mutex Lock = new Mutex();
+        private static readonly object Lock = new object();
 
 		/// <summary>
 		/// A cache for View and ViewModel OnBefore methods so they can be called through reflection.

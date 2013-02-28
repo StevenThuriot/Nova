@@ -42,7 +42,7 @@ namespace Nova.Base
     {
         private readonly IActionQueueManager _ActionQueueManager;
         private readonly ICollection<Actionflow<TView, TViewModel>> _Actions;
-        private readonly Mutex _Lock;
+        private readonly object _Lock;
         private readonly TView _View;
         private readonly TViewModel _ViewModel;
 
@@ -54,7 +54,7 @@ namespace Nova.Base
         /// <param name="actionQueueManager">The Action Queue Manager</param>
         public ActionController(TView view, TViewModel viewModel, IActionQueueManager actionQueueManager)
         {
-            _Lock = new Mutex();
+            _Lock = new object();
             _View = view;
             _ViewModel = viewModel;
             _ActionQueueManager = actionQueueManager;

@@ -129,7 +129,7 @@ namespace Nova.Controls
         
         
         private int _LoadingCounter;
-        private readonly Mutex _Lock = new Mutex();
+        private readonly object _Lock = new object();
 
         /// <summary>
         ///     Starts the animated loading.
@@ -214,8 +214,6 @@ namespace Nova.Controls
                 {
                     _ViewModel.Dispose();
                 }
-
-                _Lock.Dispose();
             }
 
             _Disposed = true;
