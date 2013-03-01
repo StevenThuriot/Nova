@@ -17,14 +17,15 @@
 
 #endregion
 
+using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shell;
+using System.Windows.Threading;
 using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Actions.MainWindow;
@@ -213,20 +214,16 @@ namespace Nova.Shell
         /// <summary>
         /// Minimizes the view.
         /// </summary>
-        /// <param name="obj">The obj.</param>
-        private void MinimizeView(object obj)
+        private void MinimizeView()
         {
             SystemCommands.MinimizeWindow(View);
-
             FixWindowChromeBug();
         }
 
         /// <summary>
         /// Maximizes or restores the view.
         /// </summary>
-        /// <param name="obj">The obj.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
-        private void MaximizeView(object obj)
+        private void MaximizeView()
         {
             if (View.WindowState == WindowState.Normal)
             {
@@ -242,25 +239,21 @@ namespace Nova.Shell
 
         /// <summary>
         /// Fixes the window chrome bug.
-        /// When minimizing and maximizing a lot, the icon disappears from the task bar.
-        /// 
-        /// Removing WindowChrome, waiting a little bit and setting it again seems to resolve it.
+        /// If the window chrome stays attached, the taskbar button might disappear.
         /// </summary>
-        private async void FixWindowChromeBug()
+        private void FixWindowChromeBug()
         {
             var chrome = WindowChrome.GetWindowChrome(View);
             WindowChrome.SetWindowChrome(View, null);
 
-            await Task.Delay(10);
-
-            WindowChrome.SetWindowChrome(View, chrome);
+            var setChrome = new Action<Window, WindowChrome>(WindowChrome.SetWindowChrome);
+            View.Dispatcher.BeginInvoke(setChrome, DispatcherPriority.Render, View, chrome);
         }
 
         /// <summary>
         /// Shuts down.
         /// </summary>
-        /// <param name="obj">The obj.</param>
-        private void ShutDown(object obj)
+        private void ShutDown()
         {
             if (View.IsLoading)
             {

@@ -30,12 +30,17 @@ namespace Nova.Shell
     /// </summary>
     public partial class DropShadow
     {
+        private bool _Delay;
+
         /// <summary>
         /// Prevents a default instance of the <see cref="DropShadow" /> class from being created.
         /// </summary>
         /// <param name="window">The window.</param>
         private DropShadow(Window window)
         {
+            if (window == null)
+                throw new ArgumentNullException("window");
+
             DataContext = window;
                         
             InitializeComponent();
@@ -51,27 +56,17 @@ namespace Nova.Shell
         /// <param name="window">The window.</param>
         public static void ForWindow(Window window)
         {
-            bool enableShadow;
+            var tier = RenderCapability.Tier >> 16;
 
-            switch (RenderCapability.Tier >> 16)
-            {
-                // hardware rendering
-                case 2:
-                    enableShadow = true;
-                    break;
+            //Switch {
+                // hardware rendering == 2
+                // partially hardware rendering == 1
+                // software rendering == default;
+            //}
 
-                // partially hardware rendering
-// ReSharper disable RedundantCaseLabel
-                case 1:
-// ReSharper restore RedundantCaseLabel
-                // software rendering
-                default:
-                    enableShadow = false;
-                    break;
-            }
+            if (tier != 2) return;
 
-            if (enableShadow)
-                new DropShadow(window);
+            new DropShadow(window);
         }
 
         private void OnClosed(object sender, EventArgs eventArgs)
@@ -96,9 +91,13 @@ namespace Nova.Shell
 
             if (window == null) return;
 
-            if (window.WindowState == WindowState.Normal)
+
+            if (window.IsVisible && window.WindowState == WindowState.Normal)
             {
-                await Task.Delay(400); //Default Windows animation speed.
+                if (_Delay)
+                {
+                    await Task.Delay(380); //400 == Default Windows animation speed.
+                }
 
                 Visibility = Visibility.Visible;
                 OnLocationChanged(sender);
@@ -107,6 +106,8 @@ namespace Nova.Shell
             {
                 Visibility = Visibility.Collapsed;
             }
+
+            _Delay = window.WindowState == WindowState.Minimized;
         }
 
         private async void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
@@ -143,7 +144,7 @@ namespace Nova.Shell
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs sizeChangedEventArgs)
         {
-            if (Visibility != Visibility.Visible) return;
+            if (!IsVisible) return;
 
             var window = sender as Window;
 
@@ -155,7 +156,7 @@ namespace Nova.Shell
 
         private void OnLocationChanged(object sender, EventArgs eventArgs = null)
         {
-            if (Visibility != Visibility.Visible) return;
+            if (!IsVisible) return;
 
             var window = sender as Window;
 

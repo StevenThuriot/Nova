@@ -40,6 +40,17 @@ namespace Nova.Base
 		/// <summary>
 		/// Initializes a new instance of the <see cref="RelayCommand"/> class.
 		/// </summary>
+		/// <param name="execute">The execute.</param>
+		public RelayCommand(Action execute)
+            : this(_ => execute())
+        {
+            if (execute == null)
+                throw new ArgumentNullException("execute");
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RelayCommand"/> class.
+		/// </summary>
 		/// <param name="execute">The execution code.</param>
 		/// <param name="canExecute">If the command can execute.</param>
 		/// <exception cref="ArgumentNullException">execute</exception>
