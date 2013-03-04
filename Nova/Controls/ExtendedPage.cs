@@ -22,6 +22,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using Nova.Base;
+using Nova.Helpers;
 using Nova.Threading;
 
 namespace Nova.Controls
@@ -73,6 +74,17 @@ namespace Nova.Controls
                     DataContext = value;
                 }
             }
+        }
+        
+        /// <summary>
+        /// Focuses the control.
+        /// </summary>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <param name="entityID">The entity ID.</param>
+        /// <returns></returns>
+        public bool FocusControl(string fieldName, Guid entityID = new Guid())
+        {
+            return FocusHelper.FocusControl(this, fieldName, entityID);
         }
 
         /// <summary>

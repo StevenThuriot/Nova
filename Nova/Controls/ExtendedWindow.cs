@@ -25,6 +25,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Nova.Base;
 using Nova.Base.Actions;
+using Nova.Helpers;
 using Nova.Threading;
 using System.Threading;
 
@@ -88,6 +89,17 @@ namespace Nova.Controls
                 _ViewModel = value;
                 DataContext = value;
             }
+        }
+
+        /// <summary>
+        /// Focuses the control.
+        /// </summary>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <param name="entityID">The entity ID.</param>
+        /// <returns></returns>
+        public bool FocusControl(string fieldName, Guid entityID = new Guid())
+        {
+            return FocusHelper.FocusControl(this, fieldName, entityID);
         }
 
         /// <summary>

@@ -448,6 +448,8 @@ namespace Nova.Base
                 {
                     _LeaveAction.Dispose();
                 }
+
+                ValidationControl = null;
 			}
 
 		    DisposeUnmanagedResources();

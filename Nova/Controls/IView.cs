@@ -50,5 +50,13 @@ namespace Nova.Controls
         /// The title.
         /// </value>
         string Title { get; }
+
+        /// <summary>
+        /// Focuses the control.
+        /// </summary>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <param name="entityID">The entity ID.</param>
+        /// <returns></returns>
+        bool FocusControl(string fieldName, Guid entityID = default(Guid));
     }
 }

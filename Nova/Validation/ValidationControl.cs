@@ -57,8 +57,7 @@ namespace Nova.Validation
                 var view = (Window.GetWindow(this) as IView);
                 if (view == null) return;
 
-                dynamic dynamicView = view;
-                var viewModel = dynamicView.ViewModel;
+                dynamic viewModel = view.ViewModel;
 
                 if (viewModel == null) return;
 
@@ -481,7 +480,7 @@ namespace Nova.Validation
                 return PasswordBoxMonitor.IsFilledIn(passwordBox);
             }
 
-            return true; //return true if we don't know what it is.
+            return true; //return true if we don't know what it is, so we don't block anything because of validation.
         }
     }
 }
