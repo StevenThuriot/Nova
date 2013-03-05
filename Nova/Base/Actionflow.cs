@@ -192,7 +192,7 @@ namespace Nova.Base
 		/// <summary>
 		/// The logic that runs before the action.
 		/// </summary>
-		internal void InternalOnBefore()
+		internal virtual void InternalOnBefore()
 		{
             OnActionMethodRepository.OnBefore<Actionflow<TView, TViewModel>, TView, TViewModel>(this);
 		    OnBefore();

@@ -117,6 +117,7 @@
 				<ComboBox Margin="10,0,0,0" Width="120" 
 						 Validation:NovaValidation.FieldName="ComboBox" 
 						 Validation:NovaValidation.ConcatToolTip="False" 
+                  Validation:NovaValidation.IsRequired="True"
 						  Base:ViewMode.Watermark="ComboBox"
 						 SelectedIndex="1">
 					<ComboBoxItem>Item 1</ComboBoxItem>

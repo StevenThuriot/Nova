@@ -17,13 +17,11 @@
 // 
 
 #endregion
-using System;
+
 using System.Globalization;
-using System.Windows.Threading;
 using Nova.Controls;
 using Nova.Properties;
 using Nova.Validation;
-using System.Windows;
 
 namespace Nova.Base
 {
@@ -44,31 +42,6 @@ namespace Nova.Base
         protected ValidatableActionflow()
         {
             _ValidationResults = new ValidationResults();
-        }
-
-        /// <summary>
-        /// Validates the required fields.
-        /// </summary>
-        internal void ValidateRequiredFields()
-        {
-            Application.Current.Dispatcher.Invoke(DispatcherPriority.Send, new Action(() =>
-                {
-                    if (ViewModel.ValidationControl == null) return;
-
-                    var results = ViewModel.ValidationControl.ValidateRequiredFields();
-
-                    foreach (var result in results)
-                    {
-                        var field = result.Value;
-                        var entityID = result.Key;
-
-                        var requiredField = string.Format(CultureInfo.CurrentCulture, Resources.RequiredField, field);
-                        var validation = ValidationFactory.Create(field, requiredField, entityID,
-                                                                  ValidationSeverity.Error);
-
-                        _ValidationResults.InternalAdd(validation);
-                    }
-                }));
         }
 
         /// <summary>
@@ -93,11 +66,35 @@ namespace Nova.Base
         }
 
         /// <summary>
+        /// The logic that runs before the action.
+        /// </summary>
+        internal override void InternalOnBefore()
+        {
+            base.InternalOnBefore();
+
+            var validationControl = View.ValidationControl;
+
+            if (validationControl == null) return;
+
+            var results = validationControl.ValidateRequiredFields();
+
+            foreach (var result in results)
+            {
+                var field = result.Value;
+                var entityID = result.Key;
+
+                var requiredField = string.Format(CultureInfo.CurrentCulture, Resources.RequiredField, field);
+                var validation = ValidationFactory.Create(field, requiredField, entityID, ValidationSeverity.Error);
+
+                _ValidationResults.InternalAdd(validation);
+            }
+        }
+
+        /// <summary>
         /// Method so inheriting classes may add extra internal logic during the InternalExecute stage.
         /// </summary>
         internal override void SafeInternalExecute()
         {
-            ValidateRequiredFields();
             Validate(_ValidationResults);
             CanComplete = _ValidationResults.IsValid;
 

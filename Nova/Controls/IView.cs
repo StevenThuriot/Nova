@@ -17,6 +17,7 @@
 #endregion
 using System;
 using Nova.Base;
+using Nova.Validation;
 
 namespace Nova.Controls
 {
@@ -58,5 +59,13 @@ namespace Nova.Controls
         /// <param name="entityID">The entity ID.</param>
         /// <returns></returns>
         bool FocusControl(string fieldName, Guid entityID = default(Guid));
+
+        /// <summary>
+        /// Gets or sets the validation control.
+        /// </summary>
+        /// <value>
+        /// The validation control.
+        /// </value>
+        ValidationControl ValidationControl { get; set; }
     }
 }

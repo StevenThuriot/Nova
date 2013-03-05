@@ -104,14 +104,6 @@ namespace Nova.Base
         internal ActionController<TView, TViewModel> ActionController { get; private set; }
 
         /// <summary>
-        /// Gets the validation control.
-        /// </summary>
-        /// <value>
-        /// The validation control. (Possibly null when not found!)
-        /// </value>
-        internal ValidationControl ValidationControl { get; set; }
-
-        /// <summary>
 		/// Gets the action manager.
 		/// </summary>
 		public dynamic ActionManager
@@ -448,8 +440,6 @@ namespace Nova.Base
                 {
                     _LeaveAction.Dispose();
                 }
-
-                ValidationControl = null;
 			}
 
 		    DisposeUnmanagedResources();

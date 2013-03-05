@@ -58,11 +58,7 @@ namespace Nova.Validation
 
                 if (view == null) return;
 
-                dynamic viewModel = view.ViewModel;
-
-                if (viewModel == null) return;
-
-                viewModel.ValidationControl = this;
+                view.ValidationControl = this;
             }
             finally
             {

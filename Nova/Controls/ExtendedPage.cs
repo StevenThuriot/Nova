@@ -24,6 +24,7 @@ using System.Windows.Controls;
 using Nova.Base;
 using Nova.Helpers;
 using Nova.Threading;
+using Nova.Validation;
 
 namespace Nova.Controls
 {
@@ -86,6 +87,14 @@ namespace Nova.Controls
         {
             return FocusHelper.FocusControl(this, fieldName, entityID);
         }
+
+        /// <summary>
+        /// Gets or sets the validation control.
+        /// </summary>
+        /// <value>
+        /// The validation control.
+        /// </value>
+        public ValidationControl ValidationControl { get; set; }
 
         /// <summary>
         /// Gets the view model.
