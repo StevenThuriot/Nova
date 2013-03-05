@@ -41,7 +41,7 @@ namespace Nova.Validation
 		/// </summary>
 		public ValidationControl()
 		{
-            Loaded += ControlLoaded;
+		    Loaded += ControlLoaded;
             BindingOperations.SetBinding(this, ErrorsProperty, new ErrorBinding());
 		}
 
@@ -54,7 +54,8 @@ namespace Nova.Validation
         {
             try
             {
-                var view = (Window.GetWindow(this) as IView);
+                var view = GetView(sender as DependencyObject);
+
                 if (view == null) return;
 
                 dynamic viewModel = view.ViewModel;
@@ -67,9 +68,23 @@ namespace Nova.Validation
             {
                 Loaded -= ControlLoaded;
             }
+	    }
+
+        /// <summary>
+        /// Gets the view.
+        /// </summary>
+        /// <param name="dependencyObject">The dependency object.</param>
+        /// <returns></returns>
+        private static IView GetView(DependencyObject dependencyObject)
+        {
+            if (dependencyObject == null) return null;
+
+            var parent = VisualTreeHelper.GetParent(dependencyObject);
+
+            return parent as IView ?? GetView(parent);
         }
 
-		/// <summary>
+	    /// <summary>
 		/// A cache for the fields on the screen.
 		/// </summary>
 		private ICollection<UIElement> _Fields;
