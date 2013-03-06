@@ -28,13 +28,26 @@ namespace Nova.Shell.Library
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class ContentViewModel<TView, TViewModel> : ViewModel<TView, TViewModel>, IContentViewModel 
+    public abstract class ContentViewModel<TView, TViewModel> : ViewModel<TView, TViewModel>
         where TView : class, IView
         where TViewModel : ViewModel<TView, TViewModel>, new()
     {
+        private dynamic _Session;
         private dynamic _SessionModel;
+
         /// <summary>
-        /// Gets or sets the session model.
+        /// Initializes the ContentViewModel using the parent session instance.
+        /// </summary>
+        /// <param name="session">The parent session.</param>
+        internal void Initialize(IViewModel session)
+        {
+            _Session = session;
+            SessionModel = _Session.SessionModel;
+        }
+
+
+        /// <summary>
+        /// Gets the session model.
         /// </summary>
         /// <value>
         /// The session model.
@@ -42,7 +55,19 @@ namespace Nova.Shell.Library
         public dynamic SessionModel
         {
             get { return _SessionModel; }
-            internal set { SetValue(ref _SessionModel, value); }
+            private set { SetValue(ref _SessionModel, value); }
+        }
+
+        /// <summary>
+        /// Navigates the parent session to the specified page.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        public void Navigate<TPageView, TPageViewModel>()
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
+        {
+            _Session.Navigate<TPageView, TPageViewModel>();
         }
     }
 }

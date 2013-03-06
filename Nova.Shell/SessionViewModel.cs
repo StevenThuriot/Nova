@@ -93,7 +93,7 @@ namespace Nova.Shell
         }
 
         /// <summary>
-        /// Navigates this instance to the specified page.
+        /// Navigates this session to the specified page.
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
@@ -101,7 +101,7 @@ namespace Nova.Shell
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new() 
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
-            var current = ActionContextEntry.Create(CurrentViewConstant, _CurrentView, false);
+            var current = ActionContextEntry.Create(CurrentViewConstant, CurrentView, false);
 
             var createNextView = new Func<IView>(CreatePage<TPageView, TPageViewModel>);
             var next = ActionContextEntry.Create(NextViewConstant, createNextView, false);
@@ -120,7 +120,7 @@ namespace Nova.Shell
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
             var page = CreatePage<TPageView, TPageViewModel>(false);
-            page.ViewModel.SessionModel = SessionModel;
+            page.ViewModel.Initialize(this);
 
             return page;
         }
