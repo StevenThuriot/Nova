@@ -50,22 +50,22 @@ namespace Nova.Base
             get { return View; }
         }
 
-
         private Guid _ID = Guid.NewGuid();
+
         /// <summary>
         /// Gets or sets the ViewModel ID.
         /// </summary>
         /// <value>
         /// The ID.
         /// </value>
-        /// <exception cref="System.ArgumentNullException">value</exception>
+        /// <exception cref="System.ArgumentException">Guid.Empty is not allowed.</exception>
         public Guid ID
         {
             get { return _ID; }
             protected set
             {
                 if (value == Guid.Empty)
-                    throw new ArgumentNullException("value");
+                    throw new ArgumentException("Guid.Empty is not allowed.", "value");
                 
                 _ID = value;
             }
