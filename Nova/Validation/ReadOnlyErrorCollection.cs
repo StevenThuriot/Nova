@@ -93,7 +93,7 @@ namespace Nova.Validation
 		/// <returns>The message or default value.</returns>
 		public string GetMessageOrDefault(string field, string defaultValue)
 		{
-			BaseValidation firstOrDefault = this.FirstOrDefault(x => x.Field == field);
+			var firstOrDefault = this.FirstOrDefault(x => x.Field == field);
 			return firstOrDefault == null ? defaultValue : firstOrDefault.Message;
 		}
 

@@ -29,7 +29,7 @@ namespace Nova.Base
     /// <summary>
     /// The ViewModel interface.
     /// </summary>
-    public interface IViewModel : INotifyPropertyChanged, IDisposable
+    public interface IViewModel : INotifyPropertyChanged, IChangeTracking, IDisposable
     {
         /// <summary>
         /// Gets the view.
@@ -84,5 +84,15 @@ namespace Nova.Base
         /// Load(value) will only trigger in case the ViewModel has been saved before.
         /// </summary>
         void Load();
+
+        /// <summary>
+        /// Initializes the change tracking.
+        /// </summary>
+        void InitializeChangeTracking();
+
+        /// <summary>
+        /// Stops the change tracking.
+        /// </summary>
+        void StopChangeTracking();
     }
 }

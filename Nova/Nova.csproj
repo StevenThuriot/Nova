@@ -216,12 +216,33 @@
     <Compile Include="Base\RoutedAction.Generic.cs">
       <DependentUpon>RoutedAction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Base\ViewModel.ActionManagement.cs">
+      <DependentUpon>ViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\ViewModel.ChangeTracking.cs">
+      <DependentUpon>ViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\ViewModel.Creation.cs">
+      <DependentUpon>ViewModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Base\ViewModel.cs" />
     <Compile Include="Base\BindableRun.cs" />
     <Compile Include="Base\ErrorBinding.cs" />
     <Compile Include="Base\ExceptionHandler.cs" />
     <Compile Include="Base\RelayCommand.cs" />
     <Compile Include="Base\ViewMode.cs" />
+    <Compile Include="Base\ViewModel.Disposal.cs">
+      <DependentUpon>ViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\ViewModel.EnterLeave.cs">
+      <DependentUpon>ViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\ViewModel.State.cs">
+      <DependentUpon>ViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\ViewModel.Validation.cs">
+      <DependentUpon>ViewModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ClosableTabControl.xaml.cs">
       <DependentUpon>ClosableTabControl.xaml</DependentUpon>
     </Compile>
