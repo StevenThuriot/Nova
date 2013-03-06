@@ -42,6 +42,5 @@ namespace Nova.Shell
 
     public class TestPageViewModel : ContentViewModel<TestPage, TestPageViewModel> 
     {
-        
     }
 }

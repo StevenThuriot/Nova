@@ -133,7 +133,6 @@ namespace Nova.Base
                 {
                     IsValid = _ErrorCollection == null || _ErrorCollection.Count == 0;
                 }
-
 			}
 		}
 

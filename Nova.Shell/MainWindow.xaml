@@ -63,6 +63,7 @@
     <MultiBinding Converter="{StaticResource _BrushStateConverter}">
       <Binding Path="HasOpenDocuments" />
       <Binding Path="CurrentSession.ViewModel.IsValid" />
+      <Binding Path="CurrentSession.ViewModel.CurrentView.ViewModel.IsValid" />
       <Binding Path="View.IsKeyboardFocusWithin" />
     </MultiBinding>
   </Window.Background>
@@ -82,6 +83,7 @@
     <KeyBinding Command="{CommandBinding FocusTab}" Key="F12" Modifiers="Control" CommandParameter="11" />
     
     <KeyBinding Command="{CommandBinding CloseSession}" Key="W" Modifiers="Control" />
+    <KeyBinding Command="{CommandBinding CloseSession}" Key="F4" Modifiers="Control" />
     <KeyBinding Command="{CommandBinding CreateNewSession}" Key="T" Modifiers="Control" />
   </Window.InputBindings>
 
@@ -212,6 +214,7 @@
           <MultiBinding Converter="{StaticResource _BrushStateConverter}">
             <Binding Path="HasOpenDocuments" />
             <Binding Path="CurrentSession.ViewModel.IsValid" />
+            <Binding Path="CurrentSession.ViewModel.CurrentView.ViewModel.IsValid" />
           </MultiBinding>
         </Grid.Background>
         <ProgressIndicator Visibility="{Binding View.IsLoading, Converter={StaticResource _BooleanToVisibilityConverter}}" />

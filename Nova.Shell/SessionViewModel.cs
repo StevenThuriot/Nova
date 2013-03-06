@@ -80,10 +80,10 @@ namespace Nova.Shell
         /// <value>
         /// The current view.
         /// </value>
-        internal IView CurrentView
+        public IView CurrentView
         {
             get { return _CurrentView; }
-            set
+            internal set
             {
                 if (value == null || !SetValue(ref _CurrentView, value)) return;
 
