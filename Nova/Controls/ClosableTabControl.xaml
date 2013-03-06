@@ -5,6 +5,8 @@
   
     <TabControl.Style>
         <Style TargetType="{x:Type controls:ClosableTabControl}">
+            <Setter Property="UseLayoutRounding" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type controls:ClosableTabControl}">
