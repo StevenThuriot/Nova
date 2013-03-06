@@ -53,12 +53,17 @@ namespace Nova.Controls
         private bool _Disposed;
         private TViewModel _ViewModel;
 
+        private int _LoadingCounter;
+        private ActionQueueManager _ActionQueueManager;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="ExtendedWindow&lt;TView, TViewModel&gt;" /> class.
         /// </summary>
         protected ExtendedWindow()
         {
             UseLayoutRounding = true;
+            SnapsToDevicePixels = true;
+
             TextOptions.SetTextRenderingMode(this, TextRenderingMode.ClearType);
             TextOptions.SetTextFormattingMode(this, TextFormattingMode.Display);
             RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
@@ -66,10 +71,9 @@ namespace Nova.Controls
 
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             
-            var actionQueueManager = new ActionQueueManager();
+            _ActionQueueManager = new ActionQueueManager();
 
-            ViewModel = ViewModel<TView, TViewModel>.Create((TView) this, actionQueueManager);
-            ViewModel.DisposeActionQueueManager = true; //Queue manager should stay alive on window level. Pages should not influence it.
+            ViewModel = ViewModel<TView, TViewModel>.Create((TView) this, _ActionQueueManager);
 
             Closing += (sender, args) => ViewModel.InvokeAction<LeaveAction<TView, TViewModel>>();
         }
@@ -134,9 +138,7 @@ namespace Nova.Controls
             get { return (bool) GetValue(IsLoadingProperty); }
             set { SetValue(IsLoadingProperty, value); }
         }
-        
-        private int _LoadingCounter;
-        
+
         /// <summary>
         ///     Starts the animated loading.
         /// </summary>
@@ -152,7 +154,11 @@ namespace Nova.Controls
         public virtual void StopLoading()
         {
             IsLoading = Interlocked.Decrement(ref _LoadingCounter) > 0;
-            Cursor = Cursors.Arrow;
+
+            if (!IsLoading)
+            {
+                Cursor = Cursors.Arrow;
+            }
         }
 
         /// <summary>
@@ -188,6 +194,12 @@ namespace Nova.Controls
                 if (_ViewModel != null)
                 {
                     _ViewModel.Dispose();
+                }
+
+                if (_ActionQueueManager != null)
+                {
+                    _ActionQueueManager.Dispose();
+                    _ActionQueueManager = null;
                 }
             }
 

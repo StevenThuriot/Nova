@@ -47,14 +47,6 @@ namespace Nova.Base
         private IActionQueueManager _ActionQueueManager;
 
         /// <summary>
-        /// Gets or sets a value indicating whether to dispose the action queue manager on disposal of the ViewModel.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if [dispose action queue manager]; otherwise, <c>false</c>.
-        /// </value>
-        internal bool DisposeActionQueueManager { get; set; }
-
-        /// <summary>
 		/// Gets the view.
 		/// </summary>
         public TView View { get; private set; }
@@ -423,11 +415,6 @@ namespace Nova.Base
 			    if (_ActionManager != null)
 			    {
 			        _ActionManager.Dispose();
-			    }
-
-                if (DisposeActionQueueManager && _ActionQueueManager != null)
-                {
-                    _ActionQueueManager.Dispose();
                 }
 
                 if (_EnterAction != null)
@@ -439,6 +426,8 @@ namespace Nova.Base
                 {
                     _LeaveAction.Dispose();
                 }
+
+                _ActionQueueManager = null;
 			}
 
 		    DisposeUnmanagedResources();
