@@ -9,6 +9,6 @@
 
   <StackPanel>
     <TextBlock>Content goes here.</TextBlock>
-    <Button Command="{Binding GoToPage2Command}">Navigate</Button>
+    <Button Command="{Binding GoToPage2Command}" Width="200">Navigate to the second step.</Button>
   </StackPanel>
 </shell:TestPageBase>

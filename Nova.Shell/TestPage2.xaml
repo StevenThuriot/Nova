@@ -7,5 +7,8 @@
       d:DesignHeight="300" d:DesignWidth="300"
 	Title="TestPage 2">
 
-  <TextBlock>Other content goes here!</TextBlock>
+  <StackPanel>
+    <TextBlock>Other content goes here.</TextBlock>
+    <Button Command="{Binding GoToPage1Command}" Width="200">Navigate to the first step.</Button>
+  </StackPanel>
 </shell:TestPage2Base>

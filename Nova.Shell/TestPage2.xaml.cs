@@ -43,5 +43,16 @@ namespace Nova.Shell
 
     public class TestPage2ViewModel : ContentViewModel<TestPage2, TestPage2ViewModel> 
     {
+        public TestPage2ViewModel()
+        {
+            _GoToPage1Command = new RelayCommand(Navigate<TestPage, TestPageViewModel>);
+        }
+
+        private ICommand _GoToPage1Command;
+        public ICommand GoToPage1Command
+        {
+            get { return _GoToPage1Command; }
+            set { SetValue(ref _GoToPage1Command, value); }
+        }
     }
 }
