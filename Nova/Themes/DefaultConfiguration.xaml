@@ -154,5 +154,5 @@
 	<Geometry x:Key="ErrorIcon">F1 M 1,1 L 0,12 L 12,0 L 1,1 Z</Geometry>	
 	<Geometry x:Key="ErrorIconSmall">F1 M 1,1 L 0,9 L 9,0 L 1,1 Z</Geometry>
 
-	<sys:Double x:Key="HeaderFontSize">20</sys:Double>
+	<sys:Double x:Key="HeaderFontSize">16</sys:Double>
 </ResourceDictionary>

@@ -88,7 +88,7 @@ namespace Nova.Shell
                 if (value == null || !SetValue(ref _CurrentView, value)) return;
 
                 Title = _CurrentView.Title;
-                View._ContentZone.Navigate(_CurrentView);
+                View.ContentZone.Navigate(_CurrentView);
             }
         }
 

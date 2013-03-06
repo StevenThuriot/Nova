@@ -117,13 +117,11 @@
       
       <Image Source="{Binding Icon}" Margin="5" Grid.Row="0" Grid.Column="0" />
 
-      <Label Grid.Row="0" Grid.Column="1"
+      <TextBlock Grid.Row="0" Grid.Column="1"
          HorizontalAlignment="Left"
          VerticalAlignment="Center"
-         Foreground="{StaticResource DarkBlue}"
-         Padding="10,5,5,5"
-         FontSize="16"
-         Content="{Binding ElementName=_This, Path=Title}" />
+         Style="{DynamicResource NovaTextBlockHeader}"
+         Text="{Binding ElementName=_This, Path=Title}" />
 
       <Border Grid.ColumnSpan="2"
               Grid.Row="0"

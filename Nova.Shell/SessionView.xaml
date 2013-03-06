@@ -28,7 +28,7 @@
             CornerRadius="1 0 0 0"
             Margin="0 0 -3 -3"
             Padding="3">
-      <Frame NavigationUIVisibility="Hidden" x:Name="_ContentZone" />
+      <Frame NavigationUIVisibility="Hidden" x:Name="ContentZone" />
     </Border>
   </Grid>
 </shell:SessionViewBase>
