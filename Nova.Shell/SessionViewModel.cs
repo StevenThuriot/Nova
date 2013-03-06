@@ -56,7 +56,7 @@ namespace Nova.Shell
         /// </summary>
         protected override void OnCreated()
         {
-            SetKnownActionTypes(typeof(SessionLeaveStep));
+            SetKnownActionTypes(typeof(SessionLeaveStep), typeof(NavigationAction));
             
             var leaveAction = Actionflow<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
             SetLeaveAction(leaveAction);

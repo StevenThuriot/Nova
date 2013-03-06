@@ -199,10 +199,11 @@ namespace Nova.Base
 		/// <param name="knownTypes">The known types.</param>
 		public void SetKnownTypes(params Type[] knownTypes)
 		{
-			_KnownTypes.AddRange(knownTypes);
+		    var distinctTypes = knownTypes.Distinct().Where(x => !_KnownTypes.Contains(x)).ToList();
+            _KnownTypes.AddRange(distinctTypes);
 		}
 
-		private void InitVVMTypes()
+	    private void InitVVMTypes()
 		{
 			var viewAssembly = _ViewType.Assembly;
 			IEnumerable<Type> viewTypes = viewAssembly.GetTypes();
