@@ -28,7 +28,7 @@ namespace Nova.Shell.Actions.Session
     {
         public override bool Leave()
         {
-            if (!ViewModel.IsValid)
+            if (!ViewModel.IsSessionValid())
             {
                 //Todo: Handle error state.
             }

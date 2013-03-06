@@ -29,6 +29,9 @@ namespace Nova.Shell
 {
     public class SessionViewModel : ViewModel<SessionView, SessionViewModel>
     {
+        internal const string CurrentViewConstant = "CurrentSessionContentView";
+        internal const string NextViewConstant = "NextSessionContentView";
+
         /// <summary>
         /// Gets the session model.
         /// </summary>
@@ -36,9 +39,6 @@ namespace Nova.Shell
         /// The session model.
         /// </value>
         public dynamic SessionModel { get; private set; }
-
-        internal const string CurrentViewConstant = "CurrentView";
-        internal const string NextViewConstant = "NextView";
 
         private string _Title = SessionViewResources.EmptySession;
         private IView _CurrentView;
@@ -129,6 +129,25 @@ namespace Nova.Shell
         {
             //TODO: Temporary default
             Navigate<TestPage, TestPageViewModel>();
+        }
+        
+        /// <summary>
+        /// Determines whether the session is invalid.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if the session is invalid; otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsSessionValid()
+        {
+            if (!IsValid) //The session is invalid.
+                return false;
+
+            var currentView = CurrentView;
+
+            if (currentView != null && currentView.ViewModel.IsValid) //The content zone is invalid.
+                return false;
+
+            return true;
         }
     }
 }
