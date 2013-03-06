@@ -21,6 +21,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Nova.Base;
 using Nova.Helpers;
 using Nova.Threading;
@@ -118,6 +119,20 @@ namespace Nova.Controls
         {
             get { return (bool)GetValue(IsLoadingProperty); }
             set { SetValue(IsLoadingProperty, value); }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExtendedPage{TView, TViewModel}"/> class.
+        /// </summary>
+        protected ExtendedPage()
+        {
+            SnapsToDevicePixels = true;
+
+            TextOptions.SetTextRenderingMode(this, TextRenderingMode.ClearType);
+            TextOptions.SetTextFormattingMode(this, TextFormattingMode.Display);
+            RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
+
+            VisualTextRenderingMode = TextRenderingMode.ClearType;
         }
         
         /// <summary>

@@ -61,7 +61,6 @@ namespace Nova.Controls
         /// </summary>
         protected ExtendedWindow()
         {
-            UseLayoutRounding = true;
             SnapsToDevicePixels = true;
 
             TextOptions.SetTextRenderingMode(this, TextRenderingMode.ClearType);
