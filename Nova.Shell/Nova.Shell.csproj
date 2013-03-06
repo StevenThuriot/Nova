@@ -74,6 +74,9 @@
     <Compile Include="Actions\MainWindow\ReadConfigurationAction.cs" />
     <Compile Include="Actions\Session\NavigationAction.cs" />
     <Compile Include="Actions\Session\SessionLeaveStep.cs" />
+    <Compile Include="TestPage2.xaml.cs">
+      <DependentUpon>TestPage2.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DropShadow.xaml.cs">
       <DependentUpon>DropShadow.xaml</DependentUpon>
     </Compile>
@@ -99,6 +102,10 @@
     <Compile Include="TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
+    <Page Include="TestPage2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DropShadow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

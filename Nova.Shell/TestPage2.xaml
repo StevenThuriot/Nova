@@ -1,14 +1,11 @@
-﻿<shell:TestPageBase x:Class="Nova.Shell.TestPage"
+﻿<shell:TestPage2Base x:Class="Nova.Shell.TestPage2"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:shell="clr-namespace:Nova.Shell"
               mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-	Title="TestPage">
+	Title="TestPage 2">
 
-  <StackPanel>
-    <TextBlock>Content goes here.</TextBlock>
-    <Button Command="{Binding GoToPage2Command}">Navigate</Button>
-  </StackPanel>
-</shell:TestPageBase>
+  <TextBlock>Other content goes here!</TextBlock>
+</shell:TestPage2Base>

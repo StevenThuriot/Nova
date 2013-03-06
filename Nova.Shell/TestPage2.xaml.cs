@@ -28,31 +28,20 @@ namespace Nova.Shell
     /// <summary>
     /// Interaction logic for TestPage.xaml
     /// </summary>
-    public partial class TestPage
+    public partial class TestPage2
     {
-        public TestPage()
+        public TestPage2()
         {
             InitializeComponent();
         }
     }
 
-    public abstract class TestPageBase : ExtendedPage<TestPage, TestPageViewModel>
+    public abstract class TestPage2Base : ExtendedPage<TestPage2, TestPage2ViewModel>
     {
 
     }
 
-    public class TestPageViewModel : ContentViewModel<TestPage, TestPageViewModel> 
+    public class TestPage2ViewModel : ContentViewModel<TestPage2, TestPage2ViewModel> 
     {
-        public TestPageViewModel()
-        {
-            _GoToPage2Command = new RelayCommand(Navigate<TestPage2, TestPage2ViewModel>);
-        }
-
-        private ICommand _GoToPage2Command;
-        public ICommand GoToPage2Command
-        {
-            get { return _GoToPage2Command; }
-            set { SetValue(ref _GoToPage2Command, value); }
-        }
     }
 }
