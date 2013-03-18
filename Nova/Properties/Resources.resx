@@ -154,9 +154,13 @@ Please check if your view contains an actioncontroller or pass one to the constr
     <value>An error has occurred...</value>
   </data>
   <data name="ExceptionInfo" xml:space="preserve">
-    <value>An unhandled exception was thrown with the following message:
+    <value>An unhandled exception of type "{0}" was thrown with the following message:
 
-"{0}"</value>
+"{1}"</value>
+  </data>
+  <data name="InnerExceptions" xml:space="preserve">
+    <value>---- Inner Exceptions ----&gt;
+</value>
   </data>
   <data name="RequiredField" xml:space="preserve">
     <value>{0} is a required field.</value>

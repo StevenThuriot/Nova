@@ -118,16 +118,33 @@ namespace Nova.Base
 			                         		//TryCatch is here to prevent getting into a loop in case the eventhandling throws an exception.
 											try
 											{
-												string message;
-												if (ShowStackTrace)
-													message = FormatMessage(exception);
-												else
-												{
-													FormatException(exception);
-													message = Builder.ToString();
+                                                var aggregateException = exception as AggregateException;
 
-													Builder.Clear();
-												}
+											    Action<Exception> format;
+											    
+                                                if (ShowStackTrace)
+											    {
+											        format = FormatMessage;
+											    }
+											    else
+											    {
+											        format = FormatException;
+											    }
+
+											    format(exception);
+
+                                                if (aggregateException != null)
+                                                {
+                                                    foreach (var innerException in aggregateException.InnerExceptions)
+                                                    {
+                                                        Builder.AppendLine(RESX.InnerExceptions);
+
+                                                        format(innerException);
+                                                    }
+                                                }
+
+											    var message = Builder.ToString();
+                                                Builder.Clear();
 
 												Log(exception);
 
@@ -191,7 +208,12 @@ namespace Nova.Base
 				string message;
 
 				if (LogStackTrace)
-					message = FormatMessage(exception);
+				{
+				    FormatMessage(exception);
+				    message = Builder.ToString();
+				    
+                    Builder.Clear();
+				}
 				else
 				{
 					FormatException(exception);
@@ -231,23 +253,25 @@ namespace Nova.Base
 		/// </summary>
 		/// <param name="exception">The exception.</param>
 		/// <returns></returns>
-		private static string FormatMessage(Exception exception)
+		private static void FormatMessage(Exception exception)
 		{
 			FormatException(exception);
 
 			Builder.AppendLine("\"")
 				.AppendLine()
 				.AppendLine()
-				.AppendLine()
-				.AppendLine("StackTrace:")
-				.AppendLine("---------------")
-				.AppendLine()
-				.AppendLine(exception.StackTrace);
+				.AppendLine();
 
-			var message = Builder.ToString();
-			Builder.Length = 0;
+            
+		    var stackTrace = exception.StackTrace;
 
-			return message;
+		    if (!string.IsNullOrWhiteSpace(stackTrace))
+		    {
+		        Builder.AppendLine("StackTrace:")
+		               .AppendLine("---------------")
+		               .AppendLine()
+		               .AppendLine(stackTrace);
+		    }
 		}
 
 
@@ -257,9 +281,9 @@ namespace Nova.Base
 		/// <param name="exception">The exception.</param>
 		private static void FormatException(Exception exception)
 		{
-			Builder.AppendFormat(CultureInfo.CurrentCulture, Resources.ExceptionInfo, exception.Message);
+			Builder.AppendFormat(CultureInfo.CurrentCulture, Resources.ExceptionInfo, exception.GetType(), exception.Message);
 
-			if (exception.InnerException == null)
+		    if (exception.InnerException == null)
 			{
 				return;
 			}

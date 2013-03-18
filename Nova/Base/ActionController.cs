@@ -26,6 +26,7 @@ using Nova.Controls;
 using Nova.Properties;
 using Nova.Threading;
 using Nova.Threading.Implementations.WPF;
+using RESX = Nova.Properties.Resources;
 
 namespace Nova.Base
 {
@@ -107,7 +108,10 @@ namespace Nova.Base
                                             if (disposeActionDuringCleanup)
                                                 actionToRun.Dispose();
 
-                                        }, mainThread: true); //Main Thread because view logic in clean up. (e.g. IsLoading)
+                                        }, mainThread: true)
+
+                                    .HandleException(x => ExceptionHandler.Handle(x, RESX.UnhandledException)); //Main Thread because view logic in clean up. (e.g. IsLoading)
+
 
             if (executeCompleted != null)
             {
