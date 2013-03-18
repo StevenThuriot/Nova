@@ -135,12 +135,12 @@ namespace Nova.Base
 
                                                 if (aggregateException != null)
                                                 {
-                                                    foreach (var innerException in aggregateException.InnerExceptions)
-                                                    {
-                                                        Builder.AppendLine(RESX.InnerExceptions);
-
-                                                        format(innerException);
-                                                    }
+                                                    aggregateException.Handle(x =>
+                                                        {
+                                                            Builder.AppendLine(RESX.InnerExceptions);
+                                                            format(x);
+                                                            return true; //Set handled to true to keep the TPL happy.
+                                                        });
                                                 }
 
 											    var message = Builder.ToString();
