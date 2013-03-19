@@ -28,7 +28,7 @@ namespace Nova.Shell.Library
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class ContentViewModel<TView, TViewModel> : ViewModel<TView, TViewModel>
+    public abstract class ContentViewModel<TView, TViewModel> : ViewModel<TView, TViewModel>, INavigatablePage
         where TView : class, IView
         where TViewModel : ViewModel<TView, TViewModel>, new()
     {
