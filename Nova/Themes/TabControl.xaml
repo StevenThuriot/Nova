@@ -37,17 +37,17 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="TabItem">
-          <Grid>
-            <Border Name="Border" Margin="0,3,-2,0" BorderThickness="1,1,1,0" Padding="4,2" BorderBrush="{DynamicResource UnfocusedControlBorderBrush}" CornerRadius="1,1,0,0" Background="{TemplateBinding Background}">
+            
+          <Border x:Name="Border" Margin="0,3,-2,0" BorderThickness="1,1,1,0" Padding="4,2" BorderBrush="{DynamicResource UnfocusedControlBorderBrush}" CornerRadius="1,1,0,0" Background="{TemplateBinding Background}">
 
-              <ContentPresenter ContentSource="Header"
-                                HorizontalAlignment="Center"
-                                Grid.Column="0"
-                                Margin="0 -1 0 0"
-                                VerticalAlignment="Center" />
+            <ContentPresenter ContentSource="Header"
+                              HorizontalAlignment="Center"
+                              Grid.Column="0"
+                              Margin="0 -1 0 0"
+                              VerticalAlignment="Center" />
 
-            </Border>
-          </Grid>
+          </Border>
+            
           <ControlTemplate.Triggers>
             <Trigger Property="IsSelected" Value="True">
               <Setter Property="Margin" Value="0,-4,0,0" />

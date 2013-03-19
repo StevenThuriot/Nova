@@ -37,37 +37,41 @@
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="{x:Type Controls:ClosableTabItem}">
-            <Grid>
-              
-              <Border Name="Border" Margin="0,3,-2,0" BorderThickness="1,1,1,0" Padding="4,2" BorderBrush="{DynamicResource UnfocusedControlBorderBrush}" CornerRadius="1,1,0,0" Background="{TemplateBinding Background}">
+            
+            <Border x:Name="Border" 
+                    Margin="0,3,-2,0" 
+                    BorderThickness="1,1,1,0" 
+                    Padding="4,2" 
+                    BorderBrush="{DynamicResource UnfocusedControlBorderBrush}" 
+                    CornerRadius="1,1,0,0"
+                    Background="{TemplateBinding Background}">
 
-                <Grid>
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="25" />
-                  </Grid.ColumnDefinitions>
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="25" />
+                </Grid.ColumnDefinitions>
 
-                  <ContentPresenter ContentSource="Header"
-                                    HorizontalAlignment="Center"
-                                    Grid.Column="0"
-                                    Margin="0 -1 0 0"
-                                    VerticalAlignment="Center">
-                    <ContentPresenter.Resources>
-                      <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-                        <Setter Property="TextWrapping" Value="NoWrap" />
-                      </Style>
-                    </ContentPresenter.Resources>
-                  </ContentPresenter>
+                <ContentPresenter ContentSource="Header"
+                                  HorizontalAlignment="Center"
+                                  Grid.Column="0"
+                                  Margin="0 -1 0 0"
+                                  VerticalAlignment="Center">
+                  <ContentPresenter.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                      <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                      <Setter Property="TextWrapping" Value="NoWrap" />
+                    </Style>
+                  </ContentPresenter.Resources>
+                </ContentPresenter>
 
-                  <Button Grid.Column="1" 
-                          Style="{StaticResource CloseableTabItemButton}"
-                          x:Name="PART_CloseTab" />
+                <Button Grid.Column="1" 
+                        Style="{StaticResource CloseableTabItemButton}" />
 
-                </Grid>
+              </Grid>
 
-              </Border>
-            </Grid>
+            </Border>
+            
             <ControlTemplate.Triggers>
               <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Margin" Value="0,-4,0,0" />
