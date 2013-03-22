@@ -18,7 +18,7 @@
 
 #endregion
 
-using System;
+using Nova.Controls;
 
 namespace Nova.Shell.Library.ModuleBuilder
 {
@@ -27,21 +27,22 @@ namespace Nova.Shell.Library.ModuleBuilder
     /// </summary>
     public interface IModuleBuilder
     {
-        //builder.Add(x => x.Navigate<Page, VM>(), "Title").AsStartup()
-        //       .Add(x => x.Navigate<Page2, VM2>(), "Title 2");
-
         /// <summary>
         /// Adds a navigational action which will populate the tree.
         /// </summary>
-        /// <param name="navigate">The navigational action.</param>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         /// <param name="title">The title.</param>
         /// <returns></returns>
-        IModuleBuilder AddNavigation(Action<INavigatablePage> navigate, string title);
+        IModuleBuilder AddNavigation<TPageView, TPageViewModel>(string title)
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new();
 
         /// <summary>
         /// Marks the previously added navigational action as the startup page.
         /// </summary>
         /// <remarks>Only allowed to be used once per module.</remarks>
+        /// <exception cref="System.NotSupportedException">A default use case has already been set and can only be set once.</exception>
         /// <returns></returns>
         IModuleBuilder AsStartup();
 
@@ -49,9 +50,17 @@ namespace Nova.Shell.Library.ModuleBuilder
         /// Sets the module ranking.
         /// Used to determine startup module when there are multiple independant modules. (Highest ranking wins)
         /// </summary>
-        /// <remarks>Only allowed to be used once per module.</remarks>
+        /// <remarks>The ranking can only be set once. Default value is 10.</remarks>
         /// <param name="ranking">The ranking.</param>
         /// <returns></returns>
-        IModuleBuilder SetModuleRanking(uint ranking); //Only allowed once, 
+        IModuleBuilder SetModuleRanking(int ranking);
+
+        /// <summary>
+        /// Gets the ranking.
+        /// </summary>
+        /// <value>
+        /// The ranking.
+        /// </value>
+        int Ranking { get; }
     }
 }

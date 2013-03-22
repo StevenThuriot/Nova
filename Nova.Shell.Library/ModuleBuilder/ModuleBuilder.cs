@@ -1,0 +1,109 @@
+﻿#region License
+
+// 
+//  Copyright 2013 Steven Thuriot
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Nova.Controls;
+using Nova.Shell.Library.Domain;
+
+namespace Nova.Shell.Library.ModuleBuilder
+{
+    /// <summary>
+    /// Module builder
+    /// </summary>
+    internal class ModuleBuilder : IModuleBuilder
+    {
+        private TreeNode _StartupTreeNode;
+        private readonly List<TreeNode> _Navigation = new List<TreeNode>();
+        private int? _Ranking;
+
+        /// <summary>
+        /// Gets the ranking.
+        /// </summary>
+        /// <value>
+        /// The ranking.
+        /// </value>
+        public int Ranking
+        {
+            get { return _Ranking ?? 10; }
+            private set
+            {
+                if (_Ranking.HasValue)
+                    throw new NotSupportedException("Ranking can only be set once.");
+
+                _Ranking = value;
+            }
+        }
+
+        /// <summary>
+        /// Adds a navigational action which will populate the tree.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <param name="title">The title.</param>
+        /// <returns></returns>
+        public IModuleBuilder AddNavigation<TPageView, TPageViewModel>(string title) 
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new() 
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+        {
+            var treeNode = TreeNode.New<TPageView, TPageViewModel>(title);
+            _Navigation.Add(treeNode);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Marks the previously added navigational action as the startup page.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="System.NotSupportedException">A default use case has already been set and can only be set once.</exception>
+        /// <remarks>
+        /// Only allowed to be used once per module.
+        /// </remarks>
+        public IModuleBuilder AsStartup()
+        {
+            if (_StartupTreeNode != null)
+                throw new NotSupportedException("A default use case has already been set and can only be set once.");
+
+            if (_Navigation.Count == 0)
+                throw new NotSupportedException("A use case has to be added before the start up use case can be set.");
+            
+            _StartupTreeNode = _Navigation.Last();
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the module ranking.
+        /// Used to determine startup module when there are multiple independant modules. (Highest ranking wins)
+        /// </summary>
+        /// <param name="ranking">The ranking.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// The ranking can only be set once. Default value is 10.
+        /// </remarks>
+        public IModuleBuilder SetModuleRanking(int ranking)
+        {
+            Ranking = ranking;
+
+            return this;
+        }
+    }
+}
