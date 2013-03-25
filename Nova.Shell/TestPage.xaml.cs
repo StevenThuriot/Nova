@@ -18,6 +18,7 @@
 
 #endregion
 
+using System.Threading;
 using System.Windows.Input;
 using Nova.Base;
 using Nova.Controls;
@@ -53,6 +54,21 @@ namespace Nova.Shell
         {
             get { return _GoToPage2Command; }
             set { SetValue(ref _GoToPage2Command, value); }
+        }
+    }
+
+    public class LongRunningAction : Actionflow<TestPage, TestPageViewModel>
+    {
+        /// <summary>
+        /// Executes this instance.
+        /// </summary>
+        /// <returns></returns>
+        public override bool Execute()
+        {
+            //Simulate long running action.
+            Thread.Sleep(5000);
+
+            return base.Execute();
         }
     }
 }
