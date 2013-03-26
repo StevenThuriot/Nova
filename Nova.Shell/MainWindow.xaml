@@ -198,7 +198,9 @@
               </Grid.ColumnDefinitions>
               
               <!--TODO: Add Icon : <Image Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ClosableTabItem}}, Path=DataContext.Icon}" />-->
-              <TextBlock Grid.Column="1" Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ClosableTabItem}}, Path=DataContext.Title}" />
+              <TextBlock Grid.Column="1" 
+                         Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ClosableTabItem}}, Path=DataContext.Title}"
+                         ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Text}"/>
               
             </Grid>
           </DataTemplate>
