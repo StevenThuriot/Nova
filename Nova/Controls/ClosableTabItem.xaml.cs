@@ -28,6 +28,7 @@ namespace Nova.Controls
     /// <summary>
     /// Interaction logic for ClosableTabItem.xaml
     /// </summary>
+    [TemplatePart(Name = "PART_CloseTab", Type = typeof(Button))]
     public partial class ClosableTabItem
     {
         /// <summary>
