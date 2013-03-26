@@ -56,7 +56,7 @@ namespace Nova.Controls
         {
             double count = InternalChildren.Count;
 
-            var maximumChildrenWidth = count*MaximumItemWidth + (count*2d);
+            var maximumChildrenWidth = count*MaximumItemWidth + count;
             var width = Math.Min(MaxWidth, maximumChildrenWidth);
 
             var height = double.IsInfinity(availableSize.Height) ? 0d : availableSize.Height;
