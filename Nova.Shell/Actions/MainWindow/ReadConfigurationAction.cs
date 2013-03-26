@@ -42,9 +42,10 @@ namespace Nova.Shell.Actions.MainWindow
         private void SetIcon()
         {
             var value = GetAppSettingsFor("Icon");
-            if (string.IsNullOrWhiteSpace(value)) return;
 
-            var iconUri = new Uri(value);
+            var iconUri = string.IsNullOrWhiteSpace(value)
+                              ? new Uri("pack://application:,,,/Nova.Shell;component/Nova.ico")
+                              : new Uri(value);
 
             _Icon = new BitmapImage();
             _Icon.BeginInit();
