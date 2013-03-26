@@ -191,7 +191,15 @@
 
         <TabControl.ItemTemplate>
           <DataTemplate>
-            <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ClosableTabItem}}, Path=DataContext.Title}" />
+            <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ClosableTabItem}}, Path=DataContext.Title}">
+              <TextBlock.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                  <Setter Property="TextAlignment" Value="Left" />
+                  <Setter Property="Margin" Value="5 0 0 0" />
+                </Style>
+              </TextBlock.Resources>
+            </TextBlock>
           </DataTemplate>
         </TabControl.ItemTemplate>
       </ClosableTabControl>

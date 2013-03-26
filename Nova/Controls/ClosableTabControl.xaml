@@ -21,9 +21,9 @@
                             </Grid.RowDefinitions>
 
                             <StackPanel Grid.Row="0" Panel.ZIndex="1" Margin="0,0,4,-1" Background="Transparent" Orientation="Horizontal">
-                              <UniformGrid IsItemsHost="True" Background="Transparent" 
-                                           Rows="1" MaxWidth="{Binding ElementName=_MainGrid, Path=ActualWidth, Converter={StaticResource _SubtractionConverter}, ConverterParameter=50}"
-                                           />
+                              <controls:FlowPanel IsItemsHost="True" Background="Transparent"
+                                                  MaxWidth="{Binding ElementName=_MainGrid, Path=ActualWidth, Converter={StaticResource _SubtractionConverter}, ConverterParameter=50}"
+                                                  />
                               
                               <Button Command="{TemplateBinding AddItemCommand}"
                                       Visibility="{TemplateBinding AddItemCommand, Converter={StaticResource _IsNotNullToVisibilityConverter}}">
