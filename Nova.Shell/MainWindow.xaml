@@ -191,15 +191,16 @@
 
         <TabControl.ItemTemplate>
           <DataTemplate>
-            <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ClosableTabItem}}, Path=DataContext.Title}">
-              <TextBlock.Resources>
-                <Style TargetType="{x:Type TextBlock}">
-                  <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-                  <Setter Property="TextAlignment" Value="Left" />
-                  <Setter Property="Margin" Value="5 0 0 0" />
-                </Style>
-              </TextBlock.Resources>
-            </TextBlock>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              
+              <!--TODO: Add Icon : <Image Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ClosableTabItem}}, Path=DataContext.Icon}" />-->
+              <TextBlock Grid.Column="1" Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ClosableTabItem}}, Path=DataContext.Title}" />
+              
+            </Grid>
           </DataTemplate>
         </TabControl.ItemTemplate>
       </ClosableTabControl>
