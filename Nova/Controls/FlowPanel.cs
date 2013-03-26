@@ -97,6 +97,7 @@ namespace Nova.Controls
                 var rect = new Rect(location, size);
                 child.Arrange(rect);
 
+                //-2 because we want the items to slightly overlap. This is also why we added count to the maximumChildrenWidth in MeasureOverride.
                 x += width - 2d;
             }
 
