@@ -164,6 +164,9 @@ namespace Nova.Shell
             SetInitialSession();
         }
 
+        /// <summary>
+        /// Called after enter.
+        /// </summary>
         public void OnAfterEnter()
         {
             InvokeAction<ReadConfigurationAction>();
@@ -225,13 +228,15 @@ namespace Nova.Shell
         /// </summary>
         private void MaximizeView()
         {
-            if (View.WindowState == WindowState.Normal)
+            var mainView = View;
+
+            if (mainView.WindowState == WindowState.Normal)
             {
-                SystemCommands.MaximizeWindow(View);
+                SystemCommands.MaximizeWindow(mainView);
             }
             else
             {
-                SystemCommands.RestoreWindow(View);
+                SystemCommands.RestoreWindow(mainView);
             }
 
             FixWindowChromeBug();
@@ -243,11 +248,13 @@ namespace Nova.Shell
         /// </summary>
         private void FixWindowChromeBug()
         {
-            var chrome = WindowChrome.GetWindowChrome(View);
-            WindowChrome.SetWindowChrome(View, null);
+            var mainView = View;
+
+            var chrome = WindowChrome.GetWindowChrome(mainView);
+            WindowChrome.SetWindowChrome(mainView, null);
 
             var setChrome = new Action<Window, WindowChrome>(WindowChrome.SetWindowChrome);
-            View.Dispatcher.BeginInvoke(setChrome, DispatcherPriority.Render, View, chrome);
+            mainView.Dispatcher.BeginInvoke(setChrome, DispatcherPriority.Render, mainView, chrome);
         }
 
         /// <summary>

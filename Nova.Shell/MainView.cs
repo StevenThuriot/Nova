@@ -19,6 +19,9 @@ using System.Windows.Input;
 
 namespace Nova.Shell
 {
+    /// <summary>
+    /// The Main view window.
+    /// </summary>
     public partial class MainView
     {
         /// <summary>
@@ -40,6 +43,15 @@ namespace Nova.Shell
         private void MoveWindow(object sender, MouseButtonEventArgs e)
         {
             DragMove();
+        }
+
+        /// <summary>
+        /// Updates the cursor.
+        /// </summary>
+        /// <param name="isloading">if set to <c>true</c> [isloading].</param>
+        protected override void UpdateCursor(bool isloading)
+        {
+            //We want to update the cursor on Session level only. Leave the window alone!
         }
     }
 }

@@ -14,6 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System.Threading;
+using System.Windows.Input;
+
 namespace Nova.Shell
 {
     /// <summary>
@@ -27,6 +31,28 @@ namespace Nova.Shell
         public SessionView()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        ///     Starts the animated loading.
+        /// </summary>
+        public override void StartLoading()
+        {
+            base.StartLoading();
+            Cursor = Cursors.AppStarting;
+        }
+
+        /// <summary>
+        /// Stops the animated loading.
+        /// </summary>
+        public override void StopLoading()
+        {
+            base.StopLoading();
+
+            if (!IsLoading)
+            {
+                Cursor = Cursors.Arrow;
+            }
         }
     }
 }

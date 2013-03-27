@@ -37,8 +37,16 @@ namespace Nova.Shell.Actions.MainWindow
         public override void ExecuteCompleted()
         {
             //TODO: Check if leave was successful.
-            _Session.ViewModel.Leave();
-            ViewModel.Sessions.Remove(_Session);
+            Leave();
+        }
+
+        private async void Leave()
+        {
+            var couldLeave = await _Session.ViewModel.Leave();
+            if (couldLeave)
+            {
+                ViewModel.Sessions.Remove(_Session);
+            }
         }
     }
 }
