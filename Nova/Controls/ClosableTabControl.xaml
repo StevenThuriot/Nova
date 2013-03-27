@@ -20,9 +20,8 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <StackPanel Grid.Row="0" Panel.ZIndex="1" Margin="0,0,4,-1" Background="Transparent" Orientation="Horizontal">
-                              <controls:FlowPanel Background="Transparent" 
-                                                  IsItemsHost="True"
+                            <StackPanel Grid.Row="0" Panel.ZIndex="1" Margin="0,0,4,-1" Orientation="Horizontal">
+                              <controls:FlowPanel IsItemsHost="True"
                                                   MaxWidth="{Binding ElementName=_MainGrid, Path=ActualWidth, Converter={StaticResource _SubtractionConverter}, ConverterParameter=50}"
                                                   />
                               

@@ -30,5 +30,11 @@
             Padding="3">
       <Frame NavigationUIVisibility="Hidden" x:Name="ContentZone" />
     </Border>
+    
+    <!--<Overlay Grid.RowSpan="2" 
+             Grid.ColumnSpan="2" 
+             Margin="-2 -1 -2 -2"
+             IsLoading="{Binding HasLongRunningTasks}"
+             />-->
   </Grid>
 </shell:SessionViewBase>

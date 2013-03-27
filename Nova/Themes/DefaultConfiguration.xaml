@@ -37,6 +37,8 @@
 
 	<!-- Colors -->
 
+  <Color x:Key="OverlayColor">#90000000</Color>
+  <Color x:Key="ProgressRingColor">#CC119EDA</Color>
   <Color x:Key="WhiteColor">#FDFDFD</Color>
   <Color x:Key="LightBlueColor">#66119EDA</Color>
   <Color x:Key="DarkBlueColor">#0077CC</Color>

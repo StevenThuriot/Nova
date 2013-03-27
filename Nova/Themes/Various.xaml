@@ -8,6 +8,8 @@
 	<!-- Brushes -->
 
   <SolidColorBrush ice:Freeze="True" x:Key="LightBlueBrush" Color="{DynamicResource LightBlueColor}"/>
+  <SolidColorBrush ice:Freeze="True" x:Key="OverlayBrush" Color="{DynamicResource OverlayColor}"/>
+  <SolidColorBrush ice:Freeze="True" x:Key="ProgressRingBrush" Color="{DynamicResource ProgressRingColor}"/>
   <SolidColorBrush ice:Freeze="True" x:Key="DarkBlueBrush" Color="{DynamicResource DarkBlueColor}"/>
   <SolidColorBrush ice:Freeze="True" x:Key="WhiteBrush" Color="{DynamicResource WhiteColor}" />
 	<SolidColorBrush ice:Freeze="True" x:Key="LightShadeBrush" Color="{DynamicResource LightShadeColor}" />
