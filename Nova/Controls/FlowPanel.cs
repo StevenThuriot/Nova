@@ -33,13 +33,13 @@ namespace Nova.Controls
         /// The minimum item width property
         /// </summary>
         public static readonly DependencyProperty MinimumItemWidthProperty =
-            DependencyProperty.Register("MinimumItemWidth", typeof(double), typeof(FlowPanel), new PropertyMetadata(64d));
+            DependencyProperty.Register("MinimumItemWidth", typeof(double), typeof(FlowPanel), new FrameworkPropertyMetadata(64d, FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// The maximum item width property
         /// </summary>
         public static readonly DependencyProperty MaximumItemWidthProperty =
-            DependencyProperty.Register("MaximumItemWidth", typeof(double), typeof(FlowPanel), new PropertyMetadata(150d));
+            DependencyProperty.Register("MaximumItemWidth", typeof(double), typeof(FlowPanel), new FrameworkPropertyMetadata(150d, FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure));
         
         /// <summary>
         /// Gets or sets the minimum width of the item.
@@ -80,8 +80,20 @@ namespace Nova.Controls
             var width = Math.Min(MaxWidth, maximumChildrenWidth);
 
             var height = double.IsInfinity(availableSize.Height) ? 0d : availableSize.Height;
+            var finalSize = new Size(width, height);
 
-            return new Size(width, height);
+            if (Math.Abs(count) > double.Epsilon)
+            {
+                var averageWidth = GetAverageItemWidth(finalSize);
+                var childSize = new Size(averageWidth, availableSize.Height);
+
+                foreach (UIElement child in InternalChildren)
+                {
+                    child.Measure(childSize);
+                }
+            }
+
+            return finalSize;
         }
 
         /// <summary>
@@ -93,35 +105,45 @@ namespace Nova.Controls
         /// </returns>
         protected override Size ArrangeOverride(Size finalSize)
         {
-            var count = InternalChildren.Count;
+            if (InternalChildren.Count == 0) return finalSize;
 
-            if (count == 0) return finalSize;
+            var width = GetAverageItemWidth(finalSize);
 
-            var maxWidth = MaxWidth;
-            var finalWidth = !double.IsInfinity(maxWidth) ? maxWidth : finalSize.Width;
-
-            finalWidth = Math.Ceiling(finalWidth);
-            var averageWidth = Math.Floor(finalWidth/count); //Floor because we don't want overflow.
-
-            var minimum = Math.Min(averageWidth, MaximumItemWidth);
-            var width = Math.Max(minimum, MinimumItemWidth);
-            
             var x = 0d;
             foreach (UIElement child in InternalChildren)
             {
                 var location = new Point(x, 0d);
-
                 var size = new Size(width, finalSize.Height);
-                child.Measure(size);
 
                 var rect = new Rect(location, size);
                 child.Arrange(rect);
 
-                //-2 because we want the items to slightly overlap. This is also why we added count to the maximumChildrenWidth in MeasureOverride.
+                //-2 because we want the items to slightly overlap.
+                //This is also why we added count to the maximumChildrenWidth in MeasureOverride.
                 x += width - 2d;
             }
 
             return finalSize;
+        }
+
+        /// <summary>
+        /// Gets the average width of the item.
+        /// </summary>
+        /// <param name="availableSize">The size.</param>
+        /// <returns></returns>
+        private double GetAverageItemWidth(Size availableSize)
+        {
+            var count = InternalChildren.Count;
+            
+            var maxWidth = MaxWidth;
+            var finalWidth = !double.IsInfinity(maxWidth) ? maxWidth : availableSize.Width;
+
+            finalWidth = Math.Floor(finalWidth);
+            var averageWidth = Math.Floor(finalWidth/count); //Floor because we don't want overflow.
+
+            var minimum = Math.Min(averageWidth, MaximumItemWidth);
+            var width = Math.Max(minimum, MinimumItemWidth);
+            return width;
         }
     } 
 }

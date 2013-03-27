@@ -17,6 +17,8 @@
 // 
 
 #endregion
+
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows;
@@ -87,7 +89,8 @@ namespace Nova.Controls
         private void RaiseCloseEvent(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
-            RaiseEvent(new RoutedEventArgs(CloseTabEvent, DataContext));
+            var routedEventArgs = new RoutedEventArgs(CloseTabEvent, DataContext);
+            RaiseEvent(routedEventArgs);
         }
 
         /// <summary>

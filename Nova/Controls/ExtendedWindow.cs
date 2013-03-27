@@ -144,7 +144,7 @@ namespace Nova.Controls
         public virtual void StartLoading()
         {
             IsLoading = Interlocked.Increment(ref _LoadingCounter) > 0;
-            Cursor = Cursors.AppStarting;
+            UpdateCursor(true);
         }
 
         /// <summary>
@@ -156,8 +156,17 @@ namespace Nova.Controls
 
             if (!IsLoading)
             {
-                Cursor = Cursors.Arrow;
+                UpdateCursor(false);
             }
+        }
+
+        /// <summary>
+        /// Updates the cursor.
+        /// </summary>
+        /// <param name="isloading">if set to <c>true</c> [isloading].</param>
+        protected virtual void UpdateCursor(bool isloading)
+        {
+            Cursor = isloading ? Cursors.AppStarting : Cursors.Arrow;
         }
 
         /// <summary>
