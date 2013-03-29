@@ -218,16 +218,13 @@ namespace Nova.Controls
             {
                 Interval = TimeSpan.FromMilliseconds(overlay.Delay)
             };
-
-            if (StopFadeOutTimer(overlay))
-                return;
-
+            
             var storyboard = CreateStoryboard(overlay, 0, 1);
 
             overlay._FadeInTimer.Tick += (sender, args) =>
             {
-                overlay.Visibility = Visibility.Visible;
                 overlay.IsActive = true;
+                overlay.Visibility = Visibility.Visible;
 
                 storyboard.Begin();
                 showTimer.Start();
@@ -246,11 +243,9 @@ namespace Nova.Controls
         {
             var showTimer = overlay._ShowTimer;
             showTimer.Stop();
-            
+
             if (StopFadeInTimer(overlay))
-            {
                 return;
-            }
 
             var storyboard = CreateStoryboard(overlay, 1, 0); 
             
