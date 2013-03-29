@@ -186,11 +186,8 @@ namespace Nova.Controls
         private static void IsLoadingChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
             var overlay = (Overlay) dependencyObject;
-
-            if (!overlay.IsLoaded) return;
-
+            
             var isLoading = (bool)e.NewValue;
-
             if (isLoading)
             {
                 StartLoading(overlay);
