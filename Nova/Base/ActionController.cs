@@ -21,7 +21,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using System.Windows;
 using Nova.Controls;
 using Nova.Properties;
 using Nova.Threading;
@@ -72,9 +71,43 @@ namespace Nova.Base
 
             var action = PrepareAction(actionToRun, disposeActionDuringCleanup, executeCompleted);
 
-            _ActionQueueManager.Queue(action);
+            if (!_ActionQueueManager.Enqueue(action))
+            {
+                CleanUpFailedEnqueue(actionToRun, disposeActionDuringCleanup, executeCompleted);
+                return null;
+            }
 
             return action;
+        }
+
+        /// <summary>
+        /// Cleans up an action that failed to enqueue.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="actionToRun">The action to run.</param>
+        /// <param name="disposeActionDuringCleanup">if set to <c>true</c> [dispose action during cleanup].</param>
+        /// <param name="executeCompleted">The execute completed.</param>
+        private static void CleanUpFailedEnqueue<T>(T actionToRun, bool disposeActionDuringCleanup, Action executeCompleted)
+            where T : Actionflow<TView, TViewModel>
+        {
+            Task task = null;
+
+            if (executeCompleted != null)
+            {
+                task = Task.Run(executeCompleted)
+                           .ContinueWith(x => { if (x.Exception != null) x.Exception.Handle(_ => true); }, TaskContinuationOptions.OnlyOnFaulted);
+            }
+
+            if (!disposeActionDuringCleanup) return;
+
+            if (task == null)
+            {
+                actionToRun.Dispose();
+            }
+            else
+            {
+                task.ContinueWith(_ => actionToRun.Dispose());
+            }
         }
 
         /// <summary>
@@ -187,23 +220,7 @@ namespace Nova.Base
             ActionContext actionContext = PrepareActionContext(arguments);
             Invoke<T>(actionContext);
         }
-
-        /// <summary>
-        ///     Invokes the action.
-        /// </summary>
-        /// <typeparam name="T">The type of action to invoke.</typeparam>
-        /// <param name="sender">The sender.</param>
-        /// <param name="arguments">The arguments.</param>
-        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter",
-            Justification = "Required by called method.")]
-        public void InvokeAction<T>(UIElement sender, params ActionContextEntry[] arguments)
-            where T : Actionflow<TView, TViewModel>, new()
-        {
-            sender.IsEnabled = false;
-            ActionContext actionContext = PrepareActionContext(arguments);
-            Invoke<T>(actionContext, () => sender.IsEnabled = true);
-        }
-
+        
         /// <summary>
         ///     Invokes the action.
         ///     This call is for internal means only.
@@ -242,27 +259,6 @@ namespace Nova.Base
         {
             ActionContext actionContext = PrepareActionContext(arguments);
             var action = Invoke<T>(actionContext);
-
-            if (action == null)
-                return false;
-
-            return await action.GetSuccessAsync();
-        }
-
-        /// <summary>
-        ///     Invokes the action.
-        /// </summary>
-        /// <typeparam name="T">The type of action to invoke.</typeparam>
-        /// <param name="sender">The sender.</param>
-        /// <param name="arguments">The arguments.</param>
-        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter",
-            Justification = "Required by called method.")]
-        public async Task<bool> InvokeActionAsync<T>(UIElement sender, params ActionContextEntry[] arguments)
-            where T : Actionflow<TView, TViewModel>, new()
-        {
-            sender.IsEnabled = false;
-            ActionContext actionContext = PrepareActionContext(arguments);
-            var action = Invoke<T>(actionContext, () => sender.IsEnabled = true);
 
             if (action == null)
                 return false;
