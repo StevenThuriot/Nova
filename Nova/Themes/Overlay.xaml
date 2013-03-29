@@ -5,19 +5,15 @@
   <Style TargetType="Controls:Overlay">
     <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
     <Setter Property="OverlayBrush" Value="{DynamicResource OverlayBrush}"/>
+    <Setter Property="Visibility" Value="Collapsed"/>
     
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="Controls:Overlay">
           <Grid>
             <Border Background="{TemplateBinding OverlayBrush}" CornerRadius="1" />
-            <Controls:ProgressRing IsActive="{TemplateBinding IsLoading}" Foreground="{TemplateBinding Foreground}" />
+            <Controls:ProgressRing IsActive="{TemplateBinding IsActive}" Foreground="{TemplateBinding Foreground}" />
           </Grid>
-          <ControlTemplate.Triggers>
-            <Trigger Property="IsLoading" Value="True">
-              <Setter Property="Visibility" Value="Visible" />
-            </Trigger>
-          </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
