@@ -94,8 +94,7 @@ namespace Nova.Base
 
             if (executeCompleted != null)
             {
-                task = Task.Run(executeCompleted)
-                           .ContinueWith(x => { if (x.Exception != null) x.Exception.Handle(_ => true); }, TaskContinuationOptions.OnlyOnFaulted);
+                task = Task.Run(executeCompleted);
             }
 
             if (!disposeActionDuringCleanup) return;
@@ -106,7 +105,8 @@ namespace Nova.Base
             }
             else
             {
-                task.ContinueWith(_ => actionToRun.Dispose());
+                task.ContinueWith(_ => actionToRun.Dispose())
+                    .ContinueWith(x => { if (x.Exception != null) x.Exception.Handle(_ => true); }, TaskContinuationOptions.OnlyOnFaulted);
             }
         }
 

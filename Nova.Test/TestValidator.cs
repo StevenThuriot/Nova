@@ -29,8 +29,8 @@ namespace Nova.Test
 
 		public override void Validate(MainViewModel entity)
         {
-            Add("TextBox", "Put in text!", ValidationSeverity.Suggestion);
-            Add("TextBox", "Then put in some more!", ValidationSeverity.Warning);
+            Add("TextBox", "[Suggestion] Put in text!", ValidationSeverity.Suggestion);
+            Add("TextBox", "[Warning] Then put in some more! (Shown first because it's a warning, even though it was added afterwards.)", ValidationSeverity.Warning);
             Add("ComboBox", "Select something...", ValidationSeverity.Warning);
             Add("ComboBox", "Then select something else!", ValidationSeverity.Error);
             AddRequired("CheckBox");
