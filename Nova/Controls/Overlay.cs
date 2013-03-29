@@ -207,9 +207,6 @@ namespace Nova.Controls
         /// <param name="overlay">The overlay.</param>
         private static void StartLoading(Overlay overlay)
         {
-            if (overlay.Visibility == Visibility.Visible)
-                return;
-
             var showTimer = overlay._ShowTimer;
 
             showTimer.Reset();
@@ -249,10 +246,7 @@ namespace Nova.Controls
         {
             var showTimer = overlay._ShowTimer;
             showTimer.Stop();
-
-            if (overlay.Visibility != Visibility.Visible)
-                return;
-
+            
             if (StopFadeInTimer(overlay))
             {
                 return;
