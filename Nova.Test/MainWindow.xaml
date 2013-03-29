@@ -36,7 +36,7 @@
 			</DataGrid>
 
 
-			<Button Content="Run Action" Command="{CommandBinding ThrowException}" />
+			<Button Content="Run Action" Command="{ActionBinding ThrowException}" />
 			<TextBox Margin="10,0,0,0" Width="120" Text="Lalala"
 					 Base:ViewMode.Watermark="Put text here"
            Validation:NovaValidation.FieldName="TextBox"
@@ -141,7 +141,7 @@
 								
 				<Label>This is a label</Label>
 				<TextBlock Style="{DynamicResource NovaTextBlock}">This is a textblock</TextBlock>
-				<Button Content="Throw Exception" Command="{CommandBinding ThrowException}" />
+				<Button Content="Throw Exception" Command="{ActionBinding ThrowException}" />
 				<Nova:SearchTextBox Width="150" Command="{Binding SearchCommand}"
 										  Text="{Binding SearchText}"
                     Base:ViewMode.Watermark="Searchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"

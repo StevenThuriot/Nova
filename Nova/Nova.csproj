@@ -213,7 +213,7 @@
     <Compile Include="Base\Actionflow.cs" />
     <Compile Include="Base\IViewModel.cs" />
     <Compile Include="Base\ValidatableActionflow.cs" />
-    <Compile Include="Base\CommandBinding.cs" />
+    <Compile Include="Base\ActionBinding.cs" />
     <Compile Include="Base\OnActionMethodRepository.OnAction.cs">
       <DependentUpon>OnActionMethodRepository.cs</DependentUpon>
     </Compile>
