@@ -74,7 +74,7 @@ namespace Nova.Base
             if (control == null)
                 return;
 
-            var watermark = GetWatermark(dependencyObject);
+		    var watermark = e.NewValue as string;
 
             if (string.IsNullOrWhiteSpace(watermark))
                 return;

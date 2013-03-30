@@ -105,6 +105,7 @@
 			</StackPanel>
 			<StackPanel  Margin="10" Orientation="Horizontal">
 				<PasswordBox Margin="10,0,0,0" Height="23" Width="120"
+					  Base:ViewMode.Watermark="Pass watermark"
 						 Validation:NovaValidation.FieldName="Password" />
 				
 				<CheckBox Content="Null CheckBox" Height="16" IsChecked="{x:Null}"

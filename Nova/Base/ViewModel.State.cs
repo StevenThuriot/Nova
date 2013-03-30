@@ -16,6 +16,8 @@
 // 
 #endregion
 
+using System.Threading.Tasks;
+
 namespace Nova.Base
 {
     public abstract partial class ViewModel<TView, TViewModel>
@@ -23,7 +25,7 @@ namespace Nova.Base
         /// <summary>
         /// Saves this instance.
         /// </summary>
-        public async void Save()
+        public async Task Save()
         {
             var objectToSave = new DynamicContext();
             Save(objectToSave);
@@ -38,7 +40,7 @@ namespace Nova.Base
         /// Loads this instance.
         /// Load(value) will only trigger in case the ViewModel has been saved before.
         /// </summary>
-        public async void Load()
+        public async Task Load()
         {
             var dynamicContext = await DynamicContext.Load<TViewModel>();
 

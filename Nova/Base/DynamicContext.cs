@@ -156,7 +156,9 @@ namespace Nova.Base
 		            using (var file = File.OpenRead(fileName))
 		            {
 		                var formatter = new BinaryFormatter();
-		                return (DynamicContext) formatter.Deserialize(file);
+		                var deserializedContext = formatter.Deserialize(file);
+                        
+		                return (DynamicContext) deserializedContext;
 		            }
 		        });
 		}

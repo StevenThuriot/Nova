@@ -39,8 +39,13 @@ namespace Nova.Test
 
 		public override void ExecuteCompleted()
 		{
-			ViewModel.Save();
-			ViewModel.Load();
+		    SaveAndLoad();
 		}
+
+	    private async void SaveAndLoad()
+	    {
+	        await ViewModel.Save();
+	        await ViewModel.Load();
+	    }
 	}
 }
