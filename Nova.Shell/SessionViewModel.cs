@@ -139,15 +139,12 @@ namespace Nova.Shell
         /// </returns>
         public bool IsSessionValid()
         {
-            if (!IsValid) //The session is invalid.
+            if (!IsValid) //Session level
                 return false;
 
             var currentView = CurrentView;
 
-            if (currentView != null && currentView.ViewModel.IsValid) //The content zone is invalid.
-                return false;
-
-            return true;
+            return currentView == null || currentView.ViewModel.IsValid; //The content zone level.
         }
     }
 }
