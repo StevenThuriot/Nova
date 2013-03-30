@@ -21,7 +21,12 @@ namespace Nova.Controls
         {
             ValidNumberRegex = new Regex(@"^[-+]?[0-9]*[\.,]?[0-9]*([eE][-+]?[0-9]+)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-            TextProperty.AddOwner(typeof(NumericTextBox), new FrameworkPropertyMetadata(delegate { }, CoerceTextValueCallback));
+            var frameworkPropertyMetadata = new FrameworkPropertyMetadata
+                {
+                    CoerceValueCallback = CoerceTextValueCallback
+                };
+
+            TextProperty.AddOwner(typeof(NumericTextBox), frameworkPropertyMetadata);
             DefaultStyleKeyProperty.OverrideMetadata(typeof(NumericTextBox), new FrameworkPropertyMetadata(typeof(NumericTextBox)));
         }
 
