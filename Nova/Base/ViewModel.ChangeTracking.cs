@@ -22,6 +22,8 @@ namespace Nova.Base
 {
     public partial class ViewModel<TView, TViewModel>
     {
+        //TODO: What about domain objects on the VM that implement INotifyPropChanged?
+
         private bool _IsChangeTracking;
 
         /// <summary>
