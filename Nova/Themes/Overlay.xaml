@@ -11,11 +11,10 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="Controls:Overlay">
-          <Grid>
-            <Border Background="{TemplateBinding OverlayBrush}" CornerRadius="1" />
-            
+          
+          <Border Background="{TemplateBinding OverlayBrush}" CornerRadius="1">
             <ContentPresenter />
-          </Grid>
+          </Border>
           
           <ControlTemplate.Triggers>
             <Trigger Property="IsActive" Value="True">
