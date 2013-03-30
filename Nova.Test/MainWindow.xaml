@@ -139,7 +139,10 @@
 			</StackPanel>
 
 			<StackPanel  Height="300" Margin="10" Orientation="Horizontal">
-								
+        <NumericTextBox Margin="10,0,0,0" Height="23" Width="120"
+					  Base:ViewMode.Watermark="Numeric watermark"
+						 Validation:NovaValidation.FieldName="NumericTextBox" />
+        
 				<Label>This is a label</Label>
 				<TextBlock Style="{DynamicResource NovaTextBlock}">This is a textblock</TextBlock>
 				<Button Content="Throw Exception" Command="{ActionBinding ThrowException}" />

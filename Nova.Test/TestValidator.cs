@@ -33,6 +33,7 @@ namespace Nova.Test
             Add("TextBox", "[Warning] Then put in some more! (Shown first because it's a warning, even though it was added afterwards.)", ValidationSeverity.Warning);
             Add("ComboBox", "Select something...", ValidationSeverity.Warning);
             Add("ComboBox", "Then select something else!", ValidationSeverity.Error);
+            Add("NumericTextBox", "Are you sure that's a valid number?", ValidationSeverity.Error);
             AddRequired("CheckBox");
             Add("CheckBox2", "This is another CheckBox");
             Add("Password", "This isn't a secure password.", ValidationSeverity.Warning);

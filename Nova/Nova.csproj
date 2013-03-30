@@ -147,6 +147,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\NumericTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Overlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -271,6 +275,7 @@
     <Compile Include="Controls\IView.cs" />
     <Compile Include="Controls\ImageButton.cs" />
     <Compile Include="Controls\AnimatedLoader.cs" />
+    <Compile Include="Controls\NumericTextBox.cs" />
     <Compile Include="Controls\Overlay.cs" />
     <Compile Include="Controls\ProgressIndicator.xaml.cs">
       <DependentUpon>ProgressIndicator.xaml</DependentUpon>
