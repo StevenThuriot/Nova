@@ -19,7 +19,6 @@
 #endregion
 
 using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -31,9 +30,9 @@ namespace Nova.Controls
     /// <summary>
     /// Interaction logic for Overlay.xaml
     /// </summary>
-    public class Overlay : Control
+    public class Overlay : UserControl
     {
-        private readonly Stopwatch _ShowTimer = new Stopwatch();
+        private DateTime? _LastShown;
 
         private DispatcherTimer _FadeInTimer;
         private DispatcherTimer _FadeOutTimer;
@@ -43,9 +42,7 @@ namespace Nova.Controls
         /// </summary>
         static Overlay()
         {
-            VisibilityProperty.OverrideMetadata(typeof(Overlay), new FrameworkPropertyMetadata(Visibility.Collapsed));
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Overlay), new FrameworkPropertyMetadata(typeof(Overlay)));
-            ForegroundProperty.OverrideMetadata(typeof(Overlay), new FrameworkPropertyMetadata(Brushes.WhiteSmoke));
         }
 
 
@@ -85,6 +82,7 @@ namespace Nova.Controls
         public static readonly DependencyProperty IsActiveProperty =
             DependencyProperty.Register("IsActive", typeof (bool), typeof (Overlay), new PropertyMetadata(false));
 
+        
 
 
 
@@ -186,27 +184,25 @@ namespace Nova.Controls
         private static void IsLoadingChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
             var overlay = (Overlay) dependencyObject;
-            
             var isLoading = (bool)e.NewValue;
+
             if (isLoading)
             {
-                StartLoading(overlay);
+                BeginOverlay(overlay);
             }
             else
             {
-                StopLoading(overlay);
+                StopOverlay(overlay);
             }
         }
 
         /// <summary>
-        /// Starts the loading.
+        /// Begins enabling the overlay.
         /// </summary>
         /// <param name="overlay">The overlay.</param>
-        private static void StartLoading(Overlay overlay)
+        private static void BeginOverlay(Overlay overlay)
         {
-            var showTimer = overlay._ShowTimer;
-
-            showTimer.Reset();
+            overlay._LastShown = null;
 
             if (StopFadeOutTimer(overlay))
                 return;
@@ -216,15 +212,12 @@ namespace Nova.Controls
                 Interval = TimeSpan.FromMilliseconds(overlay.Delay)
             };
             
-            var storyboard = CreateStoryboard(overlay, 0, 1);
-
             overlay._FadeInTimer.Tick += (sender, args) =>
             {
                 overlay.IsActive = true;
-                overlay.Visibility = Visibility.Visible;
 
-                storyboard.Begin();
-                showTimer.Start();
+                CreateStoryboard(overlay, 0, 1).Begin();
+                overlay._LastShown = DateTime.Now;
 
                 StopFadeInTimer(overlay);
             };
@@ -233,26 +226,25 @@ namespace Nova.Controls
         }
 
         /// <summary>
-        /// Stops the loading.
+        /// Stops the overlay.
         /// </summary>
         /// <param name="overlay">The overlay.</param>
-        private static void StopLoading(Overlay overlay)
+        private static void StopOverlay(Overlay overlay)
         {
-            var showTimer = overlay._ShowTimer;
-            showTimer.Stop();
-
             if (StopFadeInTimer(overlay))
                 return;
 
             var storyboard = CreateStoryboard(overlay, 1, 0); 
             
-            storyboard.Completed += (sender, args) =>
-                {
-                    overlay.Visibility = Visibility.Collapsed;
-                    overlay.IsActive = false;
-                };
-
-            var elapsedMilliseconds = showTimer.ElapsedMilliseconds;
+            storyboard.Completed += (sender, args) => overlay.IsActive = false;
+            
+            if (!overlay._LastShown.HasValue)
+            {
+                storyboard.Begin();
+                return;
+            }
+            
+            var elapsedMilliseconds = (DateTime.Now - overlay._LastShown.Value).Duration().TotalMilliseconds;
             var minimumDuration = overlay.MinimumDuration;
 
             if (elapsedMilliseconds < minimumDuration)
@@ -260,15 +252,15 @@ namespace Nova.Controls
                 var duration = minimumDuration - elapsedMilliseconds;
 
                 overlay._FadeOutTimer = new DispatcherTimer(DispatcherPriority.Normal, overlay.Dispatcher)
-                {
-                    Interval = TimeSpan.FromMilliseconds(duration)
-                };
+                    {
+                        Interval = TimeSpan.FromMilliseconds(duration)
+                    };
 
                 overlay._FadeOutTimer.Tick += (sender, args) =>
-                {
-                    storyboard.Begin();
-                    StopFadeOutTimer(overlay);
-                };
+                    {
+                        storyboard.Begin();
+                        StopFadeOutTimer(overlay);
+                    };
 
                 overlay._FadeOutTimer.Start();
             }

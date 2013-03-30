@@ -30,11 +30,16 @@
             Padding="3">
       <Frame NavigationUIVisibility="Hidden" x:Name="ContentZone" />
     </Border>
-    
-    <Overlay Grid.RowSpan="2" 
-             Grid.ColumnSpan="2" 
+
+    <Overlay Grid.RowSpan="2"
+             Grid.ColumnSpan="2"
              Margin="-2 -1 -2 -2"
              IsLoading="{Binding View.IsLoading}"
-             />
+             >
+      <ProgressRing IsActive="{Binding View.IsLoading}"
+                    Foreground="{DynamicResource WhiteBrush}"
+                    />
+    </Overlay>
+    
   </Grid>
 </shell:SessionViewBase>

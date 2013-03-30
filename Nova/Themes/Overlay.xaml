@@ -5,7 +5,8 @@
   <Style TargetType="Controls:Overlay">
     <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
     <Setter Property="OverlayBrush" Value="{DynamicResource OverlayBrush}"/>
-    <Setter Property="Visibility" Value="Collapsed"/>
+    <Setter Property="Visibility" Value="Collapsed" />
+    <Setter Property="Opacity" Value="0" />
     
     <Setter Property="Template">
       <Setter.Value>
@@ -13,16 +14,14 @@
           <Grid>
             <Border Background="{TemplateBinding OverlayBrush}" CornerRadius="1" />
             
-            <Controls:ProgressRing IsActive="{TemplateBinding IsActive}"
-                                   Foreground="{TemplateBinding Foreground}"
-                                   />
-            
-            <!--<TextBlock  Foreground="{TemplateBinding Foreground}" 
-                        FontWeight="Bold" 
-                        VerticalAlignment="Center" HorizontalAlignment="Center">
-              Loading
-            </TextBlock>-->
+            <ContentPresenter />
           </Grid>
+          
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsActive" Value="True">
+              <Setter Property="Visibility" Value="Visible" />
+            </Trigger>
+          </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
