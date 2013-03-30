@@ -35,6 +35,7 @@
              Grid.ColumnSpan="2"
              Margin="-2 -1 -2 -2"
              IsLoading="{Binding View.IsLoading}"
+             Delay="1250"
              >
       <ProgressRing IsActive="{Binding View.IsLoading}"
                     Foreground="{DynamicResource WhiteBrush}"

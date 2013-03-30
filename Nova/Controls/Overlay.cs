@@ -74,7 +74,7 @@ namespace Nova.Controls
         /// The delay property
         /// </summary>
         public static readonly DependencyProperty DelayProperty =
-            DependencyProperty.Register("Delay", typeof (double), typeof (Overlay), new PropertyMetadata(1000d));
+            DependencyProperty.Register("Delay", typeof (double), typeof (Overlay), new PropertyMetadata(0d));
 
         /// <summary>
         /// The is active property
@@ -206,10 +206,21 @@ namespace Nova.Controls
 
             if (StopFadeOutTimer(overlay))
                 return;
-            
+
+
+            var delay = overlay.Delay;
+
+            if (delay <= 0)
+            {
+                overlay.IsActive = true;
+
+                CreateStoryboard(overlay, 0, 1).Begin();
+                return;
+            }
+
             overlay._FadeInTimer = new DispatcherTimer(DispatcherPriority.Normal, overlay.Dispatcher)
             {
-                Interval = TimeSpan.FromMilliseconds(overlay.Delay)
+                Interval = TimeSpan.FromMilliseconds(delay)
             };
             
             overlay._FadeInTimer.Tick += (sender, args) =>
