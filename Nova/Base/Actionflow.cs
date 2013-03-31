@@ -58,7 +58,7 @@ namespace Nova.Base
 		/// </summary>
 		protected Actionflow()
 		{
-			CanComplete = false;
+			CanComplete = true;
 		}
 		
 		#region IDisposable Members
@@ -193,9 +193,18 @@ namespace Nova.Base
 		/// The logic that runs before the action.
 		/// </summary>
 		internal virtual void InternalOnBefore()
-		{
-            OnActionMethodRepository.OnBefore<Actionflow<TView, TViewModel>, TView, TViewModel>(this);
-		    OnBefore();
+        {
+            try
+            {
+                View.StartLoading();
+                OnActionMethodRepository.OnBefore<Actionflow<TView, TViewModel>, TView, TViewModel>(this);
+                OnBefore();
+            }
+            catch (Exception exception)
+            {
+                CanComplete = false;
+                ExceptionHandler.Handle(exception, Resources.ErrorMessageAsync);
+            }
 		}
 		
 		/// <summary>
@@ -204,6 +213,8 @@ namespace Nova.Base
 		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
 		internal virtual void InternalExecute()
 		{
+		    if (!CanComplete) return;
+
 			try
 			{
                 SafeInternalExecute();
@@ -256,9 +267,20 @@ namespace Nova.Base
 		/// </summary>
 		internal void InternalOnAfter()
         {
-            OnAfter();
-            OnActionMethodRepository.OnAfter<Actionflow<TView, TViewModel>, TView, TViewModel>(this);
-		}
+	        try
+	        {
+	            OnAfter();
+	            OnActionMethodRepository.OnAfter<Actionflow<TView, TViewModel>, TView, TViewModel>(this);
+	        }
+	        catch (Exception exception)
+	        {
+	            ExceptionHandler.Handle(exception, Resources.ErrorMessageMainThread);
+	        }
+	        finally
+	        {
+	            View.StopLoading();
+	        }
+        }
 
         /// <summary>
         /// Returns a value wheter this instance ran successfully.

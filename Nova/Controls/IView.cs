@@ -37,6 +37,14 @@ namespace Nova.Controls
         void StopLoading();
 
         /// <summary>
+        /// Gets a value indicating whether this instance is loading.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is loading; otherwise, <c>false</c>.
+        /// </value>
+        bool IsLoading { get; }
+
+        /// <summary>
         /// Gets the view model.
         /// </summary>
         /// <value>

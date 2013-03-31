@@ -124,11 +124,10 @@ namespace Nova.Base
             if (actionToRun == null)
                 return null;
 
-            var action = actionToRun.Wrap(x => x.ViewModel.ID, x => x.View.StartLoading, x => x.RanSuccesfully, mainThread: true)
+            var action = actionToRun.Wrap(x => x.ViewModel.ID, x => x.InternalOnBefore, x => x.RanSuccesfully, mainThread: true)
 
                                     .CanExecute(actionToRun.CanExecute)
 
-                                    .ContinueWith(actionToRun.InternalOnBefore, mainThread: true)
                                     .ContinueWith(actionToRun.InternalExecute)
                                     .ContinueWith(actionToRun.InternalExecuteCompleted, mainThread: true)
 
@@ -136,8 +135,6 @@ namespace Nova.Base
 
                                     .FinishWith(() =>
                                         {
-                                            actionToRun.View.StopLoading();
-
                                             if (disposeActionDuringCleanup)
                                                 actionToRun.Dispose();
 

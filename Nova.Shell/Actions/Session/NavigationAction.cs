@@ -35,6 +35,12 @@ namespace Nova.Shell.Actions.Session
         private IView _NextView;
         private IView _Current;
 
+        public override bool CanExecute()
+        {
+            return ViewModel.CurrentView == null ||
+                !ViewModel.CurrentView.IsLoading;
+        }
+
         public override void OnBefore()
         {
             var createNextView = ActionContext.GetValue<Func<IView>>(SessionViewModel.NextViewConstant);

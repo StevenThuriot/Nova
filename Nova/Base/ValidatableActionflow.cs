@@ -18,6 +18,7 @@
 
 #endregion
 
+using System;
 using System.Globalization;
 using Nova.Controls;
 using Nova.Properties;
@@ -72,21 +73,29 @@ namespace Nova.Base
         {
             base.InternalOnBefore();
 
-            var validationControl = View.ValidationControl;
-
-            if (validationControl == null) return;
-
-            var results = validationControl.ValidateRequiredFields();
-
-            foreach (var result in results)
+            try
             {
-                var field = result.Value;
-                var entityID = result.Key;
+                var validationControl = View.ValidationControl;
 
-                var requiredField = string.Format(CultureInfo.CurrentCulture, Resources.RequiredField, field);
-                var validation = ValidationFactory.Create(field, requiredField, entityID, ValidationSeverity.Error);
+                if (validationControl == null) return;
 
-                _ValidationResults.InternalAdd(validation);
+                var results = validationControl.ValidateRequiredFields();
+
+                foreach (var result in results)
+                {
+                    var field = result.Value;
+                    var entityID = result.Key;
+
+                    var requiredField = string.Format(CultureInfo.CurrentCulture, Resources.RequiredField, field);
+                    var validation = ValidationFactory.Create(field, requiredField, entityID, ValidationSeverity.Error);
+
+                    _ValidationResults.InternalAdd(validation);
+                }
+            }
+            catch (Exception exception)
+            {
+                CanComplete = false;
+                ExceptionHandler.Handle(exception, Resources.ErrorMessageAsync);
             }
         }
 
