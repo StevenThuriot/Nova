@@ -94,11 +94,12 @@ namespace Nova.Controls
         private static void ChangingFrameIndex(DependencyObject dependencyObject,
                                                DependencyPropertyChangedEventArgs eventArguments)
         {
-            var ob = dependencyObject as AnimatedLoader;
-            if (ob == null) return;
+            var animatedLoader = dependencyObject as AnimatedLoader;
+            if (animatedLoader == null) return;
 
-            ob.Source = ob._GifBitmapDecoder.Frames[(int) eventArguments.NewValue];
-            ob.InvalidateVisual();
+            var index = (int) eventArguments.NewValue;
+            animatedLoader.Source = animatedLoader._GifBitmapDecoder.Frames[index];
+            animatedLoader.InvalidateVisual();
         }
 
         /// <summary>
