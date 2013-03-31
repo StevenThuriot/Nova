@@ -138,11 +138,7 @@
 						 Validation:NovaValidation.FieldName="TextBox" />
 			</StackPanel>
 
-			<StackPanel  Height="300" Margin="10" Orientation="Horizontal">
-        <NumericTextBox Margin="10,0,0,0" Height="23" Width="120"
-					  Base:ViewMode.Watermark="Numeric watermark"
-						 Validation:NovaValidation.FieldName="NumericTextBox" />
-        
+			<StackPanel  Margin="10" Orientation="Horizontal">
 				<Label>This is a label</Label>
 				<TextBlock Style="{DynamicResource NovaTextBlock}">This is a textblock</TextBlock>
 				<Button Content="Throw Exception" Command="{ActionBinding ThrowException}" />
@@ -151,7 +147,7 @@
                     Base:ViewMode.Watermark="Searchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
 						 Validation:NovaValidation.FieldName="SearchTextBox"
 						  />
-				<ListBox Width="150">
+				<!--<ListBox Width="150">
 					<ListBox.ContextMenu>
 
 						<ContextMenu>
@@ -163,9 +159,20 @@
 					<ListBoxItem>Lorem</ListBoxItem>
 					<ListBoxItem>ipsum</ListBoxItem>
 					<ListBoxItem>dolor</ListBoxItem>
-				</ListBox>
+				</ListBox>-->
 
 			</StackPanel>
+      <StackPanel Margin="10" Orientation="Horizontal">
+
+        <NumericTextBox Margin="10,0,0,0" Height="23" Width="120"
+					  Base:ViewMode.Watermark="Numeric watermark"
+						 Validation:NovaValidation.FieldName="NumericTextBox" />
+        
+        <MaskedTextBox Margin="10,0,0,0" Height="23" Width="120"
+                       Mask="999-999"
+					  Base:ViewMode.Watermark="Masked watermark"
+						 Validation:NovaValidation.FieldName="MaskedTextBox" />
+      </StackPanel>
 		</StackPanel> 
 	</Validation:ValidationControl>
 </Test:MainView>

@@ -34,6 +34,7 @@ namespace Nova.Test
             Add("ComboBox", "Select something...", ValidationSeverity.Warning);
             Add("ComboBox", "Then select something else!", ValidationSeverity.Error);
             Add("NumericTextBox", "Are you sure that's a valid number?", ValidationSeverity.Error);
+            Add("MaskedTextBox", "Are you sure that's valid?", ValidationSeverity.Warning);
             AddRequired("CheckBox");
             Add("CheckBox2", "This is another CheckBox");
             Add("Password", "This isn't a secure password.", ValidationSeverity.Warning);

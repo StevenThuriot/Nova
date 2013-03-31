@@ -4,15 +4,12 @@
              StartupUri="MainWindow.xaml">
 
   <Application.Resources>
-    <FontFamily x:Key="Font">Segoe UI</FontFamily>
-
     <Color x:Key="BlueColor">#007ACC</Color>
     <Color x:Key="PurpleColor">#68217A</Color>
     <Color x:Key="RedColor">#E62020</Color>
 
     <SolidColorBrush x:Key="Gray">#FF1E1E1E</SolidColorBrush>
     <SolidColorBrush x:Key="Unfocused">#999999</SolidColorBrush>
-    <SolidColorBrush x:Key="LightBlue">#66119EDA</SolidColorBrush>
     <SolidColorBrush x:Key="Blue" Color="{StaticResource BlueColor}" />
     <SolidColorBrush x:Key="Purple" Color="{StaticResource PurpleColor}" />
     <SolidColorBrush x:Key="RedBrush" Color="{StaticResource RedColor}" />
@@ -20,10 +17,6 @@
     <SolidColorBrush x:Key="White">#FDFDFD</SolidColorBrush>
     <SolidColorBrush x:Key="Background">#EFEFF2</SolidColorBrush>
 
-    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-      <Setter Property="FontFamily" Value="{StaticResource Font}" />
-      <Setter Property="TextWrapping" Value="Wrap" />
-    </Style>
 
     <Style x:Key="MyFocusVisual">
       <Setter Property="Control.Template">
@@ -33,29 +26,6 @@
               <Rectangle StrokeThickness="1" Stroke="{StaticResource Gray}" StrokeDashArray="2 2" />
               <Border Width="{TemplateBinding ActualWidth}" Height="{TemplateBinding ActualHeight}" CornerRadius="0" BorderThickness="1" />
             </Grid>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
-
-    <Style x:Key="{x:Type ContextMenu}" TargetType="{x:Type ContextMenu}">
-      <Setter Property="OverridesDefaultStyle" Value="True" />
-      <Setter Property="SnapsToDevicePixels" Value="True" />
-      <Setter Property="VerticalAlignment" Value="Top" />
-      <Setter Property="Background" Value="Transparent" />
-      <Setter Property="Foreground" Value="{StaticResource Gray}" />
-      <Setter Property="FocusVisualStyle" Value="{StaticResource MyFocusVisual}" />
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="{x:Type ContextMenu}">
-
-            <Border Background="{StaticResource White}"
-                    BorderBrush="{StaticResource LightBlue}"
-                    BorderThickness="1"
-                    CornerRadius="0"
-                    Padding="2">
-              <StackPanel ClipToBounds="True" Orientation="Vertical" IsItemsHost="True" />
-            </Border>
           </ControlTemplate>
         </Setter.Value>
       </Setter>
@@ -95,31 +65,6 @@
                 </Setter>
               </Trigger>
             </ControlTemplate.Triggers>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
-
-    <Style TargetType="{x:Type TextBox}">
-      <Setter Property="SnapsToDevicePixels" Value="True" />
-      <Setter Property="OverridesDefaultStyle" Value="True" />
-      <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
-      <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-      <Setter Property="AllowDrop" Value="true" />
-      <Setter Property="Background" Value="{StaticResource White}" />
-      <Setter Property="BorderBrush" Value="{StaticResource LightBlue}" />
-      <Setter Property="BorderThickness" Value="1" />
-      <Setter Property="TextWrapping" Value="Wrap" />
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="{x:Type TextBoxBase}">
-            <Border x:Name="Border"
-                    Padding="2"
-                    BorderThickness="1"
-                    Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}">
-              <ScrollViewer Margin="0" x:Name="PART_ContentHost" />
-            </Border>
           </ControlTemplate>
         </Setter.Value>
       </Setter>

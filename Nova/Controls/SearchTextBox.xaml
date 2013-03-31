@@ -16,12 +16,8 @@
 			<Setter Property="VerticalContentAlignment" Value="Center" />
 			<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
 			<Setter Property="Padding" Value="1" />
-			<Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
 			<Setter Property="HorizontalContentAlignment" Value="Left" />
 			<Setter Property="FocusVisualStyle" Value="{x:Null}" />
-			<Setter Property="AllowDrop" Value="True" />
-			<Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
-			<Setter Property="Stylus.IsFlicksEnabled" Value="False" />
 
 			<Setter Property="Template">
 				<Setter.Value>

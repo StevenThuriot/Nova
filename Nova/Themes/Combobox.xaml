@@ -13,11 +13,11 @@
 					BorderBrush="{TemplateBinding BorderBrush}"
 					BorderThickness="{TemplateBinding BorderThickness}"
 					Background="{DynamicResource BackgroundBrush}"
-					Name="Border"
+					x:Name="Border"
 			        Grid.ColumnSpan="2" />
 			<Border Margin="2" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="2,0,0,2" BorderThickness="0,0,1,0" Background="{DynamicResource BackgroundBrush}"
 			        Grid.Column="0" />
-			<Path Margin="0,0,3,0" Data="M0,0L4,4 8,0z" HorizontalAlignment="Center" Fill="#444" Name="Arrow"
+			<Path Margin="0,0,3,0" Data="M0,0L4,4 8,0z" HorizontalAlignment="Center" Fill="#444" x:Name="Arrow"
 			      VerticalAlignment="Center" Width="8" Grid.Column="1" />
 		</Grid>
 		<ControlTemplate.Triggers>
@@ -38,7 +38,7 @@
 	</ControlTemplate>
 
 	<ControlTemplate TargetType="TextBox" x:Key="ComboBoxTextBoxTemplate">
-		<Border Name="PART_ContentHost" Background="White" Focusable="False" />
+		<Border x:Name="PART_ContentHost" Background="White" Focusable="False" />
 	</ControlTemplate>
 
 	<Style TargetType="{x:Type ComboBoxItem}">
@@ -50,7 +50,7 @@
 		<Setter Property="Control.Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type ComboBoxItem}">
-					<Border Name="Border" SnapsToDevicePixels="True"  Padding="2">
+					<Border x:Name="Border" SnapsToDevicePixels="True"  Padding="2">
 						<ContentPresenter ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
 						                  Content="{TemplateBinding ContentControl.Content}" />
 					</Border>
@@ -90,7 +90,7 @@
 								BorderThickness="{DynamicResource ValidationBorderThickness}"
 								x:Name="ValidationBorder">
 							
-							<ToggleButton ClickMode="Press" Name="ToggleButton"
+							<ToggleButton ClickMode="Press" x:Name="ToggleButton"
 										  IsChecked="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
 										  Focusable="False" Grid.Column="2" Template="{DynamicResource ComboBoxToggleButtonTemplate}"
 										  BorderBrush="{TemplateBinding BorderBrush}"										  
@@ -99,14 +99,14 @@
 						<!--<ContentPresenter Margin="3,3,23,3" HorizontalAlignment="Left" Name="ContentSite" VerticalAlignment="Center"
 						                  ContentTemplate="{TemplateBinding ComboBox.SelectionBoxItemTemplate}"
 										  Content="{TemplateBinding ComboBox.SelectionBoxItem}" IsHitTestVisible="False" />-->
-						<TextBox Margin="3,3,23,3" HorizontalAlignment="Left" Name="PART_EditableTextBox"
+						<TextBox Margin="3,3,23,3" HorizontalAlignment="Left" x:Name="PART_EditableTextBox"
 						         Background="Transparent" VerticalAlignment="Center" Style="{DynamicResource StrippedDownTextBox}" IsReadOnly="True" Focusable="True"
 						         xml:space="preserve" Text="{TemplateBinding ComboBox.SelectionBoxItem}" Template="{DynamicResource ComboBoxTextBoxTemplate}" />
-						<Popup Placement="Bottom" Name="Popup" Focusable="False" AllowsTransparency="True"
+						<Popup Placement="Bottom" x:Name="Popup" Focusable="False" AllowsTransparency="True"
 						       IsOpen="{TemplateBinding ComboBox.IsDropDownOpen}" PopupAnimation="Fade">
 							<Grid MinWidth="{TemplateBinding FrameworkElement.ActualWidth}"
-							      MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}" Name="DropDown" SnapsToDevicePixels="True">
-								<Border BorderBrush="{DynamicResource UnfocusedControlBorderBrush}" BorderThickness="1" Name="DropDownBorder"
+							      MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}" x:Name="DropDown" SnapsToDevicePixels="True">
+								<Border BorderBrush="{DynamicResource UnfocusedControlBorderBrush}" BorderThickness="1" x:Name="DropDownBorder"
 								        Background="#FFF" />
 								<ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
 									<ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
@@ -201,26 +201,27 @@
 								BorderThickness="{DynamicResource ValidationBorderThickness}"
 								x:Name="ValidationBorder">
 
-							<ToggleButton ClickMode="Press" Name="ToggleButton"
+							<ToggleButton ClickMode="Press" x:Name="ToggleButton"
 										  IsChecked="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-										  Focusable="False" Grid.Column="2" Template="{DynamicResource ComboBoxToggleButtonTemplate}"
+										  Focusable="False" Grid.Column="2" 
+                            Template="{DynamicResource ComboBoxToggleButtonTemplate}"
 										  BorderBrush="{TemplateBinding BorderBrush}"
 										  BorderThickness="{DynamicResource BorderThickness}"/>
 						</Border>
 						<!--<ContentPresenter Margin="3,3,23,3" HorizontalAlignment="Left" Name="ContentSite" VerticalAlignment="Center"
 						                  ContentTemplate="{TemplateBinding ComboBox.SelectionBoxItemTemplate}"
 										  Content="{TemplateBinding ComboBox.SelectionBoxItem}" IsHitTestVisible="False" />-->						
-						<TextBox Margin="3,3,23,3" HorizontalAlignment="Left" Name="PART_EditableTextBox"
+						<TextBox Margin="3,3,23,3" HorizontalAlignment="Left" x:Name="PART_EditableTextBox"
 						         Background="Transparent" VerticalAlignment="Center" Style="{DynamicResource StrippedDownTextBox}" IsReadOnly="True" Focusable="True"
 						         xml:space="preserve" Text="{TemplateBinding ComboBox.SelectionBoxItem}" Template="{DynamicResource ComboBoxTextBoxTemplate}" />
 
 						<TextBlock Margin="5,0,23,0" Style="{DynamicResource WatermarkStyle}" />
 
-						<Popup Placement="Bottom" Name="Popup" Focusable="False" AllowsTransparency="True"
+						<Popup Placement="Bottom" x:Name="Popup" Focusable="False" AllowsTransparency="True"
 						       IsOpen="{TemplateBinding ComboBox.IsDropDownOpen}" PopupAnimation="Fade">
 							<Grid MinWidth="{TemplateBinding FrameworkElement.ActualWidth}"
-							      MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}" Name="DropDown" SnapsToDevicePixels="True">
-								<Border BorderBrush="{DynamicResource UnfocusedControlBorderBrush}" BorderThickness="1" Name="DropDownBorder"
+							      MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}" x:Name="DropDown" SnapsToDevicePixels="True">
+								<Border BorderBrush="{DynamicResource UnfocusedControlBorderBrush}" BorderThickness="1" x:Name="DropDownBorder"
 								        Background="#FFF" />
 								<ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
 									<ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />

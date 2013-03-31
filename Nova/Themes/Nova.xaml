@@ -13,6 +13,7 @@
 		<ResourceDictionary Source="Button.xaml" />
 		<ResourceDictionary Source="Textbox.xaml" />
 		<ResourceDictionary Source="NumericTextBox.xaml" />
+		<ResourceDictionary Source="MaskedTextBox.xaml" />
 		<ResourceDictionary Source="Passwordbox.xaml" />
 		<ResourceDictionary Source="Checkbox.xaml" />
 		<ResourceDictionary Source="RadioButton.xaml" />

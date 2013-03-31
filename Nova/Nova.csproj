@@ -131,6 +131,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\MaskedTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Nova.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -275,6 +279,7 @@
     <Compile Include="Controls\IView.cs" />
     <Compile Include="Controls\ImageButton.cs" />
     <Compile Include="Controls\AnimatedLoader.cs" />
+    <Compile Include="Controls\MaskedTextBox.cs" />
     <Compile Include="Controls\NumericTextBox.cs" />
     <Compile Include="Controls\Overlay.cs" />
     <Compile Include="Controls\ProgressIndicator.xaml.cs">
@@ -326,7 +331,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Resource Include="Fonts\SegoeWP.ttf" />
+    <Resource Include="Fonts\NotoSansUI-Regular.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

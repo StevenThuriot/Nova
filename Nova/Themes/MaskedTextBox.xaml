@@ -4,17 +4,17 @@
                     xmlns:Controls="clr-namespace:Nova.Controls"
                     xmlns:Validation="http://nova.thuriot.be/Validation">
 
-  <Style x:Key="StrippedDownNumericTextBox" TargetType="{x:Type Controls:NumericTextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+  <Style x:Key="StrippedDownMaskedTextBox" TargetType="{x:Type Controls:MaskedTextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
     <Setter Property="Template">
       <Setter.Value>
-        <ControlTemplate TargetType="{x:Type Controls:NumericTextBox}">
+        <ControlTemplate TargetType="{x:Type Controls:MaskedTextBox}">
           <ScrollViewer x:Name="PART_ContentHost" />
         </ControlTemplate>
       </Setter.Value>
     </Setter>
   </Style>
 
-  <Style x:Key="NumericTextBoxBase" TargetType="{x:Type Controls:NumericTextBox}">
+  <Style x:Key="MaskedTextBoxBase" TargetType="{x:Type Controls:MaskedTextBox}">
     <Setter Property="BorderThickness" Value="{DynamicResource BorderThickness}" />
     <Setter Property="Margin" Value="1" />
     <Setter Property="BorderBrush" Value="{DynamicResource UnfocusedControlBorderBrush}" />
@@ -27,10 +27,10 @@
     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
   </Style>
 
-  <Style TargetType="{x:Type Controls:NumericTextBox}" BasedOn="{StaticResource NumericTextBoxBase}">
+  <Style TargetType="{x:Type Controls:MaskedTextBox}" BasedOn="{StaticResource MaskedTextBoxBase}">
     <Setter Property="Template">
       <Setter.Value>
-        <ControlTemplate TargetType="{x:Type Controls:NumericTextBox}">
+        <ControlTemplate TargetType="{x:Type Controls:MaskedTextBox}">
           <Grid>
             <Border CornerRadius="{DynamicResource ControlRadius}" BorderBrush="{TemplateBinding BorderBrush}"
 						        Background="{TemplateBinding BorderBrush}" BorderThickness="{DynamicResource ValidationBorderThickness}"
@@ -41,9 +41,9 @@
               </Border>
             </Border>
             <Path x:Name="ErrorTriangle" Data="{DynamicResource ErrorIcon}"
-						      Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Controls:NumericTextBox}}, Path=(Validation:NovaValidation.Severity)}"
+						      Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Controls:MaskedTextBox}}, Path=(Validation:NovaValidation.Severity)}"
 						      Visibility="Collapsed"
-						      ToolTip="{Binding RelativeSource={RelativeSource AncestorType={x:Type Controls:NumericTextBox}}, Path=(Validation:NovaValidation.ValidationTooltip)}" />
+						      ToolTip="{Binding RelativeSource={RelativeSource AncestorType={x:Type Controls:MaskedTextBox}}, Path=(Validation:NovaValidation.ValidationTooltip)}" />
           </Grid>
           <ControlTemplate.Triggers>
             <Trigger Property="IsFocused" Value="true">
@@ -52,7 +52,7 @@
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:NovaValidation.IsValid)}"
 						             Value="False">
               <Setter TargetName="ValidationBorder" Property="BorderBrush"
-							        Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Controls:NumericTextBox}}, Path=(Validation:NovaValidation.Severity)}" />
+							        Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Controls:MaskedTextBox}}, Path=(Validation:NovaValidation.Severity)}" />
               <Setter TargetName="ErrorTriangle" Property="Visibility" Value="Visible" />
             </DataTrigger>
             <DataTrigger
@@ -97,10 +97,10 @@ Value="0">
     </Setter>
   </Style>
 
-  <Style x:Key="WatermarkNumericTextBoxStyle" TargetType="{x:Type Controls:NumericTextBox}" BasedOn="{StaticResource NumericTextBoxBase}">
+  <Style x:Key="WatermarkMaskedTextBoxStyle" TargetType="{x:Type Controls:MaskedTextBox}" BasedOn="{StaticResource MaskedTextBoxBase}">
     <Setter Property="Template">
       <Setter.Value>
-        <ControlTemplate TargetType="{x:Type Controls:NumericTextBox}">
+        <ControlTemplate TargetType="{x:Type Controls:MaskedTextBox}">
           <Grid>
             <Border CornerRadius="{DynamicResource ControlRadius}" BorderBrush="{TemplateBinding BorderBrush}"
 						        Background="{TemplateBinding BorderBrush}" BorderThickness="{DynamicResource ValidationBorderThickness}"
@@ -113,9 +113,9 @@ Value="0">
             <TextBlock Style="{DynamicResource WatermarkStyle}" />
 
             <Path x:Name="ErrorTriangle" Data="{DynamicResource ErrorIcon}"
-						      Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Controls:NumericTextBox}}, Path=(Validation:NovaValidation.Severity)}"
+						      Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Controls:MaskedTextBox}}, Path=(Validation:NovaValidation.Severity)}"
 						      Visibility="Collapsed"
-						      ToolTip="{Binding RelativeSource={RelativeSource AncestorType={x:Type Controls:NumericTextBox}}, Path=(Validation:NovaValidation.ValidationTooltip)}" />
+						      ToolTip="{Binding RelativeSource={RelativeSource AncestorType={x:Type Controls:MaskedTextBox}}, Path=(Validation:NovaValidation.ValidationTooltip)}" />
           </Grid>
           <ControlTemplate.Triggers>
             <Trigger Property="IsFocused" Value="true">
@@ -124,7 +124,7 @@ Value="0">
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(Validation:NovaValidation.IsValid)}"
 						             Value="False">
               <Setter TargetName="ValidationBorder" Property="BorderBrush"
-							        Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Controls:NumericTextBox}}, Path=(Validation:NovaValidation.Severity)}" />
+							        Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Controls:MaskedTextBox}}, Path=(Validation:NovaValidation.Severity)}" />
               <Setter TargetName="ErrorTriangle" Property="Visibility" Value="Visible" />
             </DataTrigger>
             <DataTrigger
