@@ -43,6 +43,7 @@ namespace Nova.Controls
         /// </summary>
         public MaskedTextBox()
         {
+            //Disable Cut and Paste.
             CommandBindings.Add(CreateCommandBinding(ApplicationCommands.Paste));
             CommandBindings.Add(CreateCommandBinding(ApplicationCommands.Cut));
         }
@@ -109,7 +110,10 @@ namespace Nova.Controls
             }
 
             maskedTextProvider.Set((string)value);
-            return maskedTextProvider.ToDisplayString();
+
+            return maskedTextProvider.LastAssignedPosition == -1
+                       ? string.Empty //Default TextProperty.
+                       : maskedTextProvider.ToDisplayString();
         }
 
         /// <summary>
@@ -120,9 +124,10 @@ namespace Nova.Controls
         {
             var position = SelectionStart;
 
-            if (position < Text.Length)
+            var length = Text.Length;
+            if (position < length || length == 0)
             {
-                position = FindNextCharacterPosition(position);
+                position = FindCharacterPosition(position);
 
                 if (Keyboard.IsKeyToggled(Key.Insert))
                 {
@@ -135,7 +140,7 @@ namespace Nova.Controls
                         position++;
                 }
 
-                position = FindNextCharacterPosition(position);
+                position = FindCharacterPosition(position);
             }
 
             Refresh(position);
@@ -159,12 +164,12 @@ namespace Nova.Controls
                     HandleDeleteKey(position, endposition);
                     e.Handled = true;
                     break;
-                case Key.Space:
-                    HandleSpaceKey(position);
-                    e.Handled = true;
-                    break;
                 case Key.Back:
                     HandleBackKey(position, selectionlength, endposition);
+                    e.Handled = true;
+                    break;
+                case Key.Space:
+                    HandleSpaceKey(position); //Because space doesn't trigger OnPreviewTextInput
                     e.Handled = true;
                     break;
             }
@@ -172,21 +177,26 @@ namespace Nova.Controls
 
         private void HandleBackKey(int position, int selectionlength, int endposition)
         {
-            if ((position > 0) && (selectionlength == 0))
+            if (position < 0) return;
+
+            if (selectionlength == 0) //Single char
             {
-                position--;
+                position = FindCharacterPosition(--position, false);
+
                 if (_MaskedTextProvider.RemoveAt(position))
+                {
                     Refresh(position);
+                }
+
+                return;
             }
 
-            if (selectionlength == 0) return;
-
-            if (!_MaskedTextProvider.RemoveAt(position, endposition)) return;
-
-            if (position > 0)
-                position--;
-
-            Refresh(position);
+            //Multi char
+            if (_MaskedTextProvider.RemoveAt(position, endposition))
+            {
+                position = FindCharacterPosition(position, false);
+                Refresh(position);
+            }
         }
 
         private void HandleSpaceKey(int position)
@@ -210,9 +220,9 @@ namespace Nova.Controls
             SelectionStart = position;
         }
 
-        private int FindNextCharacterPosition(int startPosition)
+        private int FindCharacterPosition(int startPosition, bool direction = true)
         {
-            var position = _MaskedTextProvider.FindEditPositionFrom(startPosition, true);
+            var position = _MaskedTextProvider.FindEditPositionFrom(startPosition, direction);
             return position == -1 ? startPosition : position;
         }
     }
