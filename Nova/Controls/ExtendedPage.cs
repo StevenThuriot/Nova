@@ -217,7 +217,7 @@ namespace Nova.Controls
 
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="ExtendedPage{TViewModel}" /> is reclaimed by garbage collection.
+        /// ExtendedPage is reclaimed by garbage collection.
         /// </summary>
         ~ExtendedPage()
         {

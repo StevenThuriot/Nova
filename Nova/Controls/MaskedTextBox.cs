@@ -25,6 +25,9 @@ using System.Windows.Input;
 
 namespace Nova.Controls
 {
+    /// <summary>
+    /// A TextBox class that accepts a mask and enforces it.
+    /// </summary>
     public class MaskedTextBox : TextBox
     {
         private MaskedTextProvider _MaskedTextProvider;

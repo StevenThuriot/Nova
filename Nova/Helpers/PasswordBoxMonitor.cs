@@ -22,60 +22,106 @@ using System.Windows.Controls;
 
 namespace Nova.Helpers
 {
+    /// <summary>
+    /// A helper class to see if a passwordbox is filled in or not without actually putting the value as a string in memory.
+    /// </summary>
     public class PasswordBoxMonitor : DependencyObject
     {
+        /// <summary>
+        /// The monitoring property
+        /// </summary>
         public static readonly DependencyProperty IsMonitoringProperty =
             DependencyProperty.RegisterAttached("IsMonitoring", typeof (bool), typeof (PasswordBoxMonitor), new UIPropertyMetadata(false, OnIsMonitoringChanged));
 
+        /// <summary>
+        /// The password length property
+        /// </summary>
         public static readonly DependencyProperty PasswordLengthProperty =
             DependencyProperty.RegisterAttached("PasswordLength", typeof (int), typeof (PasswordBoxMonitor), new UIPropertyMetadata(0));
 
-        public static bool GetIsMonitoring(DependencyObject obj)
+        /// <summary>
+        /// Gets wether the passed object is being monitored.
+        /// </summary>
+        /// <param name="dependencyObject">The dependency object.</param>
+        /// <returns></returns>
+        public static bool GetIsMonitoring(DependencyObject dependencyObject)
         {
-            return (bool) obj.GetValue(IsMonitoringProperty);
+            return (bool) dependencyObject.GetValue(IsMonitoringProperty);
         }
 
-        public static void SetIsMonitoring(DependencyObject obj, bool value)
+        /// <summary>
+        /// Sets wether the passed object is being monitored.
+        /// </summary>
+        /// <param name="dependencyObject">The dependency object.</param>
+        /// <param name="value">if set to <c>true</c> [value].</param>
+        public static void SetIsMonitoring(DependencyObject dependencyObject, bool value)
         {
-            obj.SetValue(IsMonitoringProperty, value);
+            dependencyObject.SetValue(IsMonitoringProperty, value);
         }
 
-        public static bool IsFilledIn(DependencyObject obj)
+        /// <summary>
+        /// Determines whether the specified object is filled in.
+        /// </summary>
+        /// <param name="dependencyObject">The dependency object.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified object is filled in; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsFilledIn(DependencyObject dependencyObject)
         {
-            return GetPasswordLength(obj) > 0;
+            return GetPasswordLength(dependencyObject) > 0;
         }
 
-        public static int GetPasswordLength(DependencyObject obj)
+        /// <summary>
+        /// Gets the length of the password.
+        /// </summary>
+        /// <param name="dependencyObject">The dependency object.</param>
+        /// <returns></returns>
+        public static int GetPasswordLength(DependencyObject dependencyObject)
         {
-            return (int) obj.GetValue(PasswordLengthProperty);
+            return (int) dependencyObject.GetValue(PasswordLengthProperty);
         }
 
-        public static void SetPasswordLength(DependencyObject obj, int value)
+        /// <summary>
+        /// Sets the length of the password.
+        /// </summary>
+        /// <param name="dependencyObject">The dependency object.</param>
+        /// <param name="value">The value.</param>
+        public static void SetPasswordLength(DependencyObject dependencyObject, int value)
         {
-            obj.SetValue(PasswordLengthProperty, value);
+            dependencyObject.SetValue(PasswordLengthProperty, value);
         }
 
-        private static void OnIsMonitoringChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        /// <summary>
+        /// Called when is monitoring changed.
+        /// </summary>
+        /// <param name="dependencyObject">The dependency object.</param>
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
+        private static void OnIsMonitoringChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var pb = d as PasswordBox;
+            var pb = dependencyObject as PasswordBox;
             if (pb == null) return;
 
             if ((bool) e.NewValue)
             {
-                pb.PasswordChanged += PasswordChanged;
+                pb.PasswordChanged += OnPasswordChanged;
             }
             else
             {
-                pb.PasswordChanged -= PasswordChanged;
+                pb.PasswordChanged -= OnPasswordChanged;
             }
         }
 
-        private static void PasswordChanged(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Called when the password changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
+        private static void OnPasswordChanged(object sender, RoutedEventArgs e)
         {
-            var pb = sender as PasswordBox;
-            if (pb == null) return;
+            var passwordBox = sender as PasswordBox;
+            if (passwordBox == null) return;
 
-            SetPasswordLength(pb, pb.SecurePassword.Length);
+            SetPasswordLength(passwordBox, passwordBox.SecurePassword.Length);
         }
     }
 }
