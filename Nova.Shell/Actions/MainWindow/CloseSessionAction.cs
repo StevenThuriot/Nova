@@ -31,22 +31,15 @@ namespace Nova.Shell.Actions.MainWindow
 
         public override bool Execute()
         {
-            return ActionContext.TryGetValue(out _Session) && _Session != null;
+            var canComplete = ActionContext.TryGetValue(out _Session) && _Session != null;
+
+            return canComplete && _Session.ViewModel.Leave().Result;
         }
 
         public override void ExecuteCompleted()
         {
             //TODO: Check if leave was successful.
-            Leave();
-        }
-
-        private async void Leave()
-        {
-            var couldLeave = await _Session.ViewModel.Leave();
-            if (couldLeave)
-            {
-                ViewModel.Sessions.Remove(_Session);
-            }
+            ViewModel.Sessions.Remove(_Session);
         }
     }
 }

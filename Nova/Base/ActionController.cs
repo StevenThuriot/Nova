@@ -21,6 +21,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Nova.Controls;
 using Nova.Properties;
 using Nova.Threading;
@@ -128,17 +129,17 @@ namespace Nova.Base
 
                                     .CanExecute(actionToRun.CanExecute)
 
+                                    .ContinueWith(CommandManager.InvalidateRequerySuggested, mainThread: true) //TODO: Is this needed? Executing this action might change the CanExecute state for another one.
                                     .ContinueWith(actionToRun.InternalExecute)
                                     .ContinueWith(actionToRun.InternalExecuteCompleted, mainThread: true)
 
-                                    .ContinueWith(actionToRun.InternalOnAfter, mainThread: true)
-
+                                    .FinishWith(actionToRun.InternalOnAfter, Priority.BelowNormal, mainThread: true)
                                     .FinishWith(() =>
                                         {
                                             if (disposeActionDuringCleanup)
                                                 actionToRun.Dispose();
 
-                                        }, mainThread: true)
+                                        }, Priority.Lowest, mainThread: true)
 
                                     .HandleException(x => ExceptionHandler.Handle(x, RESX.UnhandledException)); //Main Thread because view logic in clean up. (e.g. IsLoading)
 
@@ -251,16 +252,15 @@ namespace Nova.Base
         /// <param name="arguments">The arguments.</param>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter",
             Justification = "Required by called method.")]
-        public async Task<bool> InvokeActionAsync<T>(params ActionContextEntry[] arguments)
+        public Task<bool> InvokeActionAsync<T>(params ActionContextEntry[] arguments)
             where T : Actionflow<TView, TViewModel>, new()
         {
             ActionContext actionContext = PrepareActionContext(arguments);
             var action = Invoke<T>(actionContext);
-
-            if (action == null)
-                return false;
-
-            return await action.GetSuccessAsync();
+            
+            return action == null
+                       ? Task.FromResult(false)
+                       : action.GetSuccessAsync();
         }
 
         /// <summary>
@@ -271,15 +271,14 @@ namespace Nova.Base
         /// <param name="actionToRun">The action to run.</param>
         /// <param name="disposeActionDuringCleanup">Dispose the action after execution, during cleanup.</param>
         /// <param name="executeCompleted">The action to execute after completion.</param>
-        internal async Task<bool> InternalInvokeActionAsync<T>(T actionToRun, bool disposeActionDuringCleanup = true, Action executeCompleted = null)
+        internal Task<bool> InternalInvokeActionAsync<T>(T actionToRun, bool disposeActionDuringCleanup = true, Action executeCompleted = null)
             where T : Actionflow<TView, TViewModel>, new()
         {
             var action = Invoke(actionToRun, disposeActionDuringCleanup, executeCompleted);
 
-            if (action == null)
-                return false;
-
-            return await action.GetSuccessAsync();
+            return action == null
+                       ? Task.FromResult(false)
+                       : action.GetSuccessAsync();
         }
     }
 }

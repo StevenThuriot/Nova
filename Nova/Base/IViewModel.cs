@@ -77,13 +77,13 @@ namespace Nova.Base
         /// <summary>
         /// Saves this instance.
         /// </summary>
-        Task Save();
+        void Save();
 
         /// <summary>
         /// Loads this instance.
         /// Load(value) will only trigger in case the ViewModel has been saved before.
         /// </summary>
-        Task Load();
+        void Load();
 
         /// <summary>
         /// Initializes the change tracking.

@@ -40,21 +40,21 @@ namespace Nova.Base
         /// <summary>
         /// Called to trigger all the Entering logic for this ViewModel.
         /// </summary>
-        public async Task<bool> Enter()
+        public Task<bool> Enter()
         {
             return _EnterAction == null
-                       ? await ActionController.InvokeActionAsync<EnterAction<TView, TViewModel>>()
-                       : await ActionController.InternalInvokeActionAsync(_EnterAction);
+                       ? ActionController.InvokeActionAsync<EnterAction<TView, TViewModel>>()
+                       : ActionController.InternalInvokeActionAsync(_EnterAction);
         }
 
         /// <summary>
         /// Called to trigger all the Leaving logic for this ViewModel.
         /// </summary>
-        public async Task<bool> Leave()
+        public Task<bool> Leave()
         {
             return _LeaveAction == null
-                       ? await ActionController.InvokeActionAsync<LeaveAction<TView, TViewModel>>()
-                       : await ActionController.InternalInvokeActionAsync(_LeaveAction);
+                       ? ActionController.InvokeActionAsync<LeaveAction<TView, TViewModel>>()
+                       : ActionController.InternalInvokeActionAsync(_LeaveAction);
         }
 
         /// <summary>

@@ -37,8 +37,7 @@ namespace Nova.Shell.Actions.Session
 
         public override bool CanExecute()
         {
-            return ViewModel.CurrentView == null ||
-                !ViewModel.CurrentView.IsLoading;
+            return ViewModel.CurrentView == null || !ViewModel.CurrentView.IsLoading;
         }
 
         public override void OnBefore()
@@ -58,34 +57,26 @@ namespace Nova.Shell.Actions.Session
 
             _Current = ActionContext.GetValue<IView>(SessionViewModel.CurrentViewConstant);
 
-            return EnterCurrentAndLeaveOldStep().Result;
+            return EnterCurrentAndLeaveOldStep().Result; //.Result because we want to block this thread until execution finishes!
         }
 
         private async Task<bool> EnterCurrentAndLeaveOldStep()
         {
-            //TODO: Check if leaving the old step is possible. (e.g. dirty state etc). If false, we don't have to do any of the below and just warn the user.
+            if (_Current != null)
+            {
+                var canLeave = await _Current.ViewModel.Leave();
+
+                if (!canLeave)
+                    return false;
+            }
 
             var result = await _NextView.ViewModel.Enter();
-
-            if (!result)
-            {
-                //Can't enter the new step.
-                await _NextView.ViewModel.Leave();
-                return false;
-            }
-
-            if (_Current == null)
-                return true;
-
-            result = await _Current.ViewModel.Leave(); 
             
             if (!result)
             {
-                //Leaving the old step has been blocked by the leave action (e.g. by a dirty viewmodel that requires saving first).
-                await _NextView.ViewModel.Leave();
-                return false;
+                //TODO: Set _NextView to "Step not available" view and enter that instead.
             }
-            
+
             return true;
         }
 

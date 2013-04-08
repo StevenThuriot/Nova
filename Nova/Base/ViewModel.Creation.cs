@@ -72,10 +72,7 @@ namespace Nova.Base
 
             if (enterOnInitialize)
             {
-                //Ignore warning because we don't want to keep waiting for this result.
-#pragma warning disable 4014
                 Enter();
-#pragma warning restore 4014
             }
         }
         

@@ -127,9 +127,9 @@ namespace Nova.Base
 		/// </summary>
 		/// <typeparam name="T">The type of class this object is saved on. Used to derive a filename.</typeparam>
 		/// <param name="objectToSave">The object to save.</param>
-		public async static Task Save<T>(DynamicContext objectToSave)
+		public static void Save<T>(DynamicContext objectToSave)
 		{
-		    await Task.Run(() =>
+		    Task.Run(() =>
 		        {
 		            var type = GetSerializationName(typeof (T));
 		            using (var file = File.Create(type))
@@ -145,9 +145,9 @@ namespace Nova.Base
 		/// </summary>
 		/// <typeparam name="T">The type of class this object is saved on. Used to derive a filename.</typeparam>
 		/// <returns>The deserialized instance.</returns>
-		public async static Task<DynamicContext> Load<T>()
+		public static Task<DynamicContext> Load<T>()
 		{
-		    return await Task.Run(() =>
+		    return Task.Run(() =>
 		        {
 		            var fileName = GetSerializationName(typeof (T));
 

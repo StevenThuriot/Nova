@@ -85,13 +85,11 @@ namespace Nova.Test
 		}
 		*/
 
-		public async void OnAfterThrowException(ActionContext context)
+		public void OnAfterThrowException(ActionContext context)
 		{
 			MessageBox.Show("On After VM");
-
-            await Save();
-            await Load();
 		}
+
 		protected override void Save(dynamic value)
 		{
 			value.Test = "test";

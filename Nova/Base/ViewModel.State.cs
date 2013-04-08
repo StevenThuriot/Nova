@@ -25,14 +25,14 @@ namespace Nova.Base
         /// <summary>
         /// Saves this instance.
         /// </summary>
-        public async Task Save()
+        public void Save()
         {
             var objectToSave = new DynamicContext();
             Save(objectToSave);
 
             if (!objectToSave.IsEmpty)
             {
-                await DynamicContext.Save<TViewModel>(objectToSave);
+                DynamicContext.Save<TViewModel>(objectToSave);
             }
         }
 
@@ -40,7 +40,7 @@ namespace Nova.Base
         /// Loads this instance.
         /// Load(value) will only trigger in case the ViewModel has been saved before.
         /// </summary>
-        public async Task Load()
+        public async void Load()
         {
             var dynamicContext = await DynamicContext.Load<TViewModel>();
 
