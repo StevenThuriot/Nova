@@ -296,6 +296,9 @@
     <Compile Include="Controls\ImageButton.cs" />
     <Compile Include="Controls\AnimatedLoader.cs" />
     <Compile Include="Controls\MaskedTextBox.cs" />
+    <Compile Include="Controls\NumericSettings.cs">
+      <DependentUpon>NumericTextBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\NumericTextBox.cs" />
     <Compile Include="Controls\Overlay.cs" />
     <Compile Include="Controls\ProgressIndicator.xaml.cs">

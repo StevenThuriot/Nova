@@ -29,17 +29,36 @@ namespace Nova.Controls
     /// </summary>
     public class NumericTextBox : TextBox
     {
+        private Regex _CustomValidNumberRegex;
+
         /// <summary>
         /// The valid number regex
         /// </summary>
         private static readonly Regex ValidNumberRegex;
 
         /// <summary>
+        /// The numeric settings property
+        /// </summary>
+        public static readonly DependencyProperty NumericSettingsProperty;
+
+        /// <summary>
+        /// Gets or sets the numeric settings.
+        /// </summary>
+        /// <value>
+        /// The numeric settings.
+        /// </value>
+        public NumericSettings NumericSettings
+        {
+            get { return (NumericSettings)GetValue(NumericSettingsProperty); }
+            set { SetValue(NumericSettingsProperty, value); }
+        }
+
+        /// <summary>
         /// Initializes the <see cref="NumericTextBox" /> class.
         /// </summary>
         static NumericTextBox()
         {
-            ValidNumberRegex = new Regex(@"^[-+]?[0-9]*[\.,]?[0-9]*([eE][-+]?[0-9]+)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            ValidNumberRegex = new Regex(@"^[-+]?[0-9]*([\.,][0-9]*)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.CultureInvariant);
 
             var frameworkPropertyMetadata = new FrameworkPropertyMetadata
                 {
@@ -48,6 +67,7 @@ namespace Nova.Controls
 
             TextProperty.AddOwner(typeof(NumericTextBox), frameworkPropertyMetadata);
             DefaultStyleKeyProperty.OverrideMetadata(typeof(NumericTextBox), new FrameworkPropertyMetadata(typeof(NumericTextBox)));
+            NumericSettingsProperty = DependencyProperty.Register("NumericSettings", typeof(NumericSettings), typeof(NumericTextBox), new PropertyMetadata(NumericSettingsChanged));
         }
 
         /// <summary>
@@ -58,10 +78,50 @@ namespace Nova.Controls
         /// <returns></returns>
         private static object CoerceTextValueCallback(DependencyObject dependencyObject, object baseValue)
         {
+            var numericTextBox = (NumericTextBox) dependencyObject;
+            
+            var regex = numericTextBox._CustomValidNumberRegex ?? ValidNumberRegex;
+
             var value = (string) baseValue;
-            return ValidNumberRegex.IsMatch(value)
-                       ? value
-                       : ((NumericTextBox) dependencyObject).Text;
+
+            if (regex.IsMatch(value))
+                return value;
+
+            var text = ((NumericTextBox) dependencyObject).Text;
+
+            if (regex.IsMatch(text))
+                return text;
+            
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Triggers when the numeric settings change.
+        /// </summary>
+        /// <param name="dependencyObject">The dependency object.</param>
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
+        private static void NumericSettingsChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+		    var settings = e.NewValue as NumericSettings;
+            
+            var numericTextBox = (NumericTextBox) dependencyObject;
+
+			if (settings == null)
+			{
+				numericTextBox._CustomValidNumberRegex = null;
+				return;
+			}
+            
+            var regexString = @"^[-+]?[0-9]{0," + settings.MaximumNumbers + "}";
+
+			if (settings.MaximumDecimals > 0)
+			{
+				regexString += @"([\.,][0-9]{0," + settings.MaximumDecimals + "})?";
+			}
+
+			regexString += "$";
+
+            numericTextBox._CustomValidNumberRegex = new Regex(regexString, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.CultureInvariant);
         }
     }
 }

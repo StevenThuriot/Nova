@@ -166,7 +166,14 @@
 
         <NumericTextBox Margin="10,0,0,0" Height="23" Width="120"
 					  Base:ViewMode.Watermark="Numeric watermark"
-						 Validation:NovaValidation.FieldName="NumericTextBox" />
+                        Text="164565423.132134654"
+						 Validation:NovaValidation.FieldName="NumericTextBox">
+          <NumericTextBox.NumericSettings>
+            <NumericSettings MaximumNumbers="2" 
+                             MaximumDecimals="1"
+                             />
+          </NumericTextBox.NumericSettings>
+        </NumericTextBox>
         
         <MaskedTextBox Margin="10,0,0,0" Height="23" Width="120"
                        Mask="999-999"
