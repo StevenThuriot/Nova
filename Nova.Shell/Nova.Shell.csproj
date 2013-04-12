@@ -49,6 +49,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Nova.Threading.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=03252df91086a919, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Nova.Threading.Metadata.1.0.0\lib\net45\Nova.Threading.Metadata.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Xml" />
@@ -179,10 +183,6 @@
     <ProjectReference Include="..\Nova.Shell.Library\Nova.Shell.Library.csproj">
       <Project>{cbccf92e-bd4f-4a85-b10f-14686cda7d81}</Project>
       <Name>Nova.Shell.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Nova.Threading\Nova.Threading.csproj">
-      <Project>{28f961f0-1305-46ee-bc24-0a04d89f1e9e}</Project>
-      <Name>Nova.Threading</Name>
     </ProjectReference>
     <ProjectReference Include="..\Nova\Nova.csproj">
       <Project>{4841a375-36ee-4458-8f61-ad9bb0c634f5}</Project>

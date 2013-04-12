@@ -22,7 +22,7 @@ using System;
 using System.Threading.Tasks;
 using Nova.Base;
 using Nova.Controls;
-using Nova.Threading;
+using Nova.Threading.Metadata;
 
 namespace Nova.Shell.Actions.Session
 {

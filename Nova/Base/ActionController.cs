@@ -25,7 +25,7 @@ using System.Windows.Input;
 using Nova.Controls;
 using Nova.Properties;
 using Nova.Threading;
-using Nova.Threading.Implementations.WPF;
+using Nova.Threading.WPF;
 using RESX = Nova.Properties.Resources;
 
 namespace Nova.Base

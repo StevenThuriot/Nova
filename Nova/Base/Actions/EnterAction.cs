@@ -19,7 +19,7 @@
 #endregion
 
 using Nova.Controls;
-using Nova.Threading;
+using Nova.Threading.Metadata;
 
 namespace Nova.Base.Actions
 {
