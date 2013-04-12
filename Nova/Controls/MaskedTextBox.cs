@@ -73,6 +73,9 @@ namespace Nova.Controls
         /// <value>
         /// The mask.
         /// </value>
+        /// <remarks>
+        /// The MaskedTextBox uses the standard .NET MaskedTextProvider mask syntax. For full information see the .NET Framework SDK.
+        /// </remarks>
         public string Mask
         {
             get { return (string)GetValue(MaskProperty); }
