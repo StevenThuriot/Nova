@@ -20,7 +20,7 @@
 
 using Nova.Controls;
 
-namespace Nova.Shell.Library
+namespace Nova.Shell.Library.Interfaces
 {
     /// <summary>
     /// A content page that allows navigation.

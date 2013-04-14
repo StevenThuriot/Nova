@@ -44,9 +44,9 @@ namespace Nova.Shell
 
     public class TestPageViewModel : ContentViewModel<TestPage, TestPageViewModel> 
     {
-        public TestPageViewModel()
+        protected override void OnSessionInitialized()
         {
-            _GoToPage2Command = new RelayCommand(Navigate<TestPage2, TestPage2ViewModel>);
+            _GoToPage2Command = CreateNavigationalAction<TestPage2, TestPage2ViewModel>();
         }
 
         private ICommand _GoToPage2Command;

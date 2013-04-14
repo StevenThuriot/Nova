@@ -167,7 +167,7 @@ namespace Nova.Base
 		    {
 		        var type = typeof (T);
 
-		        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
+		        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
 
 		        var onBeforeMethods = methods.Where(x => x.Name.StartsWith("onbefore", StringComparison.OrdinalIgnoreCase))
 		                                     .Select(OnAction.Create<T>)

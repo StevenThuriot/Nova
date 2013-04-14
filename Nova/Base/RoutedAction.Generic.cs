@@ -16,6 +16,7 @@
 // 
 #endregion
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Windows.Input;
@@ -36,26 +37,33 @@ namespace Nova.Base
 		where TViewModel : ViewModel<TView,TViewModel>, new()
 		where T : Actionflow<TView, TViewModel>, new()
 	{
-		private T _Action;
+	    private readonly List<ActionContextEntry> _Entries;
+	    private T _Action;
 		private ActionController<TView, TViewModel> _Controller;
 		private bool _IsExecuting;
 		private bool _Disposed;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="RoutedAction&lt;T, TView, TViewModel&gt;"/> class.
-		/// </summary>
-		/// <param name="view">The view.</param>
-		/// <param name="viewModel">The view model.</param>
-		/// <param name="actionController">The action controller.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoutedAction&lt;T, TView, TViewModel&gt;" /> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <param name="viewModel">The view model.</param>
+        /// <param name="actionController">The action controller.</param>
+        /// <param name="entries">The default entries.</param>
+        /// <exception cref="System.ArgumentNullException">actionController</exception>
 		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-		public RoutedAction(TView view, TViewModel viewModel, ActionController<TView, TViewModel> actionController)
+		public RoutedAction(TView view, TViewModel viewModel, ActionController<TView, TViewModel> actionController, params ActionContextEntry[] entries)
 		{
 			if (_Controller == null)
 				throw new ArgumentNullException("actionController");
 
+            if (entries == null)
+                throw new ArgumentNullException("entries");
+
 			try
 			{
-				_Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel);
+                _Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel);
+                _Entries = entries.ToList();
 				_Controller = actionController;
 			}
 			catch (Exception exception)
@@ -64,17 +72,23 @@ namespace Nova.Base
 			}
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="RoutedAction&lt;T, TView, TViewModel&gt;"/> class.
-		/// </summary>
-		/// <param name="view">The view.</param>
-		/// <param name="viewModel">The view model.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoutedAction&lt;T, TView, TViewModel&gt;" /> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <param name="viewModel">The view model.</param>
+        /// <param name="entries">The default entries.</param>
+        /// <exception cref="System.ArgumentException"></exception>
 		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-		public RoutedAction(TView view, TViewModel viewModel)
-		{
-			try
+        public RoutedAction(TView view, TViewModel viewModel, params ActionContextEntry[] entries)
+        {
+            if (entries == null)
+                throw new ArgumentNullException("entries");
+
+            try
 			{
-				_Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel);
+                _Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel);
+                _Entries = entries.ToList();
 				FindController(viewModel);
 			}
 			catch (Exception exception)
@@ -161,11 +175,16 @@ namespace Nova.Base
 		private void SetActionContext(object parameter)
 		{
             _Action.ActionContext.Clear();
+            
+            foreach (var entry in _Entries)
+            {
+                _Action.ActionContext.Add(entry);
+            }
 
 		    if (parameter == null) return;
 
-		    var entry = ActionContextEntry.Create(RoutedAction.CommandParameter, parameter);
-		    _Action.ActionContext.Add(entry);
+		    var parameterEntry = ActionContextEntry.Create(RoutedAction.CommandParameter, parameter);
+            _Action.ActionContext.Add(parameterEntry);
 		}
 
 		/// <summary>
@@ -208,6 +227,7 @@ namespace Nova.Base
 				if (_Action != null)
 				{
 					_Action.Dispose();
+				    _Entries.Clear();
 				}
 			}
 

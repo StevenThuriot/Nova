@@ -33,21 +33,24 @@ namespace Nova.Base
 		/// </summary>
         public const string CommandParameter = "#RoutedAction.CommandParameter#";
 
-		/// <summary>
-		/// Creates a new action with a wrapper which implements the ICommand interface.
-		/// This will try to search for an action controller on the view. If not present, an exception will be thrown.
-		/// </summary>
-		/// <typeparam name="TResult">The type of the result.</typeparam>
-		/// <typeparam name="TView">The type of the view.</typeparam>
-		/// <typeparam name="TViewModel">The type of the view model.</typeparam>
-		/// <param name="view">The view.</param>
-		/// <param name="viewModel">The view model.</param>
-		/// <returns>A new action with a wrapper which implements the ICommand interface</returns>
+        /// <summary>
+        /// Creates a new action with a wrapper which implements the ICommand interface.
+        /// This will try to search for an action controller on the view. If not present, an exception will be thrown.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <typeparam name="TView">The type of the view.</typeparam>
+        /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+        /// <param name="view">The view.</param>
+        /// <param name="viewModel">The view model.</param>
+        /// <param name="entries">The default entries.</param>
+        /// <returns>
+        /// A new action with a wrapper which implements the ICommand interface
+        /// </returns>
 		[SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), 
 		 SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes"),
 		 SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes"), 
 		 SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Need TResult to know which action to create.")]
-		public static ICommand New<TResult, TView, TViewModel>(TView view, TViewModel viewModel)
+        public static ICommand New<TResult, TView, TViewModel>(TView view, TViewModel viewModel, params ActionContextEntry[] entries)
 			where TView : class, IView
 			where TViewModel : ViewModel<TView, TViewModel>, new()
 			where TResult : Actionflow<TView, TViewModel>, new()
@@ -56,7 +59,7 @@ namespace Nova.Base
 
 			try
 			{
-				routedAction = new RoutedAction<TResult, TView, TViewModel>(view, viewModel);
+				routedAction = new RoutedAction<TResult, TView, TViewModel>(view, viewModel, entries);
 			}
 			catch (Exception exception)
 			{
@@ -65,29 +68,32 @@ namespace Nova.Base
 
 			return routedAction;
 		}
-		
-		/// <summary>
-		/// Creates a new action with a wrapper which implements the ICommand interface.
-		/// </summary>
-		/// <typeparam name="TResult">The type of the result.</typeparam>
-		/// <typeparam name="TView">The type of the view.</typeparam>
-		/// <typeparam name="TViewModel">The type of the view model.</typeparam>
-		/// <param name="view">The view.</param>
-		/// <param name="viewModel">The view model.</param>
-		/// <param name="actionController">The action controller.</param>
-		/// <returns>A new action with a wrapper which implements the ICommand interface</returns>
+
+        /// <summary>
+        /// Creates a new action with a wrapper which implements the ICommand interface.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <typeparam name="TView">The type of the view.</typeparam>
+        /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+        /// <param name="view">The view.</param>
+        /// <param name="viewModel">The view model.</param>
+        /// <param name="actionController">The action controller.</param>
+        /// <param name="entries">The default entries.</param>
+        /// <returns>
+        /// A new action with a wrapper which implements the ICommand interface
+        /// </returns>
 		[SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes"), 
 		 SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Need TResult to know which action to create.")]
-		public static ICommand New<TResult, TView, TViewModel>(TView view, TViewModel viewModel, ActionController<TView, TViewModel> actionController)
+        public static ICommand New<TResult, TView, TViewModel>(TView view, TViewModel viewModel, ActionController<TView, TViewModel> actionController, params ActionContextEntry[] entries)
 			where TView : class, IView
 			where TViewModel : ViewModel<TView, TViewModel>, new()
 			where TResult : Actionflow<TView, TViewModel>, new()
 		{
 			ICommand routedAction = null;
-
-			try
+            
+            try
 			{
-				routedAction = new RoutedAction<TResult, TView, TViewModel>(view, viewModel, actionController);
+				routedAction = new RoutedAction<TResult, TView, TViewModel>(view, viewModel, actionController, entries);
 			}
 			catch (Exception exception)
 			{

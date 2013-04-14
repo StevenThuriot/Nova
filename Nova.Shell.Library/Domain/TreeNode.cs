@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Windows.Input;
 using Nova.Controls;
 
 namespace Nova.Shell.Library.Domain
@@ -26,9 +27,15 @@ namespace Nova.Shell.Library.Domain
     /// <summary>
     /// Tree Node Item for the navigational tree.
     /// </summary>
-    internal class TreeNode
+    internal abstract class TreeNode
     {
-        private readonly Action<INavigatablePage> _Navigate;
+        /// <summary>
+        /// Gets the navigational command.
+        /// </summary>
+        /// <value>
+        /// The navigational command.
+        /// </value>
+        public abstract ICommand NavigationalCommand { get; }
 
         /// <summary>
         /// Gets the title.
@@ -42,18 +49,13 @@ namespace Nova.Shell.Library.Domain
         /// Initializes a new instance of the <see cref="TreeNode" /> class.
         /// </summary>
         /// <param name="title">The title.</param>
-        /// <param name="navigate">The navigate.</param>
         /// <exception cref="System.ArgumentNullException">title</exception>
-        public TreeNode(string title, Action<INavigatablePage> navigate)
+        protected TreeNode(string title)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentNullException("title");
 
-            if (navigate == null)
-                throw new ArgumentNullException("navigate");
-
             Title = title;
-            _Navigate = navigate;
         }
 
         /// <summary>
@@ -67,16 +69,37 @@ namespace Nova.Shell.Library.Domain
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
-            return new TreeNode(title, x => x.Navigate<TPageView, TPageViewModel>());
+            return new TreeNode<TPageView, TPageViewModel>(title);
+        }
+    }
+
+    /// <summary>
+    /// Tree Node Item for the navigational tree.
+    /// </summary>
+    internal class TreeNode<TPageView, TPageViewModel> : TreeNode
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+    {
+        private ICommand _NavigationalCommand;
+
+        /// <summary>
+        /// Initializes a new instance of the TreeNode class.
+        /// </summary>
+        /// <param name="title">The title.</param>
+        public TreeNode(string title) : base(title)
+        {
+            //TODO: Implement action creation when linking the builder to a session: _NavigationalCommand = Session.CreateNewNavigationalCommand.
         }
 
         /// <summary>
-        /// Navigates from the specified page.
+        /// Gets the navigational command.
         /// </summary>
-        /// <param name="page">The page.</param>
-        public void Navigate(INavigatablePage page)
+        /// <value>
+        /// The navigational command.
+        /// </value>
+        public override ICommand NavigationalCommand
         {
-            _Navigate(page);
+            get { return _NavigationalCommand; }
         }
     }
 }

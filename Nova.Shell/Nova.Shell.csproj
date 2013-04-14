@@ -78,6 +78,7 @@
     <Compile Include="Actions\MainWindow\ReadConfigurationAction.cs" />
     <Compile Include="Actions\Session\NavigationAction.cs" />
     <Compile Include="Actions\Session\SessionLeaveStep.cs" />
+    <Compile Include="Managers\NavigationActionManager.cs" />
     <Compile Include="TestPage2.xaml.cs">
       <DependentUpon>TestPage2.xaml</DependentUpon>
     </Compile>

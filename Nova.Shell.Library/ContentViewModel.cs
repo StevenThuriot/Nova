@@ -18,8 +18,10 @@
 
 #endregion
 
+using System.Windows.Input;
 using Nova.Base;
 using Nova.Controls;
+using Nova.Shell.Library.Interfaces;
 
 namespace Nova.Shell.Library
 {
@@ -34,6 +36,7 @@ namespace Nova.Shell.Library
     {
         private dynamic _Session;
         private dynamic _SessionModel;
+        private INavigationActionManager _NavigationActionManager;
 
         /// <summary>
         /// Initializes the ContentViewModel using the parent session instance.
@@ -43,6 +46,9 @@ namespace Nova.Shell.Library
         {
             _Session = session;
             SessionModel = _Session.SessionModel;
+            _NavigationActionManager = _Session.NavigationActionManager;
+
+            OnSessionInitialized();
         }
 
 
@@ -68,6 +74,38 @@ namespace Nova.Shell.Library
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
             _Session.Navigate<TPageView, TPageViewModel>();
+        }
+
+        /// <summary>
+        /// Creates a navigational action that navigates the parent session to the specified page.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        public ICommand CreateNavigationalAction<TPageView, TPageViewModel>()
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
+        {
+            return _NavigationActionManager.New<TPageView, TPageViewModel>();
+        }
+
+
+        /// <summary>
+        /// Called when this session data is initialized.
+        /// </summary>
+        protected virtual void OnSessionInitialized()
+        {
+        }
+
+        /// <summary>
+        /// Disposes the managed resources.
+        /// </summary>
+        protected override void DisposeManagedResources()
+        {
+            base.DisposeManagedResources();
+
+            _Session = null;
+            _SessionModel = null;
+            _NavigationActionManager = null;
         }
     }
 }

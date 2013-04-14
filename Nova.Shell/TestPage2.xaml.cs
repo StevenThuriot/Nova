@@ -41,11 +41,11 @@ namespace Nova.Shell
 
     }
 
-    public class TestPage2ViewModel : ContentViewModel<TestPage2, TestPage2ViewModel> 
+    public class TestPage2ViewModel : ContentViewModel<TestPage2, TestPage2ViewModel>
     {
-        public TestPage2ViewModel()
+        protected override void OnSessionInitialized()
         {
-            _GoToPage1Command = new RelayCommand(Navigate<TestPage, TestPageViewModel>);
+            _GoToPage1Command = CreateNavigationalAction<TestPage, TestPageViewModel>();
         }
 
         private ICommand _GoToPage1Command;

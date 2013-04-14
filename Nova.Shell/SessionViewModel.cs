@@ -24,6 +24,8 @@ using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
 using Nova.Shell.Library;
+using Nova.Shell.Library.Interfaces;
+using Nova.Shell.Managers;
 
 namespace Nova.Shell
 {
@@ -31,6 +33,14 @@ namespace Nova.Shell
     {
         internal const string CurrentViewConstant = "CurrentSessionContentView";
         internal const string NextViewConstant = "NextSessionContentView";
+
+        /// <summary>
+        /// Gets the navigation action manager.
+        /// </summary>
+        /// <value>
+        /// The navigation action manager.
+        /// </value>
+        public INavigationActionManager NavigationActionManager { get; private set; }
 
         /// <summary>
         /// Gets the session model.
@@ -50,7 +60,7 @@ namespace Nova.Shell
         {
             SessionModel = new ExpandoObject();
         }
-
+        
         /// <summary>
         /// Called when [created].
         /// </summary>
@@ -60,6 +70,8 @@ namespace Nova.Shell
             
             var leaveAction = Actionflow<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
             SetLeaveAction(leaveAction);
+
+            NavigationActionManager = new NavigationActionManager(View);
         }
 
         /// <summary>
@@ -93,6 +105,25 @@ namespace Nova.Shell
         }
 
         /// <summary>
+        /// Called after enter.
+        /// </summary>
+        public void OnAfterEnter()
+        {
+            //TODO: Temporary default
+            Navigate<TestPage, TestPageViewModel>();
+        }
+
+        /// <summary>
+        /// Called before navigation.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        public void OnBeforeNavigation(ActionContext context)
+        {
+            var current = ActionContextEntry.Create(CurrentViewConstant, CurrentView, false);
+            context.Add(current);
+        }
+        
+        /// <summary>
         /// Navigates this session to the specified page.
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
@@ -101,12 +132,10 @@ namespace Nova.Shell
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new() 
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
-            var current = ActionContextEntry.Create(CurrentViewConstant, CurrentView, false);
-
             var createNextView = new Func<IView>(CreatePage<TPageView, TPageViewModel>);
             var next = ActionContextEntry.Create(NextViewConstant, createNextView, false);
 
-            InvokeAction<NavigationAction>(current, next);
+            InvokeAction<NavigationAction>(next);
         }
 
         /// <summary>
@@ -115,7 +144,7 @@ namespace Nova.Shell
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         /// <returns></returns>
-        private TPageView CreatePage<TPageView, TPageViewModel>()
+        internal TPageView CreatePage<TPageView, TPageViewModel>()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
@@ -123,12 +152,6 @@ namespace Nova.Shell
             page.ViewModel.Initialize(this);
 
             return page;
-        }
-
-        public void OnAfterEnter()
-        {
-            //TODO: Temporary default
-            Navigate<TestPage, TestPageViewModel>();
         }
         
         /// <summary>
@@ -145,6 +168,14 @@ namespace Nova.Shell
             var currentView = CurrentView;
 
             return currentView == null || currentView.ViewModel.IsValid; //The content zone level.
+        }
+
+        /// <summary>
+        /// Disposes the managed resources.
+        /// </summary>
+        protected override void DisposeManagedResources()
+        {
+            ((IDisposable) NavigationActionManager).Dispose();
         }
     }
 }
