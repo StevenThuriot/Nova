@@ -110,7 +110,10 @@ namespace Nova.Shell
         public void OnAfterEnter()
         {
             //TODO: Temporary default
-            Navigate<TestPage, TestPageViewModel>();
+            var createNextView = new Func<IView>(CreatePage<TestPage, TestPageViewModel>);
+            var next = ActionContextEntry.Create(NextViewConstant, createNextView, false);
+
+            InvokeAction<NavigationAction>(next);
         }
 
         /// <summary>
@@ -121,21 +124,6 @@ namespace Nova.Shell
         {
             var current = ActionContextEntry.Create(CurrentViewConstant, CurrentView, false);
             context.Add(current);
-        }
-        
-        /// <summary>
-        /// Navigates this session to the specified page.
-        /// </summary>
-        /// <typeparam name="TPageView">The type of the page view.</typeparam>
-        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        public void Navigate<TPageView, TPageViewModel>() 
-            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new() 
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
-        {
-            var createNextView = new Func<IView>(CreatePage<TPageView, TPageViewModel>);
-            var next = ActionContextEntry.Create(NextViewConstant, createNextView, false);
-
-            InvokeAction<NavigationAction>(next);
         }
 
         /// <summary>
