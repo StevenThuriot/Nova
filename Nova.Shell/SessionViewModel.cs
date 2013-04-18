@@ -29,7 +29,7 @@ using Nova.Shell.Managers;
 
 namespace Nova.Shell
 {
-    public class SessionViewModel : ViewModel<SessionView, SessionViewModel>, INavigatablePage
+    public class SessionViewModel : ViewModel<SessionView, SessionViewModel>
     {
         internal const string CurrentViewConstant = "CurrentSessionContentView";
         internal const string NextViewConstant = "NextSessionContentView";
