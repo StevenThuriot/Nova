@@ -21,22 +21,18 @@
 using System;
 using System.Windows.Input;
 using Nova.Controls;
+using Nova.Shell.Library.Interfaces;
 
 namespace Nova.Shell.Library.Domain
 {
     /// <summary>
     /// Tree Node Item for the navigational tree.
     /// </summary>
-    internal abstract class TreeNode
+    internal class TreeNode
     {
-        /// <summary>
-        /// Gets the navigational command.
-        /// </summary>
-        /// <value>
-        /// The navigational command.
-        /// </value>
-        public abstract ICommand NavigationalCommand { get; }
-
+        private readonly Action<INavigatablePage> _Navigate;
+        private readonly Func<INavigatablePage, ICommand> _CreateNavigationalAction;
+        
         /// <summary>
         /// Gets the title.
         /// </summary>
@@ -49,13 +45,45 @@ namespace Nova.Shell.Library.Domain
         /// Initializes a new instance of the <see cref="TreeNode" /> class.
         /// </summary>
         /// <param name="title">The title.</param>
+        /// <param name="navigate">The navigation action.</param>
+        /// <param name="createNavigationalAction">The create navigational command.</param>
         /// <exception cref="System.ArgumentNullException">title</exception>
-        protected TreeNode(string title)
+        private TreeNode(string title, Action<INavigatablePage> navigate, Func<INavigatablePage, ICommand> createNavigationalAction)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentNullException("title");
 
+            if (navigate == null)
+                throw new ArgumentNullException("navigate");
+
+            if (createNavigationalAction == null)
+                throw new ArgumentNullException("createNavigationalAction");
+
             Title = title;
+            _Navigate = navigate;
+            _CreateNavigationalAction = createNavigationalAction;
+        }
+        
+
+        //TODO: instead of accepting a page instance to navigate with, get the session instead.
+
+        /// <summary>
+        /// Navigates from the specified page.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        public void Navigate(INavigatablePage page)
+        {
+            _Navigate(page);
+        }
+
+
+        /// <summary>
+        /// Creates the navigational command.
+        /// </summary>
+        /// <returns></returns>
+        public ICommand CreateNavigationalAction(INavigatablePage page)
+        {
+            return _CreateNavigationalAction(page);
         }
 
         /// <summary>
@@ -69,37 +97,10 @@ namespace Nova.Shell.Library.Domain
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
-            return new TreeNode<TPageView, TPageViewModel>(title);
-        }
-    }
+            Action<INavigatablePage> navigate = x => x.Navigate<TPageView, TPageViewModel>();
+            Func<INavigatablePage, ICommand> navigationalAction = x => x.CreateNavigationalAction<TPageView, TPageViewModel>();
 
-    /// <summary>
-    /// Tree Node Item for the navigational tree.
-    /// </summary>
-    internal class TreeNode<TPageView, TPageViewModel> : TreeNode
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
-            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-    {
-        private ICommand _NavigationalCommand;
-
-        /// <summary>
-        /// Initializes a new instance of the TreeNode class.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        public TreeNode(string title) : base(title)
-        {
-            //TODO: Implement action creation when linking the builder to a session: _NavigationalCommand = Session.CreateNewNavigationalCommand.
-        }
-
-        /// <summary>
-        /// Gets the navigational command.
-        /// </summary>
-        /// <value>
-        /// The navigational command.
-        /// </value>
-        public override ICommand NavigationalCommand
-        {
-            get { return _NavigationalCommand; }
+            return new TreeNode(title, navigate, navigationalAction);
         }
     }
 }
