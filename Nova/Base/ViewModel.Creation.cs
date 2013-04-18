@@ -42,6 +42,7 @@ namespace Nova.Base
             if (actionQueueManager == null)
                 throw new ArgumentNullException("actionQueueManager");
 
+            //Optimization: Cache OnBefore/After logic on a different thread during creation so it's available when we need it.
             OnActionMethodRepository.CacheOnActionLogic<TView, TViewModel>();
 
             var viewModel = new TViewModel();

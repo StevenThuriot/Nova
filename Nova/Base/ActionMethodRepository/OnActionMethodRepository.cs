@@ -203,7 +203,7 @@ namespace Nova.Base.ActionMethodRepository
             if (TaskCache.TryGetValue(type, out task))
                 return task.Result;
 
-            return MethodCacheEntry.Empty;
+            return CreateCacheEntry<T>(); //Type has not been preloaded, create an entry now.
         }
     }
 }
