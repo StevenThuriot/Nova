@@ -38,10 +38,19 @@ namespace Nova.Base
 		/// <summary>
 		/// Default Ctor.
 		/// </summary>
-	    internal ActionContext()
+	    private ActionContext()
 		{
 			_Context = new Dictionary<string, object>();
 		}
+
+        /// <summary>
+        /// Creates a new instance.
+        /// </summary>
+        /// <returns></returns>
+        internal static ActionContext New()
+        {
+            return new ActionContext();
+        }
 
 		/// <summary>
 		/// Clears this instance.
@@ -100,8 +109,8 @@ namespace Nova.Base
 		public T GetValue<T>()
         {
             var key = typeof (T).FullName;
-			return (T)_Context[key];
-		}
+            return GetValue<T>(key);
+        }
 
 		/// <summary>
 		/// Gets a value from the actioncontext.

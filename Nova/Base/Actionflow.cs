@@ -17,6 +17,7 @@
 #endregion
 using System;
 using System.Diagnostics.CodeAnalysis;
+using Nova.Base.ActionMethodRepository;
 using Nova.Controls;
 using Nova.Properties;
 
@@ -183,7 +184,7 @@ namespace Nova.Base
 			             	{
 			             		View = view,
 			             		ViewModel = viewModel,
-			             		ActionContext = actionContext ?? new ActionContext()
+			             		ActionContext = actionContext ?? ActionContext.New()
 			             	};
 
 			return action;

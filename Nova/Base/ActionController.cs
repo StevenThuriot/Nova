@@ -183,7 +183,7 @@ namespace Nova.Base
         /// <returns>The action context.</returns>
         private static ActionContext PrepareActionContext(params ActionContextEntry[] arguments)
         {
-            var actionContext = new ActionContext();
+            var actionContext = ActionContext.New();
 
             if (arguments != null)
             {

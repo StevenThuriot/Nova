@@ -232,21 +232,20 @@
     <Compile Include="Base\ActionContextEntry.cs" />
     <Compile Include="Base\ActionController.cs" />
     <Compile Include="Base\ActionManager.cs" />
+    <Compile Include="Base\ActionMethodRepository\MethodCacheEntry.cs" />
+    <Compile Include="Base\ActionMethodRepository\OnAction.Implementations.cs">
+      <DependentUpon>OnAction.cs</DependentUpon>
+    </Compile>
     <Compile Include="Base\Actions\EnterAction.cs" />
     <Compile Include="Base\Actions\LeaveAction.cs" />
     <Compile Include="Base\Actionflow.cs" />
     <Compile Include="Base\IViewModel.cs" />
-    <Compile Include="Base\OnActionMethodRepository.MethodCacheEntry.cs">
-      <DependentUpon>OnActionMethodRepository.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Base\ActionMethodRepository\OnAction.cs" />
     <Compile Include="Base\ValidatableActionflow.cs" />
     <Compile Include="Base\ActionBinding.cs" />
-    <Compile Include="Base\OnActionMethodRepository.OnAction.cs">
-      <DependentUpon>OnActionMethodRepository.cs</DependentUpon>
-    </Compile>
     <Compile Include="Base\TreeType.cs" />
     <Compile Include="Base\DynamicContext.cs" />
-    <Compile Include="Base\OnActionMethodRepository.cs" />
+    <Compile Include="Base\ActionMethodRepository\OnActionMethodRepository.cs" />
     <Compile Include="Base\RoutedAction.cs" />
     <Compile Include="Base\RoutedAction.Generic.cs">
       <DependentUpon>RoutedAction.cs</DependentUpon>
