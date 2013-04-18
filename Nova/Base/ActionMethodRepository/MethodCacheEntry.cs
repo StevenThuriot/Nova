@@ -31,39 +31,6 @@ namespace Nova.Base.ActionMethodRepository
     /// </summary>
     internal abstract class MethodCacheEntry
     {
-        #region Empty
-        /// <summary>
-        /// The empty method cache entry.
-        /// </summary>
-        private static readonly MethodCacheEntry EmptyMethodCacheEntrySingleton = new EmptyMethodCacheEntry();
-
-        /// <summary>
-        /// Gets an empty method cache entry.
-        /// </summary>
-        public static MethodCacheEntry Empty
-        {
-            get { return EmptyMethodCacheEntrySingleton; }
-        }
-
-        /// <summary>
-        /// An empty entry, meant to be used as a singleton.
-        /// </summary>
-        private sealed class EmptyMethodCacheEntry : MethodCacheEntry
-        {
-            /// <summary>
-            /// Gets the type.
-            /// </summary>
-            /// <value>
-            /// The type.
-            /// </value>
-            public override Type Type
-            {
-                get { return typeof(object); }
-            }
-        }
-
-        #endregion Empty
-
         protected List<OnAction> BeforeMethodInfos;
         protected List<OnAction> AfterMethodInfos;
 
