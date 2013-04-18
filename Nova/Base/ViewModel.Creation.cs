@@ -41,6 +41,8 @@ namespace Nova.Base
             if (actionQueueManager == null)
                 throw new ArgumentNullException("actionQueueManager");
 
+            OnActionMethodRepository.CacheOnActionLogic<TView, TViewModel>();
+
             var viewModel = new TViewModel();
             viewModel.Initialize(view, actionQueueManager, enterOnInitialize);
 

@@ -18,7 +18,6 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Windows;
 using Nova.Threading;
 
 namespace Nova.Base

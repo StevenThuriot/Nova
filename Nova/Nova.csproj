@@ -236,6 +236,9 @@
     <Compile Include="Base\Actions\LeaveAction.cs" />
     <Compile Include="Base\Actionflow.cs" />
     <Compile Include="Base\IViewModel.cs" />
+    <Compile Include="Base\OnActionMethodRepository.MethodCacheEntry.cs">
+      <DependentUpon>OnActionMethodRepository.cs</DependentUpon>
+    </Compile>
     <Compile Include="Base\ValidatableActionflow.cs" />
     <Compile Include="Base\ActionBinding.cs" />
     <Compile Include="Base\OnActionMethodRepository.OnAction.cs">

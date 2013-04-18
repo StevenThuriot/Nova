@@ -151,7 +151,7 @@ namespace Nova.Controls
 
             if (actionQueueManager == null)
                 throw new ArgumentNullException("actionQueueManager");
-
+            
             var page = new TView
                 {
                     _Parent = parent
