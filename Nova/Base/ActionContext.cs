@@ -17,6 +17,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using Nova.Base.ActionMethodRepository;
 
 namespace Nova.Base
 {
@@ -35,21 +36,33 @@ namespace Nova.Base
 		/// </value>
 	    public bool IsSuccessful { get; internal set; }
 
-		/// <summary>
-		/// Default Ctor.
-		/// </summary>
-	    private ActionContext()
+        /// <summary>
+        /// Gets the name of the action.
+        /// </summary>
+        /// <value>
+        /// The name of the action.
+        /// </value>
+	    public string ActionName { get; internal set; }
+
+        /// <summary>
+        /// Default Ctor.
+        /// </summary>
+        /// <param name="actionName">Name of the action.</param>
+	    private ActionContext(string actionName)
 		{
-			_Context = new Dictionary<string, object>();
+            _Context = new Dictionary<string, object>();
+            ActionName = actionName;
 		}
 
         /// <summary>
         /// Creates a new instance.
         /// </summary>
+        /// <typeparam name="T">Type of the action</typeparam>
         /// <returns></returns>
-        internal static ActionContext New()
+        internal static ActionContext New<T>()
         {
-            return new ActionContext();
+            var actionName = MethodCacheEntry.GetActionName(typeof(T));
+            return new ActionContext(actionName);
         }
 
 		/// <summary>

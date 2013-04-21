@@ -175,15 +175,18 @@ namespace Nova.Base
 
             return Invoke(actionToRun, true, executeCompleted);
         }
-        
+
         /// <summary>
-        ///     Prepares the action context.
+        /// Prepares the action context.
         /// </summary>
+        /// <typeparam name="TAction">The type of the action.</typeparam>
         /// <param name="arguments">The arguments.</param>
-        /// <returns>The action context.</returns>
-        private static ActionContext PrepareActionContext(params ActionContextEntry[] arguments)
+        /// <returns>
+        /// The action context.
+        /// </returns>
+        private static ActionContext PrepareActionContext<TAction>(params ActionContextEntry[] arguments)
         {
-            var actionContext = ActionContext.New();
+            var actionContext = ActionContext.New<TAction>();
 
             if (arguments != null)
             {
@@ -215,7 +218,7 @@ namespace Nova.Base
         public void InvokeAction<T>(params ActionContextEntry[] arguments)
             where T : Actionflow<TView, TViewModel>, new()
         {
-            ActionContext actionContext = PrepareActionContext(arguments);
+            ActionContext actionContext = PrepareActionContext<T>(arguments);
             Invoke<T>(actionContext);
         }
         
@@ -255,7 +258,7 @@ namespace Nova.Base
         public Task<bool> InvokeActionAsync<T>(params ActionContextEntry[] arguments)
             where T : Actionflow<TView, TViewModel>, new()
         {
-            ActionContext actionContext = PrepareActionContext(arguments);
+            ActionContext actionContext = PrepareActionContext<T>(arguments);
             var action = Invoke<T>(actionContext);
             
             return action == null

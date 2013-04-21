@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -31,8 +30,11 @@ namespace Nova.Base.ActionMethodRepository
     /// </summary>
     internal abstract class MethodCacheEntry
     {
-        protected List<OnAction> BeforeMethodInfos;
-        protected List<OnAction> AfterMethodInfos;
+        public const string OnBefore = "ONBEFORE";
+        public const string OnAfter = "ONAFTER";
+
+        protected List<OnAction> BeforeActions;
+        protected List<OnAction> AfterActions;
 
         /// <summary>
         /// Gets the type.
@@ -49,7 +51,7 @@ namespace Nova.Base.ActionMethodRepository
         /// <returns></returns>
         public IEnumerable<OnAction> GetRelevantOnBeforeMethods(Type type)
         {
-            return GetRelevantMethods(type, "ONBEFORE", BeforeMethodInfos);
+            return GetRelevantMethods(type, OnBefore, BeforeActions);
         }
 
         /// <summary>
@@ -59,7 +61,7 @@ namespace Nova.Base.ActionMethodRepository
         /// <returns></returns>
         public IEnumerable<OnAction> GetRelevantOnAfterMethods(Type type)
         {
-            return GetRelevantMethods(type, "ONAFTER", AfterMethodInfos);
+            return GetRelevantMethods(type, OnAfter, AfterActions);
         }
 
 
@@ -70,12 +72,25 @@ namespace Nova.Base.ActionMethodRepository
         /// <param name="prefix">The prefix.</param>
         /// <param name="methods">The methods.</param>
         /// <returns></returns>
-        private static IEnumerable<OnAction> GetRelevantMethods(Type actionType, string prefix, List<OnAction> methods)
+        private static IEnumerable<OnAction> GetRelevantMethods(Type actionType, string prefix, IReadOnlyCollection<OnAction> methods)
         {
             //Optimalization
-            if (methods == null || methods.Count == 0)
+            if (methods.Count == 0)
                 return Enumerable.Empty<OnAction>();
 
+            var typeName = GetActionName(actionType);
+
+            var name = prefix + typeName;
+            return methods.Where(x => name.Equals(x.Name, StringComparison.OrdinalIgnoreCase) || prefix.Equals(x.Name, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>
+        /// Gets the name of the action.
+        /// </summary>
+        /// <param name="actionType">Type of the action.</param>
+        /// <returns></returns>
+        internal static string GetActionName(Type actionType)
+        {
             var typeName = actionType.Name;
             var generic = typeName.IndexOf('`'); //Don't include generics in the naming
             if (generic > 0)
@@ -87,9 +102,7 @@ namespace Nova.Base.ActionMethodRepository
             {
                 typeName = typeName.Substring(0, typeName.Length - 6);
             }
-
-            var name = prefix + typeName.ToString(CultureInfo.InvariantCulture);
-            return methods.Where(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase));
+            return typeName;
         }
     }
 
@@ -118,8 +131,8 @@ namespace Nova.Base.ActionMethodRepository
             var type = typeof(T);
             var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
 
-            BeforeMethodInfos = CreateMethods(methods, "ONBEFORE");
-            AfterMethodInfos = CreateMethods(methods, "ONAFTER");
+            BeforeActions = CreateActions(methods, OnBefore);
+            AfterActions = CreateActions(methods, OnAfter);
         }
 
         /// <summary>
@@ -128,7 +141,7 @@ namespace Nova.Base.ActionMethodRepository
         /// <param name="methods">The methods.</param>
         /// <param name="startsWith">The starts with.</param>
         /// <returns></returns>
-        private static List<OnAction> CreateMethods(IEnumerable<MethodInfo> methods, string startsWith)
+        private static List<OnAction> CreateActions(IEnumerable<MethodInfo> methods, string startsWith)
         {
             return methods.Where(x => x.Name.StartsWith(startsWith, StringComparison.OrdinalIgnoreCase))
                           .Select(OnAction.Create<T>)

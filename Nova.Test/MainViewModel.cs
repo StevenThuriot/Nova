@@ -90,6 +90,11 @@ namespace Nova.Test
 			MessageBox.Show("On After VM");
 		}
 
+		public void OnAfter(ActionContext context)
+		{
+            MessageBox.Show("General On After VM: " + context.ActionName);
+		}
+
 		protected override void Save(dynamic value)
 		{
 			value.Test = "test";

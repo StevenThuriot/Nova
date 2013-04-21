@@ -41,6 +41,11 @@ namespace Nova.Test
 			var mainWindow = new MainWindow();
 			mainWindow.ShowDialog();
 		}
+
+        public void OnAfter(ActionContext context)
+        {
+            MessageBox.Show("General On After V: " + context.ActionName);
+        }
 		
 		private void OpenExceptionWindow(object sender, RoutedEventArgs e)
 		{

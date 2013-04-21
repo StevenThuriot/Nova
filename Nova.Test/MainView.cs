@@ -15,7 +15,7 @@
 // limitations under the License.
 // 
 #endregion
-using System.Windows.Input;
+
 using Nova.Controls;
 
 namespace Nova.Test

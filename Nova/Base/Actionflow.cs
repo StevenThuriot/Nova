@@ -184,7 +184,7 @@ namespace Nova.Base
 			             	{
 			             		View = view,
 			             		ViewModel = viewModel,
-			             		ActionContext = actionContext ?? ActionContext.New()
+			             		ActionContext = actionContext ?? ActionContext.New<TResult>()
 			             	};
 
 			return action;
