@@ -50,6 +50,8 @@ namespace Nova.Base
         {
             if (_Disposed) return;
 
+            _Disposed = true;
+
             if (disposing)
             {
                 DisposeManagedResources();
@@ -73,7 +75,6 @@ namespace Nova.Base
             }
 
             DisposeUnmanagedResources();
-            _Disposed = true;
         }
 
         /// <summary>

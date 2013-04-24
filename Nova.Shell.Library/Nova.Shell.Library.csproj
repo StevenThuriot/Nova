@@ -55,6 +55,7 @@
     <Compile Include="Interfaces\INavigationActionManager.cs" />
     <Compile Include="Domain\TreeNode.cs" />
     <Compile Include="Interfaces\INavigatablePage.cs" />
+    <Compile Include="Interfaces\ISessionViewModel.cs" />
     <Compile Include="ModuleBuilder\IModuleBuilder.cs" />
     <Compile Include="ModuleBuilder\IModule.cs" />
     <Compile Include="ModuleBuilder\ModuleBuilder.cs" />

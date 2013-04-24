@@ -21,6 +21,7 @@
 using System;
 using System.Configuration;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -33,6 +34,15 @@ namespace Nova.Shell
     /// </summary>
     public partial class App
     {
+        /// <summary>
+        /// Gets the session model.
+        /// </summary>
+        /// <value>
+        /// The session model.
+        /// </value>
+        public dynamic Model { get; private set; }
+
+
         public App()
         {
             //TODO: When configuration classes have been made, check if single instance is enabled.
@@ -43,6 +53,8 @@ namespace Nova.Shell
             //{
             //    bool createdNew;
             //    var mutex = new Mutex(false, "#Nova.Shell#", out createdNew);
+
+            //    GC.KeepAlive(mutex);
 
             //    if (!createdNew)
             //    {
@@ -57,7 +69,6 @@ namespace Nova.Shell
             //}
 
             Startup += NovaFramework.Initialize;
-
 #if DEBUG
             DispatcherUnhandledException += (sender, args) => Debugger.Break();
             AppDomain.CurrentDomain.UnhandledException += (sender, args) => Debugger.Break();
@@ -66,8 +77,8 @@ namespace Nova.Shell
 #else   
             const bool showStackTrace = false;
 #endif
-
             ExceptionHandler.ShowStackTrace = showStackTrace;
+            Model = new ExpandoObject();
         }
     }
 }

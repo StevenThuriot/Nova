@@ -116,12 +116,5 @@ namespace Nova.Base
 
 		    return true;
 		}
-
-		/// <summary>
-		/// Called when this viewmodel is created.
-		/// </summary>
-		protected virtual void OnCreated()
-		{
-		}
     }
 }

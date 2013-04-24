@@ -29,15 +29,6 @@ namespace Nova.Shell.Library.Interfaces
     public interface INavigatablePage
     {
         /// <summary>
-        /// Navigates the parent session to the specified page.
-        /// </summary>
-        /// <typeparam name="TPageView">The type of the page view.</typeparam>
-        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        void Navigate<TPageView, TPageViewModel>()
-            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new();
-
-        /// <summary>
         /// Creates a navigational action that navigates the parent session to the specified page.
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>

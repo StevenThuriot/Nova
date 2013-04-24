@@ -19,7 +19,6 @@
 #endregion
 
 using System.Windows.Input;
-using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Library;
 
@@ -43,7 +42,7 @@ namespace Nova.Shell
 
     public class TestPage2ViewModel : ContentViewModel<TestPage2, TestPage2ViewModel>
     {
-        protected override void OnSessionInitialized()
+        protected override void OnCreated()
         {
             _GoToPage1Command = CreateNavigationalAction<TestPage, TestPageViewModel>();
         }

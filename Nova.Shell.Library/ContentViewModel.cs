@@ -18,6 +18,7 @@
 
 #endregion
 
+using System;
 using System.Windows.Input;
 using Nova.Base;
 using Nova.Controls;
@@ -34,23 +35,39 @@ namespace Nova.Shell.Library
         where TView : class, IView
         where TViewModel : ViewModel<TView, TViewModel>, new()
     {
-        private dynamic _Session;
-        private dynamic _SessionModel;
-        private INavigationActionManager _NavigationActionManager;
+        private IDisposable _Deferral;
+        private ISessionViewModel _Session;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentViewModel{TView, TViewModel}"/> class.
+        /// </summary>
+        protected ContentViewModel()
+        {
+            _Deferral = DeferCreated(); //Defer Created logic so we can call it manually in our extended initialize method.
+        }
 
         /// <summary>
         /// Initializes the ContentViewModel using the parent session instance.
         /// </summary>
         /// <param name="session">The parent session.</param>
-        internal void Initialize(IViewModel session)
+        internal void Initialize(ISessionViewModel session)
         {
             _Session = session;
-            SessionModel = _Session.SessionModel;
-            _NavigationActionManager = _Session.NavigationActionManager;
 
-            OnSessionInitialized();
+            _Deferral.Dispose();
+            _Deferral = null;
         }
 
+        /// <summary>
+        /// Gets the application model.
+        /// </summary>
+        /// <value>
+        /// The application model.
+        /// </value>
+        public dynamic ApplicationModel
+        {
+            get { return _Session.ApplicationModel; }
+        }
 
         /// <summary>
         /// Gets the session model.
@@ -60,22 +77,9 @@ namespace Nova.Shell.Library
         /// </value>
         public dynamic SessionModel
         {
-            get { return _SessionModel; }
-            private set { SetValue(ref _SessionModel, value); }
+            get { return _Session.Model; }
         }
-
-        /// <summary>
-        /// Navigates the parent session to the specified page.
-        /// </summary>
-        /// <typeparam name="TPageView">The type of the page view.</typeparam>
-        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        public void Navigate<TPageView, TPageViewModel>()
-            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
-        {
-            _Session.Navigate<TPageView, TPageViewModel>();
-        }
-
+        
         /// <summary>
         /// Creates a navigational action that navigates the parent session to the specified page.
         /// </summary>
@@ -85,15 +89,7 @@ namespace Nova.Shell.Library
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
-            return _NavigationActionManager.New<TPageView, TPageViewModel>();
-        }
-
-
-        /// <summary>
-        /// Called when this session data is initialized.
-        /// </summary>
-        protected virtual void OnSessionInitialized()
-        {
+            return _Session.NavigationActionManager.New<TPageView, TPageViewModel>();
         }
 
         /// <summary>
@@ -101,11 +97,12 @@ namespace Nova.Shell.Library
         /// </summary>
         protected override void DisposeManagedResources()
         {
-            base.DisposeManagedResources();
-
             _Session = null;
-            _SessionModel = null;
-            _NavigationActionManager = null;
+
+            if (_Deferral == null) return;
+
+            _Deferral.Dispose();
+            _Deferral = null;
         }
     }
 }

@@ -26,6 +26,10 @@ namespace Nova.Base
 {
     public abstract partial class ViewModel<TView, TViewModel>
     {
+        private bool _EnterOnInitialize;
+        private bool _DeferCreated;
+        private bool _Created;
+
         /// <summary>
         /// Creates the specified viewmodel.
         /// </summary>
@@ -51,6 +55,7 @@ namespace Nova.Base
             return viewModel;
         }
 
+
         /// <summary>
         /// Initializes the viewmodel and triggers all the needed logic.
         /// </summary>
@@ -71,13 +76,34 @@ namespace Nova.Base
             View = view;
             ActionController = new ActionController<TView, TViewModel>(view, viewModel, actionQueueManager);
             _ActionManager = new ActionManager<TView, TViewModel>(view, viewModel);
+            _EnterOnInitialize = enterOnInitialize;
 
+            if (_DeferCreated) return;
+
+            Created();
+        }
+
+        /// <summary>
+        /// Executes "Created" logic.
+        /// </summary>
+        private void Created()
+        {
+            if (_Created) return; //Only create once!
+            if (_Disposed) return;
+
+            _Created = true;
             OnCreated();
 
-            if (enterOnInitialize)
-            {
-                Enter();
-            }
+            if (!_EnterOnInitialize) return;
+
+            Enter();
+        }
+
+        /// <summary>
+        /// Called when this viewmodel is created and fully initialized.
+        /// </summary>
+        protected virtual void OnCreated()
+        {
         }
         
         /// <summary>
@@ -91,6 +117,86 @@ namespace Nova.Base
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
             return ExtendedPage<TPageView, TPageViewModel>.Create(View, _ActionQueueManager, enterOnInitialize);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// Defers the creational calls.
+        /// This method can be used when there is additional initialization logic required.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// Creational calls are OnCreated, the Enter Action, ...
+        /// This should be called in the ctor of the ViewModel to successfully defer the creational logic.
+        /// </remarks>
+        public IDisposable DeferCreated()
+        {
+            return new CreationalDeferral(this);
+        }
+
+        /// <summary>
+        /// Private class to manage deferral of the creational logic of the viewmodel.
+        /// </summary>
+        private class CreationalDeferral : IDisposable
+        {
+            private readonly ViewModel<TView, TViewModel> _ViewModel;
+            private bool _Disposed;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="CreationalDeferral"/> class.
+            /// </summary>
+            /// <param name="viewModel">The view model.</param>
+            public CreationalDeferral(ViewModel<TView, TViewModel> viewModel)
+            {
+                _ViewModel = viewModel;
+                _ViewModel._DeferCreated = true;
+            }
+
+            /// <summary>
+            /// Finalizes an instance of the <see cref="CreationalDeferral"/> class.
+            /// </summary>
+            ~CreationalDeferral()
+            {
+                Dispose(false);
+            }
+
+            /// <summary>
+            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            /// </summary>
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            /// <summary>
+            /// Releases unmanaged and - optionally - managed resources.
+            /// </summary>
+            /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+            private void Dispose(bool disposing)
+            {
+                if (_Disposed) return;
+
+                if (disposing)
+                {
+                    _ViewModel.Created();
+                }
+
+                _Disposed = true;
+            }
         }
     }
 }

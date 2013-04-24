@@ -20,6 +20,7 @@
 
 using System;
 using System.Dynamic;
+using System.Windows;
 using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
@@ -29,10 +30,14 @@ using Nova.Shell.Managers;
 
 namespace Nova.Shell
 {
-    public class SessionViewModel : ViewModel<SessionView, SessionViewModel>
+    public class SessionViewModel : ViewModel<SessionView, SessionViewModel>, ISessionViewModel
     {
         internal const string CurrentViewConstant = "CurrentSessionContentView";
         internal const string NextViewConstant = "NextSessionContentView";
+
+        private IView _CurrentView;
+        private readonly dynamic _Model;
+        private readonly dynamic _ApplicationModel;
 
         /// <summary>
         /// Gets the navigation action manager.
@@ -43,49 +48,51 @@ namespace Nova.Shell
         public INavigationActionManager NavigationActionManager { get; private set; }
 
         /// <summary>
+        /// Gets the application model.
+        /// </summary>
+        /// <value>
+        /// The application model.
+        /// </value>
+        public dynamic ApplicationModel
+        {
+            get { return _ApplicationModel; }
+        }
+
+        /// <summary>
         /// Gets the session model.
         /// </summary>
         /// <value>
         /// The session model.
         /// </value>
-        public dynamic SessionModel { get; private set; }
-
-        private string _Title = SessionViewResources.EmptySession;
-        private IView _CurrentView;
+        public dynamic Model
+        {
+            get { return _Model; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SessionViewModel" /> class.
         /// </summary>
         public SessionViewModel()
         {
-            SessionModel = new ExpandoObject();
+            _ApplicationModel = ((App) Application.Current).Model;
+
+            _Model = new ExpandoObject();
+            _Model.Title = SessionViewResources.EmptySession;
         }
-        
+
         /// <summary>
-        /// Called when [created].
+        /// Called when this viewmodel is created and fully initialized.
         /// </summary>
         protected override void OnCreated()
         {
-            SetKnownActionTypes(typeof(SessionLeaveStep), typeof(NavigationAction));
+            SetKnownActionTypes(typeof(SessionLeaveStep), typeof(NavigationAction)); //Optimalization
             
             var leaveAction = Actionflow<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
             SetLeaveAction(leaveAction);
 
             NavigationActionManager = new NavigationActionManager(View);
         }
-
-        /// <summary>
-        /// Gets the title.
-        /// </summary>
-        /// <value>
-        /// The title.
-        /// </value>
-        public string Title
-        {
-            get { return _Title; }
-            private set { SetValue(ref _Title, value); }
-        }
-
+        
         /// <summary>
         /// Gets or sets the current view.
         /// </summary>
@@ -99,7 +106,7 @@ namespace Nova.Shell
             {
                 if (value == null || !SetValue(ref _CurrentView, value)) return;
 
-                Title = _CurrentView.Title;
+                Model.Title = _CurrentView.Title;
                 View.ContentZone.Navigate(_CurrentView);
             }
         }

@@ -491,7 +491,7 @@ namespace Nova.Validation
                 return PasswordBoxMonitor.IsFilledIn(passwordBox);
             }
 
-            return true; //return true if we don't know what it is, so we don't block anything because of validation.
+            return true; //return true if we don't know what it is, so we don't block anything because of possibly faulty validation.
         }
     }
 }

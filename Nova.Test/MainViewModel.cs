@@ -35,11 +35,13 @@ namespace Nova.Test
 			Changes = new ObservableCollection<Change>();
 			for (int i = 0; i < 10; i++)
 			{
-				var change = new Change
+			    var changeType = i.ToString(CultureInfo.InvariantCulture);
+
+			    var change = new Change
 				             	{
-				             		ChangeType = i.ToString(CultureInfo.InvariantCulture),
-				             		ItemType = i.ToString(CultureInfo.InvariantCulture),
-				             		Path = i.ToString(CultureInfo.InvariantCulture)
+				             		ChangeType = changeType,
+				             		ItemType = changeType,
+				             		Path = changeType
 				             	};
 
 				Changes.Add(change);

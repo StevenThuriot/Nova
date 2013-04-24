@@ -30,7 +30,6 @@ namespace Nova.Shell.Library.Domain
     /// </summary>
     internal class TreeNode
     {
-        private readonly Action<INavigatablePage> _Navigate;
         private readonly Func<INavigatablePage, ICommand> _CreateNavigationalAction;
         
         /// <summary>
@@ -45,37 +44,23 @@ namespace Nova.Shell.Library.Domain
         /// Initializes a new instance of the <see cref="TreeNode" /> class.
         /// </summary>
         /// <param name="title">The title.</param>
-        /// <param name="navigate">The navigation action.</param>
         /// <param name="createNavigationalAction">The create navigational command.</param>
         /// <exception cref="System.ArgumentNullException">title</exception>
-        private TreeNode(string title, Action<INavigatablePage> navigate, Func<INavigatablePage, ICommand> createNavigationalAction)
+        private TreeNode(string title, Func<INavigatablePage, ICommand> createNavigationalAction)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentNullException("title");
-
-            if (navigate == null)
-                throw new ArgumentNullException("navigate");
 
             if (createNavigationalAction == null)
                 throw new ArgumentNullException("createNavigationalAction");
 
             Title = title;
-            _Navigate = navigate;
             _CreateNavigationalAction = createNavigationalAction;
         }
         
 
         //TODO: instead of accepting a page instance to navigate with, get the session instead.
-
-        /// <summary>
-        /// Navigates from the specified page.
-        /// </summary>
-        /// <param name="page">The page.</param>
-        public void Navigate(INavigatablePage page)
-        {
-            _Navigate(page);
-        }
-
+        
 
         /// <summary>
         /// Creates the navigational command.
@@ -97,10 +82,9 @@ namespace Nova.Shell.Library.Domain
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
-            Action<INavigatablePage> navigate = x => x.Navigate<TPageView, TPageViewModel>();
             Func<INavigatablePage, ICommand> navigationalAction = x => x.CreateNavigationalAction<TPageView, TPageViewModel>();
 
-            return new TreeNode(title, navigate, navigationalAction);
+            return new TreeNode(title, navigationalAction);
         }
     }
 }
