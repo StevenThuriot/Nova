@@ -129,14 +129,6 @@ namespace Nova.Shell
         }
 
         /// <summary>
-        /// Called after enter.
-        /// </summary>
-        public void OnAfterEnter()
-        {
-            //TODO: Ask CompositionManager for info.
-        }
-
-        /// <summary>
         /// Called before navigation.
         /// </summary>
         /// <param name="context">The context.</param>
