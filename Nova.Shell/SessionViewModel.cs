@@ -30,12 +30,16 @@ using Nova.Shell.Managers;
 
 namespace Nova.Shell
 {
+    /// <summary>
+    /// The Session ViewModel
+    /// </summary>
     public class SessionViewModel : ViewModel<SessionView, SessionViewModel>, ISessionViewModel
     {
         internal const string CurrentViewConstant = "CurrentSessionContentView";
         internal const string NextViewConstant = "NextSessionContentView";
 
         private IView _CurrentView;
+        private string _Title;
         private readonly dynamic _Model;
         private readonly dynamic _ApplicationModel;
 
@@ -70,14 +74,26 @@ namespace Nova.Shell
         }
 
         /// <summary>
+        /// Gets the title.
+        /// </summary>
+        /// <value>
+        /// The title.
+        /// </value>
+        public string Title
+        {
+            get { return _Title; }
+            set { SetValue(ref _Title, value); }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SessionViewModel" /> class.
         /// </summary>
         public SessionViewModel()
         {
-            _ApplicationModel = ((App) Application.Current).Model;
+            _Title = SessionViewResources.EmptySession;
 
+            _ApplicationModel = ((App) Application.Current).Model;
             _Model = new ExpandoObject();
-            _Model.Title = SessionViewResources.EmptySession;
         }
 
         /// <summary>
@@ -106,7 +122,7 @@ namespace Nova.Shell
             {
                 if (value == null || !SetValue(ref _CurrentView, value)) return;
 
-                Model.Title = _CurrentView.Title;
+                Title = _CurrentView.Title;
                 View.ContentZone.Navigate(_CurrentView);
             }
         }

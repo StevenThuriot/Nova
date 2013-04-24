@@ -55,11 +55,6 @@ namespace Nova.Shell
             get { return _GoToPage2Command; }
             set { SetValue(ref _GoToPage2Command, value); }
         }
-
-        private void OnAfterLongRunning()
-        {
-            SessionModel.Title = "Custom Title after long running";
-        }
     }
 
     public class LongRunningAction : Actionflow<TestPage, TestPageViewModel>
