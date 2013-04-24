@@ -22,7 +22,6 @@ using System;
 using System.Windows.Input;
 using Nova.Base;
 using Nova.Controls;
-using Nova.Shell.Library.Interfaces;
 
 namespace Nova.Shell.Library
 {
@@ -79,6 +78,18 @@ namespace Nova.Shell.Library
         {
             get { return _Session.Model; }
         }
+
+        /// <summary>
+        /// Navigates the parent session to the specified page.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        public void Navigate<TPageView, TPageViewModel>()
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
+        {
+            _Session.Navigate<TPageView, TPageViewModel>();
+        }
         
         /// <summary>
         /// Creates a navigational action that navigates the parent session to the specified page.
@@ -89,7 +100,7 @@ namespace Nova.Shell.Library
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
-            return _Session.NavigationActionManager.New<TPageView, TPageViewModel>();
+            return _Session.CreateNavigationalAction<TPageView, TPageViewModel>();
         }
 
         /// <summary>

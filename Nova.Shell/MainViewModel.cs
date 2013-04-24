@@ -19,16 +19,20 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shell;
 using System.Windows.Threading;
 using Nova.Base;
+using Nova.Base.Actions;
 using Nova.Controls;
 using Nova.Shell.Actions.MainWindow;
+using Nova.Shell.Domain;
 
 namespace Nova.Shell
 {
@@ -42,12 +46,15 @@ namespace Nova.Shell
         private bool _HasOpenDocuments;
         private ImageSource _Icon;
         private string _Title = MainViewResources.Empty;
+        private readonly dynamic _ApplicationModel;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel" /> class.
         /// </summary>
         public MainViewModel()
         {
+            _ApplicationModel = ((App)Application.Current).Model;
+
             ShutDownCommand = new RelayCommand(ShutDown);
             MaximizeCommand = new RelayCommand(MaximizeView);
             MinimizeCommand = new RelayCommand(MinimizeView);
@@ -55,7 +62,7 @@ namespace Nova.Shell
             _Sessions = new ObservableCollection<SessionView>();
             _Sessions.CollectionChanged += SessionsChanged;
         }
-
+        
         /// <summary>
         /// Gets the shut down command.
         /// </summary>
@@ -155,31 +162,28 @@ namespace Nova.Shell
         {
             SetKnownActionTypes(typeof(CloseSessionAction),
                                 typeof(CreateNewSessionAction),
-                                typeof(FocusTabAction),
-                                typeof(ReadConfigurationAction));
+                                typeof(FocusTabAction));
 
+            var enterAction = EnterAction<MainView, MainViewModel>.New<ComposeAndInitializeAction>(View, this);
+            SetEnterAction(enterAction);
 
             View.AddHandler(ClosableTabItem.CloseTabEvent, new RoutedEventHandler(CloseSession));
-
-            SetInitialSession();
         }
-
+        
         /// <summary>
-        /// Called after enter.
+        /// Creates a new page with the current window as parent.
         /// </summary>
-        public void OnAfterEnter()
+        public SessionView CreateSession()
         {
-            InvokeAction<ReadConfigurationAction>();
-        }
+            IEnumerable<NovaModule> modules = _ApplicationModel.Modules;
+            var defaultModule = modules.FirstOrDefault();
 
-        /// <summary>
-        /// Sets the initial session.
-        /// </summary>
-        private void SetInitialSession()
-        {
-            var intialSession = CreatePage<SessionView, SessionViewModel>();
-            Sessions.Add(intialSession);
-            CurrentSession = intialSession;
+            if (defaultModule == null) return null;
+
+            var sessionView = CreatePage<SessionView, SessionViewModel>();
+
+            //TODO: Pass startup module to session
+            return sessionView;
         }
 
         /// <summary>

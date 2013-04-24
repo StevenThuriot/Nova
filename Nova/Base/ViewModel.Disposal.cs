@@ -64,11 +64,13 @@ namespace Nova.Base
                 if (_EnterAction != null)
                 {
                     _EnterAction.Dispose();
+                    _EnterAction = null;
                 }
 
                 if (_LeaveAction != null)
                 {
                     _LeaveAction.Dispose();
+                    _LeaveAction = null;
                 }
 
                 _ActionQueueManager = null;

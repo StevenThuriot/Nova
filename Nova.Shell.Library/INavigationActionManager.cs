@@ -21,19 +21,20 @@
 using System.Windows.Input;
 using Nova.Controls;
 
-namespace Nova.Shell.Library.Interfaces
+namespace Nova.Shell.Library
 {
     /// <summary>
-    /// A content page that allows navigation.
+    /// Manager that creates navigatable actions.
     /// </summary>
-    public interface INavigatablePage
+    public interface INavigationActionManager
     {
         /// <summary>
-        /// Creates a navigational action that navigates the parent session to the specified page.
+        /// Creates a command that navigates the current session to the specified page.
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        ICommand CreateNavigationalAction<TPageView, TPageViewModel>()
+        /// <returns></returns>
+        ICommand New<TPageView, TPageViewModel>()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new();
     }

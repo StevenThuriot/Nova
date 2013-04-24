@@ -18,24 +18,28 @@
 
 #endregion
 
-using System.Windows.Input;
-using Nova.Controls;
+using System;
+using Nova.Shell.Library;
 
-namespace Nova.Shell.Library.Interfaces
+namespace Nova.TestModule
 {
     /// <summary>
-    /// Manager that creates navigatable actions.
+    /// Test Module
     /// </summary>
-    public interface INavigationActionManager
+    public class Module : IModule
     {
         /// <summary>
-        /// Creates a command that navigates the current session to the specified page.
+        /// Configures the module.
         /// </summary>
-        /// <typeparam name="TPageView">The type of the page view.</typeparam>
-        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        /// <returns></returns>
-        ICommand New<TPageView, TPageViewModel>()
-            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new();
+        /// <param name="builder">The builder.</param>
+        public void Configure(IModuleBuilder builder)
+        {
+            var random = new Random().Next(1, 100);
+
+            builder.SetModuleTitle("Module #" + random)
+                   .SetModuleRanking(random)
+                   .AddNavigation<TestPage, TestPageViewModel>()
+                   .AddNavigation<TestPage2, TestPage2ViewModel>().AsStartup();
+        }
     }
 }

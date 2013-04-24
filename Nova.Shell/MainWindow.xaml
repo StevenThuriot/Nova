@@ -18,6 +18,7 @@
                     Icon="{Binding Icon}"
                     
                     WindowStartupLocation="CenterScreen"
+                    Visibility="Hidden"
                     
                     MouseLeftButtonDown="MoveWindow" 
                     d:DataContext="{d:DesignData Source=MainViewModel.cs}">

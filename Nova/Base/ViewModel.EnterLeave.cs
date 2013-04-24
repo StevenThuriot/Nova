@@ -42,9 +42,14 @@ namespace Nova.Base
         /// </summary>
         public Task<bool> Enter()
         {
-            return _EnterAction == null
-                       ? ActionController.InvokeActionAsync<EnterAction<TView, TViewModel>>()
-                       : ActionController.InternalInvokeActionAsync(_EnterAction);
+            if (_EnterAction == null)
+                return ActionController.InvokeActionAsync<EnterAction<TView, TViewModel>>();
+
+            var task = ActionController.InternalInvokeActionAsync(_EnterAction, disposeActionDuringCleanup: true);
+
+            _EnterAction = null;
+
+            return task;
         }
 
         /// <summary>
@@ -54,10 +59,10 @@ namespace Nova.Base
         {
             return _LeaveAction == null
                        ? ActionController.InvokeActionAsync<LeaveAction<TView, TViewModel>>()
-                       : ActionController.InternalInvokeActionAsync(_LeaveAction);
+                       : ActionController.InternalInvokeActionAsync(_LeaveAction, disposeActionDuringCleanup: false); //Don't dispose because we might leave several times.
         }
 
-        /// <summary>
+	    /// <summary>
         /// Sets the enter action.
         /// </summary>
         /// <param name="enterAction">The enter action.</param>
@@ -75,6 +80,7 @@ namespace Nova.Base
         /// Sets the leave action.
         /// </summary>
         /// <param name="leaveAction">The leave action.</param>
+        /// <remarks>When setting a custom leave action, it is possible it will be used several times if leaving a view isn't succesful the first time.</remarks>
         protected void SetLeaveAction(LeaveAction<TView, TViewModel> leaveAction)
         {
             if (_LeaveAction != null)

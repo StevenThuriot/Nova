@@ -22,18 +22,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nova.Controls;
-using Nova.Shell.Library.Domain;
+using Nova.Shell.Domain;
+using Nova.Shell.Library;
 
-namespace Nova.Shell.Library.ModuleBuilder
+namespace Nova.Shell.Builders
 {
     /// <summary>
     /// Module builder
     /// </summary>
     internal class ModuleBuilder : IModuleBuilder
     {
+        public const int DefaultRanking = 10;
         private TreeNode _StartupTreeNode;
-        private readonly List<TreeNode> _Navigation = new List<TreeNode>();
+        private readonly List<TreeNode> _TreeNodes = new List<TreeNode>();
         private int? _Ranking;
+        private string _Title;
 
         /// <summary>
         /// Gets the ranking.
@@ -43,14 +46,27 @@ namespace Nova.Shell.Library.ModuleBuilder
         /// </value>
         public int Ranking
         {
-            get { return _Ranking ?? 10; }
-            private set
-            {
-                if (_Ranking.HasValue)
-                    throw new NotSupportedException("Ranking can only be set once.");
+            get { return _Ranking ?? DefaultRanking; }
+        }
 
-                _Ranking = value;
-            }
+        /// <summary>
+        /// Sets the module title.
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotSupportedException">A title has already been set and can only be set once.</exception>
+        /// <exception cref="System.ArgumentNullException">title</exception>
+        public IModuleBuilder SetModuleTitle(string title)
+        {
+            if (!string.IsNullOrWhiteSpace(_Title))
+                throw new NotSupportedException("A title has already been set and can only be set once.");
+
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentNullException("title");
+
+            _Title = title;
+
+            return this;
         }
 
         /// <summary>
@@ -58,14 +74,13 @@ namespace Nova.Shell.Library.ModuleBuilder
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        /// <param name="title">The title.</param>
         /// <returns></returns>
-        public IModuleBuilder AddNavigation<TPageView, TPageViewModel>(string title) 
+        public IModuleBuilder AddNavigation<TPageView, TPageViewModel>() 
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new() 
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
-            var treeNode = TreeNode.New<TPageView, TPageViewModel>(title);
-            _Navigation.Add(treeNode);
+            var treeNode = TreeNode.New<TPageView, TPageViewModel>();
+            _TreeNodes.Add(treeNode);
 
             return this;
         }
@@ -83,10 +98,10 @@ namespace Nova.Shell.Library.ModuleBuilder
             if (_StartupTreeNode != null)
                 throw new NotSupportedException("A default use case has already been set and can only be set once.");
 
-            if (_Navigation.Count == 0)
+            if (_TreeNodes.Count == 0)
                 throw new NotSupportedException("A use case has to be added before the start up use case can be set.");
             
-            _StartupTreeNode = _Navigation.Last();
+            _StartupTreeNode = _TreeNodes.Last();
             return this;
         }
 
@@ -96,14 +111,27 @@ namespace Nova.Shell.Library.ModuleBuilder
         /// </summary>
         /// <param name="ranking">The ranking.</param>
         /// <returns></returns>
+        /// <exception cref="System.NotSupportedException">Ranking can only be set once.</exception>
         /// <remarks>
         /// The ranking can only be set once. Default value is 10.
         /// </remarks>
         public IModuleBuilder SetModuleRanking(int ranking)
         {
-            Ranking = ranking;
+            if (_Ranking.HasValue)
+                throw new NotSupportedException("Ranking can only be set once.");
+
+            _Ranking = ranking;
 
             return this;
+        }
+
+        /// <summary>
+        /// Builds a module.
+        /// </summary>
+        /// <returns></returns>
+        internal NovaModule Build()
+        {
+            return new NovaModule(_Title, Ranking, _StartupTreeNode, _TreeNodes);
         }
     }
 }

@@ -129,7 +129,7 @@ namespace Nova.Base.ActionMethodRepository
         public MethodCacheEntry()
         {
             var type = typeof(T);
-            var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
+            var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.InvokeMethod);
 
             BeforeActions = CreateActions(methods, OnBefore);
             AfterActions = CreateActions(methods, OnAfter);

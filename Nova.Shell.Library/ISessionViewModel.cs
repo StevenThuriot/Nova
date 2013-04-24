@@ -22,12 +22,12 @@ using System;
 using Nova.Base;
 using Nova.Controls;
 
-namespace Nova.Shell.Library.Interfaces
+namespace Nova.Shell.Library
 {
     /// <summary>
     /// Interface for the session viewmodel.
     /// </summary>
-    internal interface ISessionViewModel
+    internal interface ISessionViewModel : INavigatablePage
     {
         /// <summary>
         /// Gets the navigation action manager.

@@ -25,7 +25,6 @@ using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
 using Nova.Shell.Library;
-using Nova.Shell.Library.Interfaces;
 
 namespace Nova.Shell.Managers
 {

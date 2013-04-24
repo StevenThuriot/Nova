@@ -18,20 +18,9 @@
 
 #endregion
 
-using System.ComponentModel.Composition;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
-namespace Nova.Shell.Library.ModuleBuilder
-{
-    /// <summary>
-    /// A base class to configure your module and prepare it for usage with the Nova Shell.
-    /// </summary>
-    [InheritedExport("Modules", typeof(IModule))]
-    public interface IModule
-    {
-        /// <summary>
-        /// Configures the module.
-        /// </summary>
-        /// <param name="builder">The builder.</param>
-        void Configure(IModuleBuilder builder);
-    }
-}
+[assembly: AssemblyTitle("Nova.TestModule")]
+[assembly: AssemblyProduct("Nova.TestModule")]
+[assembly: Guid("c7016187-5593-4d26-a855-3b70e542fdca")]

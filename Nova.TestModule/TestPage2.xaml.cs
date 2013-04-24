@@ -18,57 +18,40 @@
 
 #endregion
 
-using System.Threading;
 using System.Windows.Input;
-using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Library;
 
-namespace Nova.Shell
+namespace Nova.TestModule
 {
     /// <summary>
     /// Interaction logic for TestPage.xaml
     /// </summary>
-    public partial class TestPage
+    public partial class TestPage2
     {
-        public TestPage()
+        public TestPage2()
         {
             InitializeComponent();
         }
     }
 
-    public abstract class TestPageBase : ExtendedPage<TestPage, TestPageViewModel>
+    public abstract class TestPage2Base : ExtendedPage<TestPage2, TestPage2ViewModel>
     {
 
     }
 
-    public class TestPageViewModel : ContentViewModel<TestPage, TestPageViewModel> 
+    public class TestPage2ViewModel : ContentViewModel<TestPage2, TestPage2ViewModel>
     {
         protected override void OnCreated()
         {
-            _GoToPage2Command = CreateNavigationalAction<TestPage2, TestPage2ViewModel>();
+            _GoToPage1Command = CreateNavigationalAction<TestPage, TestPageViewModel>();
         }
 
-        private ICommand _GoToPage2Command;
-        public ICommand GoToPage2Command
+        private ICommand _GoToPage1Command;
+        public ICommand GoToPage1Command
         {
-            get { return _GoToPage2Command; }
-            set { SetValue(ref _GoToPage2Command, value); }
-        }
-    }
-
-    public class LongRunningAction : Actionflow<TestPage, TestPageViewModel>
-    {
-        /// <summary>
-        /// Executes this instance.
-        /// </summary>
-        /// <returns></returns>
-        public override bool Execute()
-        {
-            //Simulate long running action.
-            Thread.Sleep(5000);
-
-            return base.Execute();
+            get { return _GoToPage1Command; }
+            set { SetValue(ref _GoToPage1Command, value); }
         }
     }
 }

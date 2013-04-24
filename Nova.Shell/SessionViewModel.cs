@@ -21,11 +21,12 @@
 using System;
 using System.Dynamic;
 using System.Windows;
+using System.Windows.Input;
 using Nova.Base;
+using Nova.Base.Actions;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
 using Nova.Shell.Library;
-using Nova.Shell.Library.Interfaces;
 using Nova.Shell.Managers;
 
 namespace Nova.Shell
@@ -102,8 +103,8 @@ namespace Nova.Shell
         protected override void OnCreated()
         {
             SetKnownActionTypes(typeof(SessionLeaveStep), typeof(NavigationAction)); //Optimalization
-            
-            var leaveAction = Actionflow<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
+
+            var leaveAction = LeaveAction<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
             SetLeaveAction(leaveAction);
 
             NavigationActionManager = new NavigationActionManager(View);
@@ -132,11 +133,7 @@ namespace Nova.Shell
         /// </summary>
         public void OnAfterEnter()
         {
-            //TODO: Temporary default
-            var createNextView = new Func<IView>(CreatePage<TestPage, TestPageViewModel>);
-            var next = ActionContextEntry.Create(NextViewConstant, createNextView, false);
-
-            InvokeAction<NavigationAction>(next);
+            //TODO: Ask CompositionManager for info.
         }
 
         /// <summary>
@@ -164,7 +161,36 @@ namespace Nova.Shell
 
             return page;
         }
-        
+
+        /// <summary>
+        /// Navigates the parent session to the specified page.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        public void Navigate<TPageView, TPageViewModel>()
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
+        {
+            var createNextView = new Func<IView>(CreatePage<TPageView, TPageViewModel>);
+            var next = ActionContextEntry.Create(NextViewConstant, createNextView, false);
+
+            InvokeAction<NavigationAction>(next);
+        }
+
+        /// <summary>
+        /// Creates the navigational action.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public ICommand CreateNavigationalAction<TPageView, TPageViewModel>() 
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new() 
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+        {
+            return NavigationActionManager.New<TPageView, TPageViewModel>();
+        }
+
         /// <summary>
         /// Determines whether the session is invalid.
         /// </summary>

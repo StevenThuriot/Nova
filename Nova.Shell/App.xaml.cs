@@ -26,6 +26,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using Nova.Base;
+using Nova.Shell.Managers;
 
 namespace Nova.Shell
 {
@@ -42,6 +43,13 @@ namespace Nova.Shell
         /// </value>
         public dynamic Model { get; private set; }
 
+        /// <summary>
+        /// Gets the module manager.
+        /// </summary>
+        /// <value>
+        /// The module manager.
+        /// </value>
+        internal CompositionManager CompositionManager { get; private set; }
 
         public App()
         {
@@ -79,6 +87,7 @@ namespace Nova.Shell
 #endif
             ExceptionHandler.ShowStackTrace = showStackTrace;
             Model = new ExpandoObject();
+            CompositionManager = new CompositionManager();
         }
     }
 }
