@@ -84,5 +84,11 @@ namespace Nova.Shell.Actions.Session
         {
             ViewModel.CurrentView = _NextView;
         }
+
+        protected override void DisposeManagedResources()
+        {
+            _Current = null;
+            _NextView = null;
+        }
     }
 }
