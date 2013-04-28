@@ -129,7 +129,6 @@ namespace Nova.Base
 
                                     .CanExecute(actionToRun.CanExecute)
 
-                                    .ContinueWith(CommandManager.InvalidateRequerySuggested, mainThread: true) //TODO: Is this needed? Executing this action might change the CanExecute state for another one.
                                     .ContinueWith(actionToRun.InternalExecute)
                                     .ContinueWith(actionToRun.InternalExecuteCompleted, mainThread: true)
 
@@ -198,7 +197,7 @@ namespace Nova.Base
         public void InvokeAction<T>(params ActionContextEntry[] arguments)
             where T : Actionflow<TView, TViewModel>, new()
         {
-            ActionContext actionContext = ActionContext.New<T>(arguments);
+            var actionContext = ActionContext.New<T>(arguments);
             Invoke<T>(actionContext);
         }
         
@@ -238,7 +237,7 @@ namespace Nova.Base
         public Task<bool> InvokeActionAsync<T>(params ActionContextEntry[] arguments)
             where T : Actionflow<TView, TViewModel>, new()
         {
-            ActionContext actionContext = ActionContext.New<T>(arguments);
+            var actionContext = ActionContext.New<T>(arguments);
             var action = Invoke<T>(actionContext);
             
             return action == null

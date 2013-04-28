@@ -1,3 +1,5 @@
+using System.Windows.Input;
+
 #region License
 // 
 //  Copyright 2012 Steven Thuriot
@@ -174,6 +176,9 @@ namespace Nova.Base
             try
             {
                 View.StartLoading();
+                
+                CommandManager.InvalidateRequerySuggested();
+                
                 OnActionMethodRepository.OnBefore<Actionflow<TView, TViewModel>, TView, TViewModel>(this);
                 OnBefore();
             }
