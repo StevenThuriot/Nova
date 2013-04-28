@@ -33,6 +33,10 @@
 
     <Overlay Grid.RowSpan="2"
              Grid.ColumnSpan="2"
+             
+             Grid.Row="0"
+             Grid.Column="0"
+             
              Margin="-2 -1 -2 -2"
              IsLoading="{Binding View.IsLoading}"
              Delay="1250"

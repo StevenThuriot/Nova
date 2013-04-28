@@ -87,11 +87,6 @@
     <Compile Include="DropShadow.xaml.cs">
       <DependentUpon>DropShadow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainViewResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MainViewResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="SessionView.xaml.cs">
       <DependentUpon>SessionView.xaml</DependentUpon>
     </Compile>
@@ -100,11 +95,6 @@
     </Compile>
     <Compile Include="SessionViewModel.cs">
       <DependentUpon>SessionView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SessionViewResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SessionViewResources.resx</DependentUpon>
     </Compile>
     <Page Include="DropShadow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -149,17 +139,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="MainViewResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MainViewResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SessionViewResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SessionViewResources.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>

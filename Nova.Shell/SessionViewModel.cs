@@ -28,6 +28,7 @@ using Nova.Shell.Actions.Session;
 using Nova.Shell.Library;
 using Nova.Shell.Managers;
 using Nova.Shell.Domain;
+using RESX = Nova.Shell.Properties.Resources;
 
 
 namespace Nova.Shell
@@ -96,7 +97,7 @@ namespace Nova.Shell
         public SessionViewModel()
         {
             _Deferral = DeferCreated(); //Defer Created logic so we can call it manually in our extended initialize method.
-            _Title = SessionViewResources.EmptySession;
+            _Title = RESX.EmptySession;
 
             _ApplicationModel = ((App) Application.Current).Model;
             _Model = new ExpandoObject();

@@ -6,6 +6,7 @@
                     mc:Ignorable="d"
                     xmlns:converters="clr-namespace:Nova.Shell.Converters" 
                     xmlns:shell="clr-namespace:Nova.Shell"
+                    xmlns:RESX="clr-namespace:Nova.Shell.Properties"
                     x:Name="_This"
         
                     Width="1024"
@@ -214,7 +215,7 @@
                  VerticalAlignment="Center"
                  HorizontalAlignment="Center"
                  FontSize="16"
-                 Text="{x:Static shell:MainViewResources.NoOpenSessions}"
+                 Text="{x:Static RESX:Resources.NoOpenSessions}"
                  Visibility="{Binding ElementName=_TabControl, Path=IsEmpty, Converter={StaticResource _BooleanToVisibilityConverter}}" />
 
       <Grid Grid.Row="2" Grid.ColumnSpan="5">

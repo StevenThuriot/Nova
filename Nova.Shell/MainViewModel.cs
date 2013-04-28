@@ -32,6 +32,7 @@ using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Actions.MainWindow;
 using Nova.Shell.Domain;
+using RESX = Nova.Shell.Properties.Resources;
 
 namespace Nova.Shell
 {
@@ -44,7 +45,7 @@ namespace Nova.Shell
         private SessionView _CurrentSession;
         private bool _HasOpenDocuments;
         private ImageSource _Icon;
-        private string _Title = MainViewResources.Empty;
+        private string _Title = RESX.Empty;
         private readonly dynamic _ApplicationModel;
 
         /// <summary>
@@ -170,17 +171,28 @@ namespace Nova.Shell
         }
         
         /// <summary>
-        /// Creates a new page with the current window as parent.
+        /// Creates a new session using the default module.
         /// </summary>
-        public SessionView CreateSession()
+        internal SessionView CreateSession()
         {
             IEnumerable<NovaModule> modules = _ApplicationModel.Modules;
             var defaultModule = modules.FirstOrDefault();
 
-            if (defaultModule == null) return null;
+            return defaultModule == null
+                ? null
+                : CreateSession(defaultModule);
+        }
+
+        /// <summary>
+        /// Creates a new session using the specified module.
+        /// </summary>
+        internal SessionView CreateSession(NovaModule module)
+        {
+            if (module == null)
+                throw new ArgumentNullException("module");
 
             var sessionView = CreatePage<SessionView, SessionViewModel>();
-            sessionView.ViewModel.Initialize(defaultModule);
+            sessionView.ViewModel.Initialize(module);
             
             return sessionView;
         }
@@ -267,7 +279,7 @@ namespace Nova.Shell
         {
             if (View.IsLoading)
             {
-                var dialog = MessageBox.Show("Close app?", "Exit", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var dialog = MessageBox.Show(RESX.CloseApplication, RESX.CloseApplicationTitle, MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                 if (dialog == MessageBoxResult.No)
                     return;
