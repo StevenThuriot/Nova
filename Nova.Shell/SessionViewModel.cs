@@ -23,7 +23,6 @@ using System.Dynamic;
 using System.Windows;
 using System.Windows.Input;
 using Nova.Base;
-using Nova.Base.Actions;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
 using Nova.Shell.Library;
@@ -104,7 +103,7 @@ namespace Nova.Shell
         {
             SetKnownActionTypes(typeof(SessionLeaveStep), typeof(NavigationAction)); //Optimalization
 
-            var leaveAction = LeaveAction<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
+            var leaveAction = CreateAction<SessionLeaveStep>();
             SetLeaveAction(leaveAction);
 
             NavigationActionManager = new NavigationActionManager(View);

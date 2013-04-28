@@ -18,6 +18,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Windows.Input;
 using Nova.Base.ActionMethodRepository;
 using Nova.Controls;
 using Nova.Threading;
@@ -54,6 +55,34 @@ namespace Nova.Base
 
             return viewModel;
         }
+
+        /// <summary>
+        /// Creates a new Actionflow instance and sets the required data.
+        /// </summary>
+        /// <typeparam name="T">The type of action to create.</typeparam>
+        /// <param name="actionContext">The action context.</param>
+        /// <returns>A new actionflow instance.</returns>
+        public T CreateAction<T>(ActionContext actionContext = null)
+            where T : Actionflow<TView, TViewModel>, new()
+        {
+            return Actionflow<TView, TViewModel>.New<T>(View, (TViewModel) this, actionContext);
+        }
+
+
+        /// <summary>
+        /// Creates a new action with a wrapper which implements the ICommand interface.
+        /// </summary>
+        /// <typeparam name="T">The type of action to create.</typeparam>
+        /// <param name="entries">The default entries.</param>
+        /// <returns>
+        /// A new action with a wrapper which implements the ICommand interface
+        /// </returns>
+        public ICommand CreateRoutedAction<T>(params ActionContextEntry[] entries)
+            where T : Actionflow<TView, TViewModel>, new()
+        {
+            return RoutedAction.New<T, TView, TViewModel>(View, (TViewModel) this, ActionController, entries);
+        }
+
 
 
         /// <summary>

@@ -15,6 +15,7 @@
 // limitations under the License.
 // 
 #endregion
+
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Nova.Base.ActionMethodRepository;
@@ -164,32 +165,7 @@ namespace Nova.Base
 		#endregion
 
 		#region Internal logic
-        
-	    /// <summary>
-		/// Creates a new instance and sets the required data.
-		/// </summary>
-		/// <param name="view">The view.</param>
-		/// <param name="viewModel">The view model.</param>
-		/// <param name="actionContext">The action context.</param>
-		public static TResult New<TResult>(TView view, TViewModel viewModel, ActionContext actionContext = null)
-			where TResult : Actionflow<TView, TViewModel>, new()
-		{
-            if (view == null)
-                throw new ArgumentNullException("view");
 
-            if (viewModel == null)
-                throw new ArgumentNullException("viewModel");
-
-			var action = new TResult
-			             	{
-			             		View = view,
-			             		ViewModel = viewModel,
-			             		ActionContext = actionContext ?? ActionContext.New<TResult>()
-			             	};
-
-			return action;
-		}
-		
 		/// <summary>
 		/// The logic that runs before the action.
 		/// </summary>
@@ -293,5 +269,32 @@ namespace Nova.Base
         }
 
 	    #endregion
+
+
+
+        /// <summary>
+        /// Creates a new instance and sets the required data.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <param name="viewModel">The view model.</param>
+        /// <param name="actionContext">The action context.</param>
+        public static TResult New<TResult>(TView view, TViewModel viewModel, ActionContext actionContext = null)
+            where TResult : Actionflow<TView, TViewModel>, new()
+        {
+            if (view == null)
+                throw new ArgumentNullException("view");
+
+            if (viewModel == null)
+                throw new ArgumentNullException("viewModel");
+
+            var action = new TResult
+            {
+                View = view,
+                ViewModel = viewModel,
+                ActionContext = actionContext ?? ActionContext.New<TResult>()
+            };
+
+            return action;
+        }
 	}
 }

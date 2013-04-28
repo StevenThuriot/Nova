@@ -164,7 +164,7 @@ namespace Nova.Shell
                                 typeof(CreateNewSessionAction),
                                 typeof(FocusTabAction));
 
-            var enterAction = EnterAction<MainView, MainViewModel>.New<ComposeAndInitializeAction>(View, this);
+            var enterAction = CreateAction<ComposeAndInitializeAction>();
             SetEnterAction(enterAction);
 
             View.AddHandler(ClosableTabItem.CloseTabEvent, new RoutedEventHandler(CloseSession));

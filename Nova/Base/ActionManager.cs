@@ -132,12 +132,11 @@ namespace Nova.Base
 			if (_CreateAction == null)
 			{
 				_CreateAction =
-					typeof (RoutedAction).GetMethods().First(x => string.Equals(x.Name, "New", StringComparison.OrdinalIgnoreCase) && x.GetParameters().Count() == 3);
+                    typeof(TViewModel).GetMethods().First(x => "CreateRoutedAction".Equals(x.Name, StringComparison.OrdinalIgnoreCase) && x.GetParameters().Length == 1);
 			}
 
-			var generic = _CreateAction.MakeGenericMethod(actionType, _ViewType, _ViewModelType);
-
-			var action = (ICommand) generic.Invoke(null, new object[] {_View, _ViewModel, new ActionContextEntry[] {}});
+			var generic = _CreateAction.MakeGenericMethod(actionType);
+			var action = (ICommand) generic.Invoke(_ViewModel, new object[] {new ActionContextEntry[] {}});
 
 			_Actions.Add(name, action);
 			return action;

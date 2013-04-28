@@ -54,7 +54,7 @@ namespace Nova.Base
 		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
 		public RoutedAction(TView view, TViewModel viewModel, ActionController<TView, TViewModel> actionController, params ActionContextEntry[] entries)
 		{
-			if (_Controller == null)
+            if (actionController == null)
 				throw new ArgumentNullException("actionController");
 
             if (entries == null)
