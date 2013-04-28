@@ -19,12 +19,8 @@
 #endregion
 
 using System;
-using System.Configuration;
 using System.Diagnostics;
 using System.Dynamic;
-using System.Linq;
-using System.Threading;
-using System.Windows;
 using Nova.Base;
 using Nova.Shell.Managers;
 

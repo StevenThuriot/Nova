@@ -28,15 +28,6 @@ namespace Nova.Shell.Library
     public interface IModuleBuilder
     {
         /// <summary>
-        /// Sets the module title.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        /// <returns></returns>
-        /// <exception cref="System.NotSupportedException">A title has already been set and can only be set once.</exception>
-        /// <exception cref="System.ArgumentNullException">title</exception>
-        IModuleBuilder SetModuleTitle(string title);
-
-        /// <summary>
         /// Adds a navigational action which will populate the tree.
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
@@ -45,6 +36,15 @@ namespace Nova.Shell.Library
         IModuleBuilder AddNavigation<TPageView, TPageViewModel>()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new();
+
+        /// <summary>
+        /// Sets the module title.
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotSupportedException">A title has already been set and can only be set once.</exception>
+        /// <exception cref="System.ArgumentNullException">title</exception>
+        IModuleBuilder SetModuleTitle(string title);
 
         /// <summary>
         /// Marks the previously added navigational action as the startup page.

@@ -29,7 +29,6 @@ using System.Windows.Media;
 using System.Windows.Shell;
 using System.Windows.Threading;
 using Nova.Base;
-using Nova.Base.Actions;
 using Nova.Controls;
 using Nova.Shell.Actions.MainWindow;
 using Nova.Shell.Domain;
@@ -181,8 +180,8 @@ namespace Nova.Shell
             if (defaultModule == null) return null;
 
             var sessionView = CreatePage<SessionView, SessionViewModel>();
-
-            //TODO: Pass startup module to session
+            sessionView.ViewModel.Initialize(defaultModule);
+            
             return sessionView;
         }
 

@@ -27,6 +27,8 @@ using Nova.Controls;
 using Nova.Shell.Actions.Session;
 using Nova.Shell.Library;
 using Nova.Shell.Managers;
+using Nova.Shell.Domain;
+
 
 namespace Nova.Shell
 {
@@ -38,10 +40,12 @@ namespace Nova.Shell
         internal const string CurrentViewConstant = "CurrentSessionContentView";
         internal const string NextViewConstant = "NextSessionContentView";
 
+        private IDisposable _Deferral;
         private IView _CurrentView;
         private string _Title;
         private readonly dynamic _Model;
         private readonly dynamic _ApplicationModel;
+        private NovaModule _Module;
 
         /// <summary>
         /// Gets the navigation action manager.
@@ -85,15 +89,33 @@ namespace Nova.Shell
             set { SetValue(ref _Title, value); }
         }
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SessionViewModel" /> class.
         /// </summary>
         public SessionViewModel()
         {
+            _Deferral = DeferCreated(); //Defer Created logic so we can call it manually in our extended initialize method.
             _Title = SessionViewResources.EmptySession;
 
             _ApplicationModel = ((App) Application.Current).Model;
             _Model = new ExpandoObject();
+        }
+
+        /// <summary>
+        /// Initializes the SessionViewModel.
+        /// </summary>
+        /// <param name="module">The module.</param>
+        /// <exception cref="System.ArgumentNullException">module</exception>
+        internal void Initialize(NovaModule module)
+        {
+            if (module == null)
+                throw new ArgumentNullException("module");
+
+            _Module = module;
+
+            _Deferral.Dispose();
+            _Deferral = null;
         }
 
         /// <summary>
@@ -107,6 +129,15 @@ namespace Nova.Shell
             SetLeaveAction(leaveAction);
 
             NavigationActionManager = new NavigationActionManager(View);
+        }
+
+        /// <summary>
+        /// Called after enter.
+        /// </summary>
+        protected void OnAfterEnter()
+        {
+            //TODO: Temporary until more data is passed along (e.g. when the user wants to open a certain page in a new session)
+            _Module.StartUpTreeNode.Navigate(this);
         }
         
         /// <summary>
@@ -203,7 +234,12 @@ namespace Nova.Shell
         /// </summary>
         protected override void DisposeManagedResources()
         {
-            ((IDisposable) NavigationActionManager).Dispose();
+            ((IDisposable)NavigationActionManager).Dispose();
+
+            if (_Deferral == null) return;
+
+            _Deferral.Dispose();
+            _Deferral = null;
         }
     }
 }
