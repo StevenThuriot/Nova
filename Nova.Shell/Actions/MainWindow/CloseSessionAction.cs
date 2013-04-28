@@ -33,7 +33,12 @@ namespace Nova.Shell.Actions.MainWindow
         {
             var canComplete = ActionContext.TryGetValue(out _Session) && _Session != null;
 
-            return canComplete && _Session.ViewModel.Leave().Result;
+            if (!canComplete)
+                return false;
+
+            var canLeave = _Session.ViewModel.Leave().Result;
+
+            return canLeave;
         }
 
         public override void ExecuteCompleted()
