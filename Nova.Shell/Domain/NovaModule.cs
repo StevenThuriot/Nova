@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-
-#region License
+﻿#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
