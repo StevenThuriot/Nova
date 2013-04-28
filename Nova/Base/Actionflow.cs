@@ -308,9 +308,7 @@ namespace Nova.Base
         public static TResult New<TResult>(TView view, TViewModel viewModel, params ActionContextEntry[] entries)
             where TResult : Actionflow<TView, TViewModel>, new()
         {
-            var actionContext = ActionContext.New<TResult>();
-            actionContext.AddRange(entries);
-
+            var actionContext = ActionContext.New<TResult>(entries);
             return New<TResult>(view, viewModel, actionContext);
         }
 	}

@@ -58,11 +58,12 @@ namespace Nova.Base
         /// Creates a new instance.
         /// </summary>
         /// <typeparam name="T">Type of the action</typeparam>
+        /// <param name="entries">The entries.</param>
         /// <returns></returns>
-        internal static ActionContext New<T>()
+        internal static ActionContext New<T>(params ActionContextEntry[] entries)
         {
             var actionName = MethodCacheEntry.GetActionName(typeof(T));
-            return new ActionContext(actionName);
+            return new ActionContext(actionName).AddRange(entries);
         }
 
 		/// <summary>
