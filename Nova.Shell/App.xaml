@@ -45,10 +45,8 @@
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="{x:Type Button}">
-            <Border CornerRadius="0" BorderThickness="0" Padding="6,2" Background="{TemplateBinding Background}">
-              <Grid>
+            <Border BorderThickness="0" Padding="6,2" Background="{TemplateBinding Background}">
                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,5" x:Name="_Content" />
-              </Grid>
             </Border>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
@@ -69,5 +67,68 @@
         </Setter.Value>
       </Setter>
     </Style>
+    
+    
+    <Style x:Key="_NavigationalTreeItemStyle" TargetType="{x:Type Button}">
+      <Setter Property="Height" Value="26" />
+      <Setter Property="Margin" Value="0" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="OverridesDefaultStyle" Value="True" />
+      <Setter Property="FocusVisualStyle" Value="{StaticResource MyFocusVisual}" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Border BorderThickness="0" Padding="0" Background="{TemplateBinding Background}">
+              <!--<Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>-->
+
+                <TextBlock x:Name="_Content"
+                           Text="{TemplateBinding Content}"
+                           Foreground="{TemplateBinding Foreground}"
+                           Padding="8 4"
+                           Grid.Column="0" />
+
+                <!--<Polygon Grid.Column="1"
+                         
+                         Margin="0 0 -1 0"
+                         x:Name="_Arrow"
+                         
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Right"
+                         
+                         Points="18,0 6,9 18,18"
+                         Stroke="Transparent"
+                         Fill="Transparent"
+                         
+                         />
+              </Grid>-->
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource Blue}" />
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource White}" />
+                <Setter Property="Background" Value="{StaticResource Blue}" />
+                <!--<Setter TargetName="_Arrow" Property="Stroke" Value="{DynamicResource LightBlueBrush}" />
+                <Setter TargetName="_Arrow" Property="Fill" Value="{StaticResource White}" />-->
+                <Setter TargetName="_Content" Property="RenderTransform">
+                  <Setter.Value>
+                    <TranslateTransform Y="0.4" />
+                  </Setter.Value>
+                </Setter>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    
   </Application.Resources>
 </Application>

@@ -1,4 +1,6 @@
-﻿#region License
+﻿using System.Windows.Controls;
+
+#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -21,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Nova.Shell.Library;
 using System.Linq;
 
 namespace Nova.Shell.Domain
@@ -31,7 +34,8 @@ namespace Nova.Shell.Domain
     [DebuggerDisplay("Title = {Title}, Ranking = {Ranking}", Name = "Nova Module")]
     internal class NovaModule
     {
-        private TreeNode _StartUpTreeNode;
+        private readonly TreeNode _StartUpTreeNode;
+        private readonly IEnumerable<TreeNode> _TreeNodes;
 
         /// <summary>
         /// Gets the title.
@@ -50,32 +54,12 @@ namespace Nova.Shell.Domain
         public int Ranking { get; private set; }
 
         /// <summary>
-        /// Gets the start up tree node.
-        /// </summary>
-        /// <value>
-        /// The start up tree node.
-        /// </value>
-        public TreeNode StartUpTreeNode
-        {
-            get { return _StartUpTreeNode ?? (_StartUpTreeNode = TreeNodes.First()); }
-            private set { _StartUpTreeNode = value; }
-        }
-
-        /// <summary>
-        /// Gets the tree nodes.
-        /// </summary>
-        /// <value>
-        /// The tree nodes.
-        /// </value>
-        public IEnumerable<TreeNode> TreeNodes { get; private set; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="NovaModule"/> class.
         /// </summary>
         /// <param name="title">The title.</param>
         /// <param name="ranking">The ranking.</param>
         /// <param name="treeNodes">The tree nodes.</param>
-        public NovaModule(string title, int ranking, IEnumerable<TreeNode> treeNodes)
+        public NovaModule(string title, int ranking, IEnumerable<TreeNode> treeNodes, TreeNode startUpTreeNode = null)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentNullException("title");
@@ -88,20 +72,22 @@ namespace Nova.Shell.Domain
 
             Title = title;
             Ranking = ranking;
-            TreeNodes = treeNodes;
+            _TreeNodes = treeNodes;
+            _StartUpTreeNode = startUpTreeNode;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NovaModule"/> class.
+        /// Builds the nodes.
         /// </summary>
-        /// <param name="title">The title.</param>
-        /// <param name="ranking">The ranking.</param>
-        /// <param name="startUpTreeNode">The start up tree node.</param>
-        /// <param name="treeNodes">The tree nodes.</param>
-        public NovaModule(string title, int ranking, TreeNode startUpTreeNode, IEnumerable<TreeNode> treeNodes)
-            : this (title, ranking, treeNodes)
+        /// <param name="page">The page.</param>
+        /// <returns></returns>
+        internal IEnumerable<NovaTreeNode> BuildNovaTreeNodes(INavigatablePage page)
         {
-            StartUpTreeNode = startUpTreeNode;
+            var nodes = _TreeNodes.OrderByDescending(x => x.Rank)
+                                  .Select(x => x.Build(page, x == _StartUpTreeNode))
+                                  .ToList();
+
+            return nodes;
         }
     }
 }

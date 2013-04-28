@@ -80,6 +80,7 @@
     <Compile Include="Actions\Session\NavigationAction.cs" />
     <Compile Include="Actions\Session\SessionLeaveStep.cs" />
     <Compile Include="Domain\NovaModule.cs" />
+    <Compile Include="Domain\NovaTreeNode.cs" />
     <Compile Include="Domain\TreeNode.cs" />
     <Compile Include="Managers\CompositionManager.cs" />
     <Compile Include="Builders\ModuleBuilder.cs" />

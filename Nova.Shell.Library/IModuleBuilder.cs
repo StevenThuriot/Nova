@@ -32,8 +32,10 @@ namespace Nova.Shell.Library
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        /// <returns></returns>
-        IModuleBuilder AddNavigation<TPageView, TPageViewModel>()
+        /// <param name="rank">The ranking in the navigational tree.</param>
+        /// <param name="title">The title of the node.</param>
+        /// <returns>The module builder instance.</returns>
+        IModuleBuilder AddNavigation<TPageView, TPageViewModel>(int rank = 10, string title = null)
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new();
 
@@ -41,7 +43,7 @@ namespace Nova.Shell.Library
         /// Sets the module title.
         /// </summary>
         /// <param name="title">The title.</param>
-        /// <returns></returns>
+        /// <returns>The module builder instance.</returns>
         /// <exception cref="System.NotSupportedException">A title has already been set and can only be set once.</exception>
         /// <exception cref="System.ArgumentNullException">title</exception>
         IModuleBuilder SetModuleTitle(string title);
@@ -51,7 +53,7 @@ namespace Nova.Shell.Library
         /// </summary>
         /// <remarks>Only allowed to be used once per module.</remarks>
         /// <exception cref="System.NotSupportedException">A default use case has already been set and can only be set once.</exception>
-        /// <returns></returns>
+        /// <returns>The module builder instance.</returns>
         IModuleBuilder AsStartup();
 
         /// <summary>
@@ -60,7 +62,7 @@ namespace Nova.Shell.Library
         /// </summary>
         /// <remarks>The ranking can only be set once. Default value is 10.</remarks>
         /// <param name="ranking">The ranking.</param>
-        /// <returns></returns>
+        /// <returns>The module builder instance.</returns>
         IModuleBuilder SetModuleRanking(int ranking);
 
         /// <summary>

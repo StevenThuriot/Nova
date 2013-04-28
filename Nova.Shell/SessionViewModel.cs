@@ -1,4 +1,7 @@
-﻿#region License
+﻿using System.Collections.Generic;
+using System.Linq;
+
+#region License
 
 // 
 //  Copyright 2012 Steven Thuriot
@@ -44,9 +47,9 @@ namespace Nova.Shell
         private IDisposable _Deferral;
         private IView _CurrentView;
         private string _Title;
+        private IEnumerable<NovaTreeNode> _TreeNodes;
         private readonly dynamic _Model;
         private readonly dynamic _ApplicationModel;
-        private NovaModule _Module;
 
         /// <summary>
         /// Gets the navigation action manager.
@@ -89,7 +92,18 @@ namespace Nova.Shell
             get { return _Title; }
             set { SetValue(ref _Title, value); }
         }
-
+        
+        /// <summary>
+        /// Gets or sets the tree nodes.
+        /// </summary>
+        /// <value>
+        /// The tree nodes.
+        /// </value>
+        public IEnumerable<NovaTreeNode> TreeNodes
+        {
+            get { return _TreeNodes; }
+            set { SetValue(ref _TreeNodes, value); }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SessionViewModel" /> class.
@@ -113,7 +127,8 @@ namespace Nova.Shell
             if (module == null)
                 throw new ArgumentNullException("module");
 
-            _Module = module;
+            NavigationActionManager = new NavigationActionManager(View);
+            TreeNodes = module.BuildNovaTreeNodes(this);
 
             _Deferral.Dispose();
             _Deferral = null;
@@ -128,8 +143,6 @@ namespace Nova.Shell
 
             var leaveAction = CreateAction<SessionLeaveStep>();
             SetLeaveAction(leaveAction);
-
-            NavigationActionManager = new NavigationActionManager(View);
         }
 
         /// <summary>
@@ -138,7 +151,8 @@ namespace Nova.Shell
         protected void OnAfterEnter()
         {
             //TODO: Temporary until more data is passed along (e.g. when the user wants to open a certain page in a new session)
-            _Module.StartUpTreeNode.Navigate(this);
+            var startUpNode = TreeNodes.FirstOrDefault(x => x.IsStartupNode) ?? TreeNodes.First();
+            startUpNode.Navigate();
         }
         
         /// <summary>

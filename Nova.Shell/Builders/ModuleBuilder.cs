@@ -74,12 +74,14 @@ namespace Nova.Shell.Builders
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <param name="rank">The ranking in the navigational tree.</param>
+        /// <param name="title"></param>
         /// <returns></returns>
-        public IModuleBuilder AddNavigation<TPageView, TPageViewModel>() 
+        public IModuleBuilder AddNavigation<TPageView, TPageViewModel>(int rank, string title) 
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new() 
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
-            var treeNode = TreeNode.New<TPageView, TPageViewModel>();
+            var treeNode = TreeNode.New<TPageView, TPageViewModel>(title, rank);
             _TreeNodes.Add(treeNode);
 
             return this;
@@ -131,7 +133,7 @@ namespace Nova.Shell.Builders
         /// <returns></returns>
         internal NovaModule Build()
         {
-            return new NovaModule(_Title, Ranking, _StartupTreeNode, _TreeNodes);
+            return new NovaModule(_Title, Ranking, _TreeNodes, _StartupTreeNode);
         }
     }
 }
