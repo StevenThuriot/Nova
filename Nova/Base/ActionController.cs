@@ -187,13 +187,8 @@ namespace Nova.Base
         private static ActionContext PrepareActionContext<TAction>(params ActionContextEntry[] arguments)
         {
             var actionContext = ActionContext.New<TAction>();
-
-            if (arguments != null)
-            {
-                actionContext.AddRange(arguments);
-            }
-
-            return actionContext;
+            
+            return actionContext.AddRange(arguments);
         }
 
 

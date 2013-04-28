@@ -100,12 +100,11 @@ namespace Nova.Base
         /// <exception cref="ArgumentException">Throws an exception in case the type is not serializable and ICloneable is not implemented.</exception>
 		public ActionContext AddRange(params ActionContextEntry[] entries)
 		{
-            if (entries != null)
+            if (entries == null) return this;
+            
+            foreach (var entry in entries)
             {
-                foreach (var entry in entries)
-                {
-                    Add(entry);
-                }
+                Add(entry);
             }
 
             return this;

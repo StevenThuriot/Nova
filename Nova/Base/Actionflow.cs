@@ -296,5 +296,22 @@ namespace Nova.Base
 
             return action;
         }
+
+        /// <summary>
+        /// Creates a new instance and sets the required data.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="view">The view.</param>
+        /// <param name="viewModel">The view model.</param>
+        /// <param name="entries">The entries.</param>
+        /// <returns></returns>
+        public static TResult New<TResult>(TView view, TViewModel viewModel, params ActionContextEntry[] entries)
+            where TResult : Actionflow<TView, TViewModel>, new()
+        {
+            var actionContext = ActionContext.New<TResult>();
+            actionContext.AddRange(entries);
+
+            return New<TResult>(view, viewModel, actionContext);
+        }
 	}
 }
