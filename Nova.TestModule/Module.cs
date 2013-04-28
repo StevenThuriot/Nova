@@ -38,8 +38,8 @@ namespace Nova.TestModule
 
             builder.SetModuleTitle("Module #" + random)
                    .SetModuleRanking(random)
-                   .AddNavigation<TestPage2, TestPage2ViewModel>()
-                   .AddNavigation<TestPage, TestPageViewModel>(20).AsStartup();
+                   .AddNavigation<TestPage2, TestPage2ViewModel>("Another Test Page")
+                   .AddNavigation<TestPage, TestPageViewModel>(rank: 20).AsStartup();
         }
     }
 }

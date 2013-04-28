@@ -74,10 +74,10 @@ namespace Nova.Shell.Builders
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        /// <param name="rank">The ranking in the navigational tree.</param>
         /// <param name="title"></param>
+        /// <param name="rank">The ranking in the navigational tree.</param>
         /// <returns></returns>
-        public IModuleBuilder AddNavigation<TPageView, TPageViewModel>(int rank, string title) 
+        public IModuleBuilder AddNavigation<TPageView, TPageViewModel>(string title = null, int rank = 10) 
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new() 
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {

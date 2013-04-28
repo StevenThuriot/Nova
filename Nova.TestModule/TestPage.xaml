@@ -6,7 +6,7 @@
                     xmlns:testModule="clr-namespace:Nova.TestModule"
                     mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-	Title="TestPage">
+	Title="Test Page">
 
   <StackPanel>
     <TextBlock>Content goes here.</TextBlock>

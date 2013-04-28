@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:shell="clr-namespace:Nova.TestModule"
                      mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-	Title="TestPage 2">
+	Title="Second Test Page">
 
   <StackPanel>
     <TextBlock>Other content goes here.</TextBlock>
