@@ -19,9 +19,9 @@
 #endregion
 
 using System;
-using System.Windows.Input;
 using Nova.Base;
 using Nova.Controls;
+using System.Windows.Input;
 
 namespace Nova.Shell.Library
 {
@@ -77,18 +77,6 @@ namespace Nova.Shell.Library
         public dynamic SessionModel
         {
             get { return _Session.Model; }
-        }
-
-        /// <summary>
-        /// Navigates the parent session to the specified page.
-        /// </summary>
-        /// <typeparam name="TPageView">The type of the page view.</typeparam>
-        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        public void Navigate<TPageView, TPageViewModel>()
-            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
-        {
-            _Session.Navigate<TPageView, TPageViewModel>();
         }
         
         /// <summary>

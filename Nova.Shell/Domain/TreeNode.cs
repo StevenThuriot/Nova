@@ -19,9 +19,9 @@
 #endregion
 
 using System;
-using System.Windows.Input;
 using Nova.Controls;
 using Nova.Shell.Library;
+using System.Windows.Input;
 
 namespace Nova.Shell.Domain
 {
@@ -30,7 +30,6 @@ namespace Nova.Shell.Domain
     /// </summary>
     internal class TreeNode
     {
-        private readonly Func<INavigatablePage, Action> _CreateNavigationalMethod;
         private readonly Func<INavigatablePage, ICommand> _CreateNavigationalAction;
 
         /// <summary>
@@ -54,16 +53,12 @@ namespace Nova.Shell.Domain
         /// </summary>
         /// <param name="title">The title.</param>
         /// <param name="rank">The rank.</param>
-        /// <param name="createNavigationalMethod">The navigation method.</param>
         /// <param name="createNavigationalAction">The create navigational command.</param>
         /// <exception cref="System.ArgumentNullException">title</exception>
-        private TreeNode(string title, int rank, Func<INavigatablePage, Action> createNavigationalMethod, Func<INavigatablePage, ICommand> createNavigationalAction)
+        private TreeNode(string title, int rank, Func<INavigatablePage, ICommand> createNavigationalAction)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentNullException("title");
-
-            if (createNavigationalMethod == null)
-                throw new ArgumentNullException("createNavigationalMethod");
 
             if (createNavigationalAction == null)
                 throw new ArgumentNullException("createNavigationalAction");
@@ -71,7 +66,6 @@ namespace Nova.Shell.Domain
             Title = title;
             Rank = rank;
 
-            _CreateNavigationalMethod = createNavigationalMethod;
             _CreateNavigationalAction = createNavigationalAction;
         }
 
@@ -89,11 +83,10 @@ namespace Nova.Shell.Domain
         {
             if (string.IsNullOrWhiteSpace(title))
                 title = typeof (TPageView).Name;
-            
-            Func<INavigatablePage, Action> navigationalMethod = page => () => page.Navigate<TPageView, TPageViewModel>();
+
             Func<INavigatablePage, ICommand> navigationalAction = x => x.CreateNavigationalAction<TPageView, TPageViewModel>();
 
-            return new TreeNode(title, rank, navigationalMethod, navigationalAction);
+            return new TreeNode(title, rank, navigationalAction);
         }
 
         /// <summary>
@@ -104,10 +97,9 @@ namespace Nova.Shell.Domain
         /// <returns></returns>
         internal NovaTreeNode Build(INavigatablePage page, bool isStartupNode)
         {
-            var method = _CreateNavigationalMethod(page);
             var command = _CreateNavigationalAction(page);
 
-            var node = new NovaTreeNode(Title, method, command, isStartupNode);
+            var node = new NovaTreeNode(Title, command, isStartupNode);
             return node;
         }
     }

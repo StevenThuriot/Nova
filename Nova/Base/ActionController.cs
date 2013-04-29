@@ -21,7 +21,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Nova.Controls;
 using Nova.Properties;
 using Nova.Threading;

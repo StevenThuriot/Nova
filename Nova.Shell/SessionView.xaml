@@ -20,27 +20,6 @@
 
     <TextBlock Grid.Row="0" Grid.ColumnSpan="2">Identification goes here.</TextBlock>
     
-    <!--TODO: Add facebook-like scrollviewer -->
-
-    <ItemsControl Grid.Row="1" Grid.Column="0"
-                  ItemsSource="{Binding TreeNodes, Mode=OneWay}"
-                  
-                  Margin="-4 5 0 0"
-                  Padding="0">
-      <ItemsControl.ItemTemplate>
-        <DataTemplate DataType="{x:Type Domain:NovaTreeNode}">
-
-          <Button Style="{StaticResource _NavigationalTreeItemStyle}"
-                  Command="{Binding NavigationalCommand, Mode=OneWay}"
-                  Content="{Binding Title, Mode=OneWay}"
-                  />
-
-        </DataTemplate>
-      </ItemsControl.ItemTemplate>
-    </ItemsControl>
-
-    <!-- TODO: List Modules -->
-    
     <Border Grid.Row="1" Grid.Column="1"
             BorderThickness="1 1 0 0"
             BorderBrush="{DynamicResource LightBlueBrush}"
@@ -49,6 +28,17 @@
             Padding="3">
       <Frame NavigationUIVisibility="Hidden" x:Name="ContentZone" />
     </Border>
+
+    <!--TODO: Add facebook-like scrollviewer -->
+    <ItemsControl Grid.Row="1" Grid.Column="0"
+                  ItemsSource="{Binding TreeNodes, Mode=OneWay}"
+                  
+                  Margin="-1 8 0 0"
+                  Padding="0"
+                  />
+
+    <!-- TODO: List Modules -->
+
 
     <Overlay Grid.RowSpan="2"
              Grid.ColumnSpan="2"

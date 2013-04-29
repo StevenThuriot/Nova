@@ -83,6 +83,12 @@ namespace Nova.Shell.Actions.Session
         public override void ExecuteCompleted()
         {
             ViewModel.CurrentView = _NextView;
+            
+            //TODO: Set Correct Node as current.
+            //foreach (var node in ViewModel.TreeNodes)
+            //{
+            //    node.CheckCurrentState();
+            //}
         }
 
         protected override void DisposeManagedResources()

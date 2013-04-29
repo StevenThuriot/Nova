@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-#region License
+﻿#region License
 
 // 
 //  Copyright 2012 Steven Thuriot
@@ -24,13 +21,15 @@ using System.Linq;
 using System;
 using System.Dynamic;
 using System.Windows;
-using System.Windows.Input;
 using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
 using Nova.Shell.Library;
 using Nova.Shell.Managers;
 using Nova.Shell.Domain;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Input;
 using RESX = Nova.Shell.Properties.Resources;
 
 
@@ -197,21 +196,6 @@ namespace Nova.Shell
             page.ViewModel.Initialize(this);
 
             return page;
-        }
-
-        /// <summary>
-        /// Navigates the parent session to the specified page.
-        /// </summary>
-        /// <typeparam name="TPageView">The type of the page view.</typeparam>
-        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        public void Navigate<TPageView, TPageViewModel>()
-            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
-        {
-            var createNextView = new Func<IView>(CreatePage<TPageView, TPageViewModel>);
-            var next = ActionContextEntry.Create(NextViewConstant, createNextView, false);
-
-            InvokeAction<NavigationAction>(next);
         }
 
         /// <summary>

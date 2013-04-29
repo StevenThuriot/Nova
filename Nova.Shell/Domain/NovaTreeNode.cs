@@ -21,6 +21,8 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Input;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Nova.Shell.Domain
 {
@@ -28,9 +30,9 @@ namespace Nova.Shell.Domain
     /// A Nova Tree Node.
     /// </summary>
     [DebuggerDisplay("Title = {Title}", Name = "Nova Tree Node")]
-    public class NovaTreeNode
+    public class NovaTreeNode// : INotifyPropertyChanged
     {
-        private readonly Action _Navigate;
+        private bool _IsCurrentNode;
 
         /// <summary>
         /// Gets the title.
@@ -57,14 +59,31 @@ namespace Nova.Shell.Domain
         public bool IsStartupNode { get; private set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is current node.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is current node; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsCurrentNode
+        {
+            get { return _IsCurrentNode; }
+            //set
+            //{
+            //    if (_IsCurrentNode == value) return;
+
+            //    _IsCurrentNode = value;
+            //    OnPropertyChanged();
+            //}
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NovaTreeNode" /> class.
         /// </summary>
         /// <param name="title">The title.</param>
         /// <param name="navigationalCommand">The navigational command.</param>
         /// <param name="isStartupNode">if set to <c>true</c> [is startup node].</param>
-        /// <param name="navigate">The navigate.</param>
         /// <exception cref="System.ArgumentNullException">title</exception>
-        public NovaTreeNode(string title, Action navigate, ICommand navigationalCommand, bool isStartupNode)
+        public NovaTreeNode(string title, ICommand navigationalCommand, bool isStartupNode)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentNullException("title");
@@ -72,13 +91,10 @@ namespace Nova.Shell.Domain
             if (navigationalCommand == null)
                 throw new ArgumentNullException("navigationalCommand");
 
-            if (navigate == null)
-                throw new ArgumentNullException("navigate");
-
             Title = title;
             NavigationalCommand = navigationalCommand;
             IsStartupNode = isStartupNode;
-            _Navigate = navigate;
+            _IsCurrentNode = isStartupNode; //TODO: Remove
         }
 
         /// <summary>
@@ -86,7 +102,19 @@ namespace Nova.Shell.Domain
         /// </summary>
         public void Navigate()
         {
-            _Navigate();
+            NavigationalCommand.Execute(null);
         }
+
+        //public event PropertyChangedEventHandler PropertyChanged;
+        
+        ///// <summary>
+        ///// Called when property changed.
+        ///// </summary>
+        ///// <param name="propertyName">Name of the property.</param>
+        //private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        //{
+        //    var handler = PropertyChanged;
+        //    if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        //}
     }
 }
