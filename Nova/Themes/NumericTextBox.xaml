@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:Nova="http://nova.thuriot.be/Base"
+                    xmlns:Nova="clr-namespace:Nova.Library"
                     xmlns:Controls="clr-namespace:Nova.Controls"
-                    xmlns:Validation="http://nova.thuriot.be/Validation">
+                    xmlns:Validation="clr-namespace:Nova.Validation">
 
   <Style x:Key="StrippedDownNumericTextBox" TargetType="{x:Type Controls:NumericTextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
     <Setter Property="Template">

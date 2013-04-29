@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-					xmlns:Base="http://nova.thuriot.be/Base"
-                    xmlns:Validation="http://nova.thuriot.be/Validation">
+					xmlns:Base="clr-namespace:Nova.Library"
+                    xmlns:Validation="clr-namespace:Nova.Validation">
 
 	<ControlTemplate TargetType="ToggleButton" x:Key="ComboBoxToggleButtonTemplate">
 		<Grid>

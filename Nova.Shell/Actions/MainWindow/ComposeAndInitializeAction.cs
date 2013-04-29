@@ -1,4 +1,6 @@
-﻿#region License
+﻿using Nova.Library.Actions;
+
+#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -24,7 +26,6 @@ using System.Configuration;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using Nova.Base.Actions;
 using Nova.Shell.Builders;
 using Nova.Shell.Library;
 

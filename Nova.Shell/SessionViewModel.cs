@@ -1,4 +1,6 @@
-﻿#region License
+﻿using Nova.Library;
+
+#region License
 
 // 
 //  Copyright 2012 Steven Thuriot
@@ -21,7 +23,6 @@
 using System;
 using System.Dynamic;
 using System.Windows;
-using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
 using Nova.Shell.Library;

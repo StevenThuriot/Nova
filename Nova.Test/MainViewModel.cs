@@ -1,4 +1,6 @@
-﻿#region License
+﻿using Nova.Library;
+
+#region License
 // 
 //  Copyright 2012 Steven Thuriot
 // 
@@ -15,12 +17,12 @@
 // limitations under the License.
 // 
 #endregion
+
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
-using Nova.Base;
 
 namespace Nova.Test
 {

@@ -228,55 +228,7 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Base\ActionContext.cs" />
-    <Compile Include="Base\ActionContextEntry.cs" />
-    <Compile Include="Base\ActionController.cs" />
-    <Compile Include="Base\ActionManager.cs" />
-    <Compile Include="Base\ActionMethodRepository\MethodCacheEntry.cs" />
-    <Compile Include="Base\ActionMethodRepository\OnAction.Implementations.cs">
-      <DependentUpon>OnAction.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Base\Actions\EnterAction.cs" />
-    <Compile Include="Base\Actions\LeaveAction.cs" />
-    <Compile Include="Base\Actionflow.cs" />
-    <Compile Include="Base\IViewModel.cs" />
-    <Compile Include="Base\ActionMethodRepository\OnAction.cs" />
-    <Compile Include="Base\ValidatableActionflow.cs" />
-    <Compile Include="Base\ActionBinding.cs" />
-    <Compile Include="Base\TreeType.cs" />
-    <Compile Include="Base\DynamicContext.cs" />
-    <Compile Include="Base\ActionMethodRepository\OnActionMethodRepository.cs" />
-    <Compile Include="Base\RoutedAction.cs" />
-    <Compile Include="Base\RoutedAction.Generic.cs">
-      <DependentUpon>RoutedAction.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Base\ViewModel.ActionManagement.cs">
-      <DependentUpon>ViewModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Base\ViewModel.ChangeTracking.cs">
-      <DependentUpon>ViewModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Base\ViewModel.Creation.cs">
-      <DependentUpon>ViewModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Base\ViewModel.cs" />
-    <Compile Include="Base\BindableRun.cs" />
-    <Compile Include="Base\ErrorBinding.cs" />
-    <Compile Include="Base\ExceptionHandler.cs" />
-    <Compile Include="Base\RelayCommand.cs" />
-    <Compile Include="Base\ViewMode.cs" />
-    <Compile Include="Base\ViewModel.Disposal.cs">
-      <DependentUpon>ViewModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Base\ViewModel.EnterLeave.cs">
-      <DependentUpon>ViewModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Base\ViewModel.State.cs">
-      <DependentUpon>ViewModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Base\ViewModel.Validation.cs">
-      <DependentUpon>ViewModel.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\BindableRun.cs" />
     <Compile Include="Controls\ClosableTabControl.xaml.cs">
       <DependentUpon>ClosableTabControl.xaml</DependentUpon>
     </Compile>
@@ -319,6 +271,54 @@
       <DependentUpon>WindowControlBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AutoScrollHandler.cs" />
+    <Compile Include="Library\ActionBinding.cs" />
+    <Compile Include="Library\ActionContext.cs" />
+    <Compile Include="Library\ActionContextEntry.cs" />
+    <Compile Include="Library\ActionController.cs" />
+    <Compile Include="Library\Actionflow.cs" />
+    <Compile Include="Library\ActionManager.cs" />
+    <Compile Include="Library\ActionMethodRepository\MethodCacheEntry.cs" />
+    <Compile Include="Library\ActionMethodRepository\OnAction.cs" />
+    <Compile Include="Library\ActionMethodRepository\OnAction.Implementations.cs">
+      <DependentUpon>OnAction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Library\ActionMethodRepository\OnActionMethodRepository.cs" />
+    <Compile Include="Library\Actions\EnterAction.cs" />
+    <Compile Include="Library\Actions\LeaveAction.cs" />
+    <Compile Include="Library\DynamicContext.cs" />
+    <Compile Include="Library\ErrorBinding.cs" />
+    <Compile Include="Library\ExceptionHandler.cs" />
+    <Compile Include="Library\IViewModel.cs" />
+    <Compile Include="Library\RelayCommand.cs" />
+    <Compile Include="Library\RoutedAction.cs" />
+    <Compile Include="Library\RoutedAction.Generic.cs">
+      <DependentUpon>RoutedAction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Library\TreeType.cs" />
+    <Compile Include="Library\ValidatableActionflow.cs" />
+    <Compile Include="Library\ViewMode.cs" />
+    <Compile Include="Library\ViewModel.ActionManagement.cs">
+      <DependentUpon>ViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Library\ViewModel.ChangeTracking.cs">
+      <DependentUpon>ViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Library\ViewModel.Creation.cs">
+      <DependentUpon>ViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Library\ViewModel.cs" />
+    <Compile Include="Library\ViewModel.Disposal.cs">
+      <DependentUpon>ViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Library\ViewModel.EnterLeave.cs">
+      <DependentUpon>ViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Library\ViewModel.State.cs">
+      <DependentUpon>ViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Library\ViewModel.Validation.cs">
+      <DependentUpon>ViewModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Nova.cs" />
     <Compile Include="Properties\NamespaceDefinitions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

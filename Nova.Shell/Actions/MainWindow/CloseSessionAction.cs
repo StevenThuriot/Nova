@@ -1,4 +1,6 @@
-﻿#region License
+﻿using Nova.Library;
+
+#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -17,8 +19,6 @@
 // 
 
 #endregion
-
-using Nova.Base;
 
 namespace Nova.Shell.Actions.MainWindow
 {

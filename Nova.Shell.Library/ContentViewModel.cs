@@ -1,4 +1,6 @@
-﻿#region License
+﻿using Nova.Library;
+
+#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -19,7 +21,6 @@
 #endregion
 
 using System;
-using Nova.Base;
 using Nova.Controls;
 using System.Windows.Input;
 

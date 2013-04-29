@@ -1,3 +1,5 @@
+using Nova.Library;
+
 #region License
 
 // 
@@ -28,7 +30,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shell;
 using System.Windows.Threading;
-using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Actions.MainWindow;
 using Nova.Shell.Domain;

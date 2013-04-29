@@ -1,4 +1,6 @@
-﻿#region License
+﻿using Nova.Library;
+
+#region License
 // 
 //  Copyright 2012 Steven Thuriot
 // 
@@ -15,9 +17,9 @@
 // limitations under the License.
 // 
 #endregion
+
 using System;
 using System.Threading;
-using Nova.Base;
 using Nova.Validation;
 
 namespace Nova.Test

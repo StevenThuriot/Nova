@@ -18,7 +18,7 @@
 
 #endregion
 
-using Nova.Base.Actions;
+using Nova.Library.Actions;
 
 namespace Nova.Shell.Actions.Session
 {

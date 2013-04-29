@@ -82,7 +82,7 @@ namespace Nova.Shell.Builders
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
             //TODO: Allow parameter (so one screen can be used for several purposed depending on the parameter, e.g full/light)
-
+            
             var treeNode = TreeNode.New<TPageView, TPageViewModel>(title, rank);
             _TreeNodes.Add(treeNode);
 
