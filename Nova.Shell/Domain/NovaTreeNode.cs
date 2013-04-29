@@ -102,6 +102,7 @@ namespace Nova.Shell.Domain
         /// </summary>
         public void Navigate()
         {
+            //TODO: Pass parameter, if any.
             NavigationalCommand.Execute(null);
         }
 
