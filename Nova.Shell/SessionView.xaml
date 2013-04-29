@@ -20,36 +20,14 @@
 
     <TextBlock Grid.Row="0" Grid.ColumnSpan="2">Identification goes here.</TextBlock>
     
-    <ListBox Grid.Row="1" Grid.Column="0"
-             ItemsSource="{Binding TreeNodes, Mode=OneWay}"
-             
-             Background="{x:Null}"
-             BorderBrush="{x:Null}"
-             
-             BorderThickness="0"
-             Margin="-4 5 0 0"
-             Padding="0"
-             
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-             ScrollViewer.VerticalScrollBarVisibility="Auto"
-             ScrollViewer.CanContentScroll="False">
-      <ListBox.Resources>
-        <!-- Disabling IsSelected Background -->
-        <Style TargetType="{x:Type ListBoxItem}">
-          <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+    <!--TODO: Add facebook-like scrollviewer -->
 
-          <Setter Property="Template">
-            <Setter.Value>
-              <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                <ContentPresenter HorizontalAlignment="Stretch"
-                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-              </ControlTemplate>
-            </Setter.Value>
-          </Setter>
-        </Style>
-
-        <!--DataTemplate-->
+    <ItemsControl Grid.Row="1" Grid.Column="0"
+                  ItemsSource="{Binding TreeNodes, Mode=OneWay}"
+                  
+                  Margin="-4 5 0 0"
+                  Padding="0">
+      <ItemsControl.ItemTemplate>
         <DataTemplate DataType="{x:Type Domain:NovaTreeNode}">
 
           <Button Style="{StaticResource _NavigationalTreeItemStyle}"
@@ -58,8 +36,10 @@
                   />
 
         </DataTemplate>
-      </ListBox.Resources>
-    </ListBox>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+
+    <!-- TODO: List Modules -->
     
     <Border Grid.Row="1" Grid.Column="1"
             BorderThickness="1 1 0 0"

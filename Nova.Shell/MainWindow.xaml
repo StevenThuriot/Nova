@@ -201,6 +201,8 @@
               
               <!--TODO: Add Icon : <Image Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ClosableTabItem}}, Path=DataContext.Icon}" />-->
               <TextBlock Grid.Column="1" 
+                         Foreground="{DynamicResource ForegroundBrush}"
+                         FontFamily="{DynamicResource Font}"
                          Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ClosableTabItem}}, Path=DataContext.Title}"
                          ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Text}"/>
               
