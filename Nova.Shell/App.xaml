@@ -141,12 +141,11 @@
             </Border>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource White}" />
                 <Setter TargetName="_Arrow" Property="Fill" Value="{StaticResource White}" />
                 <Setter TargetName="_ArrowBorder" Property="Stroke" Value="{DynamicResource LightBlueBrush}" />
-                <Setter Property="Background" Value="{StaticResource _BlueBackgroundBrush}" />
               </Trigger>
               <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource White}" />
                 <Setter Property="Background" Value="{StaticResource _InvertedBlueBackgroundBrush}" />
               </Trigger>
             </ControlTemplate.Triggers>
