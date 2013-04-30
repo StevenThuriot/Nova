@@ -36,6 +36,9 @@ namespace Nova.Shell.Actions.Session
         private IView _NextView;
         private IView _Current;
 
+        private Type _PageType;
+        private Type _ViewModelType;
+
         public override bool CanExecute()
         {
             return ViewModel.CurrentView == null || !ViewModel.CurrentView.IsLoading;
@@ -71,6 +74,9 @@ namespace Nova.Shell.Actions.Session
                     return false;
             }
 
+            _PageType = _NextView.GetType();
+            _ViewModelType = _NextView.ViewModel.GetType();
+
             var result = await _NextView.ViewModel.Enter();
             
             if (!result)
@@ -84,12 +90,11 @@ namespace Nova.Shell.Actions.Session
         public override void ExecuteCompleted()
         {
             ViewModel.CurrentView = _NextView;
-            
-            //TODO: Set Correct Node as current.
-            //foreach (var node in ViewModel.TreeNodes)
-            //{
-            //    node.CheckCurrentState();
-            //}
+
+            foreach (var node in ViewModel.TreeNodes)
+            {
+                node.ReevaluateState(_PageType, _ViewModelType);
+            }
         }
 
         protected override void DisposeManagedResources()

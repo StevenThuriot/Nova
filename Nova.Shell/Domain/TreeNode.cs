@@ -30,6 +30,9 @@ namespace Nova.Shell.Domain
     /// </summary>
     internal class TreeNode
     {
+        private readonly Type _PageType;
+        private readonly Type _ViewModelType;
+
         private readonly Func<INavigatablePage, ICommand> _CreateNavigationalAction;
 
         /// <summary>
@@ -52,10 +55,12 @@ namespace Nova.Shell.Domain
         /// Initializes a new instance of the <see cref="TreeNode" /> class.
         /// </summary>
         /// <param name="title">The title.</param>
+        /// <param name="pageType">Type of the page.</param>
+        /// <param name="viewModelType">Type of the view model.</param>
         /// <param name="rank">The rank.</param>
         /// <param name="createNavigationalAction">The create navigational command.</param>
         /// <exception cref="System.ArgumentNullException">title</exception>
-        private TreeNode(string title, int rank, Func<INavigatablePage, ICommand> createNavigationalAction)
+        private TreeNode(string title, Type pageType, Type viewModelType, int rank, Func<INavigatablePage, ICommand> createNavigationalAction)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentNullException("title");
@@ -66,6 +71,8 @@ namespace Nova.Shell.Domain
             Title = title;
             Rank = rank;
 
+            _PageType = pageType;
+            _ViewModelType = viewModelType;
             _CreateNavigationalAction = createNavigationalAction;
         }
 
@@ -81,12 +88,14 @@ namespace Nova.Shell.Domain
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
+            var type = typeof (TPageView);
+
             if (string.IsNullOrWhiteSpace(title))
-                title = typeof (TPageView).Name;
+                title = type.Name;
 
             Func<INavigatablePage, ICommand> navigationalAction = x => x.CreateNavigationalAction<TPageView, TPageViewModel>();
 
-            return new TreeNode(title, rank, navigationalAction);
+            return new TreeNode(title, type, typeof(TPageViewModel), rank, navigationalAction);
         }
 
         /// <summary>
@@ -99,7 +108,7 @@ namespace Nova.Shell.Domain
         {
             var command = _CreateNavigationalAction(page);
 
-            var node = new NovaTreeNode(Title, command, isStartupNode);
+            var node = new NovaTreeNode(Title, _PageType, _ViewModelType, command, isStartupNode);
             return node;
         }
     }

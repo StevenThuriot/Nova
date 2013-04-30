@@ -83,8 +83,10 @@ namespace Nova.Shell.Domain
         {
             var nodes = _TreeNodes.OrderByDescending(x => x.Rank)
                                   .Select(x => x.Build(page, x == _StartUpTreeNode))
-                                  .ToList();
-
+                                  .Distinct(NovaTreeNode.NovaTreeNodeComparer)
+                                  .ToList()
+                                  .AsReadOnly();
+            
             return nodes;
         }
     }
