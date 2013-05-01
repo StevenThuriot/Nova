@@ -78,7 +78,11 @@
     <Compile Include="Actions\MainWindow\CreateNewSessionAction.cs" />
     <Compile Include="Actions\MainWindow\FocusTabAction.cs" />
     <Compile Include="Actions\Session\NavigationAction.cs" />
-    <Compile Include="Actions\Session\SessionLeaveStep.cs" />
+    <Compile Include="Actions\Session\SessionEnterAction.cs" />
+    <Compile Include="Actions\Session\SessionLeaveAction.cs" />
+    <Compile Include="Controls\NovaTree.xaml.cs">
+      <DependentUpon>NovaTree.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Domain\NovaModule.cs" />
     <Compile Include="Domain\NovaTreeNode.cs" />
     <Compile Include="Domain\TreeNode.cs" />
@@ -97,6 +101,15 @@
     <Compile Include="SessionViewModel.cs">
       <DependentUpon>SessionView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\NovaTree.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TreeNode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <DependentUpon>NovaTree.xaml</DependentUpon>
+    </Page>
     <Page Include="DropShadow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -176,25 +176,7 @@ namespace Nova.Shell
         /// </summary>
         internal SessionView CreateSession()
         {
-            IEnumerable<NovaModule> modules = _ApplicationModel.Modules;
-            var defaultModule = modules.FirstOrDefault();
-
-            return defaultModule == null
-                ? null
-                : CreateSession(defaultModule);
-        }
-
-        /// <summary>
-        /// Creates a new session using the specified module.
-        /// </summary>
-        internal SessionView CreateSession(NovaModule module)
-        {
-            if (module == null)
-                throw new ArgumentNullException("module");
-
             var sessionView = CreatePage<SessionView, SessionViewModel>();
-            sessionView.ViewModel.Initialize(module);
-            
             return sessionView;
         }
 

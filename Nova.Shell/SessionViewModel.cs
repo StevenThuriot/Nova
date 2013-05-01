@@ -27,9 +27,6 @@ using Nova.Controls;
 using Nova.Shell.Actions.Session;
 using Nova.Shell.Library;
 using Nova.Shell.Managers;
-using Nova.Shell.Domain;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Input;
 using RESX = Nova.Shell.Properties.Resources;
 
@@ -44,10 +41,8 @@ namespace Nova.Shell
         internal const string CurrentViewConstant = "CurrentSessionContentView";
         internal const string NextViewConstant = "NextSessionContentView";
 
-        private IDisposable _Deferral;
         private IView _CurrentView;
         private string _Title;
-        private IEnumerable<NovaTreeNode> _TreeNodes;
         private readonly dynamic _Model;
         private readonly dynamic _ApplicationModel;
 
@@ -92,67 +87,32 @@ namespace Nova.Shell
             get { return _Title; }
             set { SetValue(ref _Title, value); }
         }
-        
-        /// <summary>
-        /// Gets or sets the tree nodes.
-        /// </summary>
-        /// <value>
-        /// The tree nodes.
-        /// </value>
-        public IEnumerable<NovaTreeNode> TreeNodes
-        {
-            get { return _TreeNodes; }
-            set { SetValue(ref _TreeNodes, value); }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SessionViewModel" /> class.
         /// </summary>
         public SessionViewModel()
         {
-            _Deferral = DeferCreated(); //Defer Created logic so we can call it manually in our extended initialize method.
             _Title = RESX.EmptySession;
 
             _ApplicationModel = ((App) Application.Current).Model;
             _Model = new ExpandoObject();
         }
-
-        /// <summary>
-        /// Initializes the SessionViewModel.
-        /// </summary>
-        /// <param name="module">The module.</param>
-        /// <exception cref="System.ArgumentNullException">module</exception>
-        internal void Initialize(NovaModule module)
-        {
-            if (module == null)
-                throw new ArgumentNullException("module");
-
-            NavigationActionManager = new NavigationActionManager(View);
-            TreeNodes = module.BuildNovaTreeNodes(this);
-
-            _Deferral.Dispose();
-            _Deferral = null;
-        }
-
+        
         /// <summary>
         /// Called when this viewmodel is created and fully initialized.
         /// </summary>
         protected override void OnCreated()
         {
-            SetKnownActionTypes(typeof(SessionLeaveStep), typeof(NavigationAction)); //Optimalization
+            SetKnownActionTypes(typeof(SessionLeaveAction), typeof(NavigationAction)); //Optimalization
 
-            var leaveAction = CreateAction<SessionLeaveStep>();
+            NavigationActionManager = new NavigationActionManager(View);
+
+            var enterAction = CreateAction<SessionEnterAction>();
+            SetEnterAction(enterAction);
+
+            var leaveAction = CreateAction<SessionLeaveAction>();
             SetLeaveAction(leaveAction);
-        }
-
-        /// <summary>
-        /// Called after enter.
-        /// </summary>
-        protected void OnAfterEnter()
-        {
-            //TODO: Temporary until more data is passed along (e.g. when the user wants to open a certain page in a new session)
-            var startUpNode = TreeNodes.FirstOrDefault(x => x.IsStartupNode) ?? TreeNodes.First();
-            startUpNode.Navigate();
         }
         
         /// <summary>
@@ -171,6 +131,12 @@ namespace Nova.Shell
                 Title = _CurrentView.Title;
                 View.ContentZone.Navigate(_CurrentView);
             }
+        }
+
+        public void OnAfterSessionEnter()
+        {
+            //TODO: Temporary until more data is passed along (e.g. when the user wants to open a certain page in a new session)
+            View._NovaTree.NavigateToStartupPage();
         }
 
         /// <summary>
@@ -235,11 +201,6 @@ namespace Nova.Shell
         protected override void DisposeManagedResources()
         {
             ((IDisposable)NavigationActionManager).Dispose();
-
-            if (_Deferral == null) return;
-
-            _Deferral.Dispose();
-            _Deferral = null;
         }
     }
 }

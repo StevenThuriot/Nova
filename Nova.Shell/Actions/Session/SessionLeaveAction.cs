@@ -22,7 +22,10 @@ using Nova.Library.Actions;
 
 namespace Nova.Shell.Actions.Session
 {
-    public class SessionLeaveStep : LeaveAction<SessionView, SessionViewModel>
+    /// <summary>
+    /// The session leave action
+    /// </summary>
+    public class SessionLeaveAction : LeaveAction<SessionView, SessionViewModel>
     {
         public override bool Leave()
         {

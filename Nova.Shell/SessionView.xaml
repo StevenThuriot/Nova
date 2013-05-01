@@ -4,6 +4,7 @@
       xmlns:shell="clr-namespace:Nova.Shell"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:Domain="clr-namespace:Nova.Shell.Domain"
+                       xmlns:Controls="clr-namespace:Nova.Shell.Controls"
                        mc:Ignorable="d" 
       d:DataContext="{d:DesignData Source=SessionViewModel.cs}"
 	    Title="{Binding Title, Mode=OneWay}" >
@@ -29,16 +30,8 @@
       <Frame NavigationUIVisibility="Hidden" x:Name="ContentZone" />
     </Border>
 
-    <!--TODO: Add facebook-like scrollviewer -->
-    <ItemsControl Grid.Row="1" Grid.Column="0"
-                  ItemsSource="{Binding TreeNodes, Mode=OneWay}"
-                  
-                  Margin="-1 8 0 0"
-                  Padding="0"
-                  />
-
-    <!-- TODO: List Modules -->
-
+    <Controls:NovaTree Grid.Row="1" Grid.Column="0"
+                       x:Name="_NovaTree" />
 
     <Overlay Grid.RowSpan="2"
              Grid.ColumnSpan="2"

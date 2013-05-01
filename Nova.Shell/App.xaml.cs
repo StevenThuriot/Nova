@@ -1,6 +1,4 @@
-﻿using Nova.Library;
-
-#region License
+﻿#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -24,6 +22,7 @@ using System;
 using System.Diagnostics;
 using System.Dynamic;
 using Nova.Shell.Managers;
+using Nova.Library;
 
 namespace Nova.Shell
 {

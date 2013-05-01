@@ -90,11 +90,7 @@ namespace Nova.Shell.Actions.Session
         public override void ExecuteCompleted()
         {
             ViewModel.CurrentView = _NextView;
-
-            foreach (var node in ViewModel.TreeNodes)
-            {
-                node.ReevaluateState(_PageType, _ViewModelType);
-            }
+            View._NovaTree.ReevaluateState(_PageType, _ViewModelType);
         }
 
         protected override void DisposeManagedResources()
