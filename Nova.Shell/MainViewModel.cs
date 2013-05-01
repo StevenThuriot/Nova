@@ -1,5 +1,3 @@
-using Nova.Library;
-
 #region License
 
 // 
@@ -21,10 +19,8 @@ using Nova.Library;
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -32,7 +28,7 @@ using System.Windows.Shell;
 using System.Windows.Threading;
 using Nova.Controls;
 using Nova.Shell.Actions.MainWindow;
-using Nova.Shell.Domain;
+using Nova.Library;
 using RESX = Nova.Shell.Properties.Resources;
 
 namespace Nova.Shell
@@ -47,15 +43,12 @@ namespace Nova.Shell
         private bool _HasOpenDocuments;
         private ImageSource _Icon;
         private string _Title = RESX.Empty;
-        private readonly dynamic _ApplicationModel;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel" /> class.
         /// </summary>
         public MainViewModel()
         {
-            _ApplicationModel = ((App)Application.Current).Model;
-
             ShutDownCommand = new RelayCommand(ShutDown);
             MaximizeCommand = new RelayCommand(MaximizeView);
             MinimizeCommand = new RelayCommand(MinimizeView);

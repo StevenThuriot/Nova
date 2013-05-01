@@ -271,6 +271,7 @@
       <DependentUpon>WindowControlBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AutoScrollHandler.cs" />
+    <Compile Include="Library\AliasAttribute.cs" />
     <Compile Include="Library\ActionBinding.cs" />
     <Compile Include="Library\ActionContext.cs" />
     <Compile Include="Library\ActionContextEntry.cs" />

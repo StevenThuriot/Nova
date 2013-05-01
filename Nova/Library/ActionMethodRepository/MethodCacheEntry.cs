@@ -30,11 +30,21 @@ namespace Nova.Library.ActionMethodRepository
     /// </summary>
     internal abstract class MethodCacheEntry
     {
+        private readonly Dictionary<Type, IEnumerable<string>> _TypeAliases;
+
         public const string OnBefore = "ONBEFORE";
         public const string OnAfter = "ONAFTER";
 
         protected List<OnAction> BeforeActions;
         protected List<OnAction> AfterActions;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MethodCacheEntry" /> class.
+        /// </summary>
+        protected MethodCacheEntry()
+        {
+            _TypeAliases = new Dictionary<Type, IEnumerable<string>>();
+        }
 
         /// <summary>
         /// Gets the type.
@@ -72,16 +82,62 @@ namespace Nova.Library.ActionMethodRepository
         /// <param name="prefix">The prefix.</param>
         /// <param name="methods">The methods.</param>
         /// <returns></returns>
-        private static IEnumerable<OnAction> GetRelevantMethods(Type actionType, string prefix, IReadOnlyCollection<OnAction> methods)
+        private IEnumerable<OnAction> GetRelevantMethods(Type actionType, string prefix, IReadOnlyCollection<OnAction> methods)
         {
             //Optimalization
             if (methods.Count == 0)
                 return Enumerable.Empty<OnAction>();
 
-            var typeName = GetActionName(actionType);
+            var aliases = GetAliases(actionType)
+                                .Select(x => prefix + x)
+                                .ToList();
 
-            var name = prefix + typeName;
-            return methods.Where(x => name.Equals(x.Name, StringComparison.OrdinalIgnoreCase) || prefix.Equals(x.Name, StringComparison.OrdinalIgnoreCase));
+            return methods.Where(x => aliases.Any(name => name.Equals(x.Name, StringComparison.OrdinalIgnoreCase)) || prefix.Equals(x.Name, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>
+        /// Gets the aliases of the action.
+        /// </summary>
+        /// <param name="actionType">Type of the action.</param>
+        /// <returns></returns>
+        private IEnumerable<string> GetAliases(Type actionType)
+        {
+            IEnumerable<string> cachedAliases;
+            if (_TypeAliases.TryGetValue(actionType, out cachedAliases))
+            {
+                return cachedAliases;
+            }
+
+            var aliases = actionType.GetCustomAttributes<AliasAttribute>()
+                                .Select(x => GetActionName(x.Alias))
+                                .ToList();
+
+            var typeName = GetActionName(actionType);
+            aliases.Add(typeName);
+
+            _TypeAliases.Add(actionType, aliases.AsReadOnly());
+
+            return aliases;
+        }
+
+        /// <summary>
+        /// Gets the name of the action.
+        /// </summary>
+        /// <param name="actionName">Name of the action.</param>
+        /// <returns></returns>
+        internal static string GetActionName(string actionName)
+        {
+            var generic = actionName.IndexOf('`'); //Don't include generics in the naming
+            if (generic > 0)
+            {
+                actionName = actionName.Substring(0, generic);
+            }
+
+            if (actionName.EndsWith("ACTION", StringComparison.OrdinalIgnoreCase))
+            {
+                actionName = actionName.Substring(0, actionName.Length - 6);
+            }
+            return actionName;
         }
 
         /// <summary>
@@ -91,18 +147,7 @@ namespace Nova.Library.ActionMethodRepository
         /// <returns></returns>
         internal static string GetActionName(Type actionType)
         {
-            var typeName = actionType.Name;
-            var generic = typeName.IndexOf('`'); //Don't include generics in the naming
-            if (generic > 0)
-            {
-                typeName = typeName.Substring(0, generic);
-            }
-
-            if (typeName.EndsWith("ACTION", StringComparison.OrdinalIgnoreCase))
-            {
-                typeName = typeName.Substring(0, typeName.Length - 6);
-            }
-            return typeName;
+            return GetActionName(actionType.Name);
         }
     }
 

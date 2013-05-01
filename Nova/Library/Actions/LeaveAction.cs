@@ -28,7 +28,7 @@ namespace Nova.Library.Actions
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    [Terminating]
+    [Terminating, Alias("Leave")]
     public class LeaveAction<TView, TViewModel> : Actionflow<TView, TViewModel>
         where TView : IView
         where TViewModel : IViewModel

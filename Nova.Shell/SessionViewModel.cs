@@ -133,7 +133,10 @@ namespace Nova.Shell
             }
         }
 
-        public void OnAfterSessionEnter()
+        /// <summary>
+        /// Called after entering this session.
+        /// </summary>
+        public void OnAfterEnter()
         {
             //TODO: Temporary until more data is passed along (e.g. when the user wants to open a certain page in a new session)
             View._NovaTree.NavigateToStartupPage();
