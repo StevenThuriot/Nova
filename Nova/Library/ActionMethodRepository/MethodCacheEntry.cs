@@ -109,15 +109,16 @@ namespace Nova.Library.ActionMethodRepository
             }
 
             var aliases = actionType.GetCustomAttributes<AliasAttribute>()
-                                .Select(x => GetActionName(x.Alias))
+                                .Select(x => x.Alias)
                                 .ToList();
 
             var typeName = GetActionName(actionType);
             aliases.Add(typeName);
 
-            _TypeAliases.Add(actionType, aliases.AsReadOnly());
+            var readOnlyCollection = aliases.AsReadOnly();
+            _TypeAliases.Add(actionType, readOnlyCollection);
 
-            return aliases;
+            return readOnlyCollection;
         }
 
         /// <summary>
