@@ -28,19 +28,32 @@ using Nova.Shell.Domain;
 namespace Nova.Shell.Controls
 {
     /// <summary>
-    /// Interaction logic for NovaTree.xaml
+    /// Nova Tree Interface
     /// </summary>
-    public partial class NovaTree : INotifyPropertyChanged
+    internal interface INovaTree
     {
-        private IEnumerable<NovaTreeNode> _TreeNodes;
+        /// <summary>
+        /// Initializes the tree's data.
+        /// </summary>
+        /// <param name="modules">The modules.</param>
+        void InitializeData(IEnumerable<NovaTreeModule> modules);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NovaTree" /> class.
+        /// Activates the module.
         /// </summary>
-        public NovaTree()
-        {
-            InitializeComponent();
-        }
+        /// <param name="module">The module.</param>
+        void ActivateModule(NovaTreeModule module);
+    }
+
+    /// <summary>
+    /// Interaction logic for NovaTree.xaml
+    /// </summary>
+    public partial class NovaTree : INotifyPropertyChanged, INovaTree
+    {
+        private Type _PageType;
+        private Type _ViewModelType;
+        private IEnumerable<NovaTreeNode> _TreeNodes;
+        private bool _ShowModules;
 
         /// <summary>
         /// Gets the tree nodes.
@@ -61,6 +74,32 @@ namespace Nova.Shell.Controls
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to show the modules.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if the list of modules should be shown; otherwise, <c>false</c>.
+        /// </value>
+        public bool ShowModules
+        {
+            get { return _ShowModules; }
+            set
+            {
+                if (_ShowModules == value) return;
+
+                _ShowModules = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets the modules.
+        /// </summary>
+        /// <value>
+        /// The modules.
+        /// </value>
+        public IEnumerable<NovaTreeModule> Modules { get; private set; }
+
+        /// <summary>
         /// Occurs when a property has changed.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
@@ -72,7 +111,16 @@ namespace Nova.Shell.Controls
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            if (handler != null) 
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// Reevaluates the state.
+        /// </summary>
+        public void ReevaluateState()
+        {
+            ReevaluateState(_PageType, _ViewModelType);
         }
 
         /// <summary>
@@ -82,6 +130,9 @@ namespace Nova.Shell.Controls
         /// <param name="viewModelType">Type of the view model.</param>
         public void ReevaluateState(Type pageType, Type viewModelType)
         {
+            _PageType = pageType;
+            _ViewModelType = viewModelType;
+
             foreach (var node in TreeNodes)
             {
                 node.ReevaluateState(pageType, viewModelType);
@@ -101,11 +152,35 @@ namespace Nova.Shell.Controls
         /// <summary>
         /// Initializes the tree's data.
         /// </summary>
-        /// <param name="nodes">The nodes.</param>
-        internal void InitializeData(IEnumerable<NovaTreeNode> nodes)
+        /// <param name="modules">The modules.</param>
+        /// <exception cref="System.ArgumentNullException">modules</exception>
+        void INovaTree.InitializeData(IEnumerable<NovaTreeModule> modules)
         {
-            //TODO: Get all modules and nodes instead of just nodes when the module switcher has been implemented.
-            TreeNodes = nodes;
+            if (modules == null)
+                throw new ArgumentNullException("modules");
+
+            var amountOfModules = modules.Count();
+
+            if (amountOfModules == 0)
+                throw new ArgumentException(@"No modules found.", "modules");
+
+            TreeNodes = modules.First().TreeNodes;
+            Modules = modules;
+            ShowModules = amountOfModules > 1;
+
+            InitializeComponent();
+        }
+
+
+        /// <summary>
+        /// Activates the module.
+        /// </summary>
+        /// <param name="module">The module.</param>
+        void INovaTree.ActivateModule(NovaTreeModule module)
+        {
+            TreeNodes = module.TreeNodes;
+            
+            ReevaluateState();
         }
     }
 }

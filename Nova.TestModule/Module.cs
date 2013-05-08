@@ -34,11 +34,14 @@ namespace Nova.TestModule
         /// <param name="builder">The builder.</param>
         public void Configure(IModuleBuilder builder)
         {
-            var random = new Random().Next(1, 100);
+            var seed = (int) DateTime.Now.Ticks;
+            var random = new Random(seed);
 
-            builder.SetModuleTitle("Module #" + random)
-                   .SetModuleRanking(random)
-                   .AddNavigation<TestPage2, TestPage2ViewModel>("Another Test Page")
+            var randomRanking = random.Next(1, 100);
+
+            builder.SetModuleTitle("Module #" + randomRanking)
+                   .SetModuleRanking(randomRanking)
+                   .AddNavigation<TestPage2, TestPage2ViewModel>("Another Test Page (" + random.Next(1, 100) + ")")
                    .AddNavigation<TestPage, TestPageViewModel>(rank: 20).AsStartup();
         }
     }

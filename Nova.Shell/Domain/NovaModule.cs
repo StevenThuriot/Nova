@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Nova.Shell.Controls;
 using Nova.Shell.Library;
 using System.Linq;
 
@@ -72,6 +73,20 @@ namespace Nova.Shell.Domain
             Ranking = ranking;
             _TreeNodes = treeNodes;
             _StartUpTreeNode = startUpTreeNode;
+        }
+
+        /// <summary>
+        /// Builds this instance into a Nova Tree Module.
+        /// </summary>
+        /// <param name="tree">The tree.</param>
+        /// <param name="page">The page.</param>
+        /// <returns></returns>
+        internal NovaTreeModule Build(INovaTree tree, INavigatablePage page)
+        {
+            var nodes = BuildNovaTreeNodes(page);
+            var module = new NovaTreeModule(Title, tree, nodes);
+
+            return module;
         }
 
         /// <summary>

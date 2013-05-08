@@ -84,6 +84,7 @@
       <DependentUpon>NovaTree.xaml</DependentUpon>
     </Compile>
     <Compile Include="Domain\NovaModule.cs" />
+    <Compile Include="Domain\NovaTreeModule.cs" />
     <Compile Include="Domain\NovaTreeNode.cs" />
     <Compile Include="Domain\TreeNode.cs" />
     <Compile Include="Managers\CompositionManager.cs" />

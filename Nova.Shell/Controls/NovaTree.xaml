@@ -1,22 +1,41 @@
 ﻿<UserControl x:Class="Nova.Shell.Controls.NovaTree"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Name="_This"
+             x:Name="_NavigationalTree"
              >
   
   <UserControl.Resources>
     <ResourceDictionary Source="TreeNode.xaml" />
   </UserControl.Resources>
 
-  <!--TODO: Add facebook-like scrollviewer -->
-  
-  <ItemsControl Grid.Row="1" Grid.Column="0"
-                ItemsSource="{Binding TreeNodes, Mode=OneWay, ElementName=_This}"
-                
-                Padding="0"
-                Margin="-1 8 0 0"
-                
-                />
+  <Grid Margin="-1 8 0 0">
+    <Grid.Resources>
+      <BooleanToVisibilityConverter x:Key="_BooleanToVisibilityConverter" />
+    </Grid.Resources>
+    
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
 
-  <!-- TODO: List Modules -->
+    <!--TODO: Add facebook-like scrollviewer -->
+
+    <ItemsControl Grid.Row="0"
+                  ItemsSource="{Binding TreeNodes, Mode=OneWay, ElementName=_NavigationalTree}"
+                  Padding="0"
+                  />
+
+    <Border Grid.Row="1" 
+            Visibility="{Binding ShowModules, Mode=OneWay, ElementName=_NavigationalTree, Converter={StaticResource _BooleanToVisibilityConverter}}"
+            BorderThickness="0 1 0 0"
+            BorderBrush="{DynamicResource LightBlueBrush}"
+            Margin="-3 0 0 0"
+            CornerRadius="1 1 0 0">
+      
+      <ItemsControl ItemsSource="{Binding Modules, Mode=OneWay, ElementName=_NavigationalTree}"
+                    Padding="0"
+                    Margin="3 3 0 0"
+                  />
+    </Border>
+  </Grid>
 </UserControl>
