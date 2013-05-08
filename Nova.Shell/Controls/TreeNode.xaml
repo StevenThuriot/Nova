@@ -48,7 +48,7 @@
 
               <Path Grid.Column="1"
                     x:Name="_Arrow"
-                    Margin="0 0 -1 0"
+                    Margin="0 0 -2 0"
                          
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
@@ -57,7 +57,7 @@
                     Stroke="{x:Null}"
                     Fill="{x:Null}"
 
-                    Data="F1 M 20,0 L 6,10 L 20,20 Z"
+                    Data="F1 M 21,0 L 6,10 L 21,21 Z"
                          
                       />
               <Path Grid.Column="1"
@@ -111,7 +111,7 @@
                          Grid.Column="0" />
 
               <Path Grid.Column="1"
-                    Margin="0 0 -1 0"
+                    Margin="0 0 -2 0"
                          
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
@@ -120,7 +120,7 @@
                     Stroke="{x:Null}"
                     Fill="{StaticResource White}"
 
-                    Data="F1 M 20,0 L 6,10 L 20,20 Z"
+                    Data="F1 M 21,0 L 6,10 L 21,21 Z"
                          
                       />
               <Path Grid.Column="1"
