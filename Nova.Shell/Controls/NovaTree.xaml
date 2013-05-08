@@ -5,31 +5,37 @@
              >
   
   <UserControl.Resources>
-    <ResourceDictionary Source="TreeNode.xaml" />
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="TreeNode.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+
+      <BooleanToVisibilityConverter x:Key="_BooleanToVisibilityConverter" />
+    </ResourceDictionary>
   </UserControl.Resources>
 
-  <Grid Margin="-1 8 0 0">
-    <Grid.Resources>
-      <BooleanToVisibilityConverter x:Key="_BooleanToVisibilityConverter" />
-    </Grid.Resources>
-    
+  <Grid Margin="-1 8 -1 0">
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
-    <!--TODO: Add facebook-like scrollviewer -->
+    <ScrollViewer Grid.Row="0"
+                  Style="{DynamicResource ModernScrollViewerStyle}"
+                  HorizontalScrollBarVisibility="Disabled">
 
-    <ItemsControl Grid.Row="0"
-                  ItemsSource="{Binding TreeNodes, Mode=OneWay, ElementName=_NavigationalTree}"
-                  Padding="0"
-                  />
+      <ItemsControl ItemsSource="{Binding TreeNodes, Mode=OneWay, ElementName=_NavigationalTree}"
+                    Padding="0"
+                    Margin="0 1 1 1"
+                    />
+      
+    </ScrollViewer>
 
     <Border Grid.Row="1" 
             Visibility="{Binding ShowModules, Mode=OneWay, ElementName=_NavigationalTree, Converter={StaticResource _BooleanToVisibilityConverter}}"
             BorderThickness="0 1 0 0"
             BorderBrush="{DynamicResource LightBlueBrush}"
-            Margin="-3 0 0 0"
+            Margin="-3 2 0 0"
             CornerRadius="1 1 0 0">
       
       <ItemsControl ItemsSource="{Binding Modules, Mode=OneWay, ElementName=_NavigationalTree}"

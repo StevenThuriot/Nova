@@ -48,7 +48,7 @@
 
               <Path Grid.Column="1"
                     x:Name="_Arrow"
-                    Margin="0 0 -2 0"
+                    Margin="0 0 -1 0"
                          
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
@@ -57,12 +57,12 @@
                     Stroke="{x:Null}"
                     Fill="{x:Null}"
 
-                    Data="F1 M 21,0 L 6,10 L 21,21 Z"
+                    Data="F1 M 22,0 L 6,10 L 22,22 Z"
                          
                       />
               <Path Grid.Column="1"
                     x:Name="_ArrowBorder"
-                    Margin="0 0 -1 0"
+                    Margin="0"
                          
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
@@ -111,7 +111,7 @@
                          Grid.Column="0" />
 
               <Path Grid.Column="1"
-                    Margin="0 0 -2 0"
+                    Margin="0 0 -1 0"
                          
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
@@ -120,11 +120,11 @@
                     Stroke="{x:Null}"
                     Fill="{StaticResource White}"
 
-                    Data="F1 M 21,0 L 6,10 L 21,21 Z"
+                    Data="F1 M 22,0 L 6,10 L 22,22 Z"
                          
                       />
               <Path Grid.Column="1"
-                    Margin="0 0 -1 0"
+                    Margin="0"
                          
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
@@ -161,10 +161,9 @@
 
   <DataTemplate DataType="{x:Type Domain:NovaTreeModule}">
 
-    <Button x:Name="_TreeNodeButton"
-        Style="{StaticResource _NavigationalTreeItemStyle}"
-        Command="{Binding NavigationalCommand, Mode=OneWay}"
-        Content="{Binding Title, Mode=OneWay}"
+    <Button Style="{StaticResource _NavigationalTreeItemStyle}"
+            Command="{Binding NavigationalCommand, Mode=OneWay}"
+            Content="{Binding Title, Mode=OneWay}"
                   />
     
   </DataTemplate>

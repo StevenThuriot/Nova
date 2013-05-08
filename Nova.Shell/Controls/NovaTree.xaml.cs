@@ -164,8 +164,8 @@ namespace Nova.Shell.Controls
             if (amountOfModules == 0)
                 throw new ArgumentException(@"No modules found.", "modules");
 
-            TreeNodes = modules.First().TreeNodes;
             Modules = modules;
+            TreeNodes = Modules.First().TreeNodes;
             ShowModules = amountOfModules > 1;
 
             InitializeComponent();
