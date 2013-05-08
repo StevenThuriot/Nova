@@ -81,9 +81,9 @@ namespace Nova.Shell.Domain
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        /// <param name="title">The title.</param>
-        /// <param name="rank">The rank.</param>
-        /// <returns></returns>
+        /// <param name="title">The title of the node. Default value is the type name.</param>
+        /// <param name="rank">The ranking in the navigational tree. Default value is 10.</param>
+        /// <returns>A new treenode instance.</returns>
         public static TreeNode New<TPageView, TPageViewModel>(string title, int rank)
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
