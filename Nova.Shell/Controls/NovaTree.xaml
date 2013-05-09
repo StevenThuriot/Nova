@@ -14,15 +14,13 @@
     </ResourceDictionary>
   </UserControl.Resources>
 
-  <Grid Margin="-1 8 -1 0">
+  <Grid Margin="-1 8 0 0">
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
-    <ScrollViewer Grid.Row="0"
-                  Style="{DynamicResource ModernScrollViewerStyle}"
-                  HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Visible">
 
       <ItemsControl ItemsSource="{Binding TreeNodes, Mode=OneWay, ElementName=_NavigationalTree}"
                     Padding="0"
