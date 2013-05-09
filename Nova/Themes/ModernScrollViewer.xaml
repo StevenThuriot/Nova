@@ -1,11 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   
-  <Color x:Key="ModernScrollBarBackgroundColor">#8F535353</Color>
-  <Color x:Key="ModernScrollBarBorderColor">#BF535353</Color>
   
-  <SolidColorBrush x:Key="ModernScrollBarBackgroundBrush" Color="{DynamicResource ModernScrollBarBackgroundColor}" />
-  <SolidColorBrush x:Key="ModernScrollBarBorderBrush" Color="{DynamicResource ModernScrollBarBorderColor}" />
   
 
   <Style x:Key="ModernScrollBarStyle" TargetType="ScrollBar">

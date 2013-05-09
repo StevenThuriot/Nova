@@ -20,7 +20,7 @@
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
-    <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Visible">
+    <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled">
 
       <ItemsControl ItemsSource="{Binding TreeNodes, Mode=OneWay, ElementName=_NavigationalTree}"
                     Padding="0"
