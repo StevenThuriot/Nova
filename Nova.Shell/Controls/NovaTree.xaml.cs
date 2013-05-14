@@ -165,14 +165,7 @@ namespace Nova.Shell.Controls
                 throw new ArgumentException(@"No modules found.", "modules");
 
             Modules = modules;
-            var novaTreeNodes = Modules.First().TreeNodes.ToList();
-
-            for (int i = 0; i < 30; i++)
-            {
-                novaTreeNodes.Add(novaTreeNodes.Last());
-            }
-
-            TreeNodes = novaTreeNodes;
+            TreeNodes = Modules.First().TreeNodes;
             ShowModules = amountOfModules > 1;
 
             InitializeComponent();

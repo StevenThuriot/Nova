@@ -290,6 +290,7 @@
     <Compile Include="Library\ActionMethodRepository\OnActionMethodRepository.cs" />
     <Compile Include="Library\Actions\EnterAction.cs" />
     <Compile Include="Library\Actions\LeaveAction.cs" />
+    <Compile Include="Library\ChangeTrackingScope.cs" />
     <Compile Include="Library\DynamicContext.cs" />
     <Compile Include="Library\ErrorBinding.cs" />
     <Compile Include="Library\ExceptionHandler.cs" />

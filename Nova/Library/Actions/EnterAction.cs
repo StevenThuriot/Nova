@@ -48,6 +48,7 @@ namespace Nova.Library.Actions
         public sealed override void ExecuteCompleted()
         {
             EnterCompleted();
+            ViewModel.InitializeChangeTracking();
         }
 
         /// <summary>

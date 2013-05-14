@@ -52,6 +52,8 @@ namespace Nova.Library
         /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
         private void ViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (ChangeTrackingScope.IsPaused) return;
+
             IsChanged = true;
             PropertyChanged -= ViewModelPropertyChanged;
         }
@@ -61,6 +63,8 @@ namespace Nova.Library
         /// </summary>
         public void InitializeChangeTracking()
         {
+            if (_IsChangeTracking) return;
+
             _IsChangeTracking = true;
             PropertyChanged += ViewModelPropertyChanged;
         }
