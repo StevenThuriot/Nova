@@ -1,4 +1,6 @@
-﻿#region License
+﻿using Nova.Library;
+
+#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -19,10 +21,8 @@
 #endregion
 
 using System;
-using System.Windows.Input;
-using Nova.Base;
 using Nova.Controls;
-using Nova.Shell.Library.Interfaces;
+using System.Windows.Input;
 
 namespace Nova.Shell.Library
 {
@@ -89,7 +89,7 @@ namespace Nova.Shell.Library
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
         {
-            return _Session.NavigationActionManager.New<TPageView, TPageViewModel>();
+            return _Session.CreateNavigationalAction<TPageView, TPageViewModel>();
         }
 
         /// <summary>

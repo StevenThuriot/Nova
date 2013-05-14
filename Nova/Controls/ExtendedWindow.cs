@@ -1,4 +1,7 @@
-﻿#region License
+﻿using Nova.Library;
+using Nova.Library.Actions;
+
+#region License
 
 // 
 //  Copyright 2012 Steven Thuriot
@@ -23,8 +26,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using Nova.Base;
-using Nova.Base.Actions;
 using Nova.Helpers;
 using Nova.Threading;
 using System.Threading;

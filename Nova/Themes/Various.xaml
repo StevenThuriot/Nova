@@ -2,11 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options" >
 	
-	<!-- Fonts -->
-	<FontFamily x:Key="SegoeUI">/Nova;component/Fonts/#Segoe UI</FontFamily>
-	
 	<!-- Brushes -->
 
+  <SolidColorBrush ice:Freeze="True" x:Key="ModernScrollBarBackgroundBrush" Color="{DynamicResource ModernScrollBarBackgroundColor}" />
+  <SolidColorBrush ice:Freeze="True" x:Key="ModernScrollBarBorderBrush" Color="{DynamicResource ModernScrollBarBorderColor}" />
+  
   <SolidColorBrush ice:Freeze="True" x:Key="LightBlueBrush" Color="{DynamicResource LightBlueColor}"/>
   <SolidColorBrush ice:Freeze="True" x:Key="OverlayBrush" Color="{DynamicResource OverlayColor}"/>
   <SolidColorBrush ice:Freeze="True" x:Key="ProgressRingBrush" Color="{DynamicResource ProgressRingColor}"/>

@@ -1,4 +1,6 @@
-﻿#region License
+﻿using Nova.Library;
+
+#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -20,7 +22,6 @@
 
 using System.Linq;
 using System.Windows.Input;
-using Nova.Base;
 
 namespace Nova.Shell.Actions.MainWindow
 {
@@ -36,7 +37,10 @@ namespace Nova.Shell.Actions.MainWindow
 
         public override void ExecuteCompleted()
         {
-            var session = ViewModel.CreatePage<SessionView, SessionViewModel>();
+            var session = ViewModel.CreateSession();
+
+            if (session == null) return;
+
             ViewModel.Sessions.Add(session);
             
             if (!_HasOpenSessions || Keyboard.Modifiers != (ModifierKeys.Control | ModifierKeys.Shift))

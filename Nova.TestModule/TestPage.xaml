@@ -1,0 +1,17 @@
+﻿<shell:TestPageBase x:Class="Nova.TestModule.TestPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:shell="clr-namespace:Nova.TestModule"
+                    xmlns:testModule="clr-namespace:Nova.TestModule"
+                    xmlns:Library="clr-namespace:Nova.Library;assembly=Nova"
+                    mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+	Title="Test Page">
+
+  <StackPanel>
+    <TextBlock>Content goes here.</TextBlock>
+    <Button Command="{Library:ActionBinding LongRunning}" Width="200">Start Long Running Task.</Button>
+    <Button Command="{Binding GoToPage2Command}" Width="200">Navigate to the second step.</Button>
+  </StackPanel>
+</shell:TestPageBase>

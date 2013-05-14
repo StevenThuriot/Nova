@@ -1,4 +1,6 @@
-﻿#region License
+﻿using Nova.Library;
+
+#region License
 
 // 
 //  Copyright 2012 Steven Thuriot
@@ -21,12 +23,13 @@
 using System;
 using System.Dynamic;
 using System.Windows;
-using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
 using Nova.Shell.Library;
-using Nova.Shell.Library.Interfaces;
 using Nova.Shell.Managers;
+using System.Windows.Input;
+using RESX = Nova.Shell.Properties.Resources;
+
 
 namespace Nova.Shell
 {
@@ -90,23 +93,26 @@ namespace Nova.Shell
         /// </summary>
         public SessionViewModel()
         {
-            _Title = SessionViewResources.EmptySession;
+            _Title = RESX.EmptySession;
 
             _ApplicationModel = ((App) Application.Current).Model;
             _Model = new ExpandoObject();
         }
-
+        
         /// <summary>
         /// Called when this viewmodel is created and fully initialized.
         /// </summary>
         protected override void OnCreated()
         {
-            SetKnownActionTypes(typeof(SessionLeaveStep), typeof(NavigationAction)); //Optimalization
-            
-            var leaveAction = Actionflow<SessionView, SessionViewModel>.New<SessionLeaveStep>(View, this);
-            SetLeaveAction(leaveAction);
+            SetKnownActionTypes(typeof(SessionLeaveAction), typeof(NavigationAction)); //Optimalization
 
             NavigationActionManager = new NavigationActionManager(View);
+
+            var enterAction = CreateAction<SessionEnterAction>();
+            SetEnterAction(enterAction);
+
+            var leaveAction = CreateAction<SessionLeaveAction>();
+            SetLeaveAction(leaveAction);
         }
         
         /// <summary>
@@ -128,15 +134,12 @@ namespace Nova.Shell
         }
 
         /// <summary>
-        /// Called after enter.
+        /// Called after entering this session.
         /// </summary>
         public void OnAfterEnter()
         {
-            //TODO: Temporary default
-            var createNextView = new Func<IView>(CreatePage<TestPage, TestPageViewModel>);
-            var next = ActionContextEntry.Create(NextViewConstant, createNextView, false);
-
-            InvokeAction<NavigationAction>(next);
+            //TODO: Temporary until more data is passed along (e.g. when the user wants to open a certain page in a new session)
+            View._NovaTree.NavigateToStartupPage();
         }
 
         /// <summary>
@@ -164,7 +167,21 @@ namespace Nova.Shell
 
             return page;
         }
-        
+
+        /// <summary>
+        /// Creates the navigational action.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public ICommand CreateNavigationalAction<TPageView, TPageViewModel>() 
+            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new() 
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+        {
+            return NavigationActionManager.New<TPageView, TPageViewModel>();
+        }
+
         /// <summary>
         /// Determines whether the session is invalid.
         /// </summary>
@@ -186,7 +203,7 @@ namespace Nova.Shell
         /// </summary>
         protected override void DisposeManagedResources()
         {
-            ((IDisposable) NavigationActionManager).Dispose();
+            ((IDisposable)NavigationActionManager).Dispose();
         }
     }
 }

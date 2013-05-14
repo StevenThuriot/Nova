@@ -1,4 +1,6 @@
-﻿#region License
+﻿using Nova.Library;
+
+#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -20,7 +22,6 @@
 
 using System;
 using System.Threading.Tasks;
-using Nova.Base;
 using Nova.Controls;
 using Nova.Threading.Metadata;
 
@@ -34,6 +35,9 @@ namespace Nova.Shell.Actions.Session
     {
         private IView _NextView;
         private IView _Current;
+
+        private Type _PageType;
+        private Type _ViewModelType;
 
         public override bool CanExecute()
         {
@@ -70,6 +74,9 @@ namespace Nova.Shell.Actions.Session
                     return false;
             }
 
+            _PageType = _NextView.GetType();
+            _ViewModelType = _NextView.ViewModel.GetType();
+
             var result = await _NextView.ViewModel.Enter();
             
             if (!result)
@@ -83,6 +90,7 @@ namespace Nova.Shell.Actions.Session
         public override void ExecuteCompleted()
         {
             ViewModel.CurrentView = _NextView;
+            View._NovaTree.ReevaluateState(_PageType, _ViewModelType);
         }
 
         protected override void DisposeManagedResources()

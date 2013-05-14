@@ -26,9 +26,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shell;
 using System.Windows.Threading;
-using Nova.Base;
 using Nova.Controls;
 using Nova.Shell.Actions.MainWindow;
+using Nova.Library;
+using RESX = Nova.Shell.Properties.Resources;
 
 namespace Nova.Shell
 {
@@ -41,8 +42,8 @@ namespace Nova.Shell
         private SessionView _CurrentSession;
         private bool _HasOpenDocuments;
         private ImageSource _Icon;
-        private string _Title = MainViewResources.Empty;
-
+        private string _Title = RESX.Empty;
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel" /> class.
         /// </summary>
@@ -55,7 +56,7 @@ namespace Nova.Shell
             _Sessions = new ObservableCollection<SessionView>();
             _Sessions.CollectionChanged += SessionsChanged;
         }
-
+        
         /// <summary>
         /// Gets the shut down command.
         /// </summary>
@@ -155,31 +156,21 @@ namespace Nova.Shell
         {
             SetKnownActionTypes(typeof(CloseSessionAction),
                                 typeof(CreateNewSessionAction),
-                                typeof(FocusTabAction),
-                                typeof(ReadConfigurationAction));
+                                typeof(FocusTabAction));
 
+            var enterAction = CreateAction<ComposeAndInitializeAction>();
+            SetEnterAction(enterAction);
 
             View.AddHandler(ClosableTabItem.CloseTabEvent, new RoutedEventHandler(CloseSession));
-
-            SetInitialSession();
         }
-
+        
         /// <summary>
-        /// Called after enter.
+        /// Creates a new session using the default module.
         /// </summary>
-        public void OnAfterEnter()
+        internal SessionView CreateSession()
         {
-            InvokeAction<ReadConfigurationAction>();
-        }
-
-        /// <summary>
-        /// Sets the initial session.
-        /// </summary>
-        private void SetInitialSession()
-        {
-            var intialSession = CreatePage<SessionView, SessionViewModel>();
-            Sessions.Add(intialSession);
-            CurrentSession = intialSession;
+            var sessionView = CreatePage<SessionView, SessionViewModel>();
+            return sessionView;
         }
 
         /// <summary>
@@ -264,7 +255,7 @@ namespace Nova.Shell
         {
             if (View.IsLoading)
             {
-                var dialog = MessageBox.Show("Close app?", "Exit", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var dialog = MessageBox.Show(RESX.CloseApplication, RESX.CloseApplicationTitle, MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                 if (dialog == MessageBoxResult.No)
                     return;

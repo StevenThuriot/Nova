@@ -1,3 +1,5 @@
+using Nova.Library;
+
 #region License
 // 
 //  Copyright 2012 Steven Thuriot
@@ -15,6 +17,7 @@
 // limitations under the License.
 // 
 #endregion
+
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -22,7 +25,6 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Nova.Base;
 using System.Windows.Data;
 using System;
 using Nova.Controls;

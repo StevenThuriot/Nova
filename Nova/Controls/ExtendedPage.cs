@@ -1,4 +1,6 @@
-﻿#region License
+﻿using Nova.Library;
+
+#region License
 
 // 
 //  Copyright 2012 Steven Thuriot
@@ -17,12 +19,12 @@
 // 
 
 #endregion
+
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Nova.Base;
 using Nova.Helpers;
 using Nova.Threading;
 using Nova.Validation;

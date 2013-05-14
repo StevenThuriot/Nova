@@ -6,6 +6,8 @@
                     mc:Ignorable="d"
                     xmlns:converters="clr-namespace:Nova.Shell.Converters" 
                     xmlns:shell="clr-namespace:Nova.Shell"
+                    xmlns:RESX="clr-namespace:Nova.Shell.Properties"
+                    xmlns:Library="clr-namespace:Nova.Library;assembly=Nova"
                     x:Name="_This"
         
                     Width="1024"
@@ -18,6 +20,7 @@
                     Icon="{Binding Icon}"
                     
                     WindowStartupLocation="CenterScreen"
+                    Visibility="Hidden"
                     
                     MouseLeftButtonDown="MoveWindow" 
                     d:DataContext="{d:DesignData Source=MainViewModel.cs}">
@@ -69,20 +72,20 @@
   </Window.Background>
   
   <Window.InputBindings>
-    <KeyBinding Command="{ActionBinding FocusTab}" Key="D1" Modifiers="Control" CommandParameter="0" />
-    <KeyBinding Command="{ActionBinding FocusTab}" Key="D2" Modifiers="Control" CommandParameter="1" />
-    <KeyBinding Command="{ActionBinding FocusTab}" Key="D3" Modifiers="Control" CommandParameter="2" />
-    <KeyBinding Command="{ActionBinding FocusTab}" Key="D4" Modifiers="Control" CommandParameter="3" />
-    <KeyBinding Command="{ActionBinding FocusTab}" Key="D5" Modifiers="Control" CommandParameter="4" />
-    <KeyBinding Command="{ActionBinding FocusTab}" Key="D6" Modifiers="Control" CommandParameter="5" />
-    <KeyBinding Command="{ActionBinding FocusTab}" Key="D7" Modifiers="Control" CommandParameter="6" />
-    <KeyBinding Command="{ActionBinding FocusTab}" Key="D8" Modifiers="Control" CommandParameter="7" />
-    <KeyBinding Command="{ActionBinding FocusTab}" Key="D9" Modifiers="Control" CommandParameter="8" />
-    <KeyBinding Command="{ActionBinding FocusTab}" Key="D0" Modifiers="Control" CommandParameter="9" />
+    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D1" Modifiers="Control" CommandParameter="0" />
+    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D2" Modifiers="Control" CommandParameter="1" />
+    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D3" Modifiers="Control" CommandParameter="2" />
+    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D4" Modifiers="Control" CommandParameter="3" />
+    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D5" Modifiers="Control" CommandParameter="4" />
+    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D6" Modifiers="Control" CommandParameter="5" />
+    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D7" Modifiers="Control" CommandParameter="6" />
+    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D8" Modifiers="Control" CommandParameter="7" />
+    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D9" Modifiers="Control" CommandParameter="8" />
+    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D0" Modifiers="Control" CommandParameter="9" />
     
-    <KeyBinding Command="{ActionBinding CloseSession}" Key="W" Modifiers="Control" />
-    <KeyBinding Command="{ActionBinding CloseSession}" Key="F4" Modifiers="Control" />
-    <KeyBinding Command="{ActionBinding CreateNewSession}" Key="T" Modifiers="Control" />
+    <KeyBinding Command="{Library:ActionBinding CloseSession}" Key="W" Modifiers="Control" />
+    <KeyBinding Command="{Library:ActionBinding CloseSession}" Key="F4" Modifiers="Control" />
+    <KeyBinding Command="{Library:ActionBinding CreateNewSession}" Key="T" Modifiers="Control" />
   </Window.InputBindings>
 
   <Border Padding="1" Background="{Binding ElementName=_This, Path=Background}">
@@ -180,7 +183,7 @@
                           x:Name="_TabControl"
                   Margin="4"
                   ItemsSource="{Binding Sessions}"
-                  AddItemCommand="{ActionBinding CreateNewSession}"
+                  AddItemCommand="{Library:ActionBinding CreateNewSession}"
                   SelectedItem="{Binding CurrentSession}">
 
         <TabControl.ContentTemplate>
@@ -199,6 +202,8 @@
               
               <!--TODO: Add Icon : <Image Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ClosableTabItem}}, Path=DataContext.Icon}" />-->
               <TextBlock Grid.Column="1" 
+                         Foreground="{DynamicResource ForegroundBrush}"
+                         FontFamily="{DynamicResource Font}"
                          Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ClosableTabItem}}, Path=DataContext.Title}"
                          ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Text}"/>
               
@@ -213,7 +218,7 @@
                  VerticalAlignment="Center"
                  HorizontalAlignment="Center"
                  FontSize="16"
-                 Text="{x:Static shell:MainViewResources.NoOpenSessions}"
+                 Text="{x:Static RESX:Resources.NoOpenSessions}"
                  Visibility="{Binding ElementName=_TabControl, Path=IsEmpty, Converter={StaticResource _BooleanToVisibilityConverter}}" />
 
       <Grid Grid.Row="2" Grid.ColumnSpan="5">

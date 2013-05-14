@@ -37,7 +37,9 @@
 
 	<!-- Colors -->
 
-  <Color x:Key="OverlayColor">#90000000</Color>
+  <Color x:Key="ModernScrollBarBackgroundColor">#8F535353</Color>
+  <Color x:Key="ModernScrollBarBorderColor">#BF535353</Color>
+  <Color x:Key="OverlayColor">#90525C65</Color>
   <Color x:Key="ProgressRingColor">#CC119EDA</Color>
   <Color x:Key="WhiteColor">#FDFDFD</Color>
   <Color x:Key="LightBlueColor">#66119EDA</Color>

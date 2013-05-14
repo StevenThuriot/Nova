@@ -1,12 +1,13 @@
 <Nova:ExceptionHandlerView x:Class="Nova.Controls.ExceptionHandler.ExceptionHandlerWindow"
-							 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-							 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-						     xmlns:Language="http://nova.thuriot.be/Language"
-                             xmlns:Base="http://nova.thuriot.be/Base"
-						     xmlns:Nova="clr-namespace:Nova.Controls.ExceptionHandler" MinWidth="600" MaxWidth="600" MaxHeight="550"
-							 SizeToContent="Height"
+							             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+							             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:Nova="clr-namespace:Nova.Controls.ExceptionHandler" 
+                           xmlns:Properties="clr-namespace:Nova.Properties"
+                           xmlns:Library="clr-namespace:Nova.Library"
+                           MinWidth="600" MaxWidth="600" MaxHeight="550"
+                           SizeToContent="Height"
                            WindowStyle="ToolWindow"
-                            WindowStartupLocation="CenterOwner">	
+                           WindowStartupLocation="CenterOwner">	
 	<Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="100" />
@@ -32,8 +33,8 @@
 				  Height="24"
 				  Margin="0,0,0,10"
 				  ExpandDirection="Down"
-				  Header="{x:Static Language:Resources.Details}"
-				  Visibility="{x:Static Base:ExceptionHandler.ExceptionInfoVisibility}">
+				  Header="{x:Static Properties:Resources.Details}"
+				  Visibility="{x:Static Library:ExceptionHandler.ExceptionInfoVisibility}">
 			<Expander.Triggers>
 				<EventTrigger RoutedEvent="Expander.Expanded">
 					<EventTrigger.Actions>

@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Nova="http://nova.thuriot.be/Base"
-                    xmlns:Validation="http://nova.thuriot.be/Validation">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Nova="clr-namespace:Nova.Library"
+                    xmlns:Validation="clr-namespace:Nova.Validation">
 
 
 	<Style x:Key="StrippedDownTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">

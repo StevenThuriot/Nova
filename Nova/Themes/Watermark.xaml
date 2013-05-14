@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-					xmlns:Base="http://nova.thuriot.be/Base"
-                    xmlns:Helpers="http://nova.thuriot.be/Helpers">
+					xmlns:Base="clr-namespace:Nova.Library"
+                    xmlns:Helpers="clr-namespace:Nova.Helpers">
 
   <Style x:Key="WatermarkBaseStyle" TargetType="{x:Type TextBlock}">
     <Setter Property="FontFamily" Value="{DynamicResource WatermarkFont}" />

@@ -1,16 +1,14 @@
 ﻿<Test:MainView x:Class="Nova.Test.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:Nova="http://nova.thuriot.be/Controls"
-		xmlns:Base="http://nova.thuriot.be/Base"
-		xmlns:Test="clr-namespace:Nova.Test" xmlns:Validation="http://nova.thuriot.be/Validation" Height="666"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Test="clr-namespace:Nova.Test"
+               Height="666"
         Width="650"
 		x:Name="TheCurrentView"
 		>
 	
 
-	<Validation:ValidationControl MapVisualTreeOnce="True">
-		<!--<Grid.RowDefinitions>
+	<ValidationControl MapVisualTreeOnce="True">
+		<Grid.RowDefinitions>
 			<RowDefinition Height="50" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
@@ -38,41 +36,41 @@
 
 			<Button Content="Run Action" Command="{ActionBinding ThrowException}" />
 			<TextBox Margin="10,0,0,0" Width="120" Text="Lalala"
-					 Base:ViewMode.Watermark="Put text here"
-           Validation:NovaValidation.FieldName="TextBox"
-           Validation:NovaValidation.IsRequired="True" />
+					 ViewMode.Watermark="Put text here"
+           NovaValidation.FieldName="TextBox"
+           NovaValidation.IsRequired="True" />
 
 			<PasswordBox Margin="10,0,0,0" Height="23" Width="120"
-					 Validation:NovaValidation.FieldName="Password"
-					  Base:ViewMode.Watermark="Pass watermark"
-           Validation:NovaValidation.IsRequired="True"  />
+					 NovaValidation.FieldName="Password"
+					  ViewMode.Watermark="Pass watermark"
+           NovaValidation.IsRequired="True"  />
 
 			<ComboBox Margin="10,0,0,0" Width="120"
-					 Validation:NovaValidation.FieldName="ComboBox"
-					 Validation:NovaValidation.ConcatToolTip="False"
-           Validation:NovaValidation.IsRequired="True" 
-					  Base:ViewMode.Watermark="ComboBox"
+					 NovaValidation.FieldName="ComboBox"
+					 NovaValidation.ConcatToolTip="False"
+           NovaValidation.IsRequired="True" 
+					  ViewMode.Watermark="ComboBox"
 					 SelectedIndex="1">
 				<ComboBoxItem>Item 1</ComboBoxItem>
 				<ComboBoxItem>Item 2</ComboBoxItem>
 				<ComboBoxItem>Item 3</ComboBoxItem>
 			</ComboBox>
 			
-			<Nova:SearchTextBox Width="150" Command="{Binding SearchCommand}"
+			<SearchTextBox Width="150" Command="{Binding SearchCommand}"
 									  Text="{Binding SearchText}"
-      Base:ViewMode.Watermark="Searchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
-         Validation:NovaValidation.IsRequired="True"
-         Validation:NovaValidation.FieldName="SearchTextBox" />
+      ViewMode.Watermark="Searchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
+         NovaValidation.IsRequired="True"
+         NovaValidation.FieldName="SearchTextBox" />
 
 			<Separator />
 
       <TabControl Height="80" Width="400">
-        <Nova:ClosableTabItem Header="First Item" />
+        <ClosableTabItem Header="First Item" />
         <TabItem Header="Second Item" />
       </TabControl>
-		</StackPanel>-->
+		</StackPanel>
 		
-		<Grid.RowDefinitions>
+		<!--<Grid.RowDefinitions>
 			<RowDefinition Height="30" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
@@ -93,33 +91,33 @@
 				</TabControl>
 			</StackPanel>
 			<StackPanel  Margin="10" Orientation="Horizontal">
-				<Nova:ImageButton Margin="10,0,0,0" Icon="/Nova;component/Resources/Check-icon.png"
+				<ImageButton Margin="10,0,0,0" Icon="/Nova;component/Resources/Check-icon.png"
 										Click="OpenExceptionWindow">
 					Start
-				</Nova:ImageButton>
-				<Nova:ImageButton Margin="10,0,0,0" Icon="/Nova;component/Resources/Delete-icon.png">
+				</ImageButton>
+				<ImageButton Margin="10,0,0,0" Icon="/Nova;component/Resources/Delete-icon.png">
 					Stop
-				</Nova:ImageButton>
+				</ImageButton>
 				<Button Content="Disabled button" Margin="10,0,0,0" IsEnabled="False" />
 				<Button Content="Open New Window" Margin="10,0,0,0" Click="OpenNewWindow" />
 			</StackPanel>
 			<StackPanel  Margin="10" Orientation="Horizontal">
 				<PasswordBox Margin="10,0,0,0" Height="23" Width="120"
-					  Base:ViewMode.Watermark="Pass watermark"
-						 Validation:NovaValidation.FieldName="Password" />
+					  ViewMode.Watermark="Pass watermark"
+						 NovaValidation.FieldName="Password" />
 				
 				<CheckBox Content="Null CheckBox" Height="16" IsChecked="{x:Null}"
-						 Validation:NovaValidation.FieldName="CheckBox2" />
+						 NovaValidation.FieldName="CheckBox2" />
 				<CheckBox Content="Disabled CheckBox" IsChecked="True" IsEnabled="False" Margin="10,0,0,0"  />
 			</StackPanel>
 
 			<StackPanel  Margin="10" Orientation="Horizontal">
 				<CheckBox Content="CheckBox" />
 				<ComboBox Margin="10,0,0,0" Width="120" 
-						 Validation:NovaValidation.FieldName="ComboBox" 
-						 Validation:NovaValidation.ConcatToolTip="False" 
-                  Validation:NovaValidation.IsRequired="True"
-						  Base:ViewMode.Watermark="ComboBox"
+						 NovaValidation.FieldName="ComboBox" 
+						 NovaValidation.ConcatToolTip="False" 
+                  NovaValidation.IsRequired="True"
+						  ViewMode.Watermark="ComboBox"
 						 SelectedIndex="1">
 					<ComboBoxItem>Item 1</ComboBoxItem>
 					<ComboBoxItem>Item 2</ComboBoxItem>
@@ -127,27 +125,27 @@
 				</ComboBox>
 				
 				<RadioButton GroupName="Nova" Margin="10,0,0,0" Content="RadioButton 1"
-						 Validation:NovaValidation.FieldName="RadioButton"
-						 Validation:NovaValidation.EntityID="de475614-6405-414b-8e38-73b3953136aa" />
+						 NovaValidation.FieldName="RadioButton"
+						 NovaValidation.EntityID="de475614-6405-414b-8e38-73b3953136aa" />
 				<RadioButton GroupName="Nova" Margin="10,0,0,0" Content="RadioButton 2"
-						 Validation:NovaValidation.FieldName="RadioButton"
-						 Validation:NovaValidation.EntityID="1ff8e3f3-09c7-424f-8aff-9559cbbf1243"
+						 NovaValidation.FieldName="RadioButton"
+						 NovaValidation.EntityID="1ff8e3f3-09c7-424f-8aff-9559cbbf1243"
 						   />
 				<TextBox Margin="10,0,0,0" Width="120" Text="Lalala" 
-						 Base:ViewMode.Watermark="Put text here"
-						 Validation:NovaValidation.FieldName="TextBox" />
+						 ViewMode.Watermark="Put text here"
+						 NovaValidation.FieldName="TextBox" />
 			</StackPanel>
 
 			<StackPanel  Margin="10" Orientation="Horizontal">
 				<Label>This is a label</Label>
 				<TextBlock Style="{DynamicResource NovaTextBlock}">This is a textblock</TextBlock>
 				<Button Content="Throw Exception" Command="{ActionBinding ThrowException}" />
-				<Nova:SearchTextBox Width="150" Command="{Binding SearchCommand}"
+				<SearchTextBox Width="150" Command="{Binding SearchCommand}"
 										  Text="{Binding SearchText}"
-                    Base:ViewMode.Watermark="Searchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
-						 Validation:NovaValidation.FieldName="SearchTextBox"
+                    ViewMode.Watermark="Searchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
+						 NovaValidation.FieldName="SearchTextBox"
 						  />
-				<!--<ListBox Width="150">
+				--><!--<ListBox Width="150">
 					<ListBox.ContextMenu>
 
 						<ContextMenu>
@@ -159,15 +157,15 @@
 					<ListBoxItem>Lorem</ListBoxItem>
 					<ListBoxItem>ipsum</ListBoxItem>
 					<ListBoxItem>dolor</ListBoxItem>
-				</ListBox>-->
+				</ListBox>--><!--
 
 			</StackPanel>
       <StackPanel Margin="10" Orientation="Horizontal">
 
         <NumericTextBox Margin="10,0,0,0" Height="23" Width="120"
-					  Base:ViewMode.Watermark="Numeric watermark"
+					  ViewMode.Watermark="Numeric watermark"
                         Text="164565423.132134654"
-						 Validation:NovaValidation.FieldName="NumericTextBox">
+						 NovaValidation.FieldName="NumericTextBox">
           <NumericTextBox.NumericSettings>
             <NumericSettings MaximumNumbers="2" 
                              MaximumDecimals="1"
@@ -177,9 +175,9 @@
         
         <MaskedTextBox Margin="10,0,0,0" Height="23" Width="120"
                        Mask="999-999"
-					  Base:ViewMode.Watermark="Masked watermark"
-						 Validation:NovaValidation.FieldName="MaskedTextBox" />
+					  ViewMode.Watermark="Masked watermark"
+						 NovaValidation.FieldName="MaskedTextBox" />
       </StackPanel>
-		</StackPanel> 
-	</Validation:ValidationControl>
+		</StackPanel>--> 
+	</ValidationControl>
 </Test:MainView>

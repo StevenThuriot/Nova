@@ -3,8 +3,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:shell="clr-namespace:Nova.Shell"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      mc:Ignorable="d" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:Domain="clr-namespace:Nova.Shell.Domain"
+                       xmlns:Controls="clr-namespace:Nova.Shell.Controls"
+                       mc:Ignorable="d" 
       d:DataContext="{d:DesignData Source=SessionViewModel.cs}"
 	    Title="{Binding Title, Mode=OneWay}" >
 
@@ -20,8 +21,6 @@
 
     <TextBlock Grid.Row="0" Grid.ColumnSpan="2">Identification goes here.</TextBlock>
     
-    <TextBlock Grid.Row="1" Grid.Column="0">Navigation goes here.</TextBlock>
-
     <Border Grid.Row="1" Grid.Column="1"
             BorderThickness="1 1 0 0"
             BorderBrush="{DynamicResource LightBlueBrush}"
@@ -31,13 +30,20 @@
       <Frame NavigationUIVisibility="Hidden" x:Name="ContentZone" />
     </Border>
 
+    <Controls:NovaTree Grid.Row="1" Grid.Column="0"
+                       x:Name="_NovaTree" />
+
     <Overlay Grid.RowSpan="2"
              Grid.ColumnSpan="2"
+             
+             Grid.Row="0"
+             Grid.Column="0"
+             
              Margin="-2 -1 -2 -2"
-             IsLoading="{Binding View.IsLoading}"
+             IsLoading="{Binding View.IsLoading, Mode=OneWay}"
              Delay="1250"
              >
-      <ProgressRing IsActive="{Binding View.IsLoading}"
+      <ProgressRing IsActive="{Binding View.IsLoading, Mode=OneWay}"
                     Foreground="{DynamicResource WhiteBrush}"
                     />
     </Overlay>

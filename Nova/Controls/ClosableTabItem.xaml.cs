@@ -1,4 +1,6 @@
-﻿#region License
+﻿using System.Windows.Input;
+
+#region License
 
 // 
 //  Copyright 2012 Steven Thuriot
@@ -59,6 +61,8 @@ namespace Nova.Controls
         {
             InitializeComponent();
             AddHandler(CloseTabEvent, new RoutedEventHandler(CloseCurrentTabItem));
+
+            PreviewMouseUp += OnMiddleClick;
         }
 
         /// <summary>
@@ -82,12 +86,26 @@ namespace Nova.Controls
         }
 
         /// <summary>
+        /// Called when middle clicked.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="MouseButtonEventArgs" /> instance containing the event data.</param>
+        private void OnMiddleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Middle || e.ButtonState != MouseButtonState.Released) return;
+
+            RaiseCloseEvent(sender, e);
+        }
+
+        /// <summary>
         /// Raises the close event.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private void RaiseCloseEvent(object sender, RoutedEventArgs e)
         {
+            if (e.Handled) return;
+
             e.Handled = true;
             var routedEventArgs = new RoutedEventArgs(CloseTabEvent, DataContext);
             RaiseEvent(routedEventArgs);

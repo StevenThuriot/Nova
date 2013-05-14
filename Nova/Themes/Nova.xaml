@@ -8,7 +8,8 @@
 		<ResourceDictionary Source="TextBlock.xaml" />
 		<ResourceDictionary Source="Label.xaml" />
 		<ResourceDictionary Source="Watermark.xaml" />
-		<ResourceDictionary Source="TabControl.xaml" />
+    <ResourceDictionary Source="TabControl.xaml" />
+    <ResourceDictionary Source="ModernScrollViewer.xaml" />
 		<ResourceDictionary Source="Scrollbar.xaml" />
 		<ResourceDictionary Source="Button.xaml" />
 		<ResourceDictionary Source="Textbox.xaml" />
