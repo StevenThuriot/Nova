@@ -7,7 +7,7 @@
                     xmlns:converters="clr-namespace:Nova.Shell.Converters" 
                     xmlns:shell="clr-namespace:Nova.Shell"
                     xmlns:RESX="clr-namespace:Nova.Shell.Properties"
-                    xmlns:Library="clr-namespace:Nova.Library;assembly=Nova"
+                    
                     x:Name="_This"
         
                     Width="1024"
@@ -72,20 +72,20 @@
   </Window.Background>
   
   <Window.InputBindings>
-    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D1" Modifiers="Control" CommandParameter="0" />
-    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D2" Modifiers="Control" CommandParameter="1" />
-    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D3" Modifiers="Control" CommandParameter="2" />
-    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D4" Modifiers="Control" CommandParameter="3" />
-    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D5" Modifiers="Control" CommandParameter="4" />
-    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D6" Modifiers="Control" CommandParameter="5" />
-    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D7" Modifiers="Control" CommandParameter="6" />
-    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D8" Modifiers="Control" CommandParameter="7" />
-    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D9" Modifiers="Control" CommandParameter="8" />
-    <KeyBinding Command="{Library:ActionBinding FocusTab}" Key="D0" Modifiers="Control" CommandParameter="9" />
+    <KeyBinding Command="{ActionBinding FocusTab}" Key="D1" Modifiers="Control" CommandParameter="0" />
+    <KeyBinding Command="{ActionBinding FocusTab}" Key="D2" Modifiers="Control" CommandParameter="1" />
+    <KeyBinding Command="{ActionBinding FocusTab}" Key="D3" Modifiers="Control" CommandParameter="2" />
+    <KeyBinding Command="{ActionBinding FocusTab}" Key="D4" Modifiers="Control" CommandParameter="3" />
+    <KeyBinding Command="{ActionBinding FocusTab}" Key="D5" Modifiers="Control" CommandParameter="4" />
+    <KeyBinding Command="{ActionBinding FocusTab}" Key="D6" Modifiers="Control" CommandParameter="5" />
+    <KeyBinding Command="{ActionBinding FocusTab}" Key="D7" Modifiers="Control" CommandParameter="6" />
+    <KeyBinding Command="{ActionBinding FocusTab}" Key="D8" Modifiers="Control" CommandParameter="7" />
+    <KeyBinding Command="{ActionBinding FocusTab}" Key="D9" Modifiers="Control" CommandParameter="8" />
+    <KeyBinding Command="{ActionBinding FocusTab}" Key="D0" Modifiers="Control" CommandParameter="9" />
     
-    <KeyBinding Command="{Library:ActionBinding CloseSession}" Key="W" Modifiers="Control" />
-    <KeyBinding Command="{Library:ActionBinding CloseSession}" Key="F4" Modifiers="Control" />
-    <KeyBinding Command="{Library:ActionBinding CreateNewSession}" Key="T" Modifiers="Control" />
+    <KeyBinding Command="{ActionBinding CloseSession}" Key="W" Modifiers="Control" />
+    <KeyBinding Command="{ActionBinding CloseSession}" Key="F4" Modifiers="Control" />
+    <KeyBinding Command="{ActionBinding CreateNewSession}" Key="T" Modifiers="Control" />
   </Window.InputBindings>
 
   <Border Padding="1" Background="{Binding ElementName=_This, Path=Background}">
@@ -183,7 +183,7 @@
                           x:Name="_TabControl"
                   Margin="4"
                   ItemsSource="{Binding Sessions}"
-                  AddItemCommand="{Library:ActionBinding CreateNewSession}"
+                  AddItemCommand="{ActionBinding CreateNewSession}"
                   SelectedItem="{Binding CurrentSession}">
 
         <TabControl.ContentTemplate>

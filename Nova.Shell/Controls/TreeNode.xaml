@@ -9,11 +9,18 @@
     <GradientStop Color="#0089e6" Offset="0.0" />
     <GradientStop Color="#007ACC" Offset="1.0" />
   </LinearGradientBrush>
+  
+  
+  <LinearGradientBrush x:Key="_HoverBackgroundBrush" StartPoint="0,0" EndPoint="0,1"
+                       ice:Freeze="True" >
+    <GradientStop Color="#77007ACC" Offset="0.0" />
+    <GradientStop Color="#770089e6" Offset="1.0" />
+  </LinearGradientBrush>
 
   <LinearGradientBrush x:Key="_InvertedBlueBackgroundBrush" StartPoint="0,0" EndPoint="0,1"
                        ice:Freeze="True" >
-    <GradientStop Color="#007ACC" Offset="0.0" />
-    <GradientStop Color="#0089e6" Offset="1.0" />
+    <GradientStop Color="#AA007ACC" Offset="0.0" />
+    <GradientStop Color="#AA0089e6" Offset="1.0" />
   </LinearGradientBrush>
 
   <Style x:Key="_BaseNavigationalTreeItemStyle" TargetType="{x:Type Button}">
@@ -22,9 +29,11 @@
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="HorizontalAlignment" Value="Stretch" />
     <Setter Property="OverridesDefaultStyle" Value="True" />
-    <Setter Property="FocusVisualStyle" Value="{StaticResource MyFocusVisual}" />
+    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
     <Setter Property="FontFamily" Value="{DynamicResource Font}" />
     <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
   </Style>
 
   <Style x:Key="_NavigationalTreeItemStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource _BaseNavigationalTreeItemStyle}">
@@ -35,51 +44,16 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Button}">
           <Border CornerRadius="2 0 0 2" BorderThickness="0" Padding="0" Margin="0 0 0 2" Background="{TemplateBinding Background}">
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-              </Grid.ColumnDefinitions>
 
-              <TextBlock Text="{TemplateBinding Content}"
-                         Foreground="{TemplateBinding Foreground}"
-                         Padding="8 4"
-                         Grid.Column="0" />
-
-              <Path Grid.Column="1"
-                    x:Name="_Arrow"
-                    Margin="0 0 -1 0"
-                         
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Right"
-                      
-                    StrokeThickness="0"
-                    Stroke="{x:Null}"
-                    Fill="{x:Null}"
-
-                    Data="F1 M 22,0 L 6,10 L 22,22 Z"
-                         
-                      />
-              <Path Grid.Column="1"
-                    x:Name="_ArrowBorder"
-                    Margin="0"
-                         
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Right"
-                      
-                    StrokeThickness="1"
-                    Stroke="{x:Null}"
-                    Fill="{x:Null}"
-
-                    Data="M 20,0 L 6,10 L 20,20"
-                         
-                      />
-            </Grid>
+            <TextBlock Text="{TemplateBinding Content}"
+                       Foreground="{TemplateBinding Foreground}"
+                       Padding="8 4" />
+            
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter TargetName="_Arrow" Property="Fill" Value="{StaticResource White}" />
-              <Setter TargetName="_ArrowBorder" Property="Stroke" Value="{DynamicResource LightBlueBrush}" />
+              <Setter Property="Foreground" Value="{StaticResource White}" />
+              <Setter Property="Background" Value="{StaticResource _HoverBackgroundBrush}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
               <Setter Property="Foreground" Value="{StaticResource White}" />
@@ -111,7 +85,7 @@
                          Grid.Column="0" />
 
               <Path Grid.Column="1"
-                    Margin="0 0 -1 0"
+                    Margin="0 0 -2 0"
                          
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
@@ -120,11 +94,11 @@
                     Stroke="{x:Null}"
                     Fill="{StaticResource White}"
 
-                    Data="F1 M 22,0 L 6,10 L 22,22 Z"
+                    Data="M 22,0 L 6,10 L 22,22 Z"
                          
                       />
               <Path Grid.Column="1"
-                    Margin="0"
+                    Margin="0 0 -3 0"
                          
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
@@ -133,7 +107,7 @@
                     Stroke="{DynamicResource LightBlueBrush}"
                     Fill="{x:Null}"
 
-                    Data="M 20,0 L 6,10 L 20,20"
+                    Data="M 22,0 L 6,10 L 22,22"
                          
                       />
             </Grid>

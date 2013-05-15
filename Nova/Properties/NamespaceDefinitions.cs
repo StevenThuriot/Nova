@@ -24,12 +24,12 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://nova.thuriot.be/Helpers", "Nova.Helpers")]
 [assembly: XmlnsPrefix("http://nova.thuriot.be/Helpers", "Helpers")]
 
-[assembly: XmlnsDefinition("clr-namespace:Nova.Controls", "Nova.Controls")]
-[assembly: XmlnsDefinition("clr-namespace:Nova.Controls", "Nova.Controls.ExceptionHandler")]
-[assembly: XmlnsPrefix("clr-namespace:Nova.Controls", "Controls")]
+[assembly: XmlnsDefinition("http://nova.thuriot.be/Controls", "Nova.Controls")]
+[assembly: XmlnsDefinition("http://nova.thuriot.be/Controls", "Nova.Controls.ExceptionHandler")]
+[assembly: XmlnsPrefix("http://nova.thuriot.be/Controls", "Controls")]
 
-[assembly: XmlnsDefinition("clr-namespace:Nova.Validation", "Nova.Validation")]
-[assembly: XmlnsPrefix("clr-namespace:Nova.Validation", "Validation")]
+[assembly: XmlnsDefinition("http://nova.thuriot.be/Validation", "Nova.Validation")]
+[assembly: XmlnsPrefix("http://nova.thuriot.be/Validation", "Validation")]
 
 [assembly: XmlnsDefinition("http://nova.thuriot.be/Language", "Nova.Properties")]
 [assembly: XmlnsPrefix("http://nova.thuriot.be/Language", "Language")]
