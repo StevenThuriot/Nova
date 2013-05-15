@@ -133,10 +133,28 @@ namespace Nova.Shell.Controls
             _PageType = pageType;
             _ViewModelType = viewModelType;
 
-            foreach (var node in TreeNodes)
-            {
-                node.ReevaluateState(pageType, viewModelType);
-            }
+            var novaTreeNodes = TreeNodes;
+            if (ReevaluateNodes(novaTreeNodes)) return; //Node found in current module
+            
+            //Search TreeNodes in a different module.
+            var nodes = Modules.Select(x => x.TreeNodes)
+                               .Where(x => x != novaTreeNodes)
+                               .FirstOrDefault(ReevaluateNodes);
+
+            if (nodes == null) return; //Leave the navigational tree intact if the current node was not found.
+
+            TreeNodes = nodes;
+        }
+
+        /// <summary>
+        /// Reevaluates the nodes.
+        /// </summary>
+        /// <param name="novaTreeNodes">The nova tree nodes.</param>
+        /// <returns>True if one of the nodes is the current node.</returns>
+        private bool ReevaluateNodes(IEnumerable<NovaTreeNode> novaTreeNodes)
+        {
+            return novaTreeNodes.Select(node => node.ReevaluateState(_PageType, _ViewModelType))
+                                .Aggregate(false, (current, result) => current || result);
         }
 
         /// <summary>

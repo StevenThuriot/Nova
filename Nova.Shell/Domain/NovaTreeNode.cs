@@ -119,9 +119,12 @@ namespace Nova.Shell.Domain
         /// <param name="pageType">Type of the page.</param>
         /// <param name="viewModelType">Type of the view model.</param>
         /// <exception cref="System.NotImplementedException"></exception>
-        internal void ReevaluateState(Type pageType, Type viewModelType)
+        internal bool ReevaluateState(Type pageType, Type viewModelType)
         {
-            IsCurrentNode = pageType == _PageType && viewModelType == _ViewModelType;
+            var result = pageType == _PageType && viewModelType == _ViewModelType;
+            IsCurrentNode = result;
+            
+            return result;
         }
 
 
