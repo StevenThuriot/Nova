@@ -27,7 +27,7 @@
             CornerRadius="1 0 0 0"
             Margin="0 0 -3 -3"
             Padding="3">
-      <Frame NavigationUIVisibility="Hidden" x:Name="ContentZone" />
+      <ContentControl Content="{Binding CurrentView, Mode=OneWay}" />
     </Border>
 
     <Controls:NovaTree Grid.Row="1" Grid.Column="0"

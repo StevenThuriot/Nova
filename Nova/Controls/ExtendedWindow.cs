@@ -1,7 +1,4 @@
-﻿using Nova.Library;
-using Nova.Library.Actions;
-
-#region License
+﻿#region License
 
 // 
 //  Copyright 2012 Steven Thuriot
@@ -30,6 +27,8 @@ using Nova.Helpers;
 using Nova.Threading;
 using System.Threading;
 using Nova.Validation;
+using Nova.Library;
+using Nova.Library.Actions;
 
 namespace Nova.Controls
 {

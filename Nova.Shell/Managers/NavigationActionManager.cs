@@ -57,7 +57,7 @@ namespace Nova.Shell.Managers
         /// <returns></returns>
         public ICommand New<TPageView, TPageViewModel>()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new()
         {
             var viewModel = _Session.ViewModel;
 

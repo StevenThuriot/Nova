@@ -35,6 +35,6 @@ namespace Nova.Shell.Library
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         ICommand CreateNavigationalAction<TPageView, TPageViewModel>()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new();
+            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new();
     }
 }

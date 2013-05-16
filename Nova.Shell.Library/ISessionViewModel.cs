@@ -78,6 +78,6 @@ namespace Nova.Shell.Library
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         TPageView CreatePage<TPageView, TPageViewModel>(bool enterOnInitialize = true)
             where TPageViewModel : ViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new();
+            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new();
     }
 }

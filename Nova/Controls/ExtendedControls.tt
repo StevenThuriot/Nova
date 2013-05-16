@@ -1,5 +1,22 @@
-﻿using Nova.Library;
-
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" #>
+<#@ assembly name="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xaml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" #>
+<#@ assembly name="WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Windows.Controls" #>
+<#@ output extension=".cs" #>
+<#
+	//Because these types have a very similar implementation, yet have a different base class,
+	//a T4 template has been created for these files instead.
+    var types = new List<Type>
+        {
+            typeof (Page),
+            typeof (UserControl),
+        };
+#>
 #region License
 
 // 
@@ -28,25 +45,40 @@ using System.Windows.Media;
 using Nova.Helpers;
 using Nova.Threading;
 using Nova.Validation;
+using Nova.Library;
 
 namespace Nova.Controls
 {
+<#
+    foreach (var type in types)
+    {
+        var name = type.Name;
+        var hasTitle = type.GetProperties().Any(x => x.Name == "Title");
+#>
+
     /// <summary>
-    /// A default Page class that has added logic for MVVM.
+    /// A default <#= name #> class that has added logic for MVVM.
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class ExtendedPage<TView, TViewModel> : Page, IView
+    public abstract class Extended<#= name #><TView, TViewModel> : <#= name #>, IView
         where TViewModel : ViewModel<TView, TViewModel>, new()
-        where TView : ExtendedPage<TView, TViewModel>, new()
+        where TView : Extended<#= name #><TView, TViewModel>, new()
     {
+        // ReSharper disable StaticFieldInGenericType
+
         /// <summary>
         ///     A value indicating whether this instance is loading.
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
-        public static readonly
-            // ReSharper disable StaticFieldInGenericType
-            DependencyProperty IsLoadingProperty = DependencyProperty.Register("IsLoading", typeof(bool), typeof(ExtendedPage<TView, TViewModel>), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.Register("IsLoading", typeof(bool), typeof(Extended<#= name #><TView, TViewModel>), new PropertyMetadata(false));
+<# if (!hasTitle) {#>
+		
+        /// <summary>
+        /// The title property
+        /// </summary>
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(Extended<#= name #><TView, TViewModel>), new PropertyMetadata(""));
+<# } #>
 
         // ReSharper restore StaticFieldInGenericType
 
@@ -122,11 +154,25 @@ namespace Nova.Controls
             get { return (bool)GetValue(IsLoadingProperty); }
             set { SetValue(IsLoadingProperty, value); }
         }
+<# if (!hasTitle) {#>
+		
+        /// <summary>
+        /// Gets the title.
+        /// </summary>
+        /// <value>
+        /// The title.
+        /// </value>
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+<# } #>
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtendedPage{TView, TViewModel}"/> class.
+        /// Initializes a new instance of the <see cref="Extended<#= name #>{TView, TViewModel}"/> class.
         /// </summary>
-        protected ExtendedPage()
+        protected Extended<#= name #>()
         {
             SnapsToDevicePixels = true;
 
@@ -138,7 +184,7 @@ namespace Nova.Controls
         }
         
         /// <summary>
-        /// Creates the specified page.
+        /// Creates the specified <#= name #>.
         /// </summary>
         /// <param name="parent">The parent view.</param>
         /// <param name="actionQueueManager">The action queue manager.</param>
@@ -154,14 +200,14 @@ namespace Nova.Controls
             if (actionQueueManager == null)
                 throw new ArgumentNullException("actionQueueManager");
             
-            var page = new TView
+            var <#= name.ToLowerInvariant() #> = new TView
                 {
                     _Parent = parent
                 };
 
-            page.ViewModel = ViewModel<TView, TViewModel>.Create(page, actionQueueManager, enterOnInitialize);
+            <#= name.ToLowerInvariant() #>.ViewModel = ViewModel<TView, TViewModel>.Create(<#= name.ToLowerInvariant() #>, actionQueueManager, enterOnInitialize);
 
-            return page;
+            return <#= name.ToLowerInvariant() #>;
         }        
         
         
@@ -219,9 +265,9 @@ namespace Nova.Controls
 
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
-        /// ExtendedPage is reclaimed by garbage collection.
+        /// Extended<#= name #> is reclaimed by garbage collection.
         /// </summary>
-        ~ExtendedPage()
+        ~Extended<#= name #>()
         {
             Dispose(false);
         }
@@ -256,4 +302,5 @@ namespace Nova.Controls
             _Disposed = true;
         }
     }
+<#}#>
 }

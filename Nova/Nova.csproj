@@ -247,7 +247,15 @@
     <Compile Include="Controls\ExceptionHandler\ExceptionHandlerWindow.xaml.cs">
       <DependentUpon>ExceptionHandlerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ExtendedPage.cs" />
+    <None Include="Controls\ExtendedControls.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ExtendedControls.cs</LastGenOutput>
+    </None>
+    <Compile Include="Controls\ExtendedControls.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExtendedControls.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ExtendedWindow.cs" />
     <Compile Include="Controls\FlowPanel.cs" />
     <Compile Include="Controls\IView.cs" />
@@ -392,6 +400,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

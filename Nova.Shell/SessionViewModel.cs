@@ -129,7 +129,6 @@ namespace Nova.Shell
                 if (value == null || !SetValue(ref _CurrentView, value)) return;
 
                 Title = _CurrentView.Title;
-                View.ContentZone.Navigate(_CurrentView);
             }
         }
 
@@ -160,7 +159,7 @@ namespace Nova.Shell
         /// <returns></returns>
         internal TPageView CreatePage<TPageView, TPageViewModel>()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new()
         {
             var page = CreatePage<TPageView, TPageViewModel>(false);
             page.ViewModel.Initialize(this);
@@ -175,8 +174,8 @@ namespace Nova.Shell
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         /// <returns></returns>
         /// <exception cref="System.NotImplementedException"></exception>
-        public ICommand CreateNavigationalAction<TPageView, TPageViewModel>() 
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new() 
+        public ICommand CreateNavigationalAction<TPageView, TPageViewModel>()
+            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new() 
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
             return NavigationActionManager.New<TPageView, TPageViewModel>();

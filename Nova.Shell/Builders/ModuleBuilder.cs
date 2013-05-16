@@ -77,8 +77,8 @@ namespace Nova.Shell.Builders
         /// <param name="title">The title of the node. Default value is the type name.</param>
         /// <param name="rank">The ranking in the navigational tree. Default value is 10.</param>
         /// <returns>The module builder instance.</returns>
-        public IModuleBuilder AddNavigation<TPageView, TPageViewModel>(string title = null, int rank = 10) 
-            where TPageView : ExtendedPage<TPageView, TPageViewModel>, new() 
+        public IModuleBuilder AddNavigation<TPageView, TPageViewModel>(string title = null, int rank = 10)
+            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new() 
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
             //TODO: Allow parameter (so one screen can be used for several purposed depending on the parameter, e.g full/light)

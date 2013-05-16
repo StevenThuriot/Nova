@@ -21,7 +21,7 @@ using Nova.Controls;
 
 namespace Nova.Shell
 {
-    public class SessionViewBase : ExtendedPage<SessionView, SessionViewModel>
+    public class SessionViewBase : ExtendedUserControl<SessionView, SessionViewModel>
     {
     }
 }
