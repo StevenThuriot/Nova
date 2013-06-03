@@ -147,6 +147,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\ValidationBorder.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\ModernScrollViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -271,6 +275,7 @@
       <DependentUpon>ProgressIndicator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ProgressRing.cs" />
+    <Compile Include="Controls\ValidationBorder.cs" />
     <Compile Include="Converters\IsNotNullToVisibilityConverter.cs" />
     <Compile Include="Converters\SubtractionConverter.cs" />
     <Compile Include="Converters\WidthPercentageConverter.cs" />

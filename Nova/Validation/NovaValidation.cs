@@ -65,7 +65,7 @@ namespace Nova.Validation
         /// Wether or not the dependency object is required.
         /// </summary>
         public static readonly DependencyProperty IsRequiredProperty =
-            DependencyProperty.RegisterAttached("IsRequired", typeof(bool), typeof(NovaValidation), new PropertyMetadata(false));
+            DependencyProperty.RegisterAttached("IsRequired", typeof(bool), typeof(NovaValidation), new UIPropertyMetadata(false));
 
         /// <summary>
         /// Gets wether or not the dependency object is required.
@@ -74,7 +74,7 @@ namespace Nova.Validation
         /// <returns>Wether or not the dependency object is required.</returns>
         public static bool GetIsRequired(DependencyObject dependencyObject)
         {
-            return (bool)dependencyObject.GetValue(IsRequiredProperty);
+            return (bool) dependencyObject.GetValue(IsRequiredProperty);
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace Nova.Validation
 		/// Wether or not the dependency object is valid.
 		/// </summary>
 		public static readonly DependencyProperty IsValidProperty =
-			DependencyProperty.RegisterAttached("IsValid", typeof(bool), typeof(NovaValidation), new PropertyMetadata(true));
+			DependencyProperty.RegisterAttached("IsValid", typeof(bool), typeof(NovaValidation), new UIPropertyMetadata(true));
 
 		/// <summary>
 		/// Gets wether or not the dependency object is valid.
@@ -244,7 +244,7 @@ namespace Nova.Validation
 		/// Wether or not to validate the dependency object when it is disabled.
 		/// </summary>
 		public static readonly DependencyProperty ValidateWhenDisabledProperty =
-			DependencyProperty.RegisterAttached("ValidateWhenDisabled", typeof(bool), typeof(NovaValidation), new PropertyMetadata(false));
+			DependencyProperty.RegisterAttached("ValidateWhenDisabled", typeof(bool), typeof(NovaValidation), new UIPropertyMetadata(false));
 
 		/// <summary>
 		/// Gets wether or not to validate the dependency object when it is disabled.

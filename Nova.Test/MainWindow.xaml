@@ -33,8 +33,11 @@
 				</DataGrid.Columns>
 			</DataGrid>
 
-
-			<Button Content="Run Action" Command="{ActionBinding ThrowException}" />
+      <ValidationBorder NovaValidation.FieldName="Validation Border"
+                        NovaValidation.IsRequired="True">
+        <Button Content="Run Action" Command="{ActionBinding ThrowException}" />
+      </ValidationBorder>
+      
 			<TextBox Margin="10,0,0,0" Width="120" Text="Lalala"
 					 ViewMode.Watermark="Put text here"
            NovaValidation.FieldName="TextBox"

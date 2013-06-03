@@ -1,5 +1,3 @@
-using Nova.Library;
-
 #region License
 // 
 //  Copyright 2012 Steven Thuriot
@@ -19,6 +17,7 @@ using Nova.Library;
 #endregion
 
 using System;
+using Nova.Library;
 using Nova.Validation;
 
 namespace Nova.Test
@@ -43,6 +42,7 @@ namespace Nova.Test
             Add("SearchTextBox", "Search somthing!", ValidationSeverity.Suggestion);
             Add("RadioButton", "This is the RadioButton with guid de475614-6405-414b-8e38-73b3953136aa", new Guid("de475614-6405-414b-8e38-73b3953136aa"));
             Add("RadioButton", "This is the RadioButton with guid 1ff8e3f3-09c7-424f-8aff-9559cbbf1243", new Guid("1ff8e3f3-09c7-424f-8aff-9559cbbf1243"));
+            Add("Validation Border", "This is a validation border");
 		}
 	}
 }

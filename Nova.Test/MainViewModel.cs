@@ -89,15 +89,15 @@ namespace Nova.Test
 		}
 		*/
 
-		public void OnAfterThrowException(ActionContext context)
-		{
-			MessageBox.Show("On After VM");
-		}
+        //public void OnAfterThrowException(ActionContext context)
+        //{
+        //    MessageBox.Show("On After VM");
+        //}
 
-		public void OnAfter(ActionContext context)
-		{
-            MessageBox.Show("General On After VM: " + context.ActionName);
-		}
+        //public void OnAfter(ActionContext context)
+        //{
+        //    MessageBox.Show("General On After VM: " + context.ActionName);
+        //}
 
 		protected override void Save(dynamic value)
 		{

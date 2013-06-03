@@ -493,6 +493,12 @@ namespace Nova.Validation
                 return PasswordBoxMonitor.IsFilledIn(passwordBox);
             }
 
+            var validationBorder = element as ValidationBorder;
+            if (validationBorder != null)
+            {
+                return validationBorder.IsFilledIn;
+            }
+
             return true; //return true if we don't know what it is, so we don't block anything because of possibly faulty validation.
         }
     }
