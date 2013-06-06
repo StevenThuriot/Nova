@@ -1,4 +1,26 @@
-﻿using System;
+﻿#region License
+
+// 
+//  Copyright 2013 Steven Thuriot
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace Nova.Library
 {
@@ -14,8 +36,11 @@ namespace Nova.Library
         /// using (ChangeTrackingScope.Pause)
         /// {
         ///     //Changes made here won't alter dirty state.
-        /// } 
-        /// </example>
+        /// }
+        ///   </example>
+        /// <remarks>
+        /// Should always be used in a using block.
+        /// </remarks>
         public static IDisposable Pause
         {
             get { return new PauseChangeTrackingScope(); }
@@ -29,13 +54,8 @@ namespace Nova.Library
         /// </value>
         public static bool IsPaused
         {
-            get
-            {
-                return PauseChangeTrackingScope.CurrentScope != null;
-            }
+            get { return PauseChangeTrackingScope.IsScoped; }
         }
-
-
 
         //Added a private subclass instead of just using the ChangeTrackingScope to be future proof (in case other things than pause are implemented)
 
@@ -44,25 +64,48 @@ namespace Nova.Library
         /// </summary>
         private class PauseChangeTrackingScope : IDisposable
         {
+            private static readonly ThreadLocal<Stack<PauseChangeTrackingScope>> LocalScopeStack = new ThreadLocal<Stack<PauseChangeTrackingScope>>(() => new Stack<PauseChangeTrackingScope>());
+            private bool _Disposed;
+            
             /// <summary>
-            /// Gets or sets the current scope.
+            /// Gets the scope stack.
             /// </summary>
             /// <value>
-            /// The current scope.
+            /// The scope stack.
             /// </value>
-            public static PauseChangeTrackingScope CurrentScope { get; private set; }
+            private static Stack<PauseChangeTrackingScope> ScopeStack
+            {
+                get { return LocalScopeStack.Value; }
+            }
 
+            /// <summary>
+            /// Gets a value indicating whether change tracking is paused.
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if change tracking is paused; otherwise, <c>false</c>.
+            /// </value>
+            public static bool IsScoped
+            {
+                get { return ScopeStack.Count > 0; }
+            }
 
-            private bool _Disposed;
-            private PauseChangeTrackingScope _ParentScope;
+            ///// <summary>
+            ///// Gets or sets the current scope.
+            ///// </summary>
+            ///// <value>
+            ///// The current scope.
+            ///// </value>
+            //public static PauseChangeTrackingScope CurrentScope
+            //{
+            //    get { return IsScoped ? ScopeStack.Peek() : null; }
+            //}
 
             /// <summary>
             /// Initializes a new instance of the <see cref="PauseChangeTrackingScope" /> class.
             /// </summary>
             public PauseChangeTrackingScope()
             {
-                _ParentScope = CurrentScope;
-                CurrentScope = this;
+                ScopeStack.Push(this);
             }
 
             /// <summary>
@@ -92,8 +135,7 @@ namespace Nova.Library
 
                 if (disposing)
                 {
-                    CurrentScope = _ParentScope;
-                    _ParentScope = null;
+                    ScopeStack.Pop();
                 }
 
                 _Disposed = true;
