@@ -27,6 +27,7 @@
       <ItemsControl ItemsSource="{Binding TreeNodes, Mode=OneWay, ElementName=_NavigationalTree}"
                     Padding="0"
                     Margin="0 1 1 1"
+                    FocusVisualStyle="{x:Null}"
                     />
       
     </ScrollViewer>

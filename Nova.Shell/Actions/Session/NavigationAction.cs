@@ -1,6 +1,4 @@
-﻿using Nova.Library;
-
-#region License
+﻿#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -24,6 +22,7 @@ using System;
 using System.Threading.Tasks;
 using Nova.Controls;
 using Nova.Threading.Metadata;
+using Nova.Library;
 
 namespace Nova.Shell.Actions.Session
 {

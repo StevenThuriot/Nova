@@ -6,8 +6,8 @@
                     mc:Ignorable="d"
                     xmlns:converters="clr-namespace:Nova.Shell.Converters" 
                     xmlns:shell="clr-namespace:Nova.Shell"
-                    xmlns:RESX="clr-namespace:Nova.Shell.Properties"
-                    
+                    xmlns:controls="clr-namespace:Nova.Shell.Controls"
+
                     x:Name="_This"
         
                     Width="1024"
@@ -178,48 +178,10 @@
       </Button>
 
       <!-- Sessions -->
-      <ClosableTabControl Grid.Row="1"
-                  Grid.ColumnSpan="5"
-                          x:Name="_TabControl"
-                  Margin="4"
-                  ItemsSource="{Binding Sessions}"
-                  AddItemCommand="{ActionBinding CreateNewSession}"
-                  SelectedItem="{Binding CurrentSession}">
-
-        <TabControl.ContentTemplate>
-          <DataTemplate>
-            <ContentControl Content="{Binding}" />
-          </DataTemplate>
-        </TabControl.ContentTemplate>
-
-        <TabControl.ItemTemplate>
-          <DataTemplate>
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-              </Grid.ColumnDefinitions>
-              
-              <!--TODO: Add Icon : <Image Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ClosableTabItem}}, Path=DataContext.Icon}" />-->
-              <TextBlock Grid.Column="1" 
-                         Foreground="{DynamicResource ForegroundBrush}"
-                         FontFamily="{DynamicResource Font}"
-                         Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ClosableTabItem}}, Path=DataContext.Title}"
-                         ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Text}"/>
-              
-            </Grid>
-          </DataTemplate>
-        </TabControl.ItemTemplate>
-      </ClosableTabControl>
-
-      <TextBlock Grid.Row="1"
-                  Grid.ColumnSpan="5"
-                  Margin="4"
-                 VerticalAlignment="Center"
-                 HorizontalAlignment="Center"
-                 FontSize="16"
-                 Text="{x:Static RESX:Resources.NoOpenSessions}"
-                 Visibility="{Binding ElementName=_TabControl, Path=IsEmpty, Converter={StaticResource _BooleanToVisibilityConverter}}" />
+      <controls:SessionControl Grid.Row="1" Grid.ColumnSpan="5"
+                Sessions="{Binding Sessions}"
+                CurrentSession="{Binding CurrentSession}"
+                AddCommand="{ActionBinding CreateNewSession}" />
 
       <Grid Grid.Row="2" Grid.ColumnSpan="5">
         <Grid.Background>

@@ -5,6 +5,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:Controls="clr-namespace:Nova.Shell.Controls"
+      FocusVisualStyle="{x:Null}"
       mc:Ignorable="d" 
       d:DataContext="{d:DesignData Source=SessionViewModel.cs}"
 	    Title="{Binding Title, Mode=OneWay}" >

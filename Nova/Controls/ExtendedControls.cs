@@ -130,6 +130,8 @@ namespace Nova.Controls
         {
             SnapsToDevicePixels = true;
 
+			FocusVisualStyle = null;
+
             TextOptions.SetTextRenderingMode(this, TextRenderingMode.ClearType);
             TextOptions.SetTextFormattingMode(this, TextFormattingMode.Display);
             RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
@@ -372,6 +374,8 @@ namespace Nova.Controls
         protected ExtendedUserControl()
         {
             SnapsToDevicePixels = true;
+
+			FocusVisualStyle = null;
 
             TextOptions.SetTextRenderingMode(this, TextRenderingMode.ClearType);
             TextOptions.SetTextFormattingMode(this, TextFormattingMode.Display);
