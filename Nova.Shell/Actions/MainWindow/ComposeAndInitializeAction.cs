@@ -1,6 +1,4 @@
-﻿using Nova.Library.Actions;
-
-#region License
+﻿#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -28,6 +26,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using Nova.Shell.Builders;
 using Nova.Shell.Library;
+using Nova.Library.Actions;
 
 namespace Nova.Shell.Actions.MainWindow
 {

@@ -83,6 +83,9 @@
     <Compile Include="Controls\NovaTree.xaml.cs">
       <DependentUpon>NovaTree.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SessionControl.xaml.cs">
+      <DependentUpon>SessionControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Domain\NovaModule.cs" />
     <Compile Include="Domain\NovaTreeModule.cs" />
     <Compile Include="Domain\NovaTreeNode.cs" />
@@ -103,6 +106,10 @@
       <DependentUpon>SessionView.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\NovaTree.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SessionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

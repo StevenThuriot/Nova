@@ -1,5 +1,3 @@
-using Nova.Library;
-
 #region License
 // 
 //  Copyright 2012 Steven Thuriot
@@ -22,10 +20,9 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Threading;
 using System.Globalization;
+using Nova.Library;
 
 namespace Nova
 {

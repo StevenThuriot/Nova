@@ -166,16 +166,6 @@
 	
 	<!-- Styles -->
 	<Style x:Key="MyFocusVisual">
-		<Setter Property="Control.Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type Control}">
-					<Grid Margin="3 2">
-						<Rectangle StrokeThickness="1" Stroke="{DynamicResource BorderBrush}" StrokeDashArray="2 2" />
-						<Border Width="{TemplateBinding ActualWidth}" Height="{TemplateBinding ActualHeight}" CornerRadius="2"
-						        BorderThickness="1" />
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
+		<Setter Property="Control.Template" Value="{x:Null}" />
 	</Style>
 </ResourceDictionary>

@@ -1,6 +1,4 @@
-﻿using Nova.Library;
-
-#region License
+﻿#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -22,6 +20,7 @@
 
 using System.Linq;
 using System.Windows.Input;
+using Nova.Library;
 
 namespace Nova.Shell.Actions.MainWindow
 {
