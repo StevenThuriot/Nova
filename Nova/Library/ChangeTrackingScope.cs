@@ -65,7 +65,9 @@ namespace Nova.Library
         private class PauseChangeTrackingScope : IDisposable
         {
             private static readonly ThreadLocal<Stack<PauseChangeTrackingScope>> LocalScopeStack = new ThreadLocal<Stack<PauseChangeTrackingScope>>(() => new Stack<PauseChangeTrackingScope>());
+            
             private bool _Disposed;
+            private readonly Action _DisposalAction;
             
             /// <summary>
             /// Gets the scope stack.
@@ -105,7 +107,10 @@ namespace Nova.Library
             /// </summary>
             public PauseChangeTrackingScope()
             {
-                ScopeStack.Push(this);
+                var stack = ScopeStack;
+
+                stack.Push(this);
+                _DisposalAction = () => stack.Pop();
             }
 
             /// <summary>
@@ -135,7 +140,7 @@ namespace Nova.Library
 
                 if (disposing)
                 {
-                    ScopeStack.Pop();
+                    _DisposalAction();
                 }
 
                 _Disposed = true;
