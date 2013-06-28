@@ -1,6 +1,4 @@
-﻿using Nova.Library;
-
-#region License
+﻿#region License
 // 
 //  Copyright 2012 Steven Thuriot
 // 
@@ -23,11 +21,12 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
+using Nova.Library;
 
 namespace Nova.Test
 {
 	public class MainViewModel : ViewModel<MainWindow, MainViewModel>
-	{
+    {
 		protected override void OnCreated()
 		{
 			SearchCommand = new RelayCommand(x => MessageBox.Show((string)x), x => !string.IsNullOrEmpty((string)x));

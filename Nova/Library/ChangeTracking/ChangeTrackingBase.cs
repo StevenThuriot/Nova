@@ -1,4 +1,5 @@
-#region License
+ï»¿#region License
+
 // 
 //  Copyright 2013 Steven Thuriot
 // 
@@ -14,24 +15,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
+
 #endregion
 
 using System.ComponentModel;
 
-namespace Nova.Library
+namespace Nova.Library.ChangeTracking
 {
-    public partial class ViewModel<TView, TViewModel>
+    /// <summary>
+    /// Base class to simplify change tracking.
+    /// </summary>
+    public abstract class ChangeTrackingBase : NotifyPropertyChanged, IChangeTracking
     {
-        //TODO: What about domain objects on the VM that implement INotifyPropChanged?
-
         private bool _IsChangeTracking;
-
+        private bool _IsChanged;
+        private ExtendedChangeTrackingHelper<object> _Helper;
+        
         /// <summary>
-        /// Resets the object’s state to unchanged by accepting the modifications.
+        /// Resets the objectâ€™s state to unchanged by accepting the modifications.
         /// </summary>
         public void AcceptChanges()
         {
             IsChanged = false;
+            _Helper.AcceptChanges(this);
 
             if (!_IsChangeTracking) return;
 
@@ -42,8 +48,13 @@ namespace Nova.Library
         /// <summary>
         /// Gets the object's changed status.
         /// </summary>
-        /// <returns>true if the object’s content has changed since the last call to <see cref="M:System.ComponentModel.IChangeTracking.AcceptChanges" />; otherwise, false.</returns>
-        public bool IsChanged { get; private set; }
+        /// <remarks>This will always return false if change tracking has been disabled.</remarks>
+        /// <returns>true if the objectâ€™s content has changed since the last call to <see cref="M:System.ComponentModel.IChangeTracking.AcceptChanges" />; otherwise, false.</returns>
+        public bool IsChanged
+        {
+            get { return _IsChangeTracking && (_IsChanged || _Helper.IsChanged(this)); }
+            private set { _IsChanged = value; }
+        }
 
         /// <summary>
         /// Handles the PropertyChanged event of the ViewModel control.
@@ -54,8 +65,17 @@ namespace Nova.Library
         {
             if (ChangeTrackingScope.IsPaused) return;
 
-            IsChanged = true;
+            _IsChanged = true;
             PropertyChanged -= ViewModelPropertyChanged;
+        }
+
+        /// <summary>
+        /// Initializes the delegates that are used to check and accept changes for properties.
+        /// </summary>
+        public void PrepareChangeTracking()
+        {
+            if (_Helper == null)
+                _Helper = ChangeTrackingFactory.CreateExtendedBoxedHelper(this);
         }
 
         /// <summary>
@@ -66,6 +86,9 @@ namespace Nova.Library
             if (_IsChangeTracking) return;
 
             _IsChangeTracking = true;
+
+            PrepareChangeTracking(); //If needed.
+            
             PropertyChanged += ViewModelPropertyChanged;
         }
 
@@ -76,6 +99,8 @@ namespace Nova.Library
         {
             _IsChangeTracking = false;
             PropertyChanged -= ViewModelPropertyChanged;
+
+            _Helper.StopChangeTracking(this);
         }
     }
 }

@@ -1,8 +1,3 @@
-using System;
-using System.Threading.Tasks;
-using Nova.Controls;
-using Nova.Validation;
-
 #region License
 
 // 
@@ -24,6 +19,11 @@ using Nova.Validation;
 #endregion
 
 using System.ComponentModel;
+using System;
+using System.Threading.Tasks;
+using Nova.Controls;
+using Nova.Validation;
+
 
 namespace Nova.Library
 {
@@ -85,6 +85,11 @@ namespace Nova.Library
         /// Load(value) will only trigger in case the ViewModel has been saved before.
         /// </summary>
         void Load();
+
+        /// <summary>
+        /// Prepares the change tracking.
+        /// </summary>
+        void PrepareChangeTracking();
 
         /// <summary>
         /// Initializes the change tracking.

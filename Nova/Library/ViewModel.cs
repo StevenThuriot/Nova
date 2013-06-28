@@ -18,9 +18,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Nova.Controls;
+using Nova.Library.ChangeTracking;
 
 namespace Nova.Library
 {
@@ -29,15 +29,10 @@ namespace Nova.Library
     /// </summary>
     /// <typeparam name="TView">The type of the linked View.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-	public abstract partial class ViewModel<TView, TViewModel> : IViewModel
+    public abstract partial class ViewModel<TView, TViewModel> : ChangeTrackingBase, IViewModel
         where TView : class, IView
         where TViewModel : ViewModel<TView, TViewModel>, new()
     {
-        /// <summary>
-        /// Notifies clients that propertyName has changed.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
         /// <summary>
 		/// Gets the view.
 		/// </summary>
@@ -71,20 +66,6 @@ namespace Nova.Library
                 _ID = value;
             }
         }
-		
-		/// <summary>
-		/// Notifies clients that propertyName has changed.
-		/// </summary>
-		/// <param name="propertyName">The property that changed.</param>
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-		{
-			var handler = PropertyChanged;
-
-			if (handler != null)
-			{
-				handler(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
 
         /// <summary>
         /// Checks if the private member changed. If it did, it will set the new value and call the PropertyChanged event handler

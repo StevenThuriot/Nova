@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Nova.Library
+namespace Nova.Library.ChangeTracking
 {
     /// <summary>
     /// The Change Tracking Scope

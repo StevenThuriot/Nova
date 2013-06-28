@@ -303,11 +303,16 @@
     <Compile Include="Library\ActionMethodRepository\OnActionMethodRepository.cs" />
     <Compile Include="Library\Actions\EnterAction.cs" />
     <Compile Include="Library\Actions\LeaveAction.cs" />
-    <Compile Include="Library\ChangeTrackingScope.cs" />
+    <Compile Include="Library\ChangeTracking\ChangeTrackingBase.cs" />
+    <Compile Include="Library\ChangeTracking\ChangeTrackingFactory.cs" />
+    <Compile Include="Library\ChangeTracking\ChangeTrackingHelper.cs" />
+    <Compile Include="Library\ChangeTracking\ChangeTrackingScope.cs" />
     <Compile Include="Library\DynamicContext.cs" />
     <Compile Include="Library\ErrorBinding.cs" />
     <Compile Include="Library\ExceptionHandler.cs" />
+    <Compile Include="Library\ChangeTracking\ExtendedChangeTrackingHelper.cs" />
     <Compile Include="Library\IViewModel.cs" />
+    <Compile Include="Library\NotifyPropertyChanged.cs" />
     <Compile Include="Library\RelayCommand.cs" />
     <Compile Include="Library\RoutedAction.cs" />
     <Compile Include="Library\RoutedAction.Generic.cs">
@@ -317,9 +322,6 @@
     <Compile Include="Library\ValidatableActionflow.cs" />
     <Compile Include="Library\ViewMode.cs" />
     <Compile Include="Library\ViewModel.ActionManagement.cs">
-      <DependentUpon>ViewModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Library\ViewModel.ChangeTracking.cs">
       <DependentUpon>ViewModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Library\ViewModel.Creation.cs">
@@ -409,6 +411,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

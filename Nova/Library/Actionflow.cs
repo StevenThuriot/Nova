@@ -217,23 +217,22 @@ namespace Nova.Library
 	    }
 
 	    /// <summary>
-		/// Runs the execute completed action.
-		/// </summary>
-		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-		internal virtual void InternalExecuteCompleted()
-		{
-	            try
-                {
-                    SafeInternalExecuteCompleted();
-	            }
-	            catch (Exception exception)
-	            {
-	                ExceptionHandler.Handle(exception, Resources.ErrorMessageMainThread);
-	            }
+	    /// Runs the execute completed action.
+	    /// </summary>
+	    [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+	    internal virtual void InternalExecuteCompleted()
+	    {
+	        try
+	        {
+	            SafeInternalExecuteCompleted();
+	        }
+	        catch (Exception exception)
+	        {
+	            ExceptionHandler.Handle(exception, Resources.ErrorMessageMainThread);
+	        }
+	    }
 
-		}
-
-        /// <summary>
+	    /// <summary>
         /// Method so inheriting classes may add extra internal logic during the InternalExecuteCompleted stage.
         /// </summary>
 	    internal virtual void SafeInternalExecuteCompleted()

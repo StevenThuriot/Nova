@@ -39,7 +39,11 @@ namespace Nova.Library.Actions
         /// <returns>A value indicating wether to continue execution.</returns>
         public sealed override bool Execute()
         {
-            return base.Execute() && Enter();
+            if (!base.Execute())
+                return false;
+            
+            ViewModel.PrepareChangeTracking();
+            return Enter();
         }
 
         /// <summary>
