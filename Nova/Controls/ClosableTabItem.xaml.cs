@@ -1,6 +1,4 @@
-﻿using System.Windows.Input;
-
-#region License
+﻿#region License
 
 // 
 //  Copyright 2012 Steven Thuriot
@@ -20,7 +18,7 @@
 
 #endregion
 
-using System;
+using System.Windows.Input;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows;
@@ -38,7 +36,7 @@ namespace Nova.Controls
         /// <summary>
         /// The close button
         /// </summary>
-        private Button _CloseButton;
+        private Button _closeButton;
 
         /// <summary>
         /// The close tab event
@@ -72,16 +70,16 @@ namespace Nova.Controls
         {
             base.OnApplyTemplate();
 
-            if (_CloseButton != null)
+            if (_closeButton != null)
             {
-                _CloseButton.Click -= RaiseCloseEvent;
+                _closeButton.Click -= RaiseCloseEvent;
             }
 
-            _CloseButton = GetTemplateChild("PART_CloseTab") as Button;
+            _closeButton = GetTemplateChild("PART_CloseTab") as Button;
 
-            if (_CloseButton != null)
+            if (_closeButton != null)
             {
-                _CloseButton.Click += RaiseCloseEvent;
+                _closeButton.Click += RaiseCloseEvent;
             }
         }
 

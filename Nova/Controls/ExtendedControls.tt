@@ -85,14 +85,14 @@ namespace Nova.Controls
         /// <summary>
         /// Flag wether this instance is disposed.
         /// </summary>
-        private bool _Disposed;
+        private bool _disposed;
         
         /// <summary>
         /// The parent view
         /// </summary>
-        private IView _Parent;
+        private IView _parent;
 
-        private TViewModel _ViewModel;
+        private TViewModel _viewModel;
         /// <summary>
         /// Gets the view model.
         /// </summary>
@@ -101,12 +101,12 @@ namespace Nova.Controls
         /// </value>
         public TViewModel ViewModel
         {
-            get { return _ViewModel; }
+            get { return _viewModel; }
             private set
             {
-                if (_ViewModel != value)
+                if (_viewModel != value)
                 {
-                    _ViewModel = value;
+                    _viewModel = value;
                     DataContext = value;
                 }
             }
@@ -204,7 +204,7 @@ namespace Nova.Controls
             
             var <#= name.ToLowerInvariant() #> = new TView
                 {
-                    _Parent = parent
+                    _parent = parent
                 };
 
             <#= name.ToLowerInvariant() #>.ViewModel = ViewModel<TView, TViewModel>.Create(<#= name.ToLowerInvariant() #>, actionQueueManager, enterOnInitialize);
@@ -213,25 +213,25 @@ namespace Nova.Controls
         }        
         
         
-        private int _LoadingCounter;
-        private readonly object _Lock = new object();
+        private int _loadingCounter;
+        private readonly object _lock = new object();
 
         /// <summary>
         ///     Starts the animated loading.
         /// </summary>
         public virtual void StartLoading()
         {
-            lock (_Lock)
+            lock (_lock)
             {
-                var isLoading = ++_LoadingCounter > 0;
+                var isLoading = ++_loadingCounter > 0;
 
                 if (IsLoading == isLoading) return;
 
                 IsLoading = isLoading;
 
-                if (isLoading && _Parent != null)
+                if (isLoading && _parent != null)
                 {
-                    _Parent.StartLoading();
+                    _parent.StartLoading();
                 }
             }
         }
@@ -241,17 +241,17 @@ namespace Nova.Controls
         /// </summary>
         public virtual void StopLoading()
         {
-            lock (_Lock)
+            lock (_lock)
             {
-                var isLoading = --_LoadingCounter > 0;
+                var isLoading = --_loadingCounter > 0;
 
                 if (IsLoading == isLoading) return;
 
                 IsLoading = isLoading;
 
-                if (!isLoading && _Parent != null)
+                if (!isLoading && _parent != null)
                 {
-                    _Parent.StopLoading();
+                    _parent.StopLoading();
                 }
             }
         }
@@ -280,28 +280,28 @@ namespace Nova.Controls
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (_Disposed) return;
+            if (_disposed) return;
 
             if (disposing)
             {
-                if (_Parent != null)
+                if (_parent != null)
                 {
                     if (IsLoading)
                     {
                         //Make sure the parent doesn't keep thinking the child is still loading yet unexistent.
-                        _Parent.StopLoading();
+                        _parent.StopLoading();
                     }
 
-                    _Parent = null;
+                    _parent = null;
                 }
 
-                if (_ViewModel != null)
+                if (_viewModel != null)
                 {
-                    _ViewModel.Dispose();
+                    _viewModel.Dispose();
                 }
             }
 
-            _Disposed = true;
+            _disposed = true;
         }
     }
 <#}#>

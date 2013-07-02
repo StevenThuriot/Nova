@@ -8,8 +8,8 @@ namespace Nova.Controls
     /// </summary>
     public class NumericSettings
     {
-        private int _MaximumNumbers;
-        private int _MaximumDecimals;
+        private int _maximumNumbers;
+        private int _maximumDecimals;
 
         /// <summary>
         /// Gets or sets the maximum numbers.
@@ -21,13 +21,13 @@ namespace Nova.Controls
         [Bindable(false)]
         public int MaximumNumbers
         {
-            get { return _MaximumNumbers; }
+            get { return _maximumNumbers; }
             set
             {
                 if (value <= 0)
                     throw new ArgumentException("Maximum Numbers cannot be negative or zero.");
 
-                _MaximumNumbers = value;
+                _maximumNumbers = value;
             }
         }
 
@@ -41,13 +41,13 @@ namespace Nova.Controls
         [Bindable(false)]
         public int MaximumDecimals
         {
-            get { return _MaximumDecimals; }
+            get { return _maximumDecimals; }
             set
             {
                 if (value < 0)
                     throw new ArgumentException("Maximum Numbers cannot be negative.");
 
-                _MaximumDecimals = value;
+                _maximumDecimals = value;
             }
         }
     }

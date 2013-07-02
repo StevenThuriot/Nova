@@ -28,7 +28,7 @@ namespace Nova.Library
 	/// </summary>
 	public class ActionContext
 	{
-        private readonly Dictionary<string, object> _Context;
+        private readonly Dictionary<string, object> _context;
 
 		/// <summary>
 		/// Gets a value indicating whether the execution of the action was successful.
@@ -52,7 +52,7 @@ namespace Nova.Library
         /// <param name="actionName">Name of the action.</param>
 	    private ActionContext(string actionName)
 		{
-            _Context = new Dictionary<string, object>();
+            _context = new Dictionary<string, object>();
             ActionName = actionName;
 		}
 
@@ -73,7 +73,7 @@ namespace Nova.Library
 		/// </summary>
 		public void Clear()
 		{
-			_Context.Clear();
+			_context.Clear();
 		}
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Nova.Library
         /// <exception cref="ArgumentException">Throws an exception in case the type is not serializable and ICloneable is not implemented.</exception>
 		public ActionContext Add(ActionContextEntry entry)
 		{
-			_Context.Add(entry.Key, entry.Value);
+			_context.Add(entry.Key, entry.Value);
 
 			return this;
 		}
@@ -135,7 +135,7 @@ namespace Nova.Library
 		/// <returns>The requested value.</returns>
 		public T GetValue<T>(string key)
 		{
-			return (T)_Context[key];
+			return (T)_context[key];
 		}
 
 		/// <summary>
@@ -162,7 +162,7 @@ namespace Nova.Library
 		{
 			object resultValue;
 
-			var result = _Context.TryGetValue(key, out resultValue);
+			var result = _context.TryGetValue(key, out resultValue);
 
 			if (result)
 			{
@@ -187,7 +187,7 @@ namespace Nova.Library
         /// <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
         public bool ContainsKey(string key)
         {
-            return _Context.ContainsKey(key);
+            return _context.ContainsKey(key);
         }
     }
 }

@@ -33,10 +33,11 @@ namespace Nova.Shell.Builders
     internal class ModuleBuilder : IModuleBuilder
     {
         public const int DefaultRanking = 10;
-        private TreeNode _StartupTreeNode;
-        private readonly List<TreeNode> _TreeNodes = new List<TreeNode>();
-        private int? _Ranking;
-        private string _Title;
+        
+        private TreeNode _startupTreeNode;
+        private readonly List<TreeNode> _treeNodes = new List<TreeNode>();
+        private int? _ranking;
+        private string _title;
 
         /// <summary>
         /// Gets the ranking.
@@ -46,7 +47,7 @@ namespace Nova.Shell.Builders
         /// </value>
         public int Ranking
         {
-            get { return _Ranking ?? DefaultRanking; }
+            get { return _ranking ?? DefaultRanking; }
         }
 
         /// <summary>
@@ -58,13 +59,13 @@ namespace Nova.Shell.Builders
         /// <exception cref="System.ArgumentNullException">title</exception>
         public IModuleBuilder SetModuleTitle(string title)
         {
-            if (!string.IsNullOrWhiteSpace(_Title))
+            if (!string.IsNullOrWhiteSpace(_title))
                 throw new NotSupportedException("A title has already been set and can only be set once.");
 
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentNullException("title");
 
-            _Title = title;
+            _title = title;
 
             return this;
         }
@@ -84,7 +85,7 @@ namespace Nova.Shell.Builders
             //TODO: Allow parameter (so one screen can be used for several purposed depending on the parameter, e.g full/light)
             
             var treeNode = TreeNode.New<TPageView, TPageViewModel>(title, rank);
-            _TreeNodes.Add(treeNode);
+            _treeNodes.Add(treeNode);
 
             return this;
         }
@@ -99,13 +100,13 @@ namespace Nova.Shell.Builders
         /// </remarks>
         public IModuleBuilder AsStartup()
         {
-            if (_StartupTreeNode != null)
+            if (_startupTreeNode != null)
                 throw new NotSupportedException("A default use case has already been set and can only be set once.");
 
-            if (_TreeNodes.Count == 0)
+            if (_treeNodes.Count == 0)
                 throw new NotSupportedException("A use case has to be added before the start up use case can be set.");
             
-            _StartupTreeNode = _TreeNodes.Last();
+            _startupTreeNode = _treeNodes.Last();
             return this;
         }
 
@@ -121,10 +122,10 @@ namespace Nova.Shell.Builders
         /// </remarks>
         public IModuleBuilder SetModuleRanking(int ranking)
         {
-            if (_Ranking.HasValue)
+            if (_ranking.HasValue)
                 throw new NotSupportedException("Ranking can only be set once.");
 
-            _Ranking = ranking;
+            _ranking = ranking;
 
             return this;
         }
@@ -135,7 +136,7 @@ namespace Nova.Shell.Builders
         /// <returns></returns>
         internal NovaModule Build()
         {
-            return new NovaModule(_Title, Ranking, _TreeNodes, _StartupTreeNode);
+            return new NovaModule(_title, Ranking, _treeNodes, _startupTreeNode);
         }
     }
 }

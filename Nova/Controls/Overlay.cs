@@ -32,10 +32,9 @@ namespace Nova.Controls
     /// </summary>
     public class Overlay : UserControl
     {
-        private DateTime? _LastShown;
-
-        private DispatcherTimer _FadeInTimer;
-        private DispatcherTimer _FadeOutTimer;
+        private DateTime? _lastShown;
+        private DispatcherTimer _fadeInTimer;
+        private DispatcherTimer _fadeOutTimer;
 
         /// <summary>
         /// Initializes the <see cref="Overlay" /> class.
@@ -202,7 +201,7 @@ namespace Nova.Controls
         /// <param name="overlay">The overlay.</param>
         private static void BeginOverlay(Overlay overlay)
         {
-            overlay._LastShown = null;
+            overlay._lastShown = null;
 
             if (StopFadeOutTimer(overlay))
                 return;
@@ -218,22 +217,22 @@ namespace Nova.Controls
                 return;
             }
 
-            overlay._FadeInTimer = new DispatcherTimer(DispatcherPriority.Normal, overlay.Dispatcher)
+            overlay._fadeInTimer = new DispatcherTimer(DispatcherPriority.Normal, overlay.Dispatcher)
             {
                 Interval = TimeSpan.FromMilliseconds(delay)
             };
             
-            overlay._FadeInTimer.Tick += (sender, args) =>
+            overlay._fadeInTimer.Tick += (sender, args) =>
             {
                 overlay.IsActive = true;
 
                 CreateStoryboard(overlay, 0, 1).Begin();
-                overlay._LastShown = DateTime.Now;
+                overlay._lastShown = DateTime.Now;
 
                 StopFadeInTimer(overlay);
             };
 
-            overlay._FadeInTimer.Start();
+            overlay._fadeInTimer.Start();
         }
 
         /// <summary>
@@ -249,31 +248,31 @@ namespace Nova.Controls
             
             storyboard.Completed += (sender, args) => overlay.IsActive = false;
             
-            if (!overlay._LastShown.HasValue)
+            if (!overlay._lastShown.HasValue)
             {
                 storyboard.Begin();
                 return;
             }
             
-            var elapsedMilliseconds = (DateTime.Now - overlay._LastShown.Value).Duration().TotalMilliseconds;
+            var elapsedMilliseconds = (DateTime.Now - overlay._lastShown.Value).Duration().TotalMilliseconds;
             var minimumDuration = overlay.MinimumDuration;
 
             if (elapsedMilliseconds < minimumDuration)
             {
                 var duration = minimumDuration - elapsedMilliseconds;
 
-                overlay._FadeOutTimer = new DispatcherTimer(DispatcherPriority.Normal, overlay.Dispatcher)
+                overlay._fadeOutTimer = new DispatcherTimer(DispatcherPriority.Normal, overlay.Dispatcher)
                     {
                         Interval = TimeSpan.FromMilliseconds(duration)
                     };
 
-                overlay._FadeOutTimer.Tick += (sender, args) =>
+                overlay._fadeOutTimer.Tick += (sender, args) =>
                     {
                         storyboard.Begin();
                         StopFadeOutTimer(overlay);
                     };
 
-                overlay._FadeOutTimer.Start();
+                overlay._fadeOutTimer.Start();
             }
             else
             {
@@ -301,20 +300,20 @@ namespace Nova.Controls
 
         private static bool StopFadeInTimer(Overlay overlay)
         {
-            if (overlay._FadeInTimer == null) return false;
+            if (overlay._fadeInTimer == null) return false;
 
-            overlay._FadeInTimer.Stop();
-            overlay._FadeInTimer = null;
+            overlay._fadeInTimer.Stop();
+            overlay._fadeInTimer = null;
 
             return true;
         }
 
         private static bool StopFadeOutTimer(Overlay overlay)
         {
-            if (overlay._FadeOutTimer == null) return false;
+            if (overlay._fadeOutTimer == null) return false;
 
-            overlay._FadeOutTimer.Stop();
-            overlay._FadeOutTimer = null;
+            overlay._fadeOutTimer.Stop();
+            overlay._fadeOutTimer = null;
 
             return true;
         }

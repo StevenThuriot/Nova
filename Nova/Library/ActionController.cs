@@ -37,9 +37,9 @@ namespace Nova.Library
         where TViewModel : IViewModel
         where TView : IView
     {
-        private readonly IActionQueueManager _ActionQueueManager;
-        private readonly TView _View;
-        private readonly TViewModel _ViewModel;
+        private readonly IActionQueueManager _actionQueueManager;
+        private readonly TView _view;
+        private readonly TViewModel _viewModel;
 
         /// <summary>
         ///     Default ctor.
@@ -49,9 +49,9 @@ namespace Nova.Library
         /// <param name="actionQueueManager">The Action Queue Manager</param>
         public ActionController(TView view, TViewModel viewModel, IActionQueueManager actionQueueManager)
         {
-            _View = view;
-            _ViewModel = viewModel;
-            _ActionQueueManager = actionQueueManager;
+            _view = view;
+            _viewModel = viewModel;
+            _actionQueueManager = actionQueueManager;
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Nova.Library
 
             var action = PrepareAction(actionToRun, disposeActionDuringCleanup, executeCompleted);
 
-            if (!_ActionQueueManager.Enqueue(action))
+            if (!_actionQueueManager.Enqueue(action))
             {
                 CleanUpFailedEnqueue(actionToRun, disposeActionDuringCleanup, executeCompleted);
                 return null;
@@ -163,7 +163,7 @@ namespace Nova.Library
 
             try
             {
-                actionToRun = Actionflow<TView, TViewModel>.New<T>(_View, _ViewModel, actionContext);
+                actionToRun = Actionflow<TView, TViewModel>.New<T>(_view, _viewModel, actionContext);
             }
             catch (Exception exception)
             {

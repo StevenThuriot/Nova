@@ -50,11 +50,11 @@ namespace Nova.Controls
 
 // ReSharper restore StaticFieldInGenericType
 
-        private bool _Disposed;
-        private TViewModel _ViewModel;
+        private bool _disposed;
+        private TViewModel _viewModel;
 
-        private int _LoadingCounter;
-        private ActionQueueManager _ActionQueueManager;
+        private int _loadingCounter;
+        private ActionQueueManager _actionQueueManager;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ExtendedWindow&lt;TView, TViewModel&gt;" /> class.
@@ -70,9 +70,9 @@ namespace Nova.Controls
 
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             
-            _ActionQueueManager = new ActionQueueManager();
+            _actionQueueManager = new ActionQueueManager();
 
-            ViewModel = ViewModel<TView, TViewModel>.Create((TView) this, _ActionQueueManager);
+            ViewModel = ViewModel<TView, TViewModel>.Create((TView) this, _actionQueueManager);
 
             Closing += (sender, args) => ViewModel.InvokeAction<LeaveAction<TView, TViewModel>>();
         }
@@ -85,12 +85,12 @@ namespace Nova.Controls
         /// </value>
         public TViewModel ViewModel
         {
-            get { return _ViewModel; }
+            get { return _viewModel; }
             private set
             {
-                if (_ViewModel == value) return;
+                if (_viewModel == value) return;
 
-                _ViewModel = value;
+                _viewModel = value;
                 DataContext = value;
             }
         }
@@ -143,7 +143,7 @@ namespace Nova.Controls
         /// </summary>
         public virtual void StartLoading()
         {
-            IsLoading = Interlocked.Increment(ref _LoadingCounter) > 0;
+            IsLoading = Interlocked.Increment(ref _loadingCounter) > 0;
             UpdateCursor(true);
         }
 
@@ -152,7 +152,7 @@ namespace Nova.Controls
         /// </summary>
         public virtual void StopLoading()
         {
-            IsLoading = Interlocked.Decrement(ref _LoadingCounter) > 0;
+            IsLoading = Interlocked.Decrement(ref _loadingCounter) > 0;
 
             if (!IsLoading)
             {
@@ -195,23 +195,23 @@ namespace Nova.Controls
         /// </param>
         private void Dispose(bool disposing)
         {
-            if (_Disposed) return;
+            if (_disposed) return;
 
             if (disposing)
             {
-                if (_ViewModel != null)
+                if (_viewModel != null)
                 {
-                    _ViewModel.Dispose();
+                    _viewModel.Dispose();
                 }
 
-                if (_ActionQueueManager != null)
+                if (_actionQueueManager != null)
                 {
-                    _ActionQueueManager.Dispose();
-                    _ActionQueueManager = null;
+                    _actionQueueManager.Dispose();
+                    _actionQueueManager = null;
                 }
             }
 
-            _Disposed = true;
+            _disposed = true;
         }
     }
 }

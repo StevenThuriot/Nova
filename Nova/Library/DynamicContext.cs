@@ -33,7 +33,7 @@ namespace Nova.Library
 	[Serializable]
 	internal class DynamicContext : DynamicObject, ISerializable, ICloneable
 	{
-		private readonly Dictionary<string, object> _DynamicContext = new Dictionary<string, object>();
+		private readonly Dictionary<string, object> _dynamicContext = new Dictionary<string, object>();
 
 		/// <summary>
 		/// Gets a value indicating whether this instance is empty.
@@ -41,7 +41,7 @@ namespace Nova.Library
 		/// <value>
 		///   <c>true</c> if this instance is empty; otherwise, <c>false</c>.
 		/// </value>
-		public bool IsEmpty { get { return _DynamicContext.Count == 0; }}
+		public bool IsEmpty { get { return _dynamicContext.Count == 0; }}
 
 		/// <summary>
 		/// Provides the implementation for operations that get member values. Classes derived from the <see cref="T:System.Dynamic.DynamicObject"/> class can override this method to specify dynamic behavior for operations such as getting a value for a property.
@@ -53,7 +53,7 @@ namespace Nova.Library
 		/// </returns>
 		public override bool TryGetMember(GetMemberBinder binder, out object result)
 		{
-			return (_DynamicContext.TryGetValue(binder.Name, out result));
+			return (_dynamicContext.TryGetValue(binder.Name, out result));
 		}
 
 		/// <summary>
@@ -66,7 +66,7 @@ namespace Nova.Library
 		/// </returns>
 		public override bool TrySetMember(SetMemberBinder binder, object value)
 		{
-			_DynamicContext.Add(binder.Name, value);
+			_dynamicContext.Add(binder.Name, value);
 			return true;
 		}
 
@@ -79,7 +79,7 @@ namespace Nova.Library
 		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 		public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
-			foreach (KeyValuePair<string, object> kvp in _DynamicContext)
+			foreach (KeyValuePair<string, object> kvp in _dynamicContext)
 			{
 				info.AddValue(kvp.Key, kvp.Value);
 			}
@@ -101,7 +101,7 @@ namespace Nova.Library
 		{
 			foreach (SerializationEntry entry in info)
 			{
-				_DynamicContext.Add(entry.Name, entry.Value);
+				_dynamicContext.Add(entry.Name, entry.Value);
 			}
 		}
 
@@ -174,9 +174,9 @@ namespace Nova.Library
 		{
 			var clonedContext = new DynamicContext();
 
-			foreach (var value in _DynamicContext)
+			foreach (var value in _dynamicContext)
 			{
-				clonedContext._DynamicContext.Add(value.Key, value.Value);
+				clonedContext._dynamicContext.Add(value.Key, value.Value);
 			}
 
 			return clonedContext;

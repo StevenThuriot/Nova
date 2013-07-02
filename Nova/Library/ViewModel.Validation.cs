@@ -22,20 +22,20 @@ namespace Nova.Library
 {
     public abstract partial class ViewModel<TView, TViewModel>
     {
-        private bool _IsValid = true;
-        private ReadOnlyErrorCollection _ErrorCollection;
+        private bool _isValid = true;
+        private ReadOnlyErrorCollection _errorCollection;
 
         /// <summary>
         /// Gets the error collection.
         /// </summary>
         public ReadOnlyErrorCollection ErrorCollection
         {
-            get { return _ErrorCollection; }
+            get { return _errorCollection; }
             internal set
             {
-                if (SetValue(ref _ErrorCollection, value))
+                if (SetValue(ref _errorCollection, value))
                 {
-                    IsValid = _ErrorCollection == null || _ErrorCollection.Count == 0;
+                    IsValid = _errorCollection == null || _errorCollection.Count == 0;
                 }
             }
         }
@@ -48,8 +48,8 @@ namespace Nova.Library
         /// </value>
         public bool IsValid
         {
-            get { return _IsValid; }
-            private set { SetValue(ref _IsValid, value); }
+            get { return _isValid; }
+            private set { SetValue(ref _isValid, value); }
         }
     }
 }

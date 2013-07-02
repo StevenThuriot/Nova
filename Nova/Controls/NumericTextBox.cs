@@ -29,7 +29,7 @@ namespace Nova.Controls
     /// </summary>
     public class NumericTextBox : TextBox
     {
-        private Regex _CustomValidNumberRegex;
+        private Regex _customValidNumberRegex;
 
         /// <summary>
         /// The valid number regex
@@ -80,7 +80,7 @@ namespace Nova.Controls
         {
             var numericTextBox = (NumericTextBox) dependencyObject;
             
-            var regex = numericTextBox._CustomValidNumberRegex ?? ValidNumberRegex;
+            var regex = numericTextBox._customValidNumberRegex ?? ValidNumberRegex;
 
             var value = (string) baseValue;
 
@@ -108,7 +108,7 @@ namespace Nova.Controls
 
 			if (settings == null)
 			{
-				numericTextBox._CustomValidNumberRegex = null;
+				numericTextBox._customValidNumberRegex = null;
 				return;
 			}
             
@@ -121,7 +121,7 @@ namespace Nova.Controls
 
 			regexString += "$";
 
-            numericTextBox._CustomValidNumberRegex = new Regex(regexString, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.CultureInvariant);
+            numericTextBox._customValidNumberRegex = new Regex(regexString, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.CultureInvariant);
         }
     }
 }

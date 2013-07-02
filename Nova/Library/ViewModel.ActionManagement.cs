@@ -24,8 +24,8 @@ namespace Nova.Library
 {
     public abstract partial class ViewModel<TView, TViewModel>
     {
-        private ActionManager<TView, TViewModel> _ActionManager;
-        private IActionQueueManager _ActionQueueManager;
+        private ActionManager<TView, TViewModel> _actionManager;
+        private IActionQueueManager _actionQueueManager;
 
         /// <summary>
         /// Gets the action controller.
@@ -37,7 +37,7 @@ namespace Nova.Library
         /// </summary>
         public dynamic ActionManager
         {
-            get { return _ActionManager; }
+            get { return _actionManager; }
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Nova.Library
         /// <param name="knownTypes">The known types.</param>
         protected void SetKnownActionTypes(params Type[] knownTypes)
         {
-            _ActionManager.SetKnownTypes(knownTypes);
+            _actionManager.SetKnownTypes(knownTypes);
         }
         /// <summary>
         /// Invokes the specified action.

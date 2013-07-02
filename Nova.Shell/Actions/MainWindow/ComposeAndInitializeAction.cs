@@ -35,7 +35,7 @@ namespace Nova.Shell.Actions.MainWindow
     /// </summary>
     public class ComposeAndInitializeAction : EnterAction<MainView, MainViewModel>
     {
-        private BitmapImage _Icon;
+        private BitmapImage _icon;
 
         public override bool Enter()
         {
@@ -47,7 +47,7 @@ namespace Nova.Shell.Actions.MainWindow
 
         public override void EnterCompleted()
         {
-            ViewModel.Icon = _Icon;
+            ViewModel.Icon = _icon;
 
             var intialSession = ViewModel.CreateSession();
 
@@ -63,7 +63,7 @@ namespace Nova.Shell.Actions.MainWindow
 
         protected override void DisposeManagedResources()
         {
-            _Icon = null;
+            _icon = null;
         }
 
 
@@ -116,11 +116,11 @@ namespace Nova.Shell.Actions.MainWindow
                               ? new Uri("pack://application:,,,/Nova.Shell;component/Nova.ico")
                               : new Uri(value);
 
-            _Icon = new BitmapImage();
-            _Icon.BeginInit();
-            _Icon.UriSource = iconUri;
-            _Icon.EndInit();
-            _Icon.Freeze();
+            _icon = new BitmapImage();
+            _icon.BeginInit();
+            _icon.UriSource = iconUri;
+            _icon.EndInit();
+            _icon.Freeze();
         }
 
         private static string GetAppSettingsFor(string key)

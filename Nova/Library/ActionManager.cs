@@ -33,39 +33,36 @@ namespace Nova.Library
 		where TView : IView
 		where TViewModel : IViewModel
 	{
-		private bool _IsDisposed;
+		private bool _isDisposed;
 
-		private readonly IDictionary<string, ICommand> _Actions;
+		private readonly IDictionary<string, ICommand> _actions;
 
-		private readonly List<Type> _KnownTypes;
-		private List<Type> _ViewAndViewModelTypes;
-		private List<Type> _LoadedTypes;
+		private readonly List<Type> _knownTypes;
+		private List<Type> _viewAndViewModelTypes;
+		private List<Type> _loadedTypes;
 
-		private readonly TView _View;
-		private readonly TViewModel _ViewModel;
+		private readonly TViewModel _viewModel;
 
-		private readonly Type _ViewType;
-        private readonly Type _ViewModelType;
+		private readonly Type _viewType;
+        private readonly Type _viewModelType;
 
-        private MethodInfo _CreateAction;
+        private MethodInfo _createAction;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ActionManager&lt;TView, TViewModel&gt;"/> class.
-		/// </summary>
-		/// <param name="view">The view.</param>
-		/// <param name="viewModel">The view model.</param>
-		public ActionManager(TView view, TViewModel viewModel)
+	    /// <summary>
+	    /// Initializes a new instance of the <see cref="ActionManager&lt;TView, TViewModel&gt;"/> class.
+	    /// </summary>
+	    /// <param name="viewModel">The view model.</param>
+	    public ActionManager(TViewModel viewModel)
 		{
-			_IsDisposed = false;
+			_isDisposed = false;
 
-			_View = view;
-			_ViewModel = viewModel;
+			_viewModel = viewModel;
 
-			_ViewType = typeof (TView);
-			_ViewModelType = typeof (TViewModel);
+			_viewType = typeof (TView);
+			_viewModelType = typeof (TViewModel);
 
-			_Actions = new Dictionary<string, ICommand>();
-			_KnownTypes = new List<Type>();
+			_actions = new Dictionary<string, ICommand>();
+			_knownTypes = new List<Type>();
 		}
 
 		/// <summary>
@@ -82,7 +79,7 @@ namespace Nova.Library
 		    if (string.IsNullOrWhiteSpace(name))
 		        return false;
 
-		    if (_Actions.ContainsKey(name))
+		    if (_actions.ContainsKey(name))
                 throw new NotSupportedException("Resolved values cannot be set.");
 
 		    var command = value as ICommand;
@@ -91,7 +88,7 @@ namespace Nova.Library
                 return false;
             }
 
-            _Actions.Add(name, command);
+            _actions.Add(name, command);
 
 		    return true;
 		}
@@ -109,7 +106,7 @@ namespace Nova.Library
 			ICommand action;
 
 			var name = binder.Name;
-			if (!_Actions.TryGetValue(name, out action))
+			if (!_actions.TryGetValue(name, out action))
 			{
 				var equivalentTypeName = name.EndsWith("action", StringComparison.OrdinalIgnoreCase)
 				                         	? name.Substring(0, name.Length - 6)
@@ -130,16 +127,16 @@ namespace Nova.Library
 
 		private ICommand CreateAction(Type actionType, string name)
 		{
-			if (_CreateAction == null)
+			if (_createAction == null)
 			{
-				_CreateAction =
+				_createAction =
                     typeof(TViewModel).GetMethods().First(x => "CreateRoutedAction".Equals((string) x.Name, StringComparison.OrdinalIgnoreCase) && x.GetParameters().Length == 1);
 			}
 
-			var generic = _CreateAction.MakeGenericMethod(actionType);
-			var action = (ICommand) generic.Invoke(_ViewModel, new object[] {new ActionContextEntry[] {}});
+			var generic = _createAction.MakeGenericMethod(actionType);
+			var action = (ICommand) generic.Invoke(_viewModel, new object[] {new ActionContextEntry[] {}});
 
-			_Actions.Add(name, action);
+			_actions.Add(name, action);
 			return action;
 		}
 
@@ -147,7 +144,7 @@ namespace Nova.Library
 
 		private Type SearchType(string equivalentTypeName, string name)
 		{
-			var actionType = GetActionType(name, equivalentTypeName, _KnownTypes) ??
+			var actionType = GetActionType(name, equivalentTypeName, _knownTypes) ??
 			                 (SearchVVMTypes(equivalentTypeName, name) ??
 			                  SearchAllTypes(equivalentTypeName, name));
 
@@ -156,23 +153,23 @@ namespace Nova.Library
 
 		private Type SearchVVMTypes(string equivalentTypeName, string name)
 		{
-			if (_ViewAndViewModelTypes == null)
+			if (_viewAndViewModelTypes == null)
 			{
 				InitVVMTypes();
 			}
 
-			var actionType = GetActionType(name, equivalentTypeName, _ViewAndViewModelTypes);
+			var actionType = GetActionType(name, equivalentTypeName, _viewAndViewModelTypes);
 			return actionType;
 		}
 
 		private Type SearchAllTypes(string equivalentTypeName, string name)
 		{
-			if (_LoadedTypes == null)
+			if (_loadedTypes == null)
 			{
 				InitAllTypes();
 			}
 
-			var actionType = GetActionType(name, equivalentTypeName, _LoadedTypes);
+			var actionType = GetActionType(name, equivalentTypeName, _loadedTypes);
 			return actionType;
 		}
 
@@ -198,24 +195,24 @@ namespace Nova.Library
 		/// <param name="knownTypes">The known types.</param>
 		public void SetKnownTypes(params Type[] knownTypes)
 		{
-		    var distinctTypes = knownTypes.Distinct().Where(x => !_KnownTypes.Contains(x)).ToList();
-            _KnownTypes.AddRange(distinctTypes);
+		    var distinctTypes = knownTypes.Distinct().Where(x => !_knownTypes.Contains(x)).ToList();
+            _knownTypes.AddRange(distinctTypes);
 		}
 
 	    private void InitVVMTypes()
 		{
-			var viewAssembly = _ViewType.Assembly;
+			var viewAssembly = _viewType.Assembly;
 			IEnumerable<Type> viewTypes = viewAssembly.GetTypes();
 
-			var viewModelAssembly = _ViewModelType.Assembly;
+			var viewModelAssembly = _viewModelType.Assembly;
 			if (viewModelAssembly == viewAssembly)
 			{
-				_ViewAndViewModelTypes = viewTypes.ToList();
+				_viewAndViewModelTypes = viewTypes.ToList();
 			}
 			else
 			{
 				IEnumerable<Type> viewModelTypes = viewModelAssembly.GetTypes();
-				_ViewAndViewModelTypes = new List<Type>(viewTypes.Union(viewModelTypes));
+				_viewAndViewModelTypes = new List<Type>(viewTypes.Union(viewModelTypes));
 			}
 		}
 
@@ -242,7 +239,7 @@ namespace Nova.Library
 				       	})
 				.SelectMany(x => x.GetTypes());
 
-			_LoadedTypes = new List<Type>(allTypes);
+			_loadedTypes = new List<Type>(allTypes);
 		}
 
 		#endregion Init
@@ -273,38 +270,38 @@ namespace Nova.Library
 		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
 		private void Dispose(bool disposing)
 		{
-			if (_IsDisposed)
+			if (_isDisposed)
 				return;
 
 			if (disposing)
 			{
-				if (_Actions != null)
+				if (_actions != null)
 				{
-					foreach (var disposableAction in _Actions.Values.OfType<IDisposable>().Where(x => x != null))
+					foreach (var disposableAction in _actions.Values.OfType<IDisposable>().Where(x => x != null))
 					{
 						disposableAction.Dispose();
 					}
 
-					_Actions.Clear();
+					_actions.Clear();
 				}
 
-				if (_KnownTypes != null)
+				if (_knownTypes != null)
 				{
-					_KnownTypes.Clear();
+					_knownTypes.Clear();
 				}
 
-				if (_ViewAndViewModelTypes != null)
+				if (_viewAndViewModelTypes != null)
 				{
-					_ViewAndViewModelTypes.Clear();
+					_viewAndViewModelTypes.Clear();
 				}
 
-				if (_LoadedTypes != null)
+				if (_loadedTypes != null)
 				{
-					_LoadedTypes.Clear();
+					_loadedTypes.Clear();
 				}
 			}
 
-			_IsDisposed = true;
+			_isDisposed = true;
 		}
 
 		#endregion Dispose

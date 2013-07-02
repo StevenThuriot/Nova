@@ -30,7 +30,7 @@ namespace Nova.Library.ActionMethodRepository
     /// </summary>
     internal abstract class MethodCacheEntry
     {
-        private readonly Dictionary<Type, IEnumerable<string>> _TypeAliases;
+        private readonly Dictionary<Type, IEnumerable<string>> _typeAliases;
 
         public const string OnBefore = "ONBEFORE";
         public const string OnAfter = "ONAFTER";
@@ -43,7 +43,7 @@ namespace Nova.Library.ActionMethodRepository
         /// </summary>
         protected MethodCacheEntry()
         {
-            _TypeAliases = new Dictionary<Type, IEnumerable<string>>();
+            _typeAliases = new Dictionary<Type, IEnumerable<string>>();
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Nova.Library.ActionMethodRepository
         private IEnumerable<string> GetAliases(Type actionType)
         {
             IEnumerable<string> cachedAliases;
-            if (_TypeAliases.TryGetValue(actionType, out cachedAliases))
+            if (_typeAliases.TryGetValue(actionType, out cachedAliases))
             {
                 return cachedAliases;
             }
@@ -116,7 +116,7 @@ namespace Nova.Library.ActionMethodRepository
             aliases.Add(typeName);
 
             var readOnlyCollection = aliases.AsReadOnly();
-            _TypeAliases.Add(actionType, readOnlyCollection);
+            _typeAliases.Add(actionType, readOnlyCollection);
 
             return readOnlyCollection;
         }

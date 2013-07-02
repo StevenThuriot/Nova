@@ -46,7 +46,7 @@ namespace Nova.Library
             get { return View; }
         }
 
-        private Guid _ID = Guid.NewGuid();
+        private Guid _id = Guid.NewGuid();
 
         /// <summary>
         /// Gets or sets the ViewModel ID.
@@ -57,13 +57,13 @@ namespace Nova.Library
         /// <exception cref="System.ArgumentException">Guid.Empty is not allowed.</exception>
         public Guid ID
         {
-            get { return _ID; }
+            get { return _id; }
             protected set
             {
                 if (value == Guid.Empty)
                     throw new ArgumentException(@"Guid.Empty is not allowed.", "value");
                 
-                _ID = value;
+                _id = value;
             }
         }
 

@@ -35,15 +35,15 @@ namespace Nova.Shell.Library
         where TView : class, IView
         where TViewModel : ViewModel<TView, TViewModel>, new()
     {
-        private IDisposable _Deferral;
-        private ISessionViewModel _Session;
+        private IDisposable _deferral;
+        private ISessionViewModel _session;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentViewModel{TView, TViewModel}"/> class.
         /// </summary>
         protected ContentViewModel()
         {
-            _Deferral = DeferCreated(); //Defer Created logic so we can call it manually in our extended initialize method.
+            _deferral = DeferCreated(); //Defer Created logic so we can call it manually in our extended initialize method.
         }
 
         /// <summary>
@@ -52,10 +52,10 @@ namespace Nova.Shell.Library
         /// <param name="session">The parent session.</param>
         internal void Initialize(ISessionViewModel session)
         {
-            _Session = session;
+            _session = session;
 
-            _Deferral.Dispose();
-            _Deferral = null;
+            _deferral.Dispose();
+            _deferral = null;
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Nova.Shell.Library
         /// </value>
         public dynamic ApplicationModel
         {
-            get { return _Session.ApplicationModel; }
+            get { return _session.ApplicationModel; }
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Nova.Shell.Library
         /// </value>
         public dynamic SessionModel
         {
-            get { return _Session.Model; }
+            get { return _session.Model; }
         }
         
         /// <summary>
@@ -89,7 +89,7 @@ namespace Nova.Shell.Library
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new()
         {
-            return _Session.CreateNavigationalAction<TPageView, TPageViewModel>();
+            return _session.CreateNavigationalAction<TPageView, TPageViewModel>();
         }
 
         /// <summary>
@@ -97,12 +97,12 @@ namespace Nova.Shell.Library
         /// </summary>
         protected override void DisposeManagedResources()
         {
-            _Session = null;
+            _session = null;
 
-            if (_Deferral == null) return;
+            if (_deferral == null) return;
 
-            _Deferral.Dispose();
-            _Deferral = null;
+            _deferral.Dispose();
+            _deferral = null;
         }
     }
 }

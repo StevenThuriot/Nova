@@ -30,7 +30,7 @@ namespace Nova.Shell
     /// </summary>
     public partial class DropShadow
     {
-        private bool _Delay;
+        private bool _delay;
 
         /// <summary>
         /// Prevents a default instance of the <see cref="DropShadow" /> class from being created.
@@ -94,7 +94,7 @@ namespace Nova.Shell
 
             if (window.IsVisible && window.WindowState == WindowState.Normal)
             {
-                if (_Delay)
+                if (_delay)
                 {
                     await Task.Delay(380); //400 == Default Windows animation speed.
                 }
@@ -107,7 +107,7 @@ namespace Nova.Shell
                 Visibility = Visibility.Collapsed;
             }
 
-            _Delay = window.WindowState == WindowState.Minimized;
+            _delay = window.WindowState == WindowState.Minimized;
         }
 
         private async void OnLoaded(object sender, RoutedEventArgs routedEventArgs)

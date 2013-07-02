@@ -27,9 +27,9 @@ namespace Nova.Library.ChangeTracking
     /// </summary>
     public abstract class ChangeTrackingBase : NotifyPropertyChanged, IChangeTracking
     {
-        private bool _IsChangeTracking;
-        private bool _IsChanged;
-        private ExtendedChangeTrackingHelper<object> _Helper;
+        private bool _isChangeTracking;
+        private bool _isChanged;
+        private ExtendedChangeTrackingHelper<object> _helper;
         
         /// <summary>
         /// Resets the object’s state to unchanged by accepting the modifications.
@@ -37,9 +37,9 @@ namespace Nova.Library.ChangeTracking
         public void AcceptChanges()
         {
             IsChanged = false;
-            _Helper.AcceptChanges(this);
+            _helper.AcceptChanges(this);
 
-            if (!_IsChangeTracking) return;
+            if (!_isChangeTracking) return;
 
             //Attach property again since change tracking is still turned on.
             PropertyChanged += ViewModelPropertyChanged;
@@ -52,8 +52,8 @@ namespace Nova.Library.ChangeTracking
         /// <returns>true if the object’s content has changed since the last call to <see cref="M:System.ComponentModel.IChangeTracking.AcceptChanges" />; otherwise, false.</returns>
         public bool IsChanged
         {
-            get { return _IsChangeTracking && (_IsChanged || _Helper.IsChanged(this)); }
-            private set { _IsChanged = value; }
+            get { return _isChangeTracking && (_isChanged || _helper.IsChanged(this)); }
+            private set { _isChanged = value; }
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Nova.Library.ChangeTracking
         {
             if (ChangeTrackingScope.IsPaused) return;
 
-            _IsChanged = true;
+            _isChanged = true;
             PropertyChanged -= ViewModelPropertyChanged;
         }
 
@@ -74,8 +74,8 @@ namespace Nova.Library.ChangeTracking
         /// </summary>
         public void PrepareChangeTracking()
         {
-            if (_Helper == null)
-                _Helper = ChangeTrackingFactory.CreateExtendedBoxedHelper(this);
+            if (_helper == null)
+                _helper = ChangeTrackingFactory.CreateExtendedBoxedHelper(this);
         }
 
         /// <summary>
@@ -83,9 +83,9 @@ namespace Nova.Library.ChangeTracking
         /// </summary>
         public void InitializeChangeTracking()
         {
-            if (_IsChangeTracking) return;
+            if (_isChangeTracking) return;
 
-            _IsChangeTracking = true;
+            _isChangeTracking = true;
 
             PrepareChangeTracking(); //If needed.
             
@@ -97,10 +97,10 @@ namespace Nova.Library.ChangeTracking
         /// </summary>
         public void StopChangeTracking()
         {
-            _IsChangeTracking = false;
+            _isChangeTracking = false;
             PropertyChanged -= ViewModelPropertyChanged;
 
-            _Helper.StopChangeTracking(this);
+            _helper.StopChangeTracking(this);
         }
     }
 }

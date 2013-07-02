@@ -49,28 +49,28 @@ namespace Nova.Test
 			}
 		}
 
-		private string _SearchText;
+		private string _searchText;
 		public string SearchText
 		{
-			get { return _SearchText; }
-			set { SetValue(ref _SearchText, value); }
+			get { return _searchText; }
+			set { SetValue(ref _searchText, value); }
 		}
 
 
 
-		private ObservableCollection<Change> _Changes;
+		private ObservableCollection<Change> _changes;
 		public ObservableCollection<Change> Changes
 		{
-			get { return _Changes; }
-			set { SetValue(ref _Changes, value); }
+			get { return _changes; }
+			set { SetValue(ref _changes, value); }
 		}
 
 
-		private ICommand _SearchCommand;
+		private ICommand _searchCommand;
 		public ICommand SearchCommand
 		{
-			get { return _SearchCommand; }
-			set { SetValue(ref _SearchCommand, value); }
+			get { return _searchCommand; }
+			set { SetValue(ref _searchCommand, value); }
 		}
 		/*
 		public void OnBeforeThrowExceptionAction(ActionContext context)

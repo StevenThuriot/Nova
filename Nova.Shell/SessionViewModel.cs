@@ -41,10 +41,10 @@ namespace Nova.Shell
         internal const string CurrentViewConstant = "CurrentSessionContentView";
         internal const string NextViewConstant = "NextSessionContentView";
 
-        private IView _CurrentView;
-        private string _Title;
-        private readonly dynamic _Model;
-        private readonly dynamic _ApplicationModel;
+        private IView _currentView;
+        private string _title;
+        private readonly dynamic _model;
+        private readonly dynamic _applicationModel;
 
         /// <summary>
         /// Gets the navigation action manager.
@@ -62,7 +62,7 @@ namespace Nova.Shell
         /// </value>
         public dynamic ApplicationModel
         {
-            get { return _ApplicationModel; }
+            get { return _applicationModel; }
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Nova.Shell
         /// </value>
         public dynamic Model
         {
-            get { return _Model; }
+            get { return _model; }
         }
 
         /// <summary>
@@ -84,8 +84,8 @@ namespace Nova.Shell
         /// </value>
         public string Title
         {
-            get { return _Title; }
-            set { SetValue(ref _Title, value); }
+            get { return _title; }
+            set { SetValue(ref _title, value); }
         }
 
         /// <summary>
@@ -93,10 +93,10 @@ namespace Nova.Shell
         /// </summary>
         public SessionViewModel()
         {
-            _Title = RESX.EmptySession;
+            _title = RESX.EmptySession;
 
-            _ApplicationModel = ((App) Application.Current).Model;
-            _Model = new ExpandoObject();
+            _applicationModel = ((App) Application.Current).Model;
+            _model = new ExpandoObject();
         }
         
         /// <summary>
@@ -123,12 +123,12 @@ namespace Nova.Shell
         /// </value>
         public IView CurrentView
         {
-            get { return _CurrentView; }
+            get { return _currentView; }
             internal set
             {
-                if (value == null || !SetValue(ref _CurrentView, value)) return;
+                if (value == null || !SetValue(ref _currentView, value)) return;
 
-                Title = _CurrentView.Title;
+                Title = _currentView.Title;
             }
         }
 

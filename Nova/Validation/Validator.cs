@@ -38,20 +38,20 @@ namespace Nova.Validation
 		/// <summary>
 		/// The list of errors.
 		/// </summary>
-		private List<BaseValidation> _Errors;
+		private List<BaseValidation> _errors;
 
 		/// <summary>
 		/// Gets the view model.
 		/// </summary>
-		private readonly TViewModel _ViewModel;
+		private readonly TViewModel _viewModel;
 
 		/// <summary>
 		/// Sets the error collection.
 		/// </summary>
 		internal void InternalSetErrorCollection()
 		{
-			_ViewModel.ErrorCollection = new ReadOnlyErrorCollection(_Errors);
-			_Errors = new List<BaseValidation>();
+			_viewModel.ErrorCollection = new ReadOnlyErrorCollection(_errors);
+			_errors = new List<BaseValidation>();
 		}
 		
 		/// <summary>
@@ -60,8 +60,8 @@ namespace Nova.Validation
 		/// <param name="viewModel">The view model.</param>
 		internal Validator(TViewModel viewModel)
 		{
-			_ViewModel = viewModel;
-			_Errors = new List<BaseValidation>();
+			_viewModel = viewModel;
+			_errors = new List<BaseValidation>();
 		}
 
 		/// <summary>
@@ -95,7 +95,7 @@ namespace Nova.Validation
 		public void Add(string field, string message)
 		{
 			var error = ValidationFactory.Create(field, message);
-			_Errors.Add(error);
+			_errors.Add(error);
 		}
 
 		/// <summary>
@@ -108,7 +108,7 @@ namespace Nova.Validation
 		public void Add(string field, string message, Guid entityID)
 		{
 			var error = ValidationFactory.Create(field, message, entityID);
-			_Errors.Add(error);
+			_errors.Add(error);
 		}
 
 		/// <summary>
@@ -119,7 +119,7 @@ namespace Nova.Validation
 		public void Add(string field)
 		{
 			var error = ValidationFactory.Create(field);
-			_Errors.Add(error);
+			_errors.Add(error);
 		}
 
 		/// <summary>
@@ -131,7 +131,7 @@ namespace Nova.Validation
 		public void Add(string field, Guid entityID)
 		{
 			var error = ValidationFactory.Create(field, entityID);
-			_Errors.Add(error);
+			_errors.Add(error);
 		}
 
 		/// <summary>
@@ -142,7 +142,7 @@ namespace Nova.Validation
 		public void Add(string field, ValidationSeverity severity)
 		{
 			var error = ValidationFactory.Create(field, severity);
-			_Errors.Add(error);
+			_errors.Add(error);
 		}
 
 		/// <summary>
@@ -154,7 +154,7 @@ namespace Nova.Validation
 		public void Add(string field, Guid entityID, ValidationSeverity severity)
 		{
 			var error = ValidationFactory.Create(field, entityID, severity);
-			_Errors.Add(error);
+			_errors.Add(error);
 		}
 
 		/// <summary>
@@ -166,7 +166,7 @@ namespace Nova.Validation
 		public void Add(string field, string message, ValidationSeverity severity)
 		{
 			var error = ValidationFactory.Create(field, message, severity);
-			_Errors.Add(error);
+			_errors.Add(error);
 		}
 
 		/// <summary>
@@ -179,7 +179,7 @@ namespace Nova.Validation
 		public void Add(string field, string message, Guid entityID, ValidationSeverity severity)
 		{
 			var error = ValidationFactory.Create(field, message, entityID, severity);
-			_Errors.Add(error);
+			_errors.Add(error);
 		}
 
 		/// <summary>
@@ -190,7 +190,7 @@ namespace Nova.Validation
 		/// </value>
 		public bool IsValid
 		{
-			get { return _Errors.Count == 0; }
+			get { return _errors.Count == 0; }
 		}
 	}
 }

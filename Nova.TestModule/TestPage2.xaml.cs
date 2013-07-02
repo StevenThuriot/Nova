@@ -44,14 +44,14 @@ namespace Nova.TestModule
     {
         protected override void OnCreated()
         {
-            _GoToPage1Command = CreateNavigationalAction<TestPage, TestPageViewModel>();
+            _goToPage1Command = CreateNavigationalAction<TestPage, TestPageViewModel>();
         }
 
-        private ICommand _GoToPage1Command;
+        private ICommand _goToPage1Command;
         public ICommand GoToPage1Command
         {
-            get { return _GoToPage1Command; }
-            set { SetValue(ref _GoToPage1Command, value); }
+            get { return _goToPage1Command; }
+            set { SetValue(ref _goToPage1Command, value); }
         }
     }
 }

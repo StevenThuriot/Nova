@@ -75,7 +75,7 @@ namespace Nova.Controls
         /// </summary>
         public static readonly DependencyProperty EllipseOffsetProperty = DependencyProperty.Register("EllipseOffset", typeof(Thickness), typeof(ProgressRing), new PropertyMetadata(default(Thickness)));
 
-        private List<Action> _DeferredActions = new List<Action>();
+        private List<Action> _deferredActions = new List<Action>();
 
         /// <summary>
         /// Initializes the <see cref="ProgressRing" /> class.
@@ -186,8 +186,8 @@ namespace Nova.Controls
                     (double)dependencyPropertyChangedEventArgs.NewValue);
             });
 
-            if (ring._DeferredActions != null)
-                ring._DeferredActions.Add(action);
+            if (ring._deferredActions != null)
+                ring._deferredActions.Add(action);
             else
                 action();
         }
@@ -253,8 +253,8 @@ namespace Nova.Controls
             else
                 action = () => VisualStateManager.GoToState(this, "Small", true);
 
-            if (_DeferredActions != null)
-                _DeferredActions.Add(action);
+            if (_deferredActions != null)
+                _deferredActions.Add(action);
 
             else
                 action();
@@ -296,8 +296,8 @@ namespace Nova.Controls
             else
                 action = () => VisualStateManager.GoToState(this, "Inactive", true);
 
-            if (_DeferredActions != null)
-                _DeferredActions.Add(action);
+            if (_deferredActions != null)
+                _deferredActions.Add(action);
 
             else
                 action();
@@ -312,10 +312,10 @@ namespace Nova.Controls
             UpdateLargeState();
             UpdateActiveState();
             base.OnApplyTemplate();
-            if (_DeferredActions != null)
-                foreach (var action in _DeferredActions)
+            if (_deferredActions != null)
+                foreach (var action in _deferredActions)
                     action();
-            _DeferredActions = null;
+            _deferredActions = null;
         }
     }
 

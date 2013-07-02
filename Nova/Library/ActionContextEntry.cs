@@ -29,6 +29,9 @@ namespace Nova.Library
     /// </summary>
     public class ActionContextEntry
     {
+        private readonly string _key;
+        private readonly object _value;
+
         /// <summary>
         /// Creates a new ActionContext entry.
         /// </summary>
@@ -56,9 +59,6 @@ namespace Nova.Library
             return Create(key, value, cloneValue);
         }
 
-        private readonly string _Key;
-        private readonly object _Value;
-
         /// <summary>
         /// Prevents a default instance of the <see cref="ActionContextEntry" /> class from being created.
         /// </summary>
@@ -71,8 +71,8 @@ namespace Nova.Library
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException("key");
             
-            _Key = key;
-            _Value = value == null
+            _key = key;
+            _value = value == null
                          ? null
                          : cloneValue
                                ? BruteClone(value)
@@ -87,7 +87,7 @@ namespace Nova.Library
         /// </value>
         public string Key
         {
-            get { return _Key; }
+            get { return _key; }
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Nova.Library
         /// </value>
         public object Value
         {
-            get { return _Value; }
+            get { return _value; }
         }
 
         /// <summary>

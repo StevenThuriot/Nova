@@ -33,7 +33,7 @@ namespace Nova.Library.ActionMethodRepository
             /// <summary>
             /// The action
             /// </summary>
-            private readonly Action _Action;
+            private readonly Action _action;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="OnAction.StaticOnActionWithoutParameters" /> class.
@@ -42,7 +42,7 @@ namespace Nova.Library.ActionMethodRepository
             public StaticOnActionWithoutParameters(MethodInfo method)
                 : base(method)
             {
-                _Action = (Action)Delegate.CreateDelegate(typeof(Action), method);
+                _action = (Action)Delegate.CreateDelegate(typeof(Action), method);
             }
 
             /// <summary>
@@ -52,7 +52,7 @@ namespace Nova.Library.ActionMethodRepository
             /// <param name="context">The context.</param>
             public override void Invoke(object instance, ActionContext context)
             {
-                _Action();
+                _action();
             }
         }
 
@@ -64,7 +64,7 @@ namespace Nova.Library.ActionMethodRepository
             /// <summary>
             /// The action
             /// </summary>
-            private readonly Action<ActionContext> _Action;
+            private readonly Action<ActionContext> _action;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="OnAction.StaticOnActionWithParameters" /> class.
@@ -73,7 +73,7 @@ namespace Nova.Library.ActionMethodRepository
             public StaticOnActionWithParameters(MethodInfo method)
                 : base(method)
             {
-                _Action = (Action<ActionContext>)Delegate.CreateDelegate(typeof(Action<ActionContext>), method);
+                _action = (Action<ActionContext>)Delegate.CreateDelegate(typeof(Action<ActionContext>), method);
             }
 
             /// <summary>
@@ -83,7 +83,7 @@ namespace Nova.Library.ActionMethodRepository
             /// <param name="context">The context.</param>
             public override void Invoke(object instance, ActionContext context)
             {
-                _Action(context);
+                _action(context);
             }
         }
 
@@ -96,7 +96,7 @@ namespace Nova.Library.ActionMethodRepository
             /// <summary>
             /// The action
             /// </summary>
-            private readonly Action<T> _Action;
+            private readonly Action<T> _action;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="OnAction.OnActionWithoutParameters{T}" /> class.
@@ -105,7 +105,7 @@ namespace Nova.Library.ActionMethodRepository
             public OnActionWithoutParameters(MethodInfo method)
                 : base(method)
             {
-                _Action = (Action<T>)Delegate.CreateDelegate(typeof(Action<T>), null, method);
+                _action = (Action<T>)Delegate.CreateDelegate(typeof(Action<T>), null, method);
             }
 
             /// <summary>
@@ -115,7 +115,7 @@ namespace Nova.Library.ActionMethodRepository
             /// <param name="context">The context.</param>
             public override void Invoke(object instance, ActionContext context)
             {
-                _Action((T)instance);
+                _action((T)instance);
             }
         }
 
@@ -128,7 +128,7 @@ namespace Nova.Library.ActionMethodRepository
             /// <summary>
             /// The action
             /// </summary>
-            private readonly Action<T, ActionContext> _Action;
+            private readonly Action<T, ActionContext> _action;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="OnAction.OnActionWithParameters{T}" /> class.
@@ -137,7 +137,7 @@ namespace Nova.Library.ActionMethodRepository
             public OnActionWithParameters(MethodInfo method)
                 : base(method)
             {
-                _Action =
+                _action =
                     (Action<T, ActionContext>)Delegate.CreateDelegate(typeof(Action<T, ActionContext>), null, method);
             }
 
@@ -148,7 +148,7 @@ namespace Nova.Library.ActionMethodRepository
             /// <param name="context">The context.</param>
             public override void Invoke(object instance, ActionContext context)
             {
-                _Action((T)instance, context);
+                _action((T)instance, context);
             }
         }
     }

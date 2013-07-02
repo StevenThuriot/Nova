@@ -50,10 +50,10 @@ namespace Nova.Shell.Controls
     /// </summary>
     public partial class NovaTree : INotifyPropertyChanged, INovaTree
     {
-        private Type _PageType;
-        private Type _ViewModelType;
-        private IEnumerable<NovaTreeNode> _TreeNodes;
-        private bool _ShowModules;
+        private Type _pageType;
+        private Type _viewModelType;
+        private IEnumerable<NovaTreeNode> _treeNodes;
+        private bool _showModules;
 
         /// <summary>
         /// Gets the tree nodes.
@@ -63,12 +63,12 @@ namespace Nova.Shell.Controls
         /// </value>
         public IEnumerable<NovaTreeNode> TreeNodes
         {
-            get { return _TreeNodes; }
+            get { return _treeNodes; }
             private set
             {
-                if (Equals(_TreeNodes, value)) return;
+                if (Equals(_treeNodes, value)) return;
 
-                _TreeNodes = value;
+                _treeNodes = value;
                 OnPropertyChanged();
             }
         }
@@ -81,12 +81,12 @@ namespace Nova.Shell.Controls
         /// </value>
         public bool ShowModules
         {
-            get { return _ShowModules; }
+            get { return _showModules; }
             set
             {
-                if (_ShowModules == value) return;
+                if (_showModules == value) return;
 
-                _ShowModules = value;
+                _showModules = value;
                 OnPropertyChanged();
             }
         }
@@ -120,7 +120,7 @@ namespace Nova.Shell.Controls
         /// </summary>
         public void ReevaluateState()
         {
-            ReevaluateState(_PageType, _ViewModelType);
+            ReevaluateState(_pageType, _viewModelType);
         }
 
         /// <summary>
@@ -130,8 +130,8 @@ namespace Nova.Shell.Controls
         /// <param name="viewModelType">Type of the view model.</param>
         public void ReevaluateState(Type pageType, Type viewModelType)
         {
-            _PageType = pageType;
-            _ViewModelType = viewModelType;
+            _pageType = pageType;
+            _viewModelType = viewModelType;
 
             var novaTreeNodes = TreeNodes;
             if (ReevaluateNodes(novaTreeNodes)) return; //Node found in current module
@@ -153,7 +153,7 @@ namespace Nova.Shell.Controls
         /// <returns>True if one of the nodes is the current node.</returns>
         private bool ReevaluateNodes(IEnumerable<NovaTreeNode> novaTreeNodes)
         {
-            return novaTreeNodes.Select(node => node.ReevaluateState(_PageType, _ViewModelType))
+            return novaTreeNodes.Select(node => node.ReevaluateState(_pageType, _viewModelType))
                                 .Aggregate(false, (current, result) => current || result);
         }
 

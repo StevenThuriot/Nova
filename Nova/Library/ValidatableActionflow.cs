@@ -35,14 +35,14 @@ namespace Nova.Library
         where TView : class, IView
         where TViewModel : ViewModel<TView, TViewModel>, new()
     {
-        private ValidationResults _ValidationResults;
+        private ValidationResults _validationResults;
 
         /// <summary>
         /// Initializes a new instance of the ValidatableActionflow class.
         /// </summary>
         protected ValidatableActionflow()
         {
-            _ValidationResults = new ValidationResults();
+            _validationResults = new ValidationResults();
         }
 
         /// <summary>
@@ -52,10 +52,10 @@ namespace Nova.Library
         {
             base.DisposeManagedResources();
 
-            if (_ValidationResults == null) return;
+            if (_validationResults == null) return;
 
-            _ValidationResults.InternalReset();
-            _ValidationResults = null;
+            _validationResults.InternalReset();
+            _validationResults = null;
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Nova.Library
                     var requiredField = string.Format(CultureInfo.CurrentCulture, Resources.RequiredField, field);
                     var validation = ValidationFactory.Create(field, requiredField, entityID, ValidationSeverity.Error);
 
-                    _ValidationResults.InternalAdd(validation);
+                    _validationResults.InternalAdd(validation);
                 }
             }
             catch (Exception exception)
@@ -104,8 +104,8 @@ namespace Nova.Library
         /// </summary>
         internal override void SafeInternalExecute()
         {
-            Validate(_ValidationResults);
-            CanComplete = _ValidationResults.IsValid;
+            Validate(_validationResults);
+            CanComplete = _validationResults.IsValid;
 
             if (CanComplete)
             {
@@ -120,10 +120,10 @@ namespace Nova.Library
         {
             base.SafeInternalExecuteCompleted();
 
-            var validationMessages = _ValidationResults.InternalGetValidations();
+            var validationMessages = _validationResults.InternalGetValidations();
             ViewModel.ErrorCollection = new ReadOnlyErrorCollection(validationMessages);
 
-            _ValidationResults.InternalReset();
+            _validationResults.InternalReset();
         }
     }
 }

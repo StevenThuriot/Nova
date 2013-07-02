@@ -28,9 +28,9 @@ namespace Nova.Library
 {
     public abstract partial class ViewModel<TView, TViewModel>
     {
-        private bool _EnterOnInitialize;
-        private bool _DeferCreated;
-        private bool _Created;
+        private bool _enterOnInitialize;
+        private bool _deferCreated;
+        private bool _created;
 
         /// <summary>
         /// Creates the specified viewmodel.
@@ -116,13 +116,13 @@ namespace Nova.Library
 
             var viewModel = (TViewModel)this;
 
-            _ActionQueueManager = actionQueueManager;
+            _actionQueueManager = actionQueueManager;
             View = view;
             ActionController = new ActionController<TView, TViewModel>(view, viewModel, actionQueueManager);
-            _ActionManager = new ActionManager<TView, TViewModel>(view, viewModel);
-            _EnterOnInitialize = enterOnInitialize;
+            _actionManager = new ActionManager<TView, TViewModel>(viewModel);
+            _enterOnInitialize = enterOnInitialize;
 
-            if (_DeferCreated) return;
+            if (_deferCreated) return;
 
             Created();
         }
@@ -132,13 +132,13 @@ namespace Nova.Library
         /// </summary>
         private void Created()
         {
-            if (_Created) return; //Only create once!
-            if (_Disposed) return;
+            if (_created) return; //Only create once!
+            if (_disposed) return;
 
-            _Created = true;
+            _created = true;
             OnCreated();
 
-            if (!_EnterOnInitialize) return;
+            if (!_enterOnInitialize) return;
 
             Enter();
         }
@@ -160,7 +160,7 @@ namespace Nova.Library
             where TPageViewModel : ViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new()
         {
-            return ExtendedUserControl<TPageView, TPageViewModel>.Create(View, _ActionQueueManager, enterOnInitialize);
+            return ExtendedUserControl<TPageView, TPageViewModel>.Create(View, _actionQueueManager, enterOnInitialize);
         }
 
 
@@ -196,8 +196,8 @@ namespace Nova.Library
         /// </summary>
         private class CreationalDeferral : IDisposable
         {
-            private readonly ViewModel<TView, TViewModel> _ViewModel;
-            private bool _Disposed;
+            private readonly ViewModel<TView, TViewModel> _viewModel;
+            private bool _disposed;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="CreationalDeferral"/> class.
@@ -205,8 +205,8 @@ namespace Nova.Library
             /// <param name="viewModel">The view model.</param>
             public CreationalDeferral(ViewModel<TView, TViewModel> viewModel)
             {
-                _ViewModel = viewModel;
-                _ViewModel._DeferCreated = true;
+                _viewModel = viewModel;
+                _viewModel._deferCreated = true;
             }
 
             /// <summary>
@@ -232,14 +232,14 @@ namespace Nova.Library
             /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
             private void Dispose(bool disposing)
             {
-                if (_Disposed) return;
+                if (_disposed) return;
 
                 if (disposing)
                 {
-                    _ViewModel.Created();
+                    _viewModel.Created();
                 }
 
-                _Disposed = true;
+                _disposed = true;
             }
         }
     }

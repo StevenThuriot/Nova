@@ -38,11 +38,11 @@ namespace Nova.Shell
     /// </summary>
     public class MainViewModel : ViewModel<MainView, MainViewModel>
     {
-        private readonly ObservableCollection<SessionView> _Sessions;
-        private SessionView _CurrentSession;
-        private bool _HasOpenDocuments;
-        private ImageSource _Icon;
-        private string _Title = RESX.Empty;
+        private readonly ObservableCollection<SessionView> _sessions;
+        private SessionView _currentSession;
+        private bool _hasOpenDocuments;
+        private ImageSource _icon;
+        private string _title = RESX.Empty;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel" /> class.
@@ -53,8 +53,8 @@ namespace Nova.Shell
             MaximizeCommand = new RelayCommand(MaximizeView);
             MinimizeCommand = new RelayCommand(MinimizeView);
 
-            _Sessions = new ObservableCollection<SessionView>();
-            _Sessions.CollectionChanged += SessionsChanged;
+            _sessions = new ObservableCollection<SessionView>();
+            _sessions.CollectionChanged += SessionsChanged;
         }
         
         /// <summary>
@@ -87,8 +87,8 @@ namespace Nova.Shell
         /// </value>
         public bool HasOpenDocuments
         {
-            get { return _HasOpenDocuments; }
-            set { SetValue(ref _HasOpenDocuments, value); }
+            get { return _hasOpenDocuments; }
+            set { SetValue(ref _hasOpenDocuments, value); }
         }
 
         /// <summary>
@@ -99,8 +99,8 @@ namespace Nova.Shell
         /// </value>
         public ImageSource Icon
         {
-            get { return _Icon; }
-            set { SetValue(ref _Icon, value); }
+            get { return _icon; }
+            set { SetValue(ref _icon, value); }
         }
 
         /// <summary>
@@ -111,8 +111,8 @@ namespace Nova.Shell
         /// </value>
         public string Title
         {
-            get { return _Title; }
-            set { SetValue(ref _Title, value); }
+            get { return _title; }
+            set { SetValue(ref _title, value); }
         }
 
         /// <summary>
@@ -123,8 +123,8 @@ namespace Nova.Shell
         /// </value>
         public SessionView CurrentSession
         {
-            get { return _CurrentSession; }
-            set { SetValue(ref _CurrentSession, value); }
+            get { return _currentSession; }
+            set { SetValue(ref _currentSession, value); }
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace Nova.Shell
         /// </value>
         public ObservableCollection<SessionView> Sessions
         {
-            get { return _Sessions; }
+            get { return _sessions; }
         }
 
         /// <summary>

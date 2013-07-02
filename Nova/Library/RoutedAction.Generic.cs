@@ -1,11 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
-using Nova.Controls;
-using Nova.Properties;
-
 #region License
 // 
 //  Copyright 2012 Steven Thuriot
@@ -25,6 +17,14 @@ using Nova.Properties;
 #endregion
 
 using System.Windows.Input;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Reflection;
+using Nova.Controls;
+using Nova.Properties;
+
 
 namespace Nova.Library
 {
@@ -39,11 +39,11 @@ namespace Nova.Library
 		where TViewModel : ViewModel<TView,TViewModel>, new()
 		where T : Actionflow<TView, TViewModel>, new()
 	{
-	    private readonly List<ActionContextEntry> _Entries;
-	    private T _Action;
-		private ActionController<TView, TViewModel> _Controller;
-		private bool _IsExecuting;
-		private bool _Disposed;
+	    private readonly List<ActionContextEntry> _entries;
+	    private T _action;
+		private ActionController<TView, TViewModel> _controller;
+		private bool _isExecuting;
+		private bool _disposed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RoutedAction&lt;T, TView, TViewModel&gt;" /> class.
@@ -64,9 +64,9 @@ namespace Nova.Library
 
 			try
 			{
-                _Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel);
-                _Entries = entries.ToList();
-				_Controller = actionController;
+                _action = Actionflow<TView, TViewModel>.New<T>(view, viewModel);
+                _entries = entries.ToList();
+				_controller = actionController;
 			}
 			catch (Exception exception)
 			{
@@ -89,8 +89,8 @@ namespace Nova.Library
 
             try
 			{
-                _Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel);
-                _Entries = entries.ToList();
+                _action = Actionflow<TView, TViewModel>.New<T>(view, viewModel);
+                _entries = entries.ToList();
 				FindController(viewModel);
 			}
 			catch (Exception exception)
@@ -98,7 +98,7 @@ namespace Nova.Library
 				ExceptionHandler.Handle(exception, Resources.ErrorMessageAction);
 			}
 			
-			if (_Controller == null)
+			if (_controller == null)
 				throw new ArgumentException(Resources.ActionControllerNotFound);
 		}
 
@@ -108,7 +108,7 @@ namespace Nova.Library
 
 			if (extendedView != null)
 			{
-				_Controller = viewModel.ActionController;
+				_controller = viewModel.ActionController;
 				return;
 			}
 
@@ -119,9 +119,9 @@ namespace Nova.Library
 			var actionContextProperty = propertyInfos.FirstOrDefault(x => x.PropertyType == actionControllerType);
 			if (actionContextProperty != null)
 			{
-				_Controller = actionContextProperty.GetValue(viewModel, null) as ActionController<TView, TViewModel>;
+				_controller = actionContextProperty.GetValue(viewModel, null) as ActionController<TView, TViewModel>;
 				
-				if (_Controller != null)
+				if (_controller != null)
 					return;
 			}
 
@@ -129,7 +129,7 @@ namespace Nova.Library
 			var actionContextField = fieldInfos.FirstOrDefault(x => x.FieldType == actionControllerType);
 			if (actionContextField != null)
 			{
-				_Controller = actionContextField.GetValue(viewModel) as ActionController<TView, TViewModel>;
+				_controller = actionContextField.GetValue(viewModel) as ActionController<TView, TViewModel>;
 			}
 		}
 
@@ -139,17 +139,17 @@ namespace Nova.Library
 		/// <param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to null.</param>
 		public void Execute(object parameter)
 		{
-			_IsExecuting = true;
+			_isExecuting = true;
 			SetActionContext(parameter);
 
-			_Controller.InternalInvokeAction(_Action, executeCompleted: () =>
+			_controller.InternalInvokeAction(_action, executeCompleted: () =>
 			                                                	{
-			                                                		_IsExecuting = false;
+			                                                		_isExecuting = false;
 
-			                                                		var view = _Action.View;
-			                                                		var viewModel = _Action.ViewModel;
+			                                                		var view = _action.View;
+			                                                		var viewModel = _action.ViewModel;
 
-			                                                		_Action = Actionflow<TView, TViewModel>.New<T>(view, viewModel);
+			                                                		_action = Actionflow<TView, TViewModel>.New<T>(view, viewModel);
 			                                                	});
 		}
 
@@ -163,11 +163,11 @@ namespace Nova.Library
 		public bool CanExecute(object parameter)
 		{
             //Making sure this doesn't throw an exception while being disposed.
-            if (_Action == null || _Action.ActionContext == null)
+            if (_action == null || _action.ActionContext == null)
                 return false;
 
 			SetActionContext(parameter);
-			return !_IsExecuting && _Action.CanExecute();
+			return !_isExecuting && _action.CanExecute();
 		}
 
 		/// <summary>
@@ -176,17 +176,17 @@ namespace Nova.Library
 		/// <param name="parameter">The parameter.</param>
 		private void SetActionContext(object parameter)
 		{
-            _Action.ActionContext.Clear();
+            _action.ActionContext.Clear();
             
-            foreach (var entry in _Entries)
+            foreach (var entry in _entries)
             {
-                _Action.ActionContext.Add(entry);
+                _action.ActionContext.Add(entry);
             }
 
 		    if (parameter == null) return;
 
 		    var parameterEntry = ActionContextEntry.Create(RoutedAction.CommandParameter, parameter);
-            _Action.ActionContext.Add(parameterEntry);
+            _action.ActionContext.Add(parameterEntry);
 		}
 
 		/// <summary>
@@ -222,18 +222,18 @@ namespace Nova.Library
 		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
 		private void Dispose(bool disposing)
 		{
-			if (_Disposed) return;
+			if (_disposed) return;
 
 			if (disposing)
 			{
-				if (_Action != null)
+				if (_action != null)
 				{
-					_Action.Dispose();
-				    _Entries.Clear();
+					_action.Dispose();
+				    _entries.Clear();
 				}
 			}
 
-			_Disposed = true;
+			_disposed = true;
 		}
 	}
 }

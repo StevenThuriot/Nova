@@ -1,6 +1,4 @@
-﻿using Nova.Library;
-
-#region License
+﻿#region License
 // 
 //  Copyright 2012 Steven Thuriot
 // 
@@ -18,6 +16,8 @@
 // 
 #endregion
 
+using Nova.Library;
+
 namespace Nova.Controls.ExceptionHandler
 {
 	/// <summary>
@@ -25,7 +25,7 @@ namespace Nova.Controls.ExceptionHandler
 	/// </summary>
 	public class ExceptionHandlerViewModel : ViewModel<ExceptionHandlerView, ExceptionHandlerViewModel>
 	{
-		private string _FormattedMessage;
+		private string _formattedMessage;
 		/// <summary>
 		/// Gets or sets the formatted message.
 		/// </summary>
@@ -34,11 +34,11 @@ namespace Nova.Controls.ExceptionHandler
 		/// </value>
 		public string FormattedMessage
 		{
-			get { return _FormattedMessage; }
-			set { SetValue(ref _FormattedMessage, value); }
+			get { return _formattedMessage; }
+			set { SetValue(ref _formattedMessage, value); }
 		}
 
-		private string _Information;
+		private string _information;
 		/// <summary>
 		/// Gets or sets the informational message.
 		/// </summary>
@@ -47,8 +47,8 @@ namespace Nova.Controls.ExceptionHandler
 		/// </value>
 		public string Information
 		{
-			get { return _Information; }
-			set { SetValue(ref _Information, value); }
+			get { return _information; }
+			set { SetValue(ref _information, value); }
 		}
 	}
 }

@@ -25,14 +25,14 @@ namespace Nova.Validation
 	/// </summary>
 	public class ValidationResults : IEnumerable<BaseValidation>
 	{
-		private readonly List<BaseValidation> _Validations;
+		private readonly List<BaseValidation> _validations;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ValidationResults"/> class.
 		/// </summary>
 		public ValidationResults()
 		{
-			_Validations = new List<BaseValidation>();
+			_validations = new List<BaseValidation>();
 		}
 
 		/// <summary>
@@ -41,7 +41,7 @@ namespace Nova.Validation
 		/// <param name="validation">The validation.</param>
 		internal void InternalAdd(BaseValidation validation)
 		{
-			_Validations.Add(validation);
+			_validations.Add(validation);
 		}
 
 		/// <summary>
@@ -49,7 +49,7 @@ namespace Nova.Validation
 		/// </summary>
 		internal void InternalReset()
 		{
-			_Validations.Clear();
+			_validations.Clear();
 		}
 
 		/// <summary>
@@ -58,7 +58,7 @@ namespace Nova.Validation
 		/// <returns></returns>
 		internal IEnumerable<BaseValidation> InternalGetValidations()
 		{
-			return _Validations.AsReadOnly();
+			return _validations.AsReadOnly();
 		}
 
 		/// <summary>
@@ -69,7 +69,7 @@ namespace Nova.Validation
 		/// </value>
 		public bool IsValid
 		{
-			get { return _Validations == null || _Validations.Count == 0; }
+			get { return _validations == null || _validations.Count == 0; }
 		}
 		
 		/// <summary>
@@ -78,7 +78,7 @@ namespace Nova.Validation
 		/// <returns></returns>
 		public IEnumerator<BaseValidation> GetEnumerator()
 		{
-			return _Validations.GetEnumerator();
+			return _validations.GetEnumerator();
 		}
 
 		/// <summary>

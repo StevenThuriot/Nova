@@ -28,8 +28,8 @@ namespace Nova.Library.ChangeTracking
     /// <typeparam name="T">Type of instance</typeparam>
     public class ChangeTrackingHelper<T>
     {
-        private readonly Func<T, bool> _IsChanged;
-        private readonly Action<T> _AcceptChanges;
+        private readonly Func<T, bool> _isChanged;
+        private readonly Action<T> _acceptChanges;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangeTrackingHelper{T}" /> class.
@@ -44,8 +44,8 @@ namespace Nova.Library.ChangeTracking
             if (acceptChanges == null)
                 throw new ArgumentNullException("acceptChanges");
 
-            _IsChanged = isChanged;
-            _AcceptChanges = acceptChanges;
+            _isChanged = isChanged;
+            _acceptChanges = acceptChanges;
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Nova.Library.ChangeTracking
             if (instance == null)
                 throw new ArgumentNullException("instance");
 
-            return _IsChanged(instance);
+            return _isChanged(instance);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Nova.Library.ChangeTracking
             if (instance == null)
                 throw new ArgumentNullException("instance");
 
-            _AcceptChanges(instance);
+            _acceptChanges(instance);
         }
     }
 }

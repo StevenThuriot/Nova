@@ -30,10 +30,10 @@ namespace Nova.Shell.Domain
     /// </summary>
     internal class TreeNode
     {
-        private readonly Type _PageType;
-        private readonly Type _ViewModelType;
+        private readonly Type _pageType;
+        private readonly Type _viewModelType;
 
-        private readonly Func<INavigatablePage, ICommand> _CreateNavigationalAction;
+        private readonly Func<INavigatablePage, ICommand> _createNavigationalAction;
 
         /// <summary>
         /// Gets the title.
@@ -71,9 +71,9 @@ namespace Nova.Shell.Domain
             Title = title;
             Rank = rank;
 
-            _PageType = pageType;
-            _ViewModelType = viewModelType;
-            _CreateNavigationalAction = createNavigationalAction;
+            _pageType = pageType;
+            _viewModelType = viewModelType;
+            _createNavigationalAction = createNavigationalAction;
         }
 
         /// <summary>
@@ -106,9 +106,9 @@ namespace Nova.Shell.Domain
         /// <returns></returns>
         internal NovaTreeNode Build(INavigatablePage page, bool isStartupNode)
         {
-            var command = _CreateNavigationalAction(page);
+            var command = _createNavigationalAction(page);
 
-            var node = new NovaTreeNode(Title, _PageType, _ViewModelType, command, isStartupNode);
+            var node = new NovaTreeNode(Title, _pageType, _viewModelType, command, isStartupNode);
             return node;
         }
     }

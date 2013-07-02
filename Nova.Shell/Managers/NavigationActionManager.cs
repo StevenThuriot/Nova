@@ -1,6 +1,4 @@
-﻿using Nova.Library;
-
-#region License
+﻿#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -25,6 +23,7 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
+using Nova.Library;
 using Nova.Shell.Library;
 
 namespace Nova.Shell.Managers
@@ -34,10 +33,10 @@ namespace Nova.Shell.Managers
     /// </summary>
     internal class NavigationActionManager : IDisposable, INavigationActionManager
     {
-        private bool _Disposed;
+        private bool _disposed;
 
-        private SessionView _Session;
-        private readonly List<IDisposable> _NavigatableActions;
+        private SessionView _session;
+        private readonly List<IDisposable> _navigatableActions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NavigationActionManager" /> class.
@@ -45,8 +44,8 @@ namespace Nova.Shell.Managers
         /// <param name="session">The session.</param>
         public NavigationActionManager(SessionView session)
         {
-            _Session = session;
-            _NavigatableActions = new List<IDisposable>();
+            _session = session;
+            _navigatableActions = new List<IDisposable>();
         }
 
         /// <summary>
@@ -59,14 +58,14 @@ namespace Nova.Shell.Managers
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new()
         {
-            var viewModel = _Session.ViewModel;
+            var viewModel = _session.ViewModel;
 
             var createNextView = new Func<IView>(viewModel.CreatePage<TPageView, TPageViewModel>);
             var next = ActionContextEntry.Create(SessionViewModel.NextViewConstant, createNextView, false);
 
-            var command = RoutedAction.New<NavigationAction, SessionView, SessionViewModel>(_Session, viewModel, next);
+            var command = RoutedAction.New<NavigationAction, SessionView, SessionViewModel>(_session, viewModel, next);
 
-            _NavigatableActions.Add((IDisposable) command);
+            _navigatableActions.Add((IDisposable) command);
 
             return command;
         }
@@ -91,20 +90,20 @@ namespace Nova.Shell.Managers
 
         private void Dispose(bool disposing)
         {
-            if (_Disposed) return;
+            if (_disposed) return;
 
             if (disposing)
             {
-                _Session = null;
-                foreach (var disposable in _NavigatableActions)
+                _session = null;
+                foreach (var disposable in _navigatableActions)
                 {
                     disposable.Dispose();
                 }
 
-                _NavigatableActions.Clear();
+                _navigatableActions.Clear();
             }
 
-            _Disposed = true;
+            _disposed = true;
         }
     }
 }

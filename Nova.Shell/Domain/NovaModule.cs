@@ -33,8 +33,8 @@ namespace Nova.Shell.Domain
     [DebuggerDisplay("Title = {Title}, Ranking = {Ranking}", Name = "Nova Module")]
     internal class NovaModule
     {
-        private readonly TreeNode _StartUpTreeNode;
-        private readonly IEnumerable<TreeNode> _TreeNodes;
+        private readonly TreeNode _startUpTreeNode;
+        private readonly IEnumerable<TreeNode> _treeNodes;
 
         /// <summary>
         /// Gets the title.
@@ -71,8 +71,8 @@ namespace Nova.Shell.Domain
 
             Title = title;
             Ranking = ranking;
-            _TreeNodes = treeNodes;
-            _StartUpTreeNode = startUpTreeNode;
+            _treeNodes = treeNodes;
+            _startUpTreeNode = startUpTreeNode;
         }
 
         /// <summary>
@@ -96,8 +96,8 @@ namespace Nova.Shell.Domain
         /// <returns></returns>
         internal IEnumerable<NovaTreeNode> BuildNovaTreeNodes(INavigatablePage page)
         {
-            var nodes = _TreeNodes.OrderByDescending(x => x.Rank)
-                                  .Select(x => x.Build(page, x == _StartUpTreeNode))
+            var nodes = _treeNodes.OrderByDescending(x => x.Rank)
+                                  .Select(x => x.Build(page, x == _startUpTreeNode))
                                   .Distinct(NovaTreeNode.NovaTreeNodeComparer)
                                   .ToList()
                                   .AsReadOnly();

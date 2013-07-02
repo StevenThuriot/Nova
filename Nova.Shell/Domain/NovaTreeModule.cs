@@ -34,7 +34,7 @@ namespace Nova.Shell.Domain
     [DebuggerDisplay("Title = {Title}, Nodes = {TreeNodes.Count}", Name = "Nova Tree Module")]
     public class NovaTreeModule
     {
-        private readonly INovaTree _Tree;
+        private readonly INovaTree _tree;
 
         /// <summary>
         /// Gets the title.
@@ -82,7 +82,7 @@ namespace Nova.Shell.Domain
             if (!nodes.Any())
                 throw new ArgumentException(@"A module has to have nodes.", "nodes");
 
-            _Tree = tree;
+            _tree = tree;
             Title = title;
             TreeNodes = nodes;
 
@@ -94,7 +94,7 @@ namespace Nova.Shell.Domain
         /// </summary>
         public void Activate()
         {
-            _Tree.ActivateModule(this);
+            _tree.ActivateModule(this);
         }
     }
 }

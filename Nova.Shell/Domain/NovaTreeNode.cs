@@ -33,9 +33,9 @@ namespace Nova.Shell.Domain
     [DebuggerDisplay("Title = {Title}", Name = "Nova Tree Node")]
     public class NovaTreeNode : INotifyPropertyChanged
     {
-        private readonly Type _PageType;
-        private readonly Type _ViewModelType;
-        private bool _IsCurrentNode;
+        private readonly Type _pageType;
+        private readonly Type _viewModelType;
+        private bool _isCurrentNode;
 
         /// <summary>
         /// Gets the title.
@@ -69,12 +69,12 @@ namespace Nova.Shell.Domain
         /// </value>
         public bool IsCurrentNode
         {
-            get { return _IsCurrentNode; }
+            get { return _isCurrentNode; }
             private set
             {
-                if (_IsCurrentNode == value) return;
+                if (_isCurrentNode == value) return;
 
-                _IsCurrentNode = value;
+                _isCurrentNode = value;
                 OnPropertyChanged();
             }
         }
@@ -96,8 +96,8 @@ namespace Nova.Shell.Domain
             if (navigationalCommand == null)
                 throw new ArgumentNullException("navigationalCommand");
 
-            _PageType = pageType;
-            _ViewModelType = viewModelType;
+            _pageType = pageType;
+            _viewModelType = viewModelType;
 
             Title = title;
             NavigationalCommand = navigationalCommand;
@@ -121,7 +121,7 @@ namespace Nova.Shell.Domain
         /// <exception cref="System.NotImplementedException"></exception>
         internal bool ReevaluateState(Type pageType, Type viewModelType)
         {
-            var result = pageType == _PageType && viewModelType == _ViewModelType;
+            var result = pageType == _pageType && viewModelType == _viewModelType;
             IsCurrentNode = result;
             
             return result;
@@ -160,7 +160,7 @@ namespace Nova.Shell.Domain
                 if (ReferenceEquals(x, null)) return false;
                 if (ReferenceEquals(y, null)) return false;
                 if (x.GetType() != y.GetType()) return false;
-                return x._PageType == y._PageType && x._ViewModelType == y._ViewModelType;
+                return x._pageType == y._pageType && x._viewModelType == y._viewModelType;
             }
 
             /// <summary>
@@ -174,7 +174,7 @@ namespace Nova.Shell.Domain
             {
                 unchecked
                 {
-                    return ((obj._PageType != null ? obj._PageType.GetHashCode() : 0)*397) ^ (obj._ViewModelType != null ? obj._ViewModelType.GetHashCode() : 0);
+                    return ((obj._pageType != null ? obj._pageType.GetHashCode() : 0)*397) ^ (obj._viewModelType != null ? obj._viewModelType.GetHashCode() : 0);
                 }
             }
         }

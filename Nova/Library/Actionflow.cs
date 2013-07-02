@@ -1,5 +1,3 @@
-using Nova.Library.ActionMethodRepository;
-
 #region License
 // 
 //  Copyright 2012 Steven Thuriot
@@ -23,6 +21,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using Nova.Controls;
 using Nova.Properties;
+using Nova.Library.ActionMethodRepository;
 
 namespace Nova.Library
 {
@@ -35,7 +34,7 @@ namespace Nova.Library
 		where TView : IView
 		where TViewModel : IViewModel
 	{
-		private bool _Disposed;
+		private bool _disposed;
 
 	    /// <summary>
 	    /// Gets or sets the ability to complete. For Internal use only!
@@ -92,7 +91,7 @@ namespace Nova.Library
 		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
 		private void Dispose(bool disposing)
 		{
-			if (_Disposed) return;
+			if (_disposed) return;
 
 			if (disposing)
 			{
@@ -100,7 +99,7 @@ namespace Nova.Library
 			}
 
 			DisposeUnmanagedResources();
-			_Disposed = true;
+			_disposed = true;
 		}
 
 		#endregion

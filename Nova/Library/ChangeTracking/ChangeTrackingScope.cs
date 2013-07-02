@@ -66,8 +66,8 @@ namespace Nova.Library.ChangeTracking
         {
             private static readonly ThreadLocal<Stack<PauseChangeTrackingScope>> LocalScopeStack = new ThreadLocal<Stack<PauseChangeTrackingScope>>(() => new Stack<PauseChangeTrackingScope>());
             
-            private bool _Disposed;
-            private readonly Action _DisposalAction;
+            private bool _disposed;
+            private readonly Action _disposalAction;
             
             /// <summary>
             /// Gets the scope stack.
@@ -110,7 +110,7 @@ namespace Nova.Library.ChangeTracking
                 var stack = ScopeStack;
 
                 stack.Push(this);
-                _DisposalAction = () => stack.Pop();
+                _disposalAction = () => stack.Pop();
             }
 
             /// <summary>
@@ -136,14 +136,14 @@ namespace Nova.Library.ChangeTracking
             /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
             private void Dispose(bool disposing)
             {
-                if (_Disposed) return;
+                if (_disposed) return;
 
                 if (disposing)
                 {
-                    _DisposalAction();
+                    _disposalAction();
                 }
 
-                _Disposed = true;
+                _disposed = true;
             }
         }
     }

@@ -38,8 +38,8 @@ namespace Nova.Controls
         public static readonly DependencyProperty FrameIndexProperty =
             DependencyProperty.Register("FrameIndex", typeof (int), typeof (AnimatedLoader), new PropertyMetadata(0, ChangingFrameIndex));
 
-        private readonly Int32Animation _Animation;
-        private readonly GifBitmapDecoder _GifBitmapDecoder;
+        private readonly Int32Animation _animation;
+        private readonly GifBitmapDecoder _gifBitmapDecoder;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="AnimatedLoader" /> class.
@@ -54,20 +54,20 @@ namespace Nova.Controls
                                 ? new Uri("pack://application:,,,/Nova;component/Resources/loader.gif", UriKind.Absolute)
                                 : new Uri(imageSource.ToString(), UriKind.Absolute);
 
-            _GifBitmapDecoder = new GifBitmapDecoder(loaderUri, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+            _gifBitmapDecoder = new GifBitmapDecoder(loaderUri, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
 
-            var seconds = _GifBitmapDecoder.Frames.Count/10;
-            var milliseconds = (int) (((_GifBitmapDecoder.Frames.Count/10.0) - (_GifBitmapDecoder.Frames.Count/10.0))*1000d);
+            var seconds = _gifBitmapDecoder.Frames.Count/10;
+            var milliseconds = (int) (((_gifBitmapDecoder.Frames.Count/10.0) - (_gifBitmapDecoder.Frames.Count/10.0))*1000d);
 
             var timespan = new TimeSpan(0, 0, 0, seconds, milliseconds);
             var duration = new Duration(timespan);
 
-            _Animation = new Int32Animation(0, _GifBitmapDecoder.Frames.Count - 1, duration)
+            _animation = new Int32Animation(0, _gifBitmapDecoder.Frames.Count - 1, duration)
                 {
                     RepeatBehavior = RepeatBehavior.Forever
                 };
 
-            Source = _GifBitmapDecoder.Frames[0];
+            Source = _gifBitmapDecoder.Frames[0];
             Height = Source.Height;
             Width = Source.Width;
         }
@@ -98,7 +98,7 @@ namespace Nova.Controls
             if (animatedLoader == null) return;
 
             var index = (int) eventArguments.NewValue;
-            animatedLoader.Source = animatedLoader._GifBitmapDecoder.Frames[index];
+            animatedLoader.Source = animatedLoader._gifBitmapDecoder.Frames[index];
             animatedLoader.InvalidateVisual();
         }
 
@@ -129,7 +129,7 @@ namespace Nova.Controls
                                              DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var isVisible = Visibility == Visibility.Visible;
-            var animation = isVisible ? _Animation : null;
+            var animation = isVisible ? _animation : null;
 
             BeginAnimation(FrameIndexProperty, animation);
         }

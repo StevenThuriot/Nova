@@ -26,19 +26,10 @@ namespace Nova.Library
 	/// </summary>
 	public class RelayCommand : ICommand
 	{
-		private readonly Action<object> _Execute;
-		private readonly Predicate<object> _CanExecute;
+		private readonly Action<object> _execute;
+		private readonly Predicate<object> _canExecute;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="RelayCommand"/> class.
-		/// </summary>
-		/// <param name="execute">The execute.</param>
-		public RelayCommand(Action<object> execute)
-			: this(execute, null)
-		{
-		}
-
-		/// <summary>
+	    /// <summary>
 		/// Initializes a new instance of the <see cref="RelayCommand"/> class.
 		/// </summary>
 		/// <param name="execute">The execute.</param>
@@ -55,13 +46,13 @@ namespace Nova.Library
 		/// <param name="execute">The execution code.</param>
 		/// <param name="canExecute">If the command can execute.</param>
 		/// <exception cref="ArgumentNullException">execute</exception>
-		public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+		public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
 		{
 			if (execute == null)
 				throw new ArgumentNullException("execute");
 
-			_Execute = execute;
-			_CanExecute = canExecute;
+			_execute = execute;
+			_canExecute = canExecute;
 		}
 
 		/// <summary>
@@ -73,7 +64,7 @@ namespace Nova.Library
 		/// </returns>
 		public bool CanExecute(object parameter)
 		{
-			return _CanExecute == null || _CanExecute(parameter);
+			return _canExecute == null || _canExecute(parameter);
 		}
 
 		/// <summary>
@@ -91,7 +82,7 @@ namespace Nova.Library
 		/// <param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to null.</param>
 		public void Execute(object parameter)
 		{
-			_Execute(parameter);
+			_execute(parameter);
 		}
 	}
 }

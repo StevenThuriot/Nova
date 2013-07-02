@@ -328,8 +328,8 @@ namespace Nova.Controls
 
 		#region Freezable Cache
 
-		private static List<Freezable> _freezableCache;
-		private static readonly object _cacheAccess = new object();
+		private static List<Freezable> s_freezableCache;
+		private static readonly object CacheAccess = new object();
 
 		#region Theme Rendering
 
@@ -385,9 +385,9 @@ namespace Nova.Controls
 				if (bevel == null)
 				{
 					bevel = new LinearGradientBrush();
-					bevel.StartPoint = new Point();
-					bevel.EndPoint = new Point(0.0, 1.0);
-					bevel.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF), 0.0));
+				    bevel.StartPoint = new Point();
+				    bevel.EndPoint = new Point(0.0, 1.0);
+				    bevel.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF), 0.0));
 					bevel.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF), 0.4));
 					bevel.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xFC, 0xFC, 0xFD), 0.4));
 					bevel.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0xFB, 0xFC, 0xFC), 1.0));
@@ -400,7 +400,7 @@ namespace Nova.Controls
 			}
 
 			// Fill the background 
-			AeroFreezables backgroundType = AeroFreezables.NormalBackground;
+			var backgroundType = AeroFreezables.NormalBackground;
 			if (isPressed)
 			{
 				backgroundType = AeroFreezables.PressedBackground;
@@ -462,7 +462,7 @@ namespace Nova.Controls
 			if (size.Width >= 2.0)
 			{
 				// Draw the borders on the sides
-				AeroFreezables sideType = AeroFreezables.NormalSides;
+				var sideType = AeroFreezables.NormalSides;
 				if (isPressed)
 				{
 					sideType = AeroFreezables.PressedSides;
@@ -754,23 +754,23 @@ namespace Nova.Controls
 		private static void EnsureCache(int size)
 		{
 			// Quick check to avoid locking
-			if (_freezableCache == null)
+			if (s_freezableCache == null)
 			{
-				lock (_cacheAccess)
+				lock (CacheAccess)
 				{
 					// Re-check in case another thread created the cache 
-					if (_freezableCache == null)
+					if (s_freezableCache == null)
 					{
-						_freezableCache = new List<Freezable>(size);
+						s_freezableCache = new List<Freezable>(size);
 						for (int i = 0; i < size; i++)
 						{
-							_freezableCache.Add(null);
+							s_freezableCache.Add(null);
 						}
 					}
 				}
 			}
 
-			Debug.Assert(_freezableCache.Count == size, "The cache size does not match the requested amount.");
+			Debug.Assert(s_freezableCache.Count == size, "The cache size does not match the requested amount.");
 		}
 
 		/// <summary>
@@ -779,12 +779,12 @@ namespace Nova.Controls
 		private static void ReleaseCache()
 		{
 			// Avoid locking if necessary 
-			if (_freezableCache != null)
+			if (s_freezableCache != null)
 			{
-				lock (_cacheAccess)
+				lock (CacheAccess)
 				{
 					// No need to re-check if non-null since it's OK to set it to null multiple times
-					_freezableCache = null;
+					s_freezableCache = null;
 				}
 			}
 		}
@@ -794,9 +794,9 @@ namespace Nova.Controls
 		/// </summary>
 		private static Freezable GetCachedFreezable(int index)
 		{
-			lock (_cacheAccess)
+			lock (CacheAccess)
 			{
-				Freezable freezable = _freezableCache[index];
+				Freezable freezable = s_freezableCache[index];
 				Debug.Assert((freezable == null) || freezable.IsFrozen, "Cached Freezables should have been frozen.");
 				return freezable;
 			}
@@ -809,11 +809,11 @@ namespace Nova.Controls
 		{
 			Debug.Assert(freezable.IsFrozen, "Cached Freezables should be frozen.");
 
-			lock (_cacheAccess)
+			lock (CacheAccess)
 			{
-				if (_freezableCache[index] != null)
+				if (s_freezableCache[index] != null)
 				{
-					_freezableCache[index] = freezable;
+					s_freezableCache[index] = freezable;
 				}
 			}
 		}

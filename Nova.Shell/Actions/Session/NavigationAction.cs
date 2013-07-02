@@ -32,11 +32,11 @@ namespace Nova.Shell.Actions.Session
     [Blocking]
     public class NavigationAction : Actionflow<SessionView, SessionViewModel>
     {
-        private IView _NextView;
-        private IView _Current;
+        private IView _nextView;
+        private IView _current;
 
-        private Type _PageType;
-        private Type _ViewModelType;
+        private Type _pageType;
+        private Type _viewModelType;
 
         public override bool CanExecute()
         {
@@ -49,34 +49,34 @@ namespace Nova.Shell.Actions.Session
             
             if (createNextView != null)
             {
-                _NextView = createNextView();
+                _nextView = createNextView();
             }
         }
 
         public override bool Execute()
         {
-            if (_NextView == null)
+            if (_nextView == null)
                 return false;
 
-            _Current = ActionContext.GetValue<IView>(SessionViewModel.CurrentViewConstant);
+            _current = ActionContext.GetValue<IView>(SessionViewModel.CurrentViewConstant);
 
             return EnterCurrentAndLeaveOldStep().Result; //.Result because we want to block this thread until execution finishes!
         }
 
         private async Task<bool> EnterCurrentAndLeaveOldStep()
         {
-            if (_Current != null)
+            if (_current != null)
             {
-                var canLeave = await _Current.ViewModel.Leave();
+                var canLeave = await _current.ViewModel.Leave();
 
                 if (!canLeave)
                     return false;
             }
 
-            _PageType = _NextView.GetType();
-            _ViewModelType = _NextView.ViewModel.GetType();
+            _pageType = _nextView.GetType();
+            _viewModelType = _nextView.ViewModel.GetType();
 
-            var result = await _NextView.ViewModel.Enter();
+            var result = await _nextView.ViewModel.Enter();
             
             if (!result)
             {
@@ -88,14 +88,14 @@ namespace Nova.Shell.Actions.Session
 
         public override void ExecuteCompleted()
         {
-            ViewModel.CurrentView = _NextView;
-            View._NovaTree.ReevaluateState(_PageType, _ViewModelType);
+            ViewModel.CurrentView = _nextView;
+            View._NovaTree.ReevaluateState(_pageType, _viewModelType);
         }
 
         protected override void DisposeManagedResources()
         {
-            _Current = null;
-            _NextView = null;
+            _current = null;
+            _nextView = null;
         }
     }
 }

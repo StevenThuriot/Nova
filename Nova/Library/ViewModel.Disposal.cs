@@ -22,7 +22,7 @@ namespace Nova.Library
 {
     public abstract partial class ViewModel<TView, TViewModel>
     {
-        private bool _Disposed;
+        private bool _disposed;
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -48,32 +48,32 @@ namespace Nova.Library
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         private void Dispose(bool disposing)
         {
-            if (_Disposed) return;
+            if (_disposed) return;
 
-            _Disposed = true;
+            _disposed = true;
 
             if (disposing)
             {
                 DisposeManagedResources();
 
-                if (_ActionManager != null)
+                if (_actionManager != null)
                 {
-                    _ActionManager.Dispose();
+                    _actionManager.Dispose();
                 }
 
-                if (_EnterAction != null)
+                if (_enterAction != null)
                 {
-                    _EnterAction.Dispose();
-                    _EnterAction = null;
+                    _enterAction.Dispose();
+                    _enterAction = null;
                 }
 
-                if (_LeaveAction != null)
+                if (_leaveAction != null)
                 {
-                    _LeaveAction.Dispose();
-                    _LeaveAction = null;
+                    _leaveAction.Dispose();
+                    _leaveAction = null;
                 }
 
-                _ActionQueueManager = null;
+                _actionQueueManager = null;
             }
 
             DisposeUnmanagedResources();

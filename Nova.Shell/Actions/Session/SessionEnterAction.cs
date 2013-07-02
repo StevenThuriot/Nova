@@ -33,12 +33,12 @@ namespace Nova.Shell.Actions.Session
     /// </summary>
     public class SessionEnterAction : EnterAction<SessionView, SessionViewModel>
     {
-        private ReadOnlyCollection<NovaTreeModule> _Modules;
-        private INovaTree _Tree;
+        private ReadOnlyCollection<NovaTreeModule> _modules;
+        private INovaTree _tree;
 
         public override void OnBefore()
         {
-            _Tree = View._NovaTree;
+            _tree = View._NovaTree;
         }
 
         public override bool Enter()
@@ -46,8 +46,8 @@ namespace Nova.Shell.Actions.Session
             var model = ((App)Application.Current).Model;
             IEnumerable<NovaModule> modules = model.Modules;
 
-            _Modules = modules.OrderByDescending(x => x.Ranking)
-                              .Select(x => x.Build(_Tree, ViewModel))
+            _modules = modules.OrderByDescending(x => x.Ranking)
+                              .Select(x => x.Build(_tree, ViewModel))
                               .ToList()
                               .AsReadOnly();
             
@@ -56,7 +56,7 @@ namespace Nova.Shell.Actions.Session
 
         public override void EnterCompleted()
         {
-            _Tree.InitializeData(_Modules);
+            _tree.InitializeData(_modules);
         }
     }
 }

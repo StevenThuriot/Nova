@@ -26,16 +26,16 @@ namespace Nova.Shell.Actions.MainWindow
     /// </summary>
     public class CloseSessionAction : Actionflow<MainView, MainViewModel>
     {
-        private SessionView _Session;
+        private SessionView _session;
 
         public override bool Execute()
         {
-            var canComplete = ActionContext.TryGetValue(out _Session) && _Session != null;
+            var canComplete = ActionContext.TryGetValue(out _session) && _session != null;
 
             if (!canComplete)
                 return false;
 
-            var canLeave = _Session.ViewModel.Leave().Result;
+            var canLeave = _session.ViewModel.Leave().Result;
 
             return canLeave;
         }
@@ -43,7 +43,7 @@ namespace Nova.Shell.Actions.MainWindow
         public override void ExecuteCompleted()
         {
             //TODO: Check if leave was successful.
-            ViewModel.Sessions.Remove(_Session);
+            ViewModel.Sessions.Remove(_session);
         }
     }
 }

@@ -1,5 +1,3 @@
-using Nova.Library;
-
 #region License
 // 
 //  Copyright 2012 Steven Thuriot
@@ -18,6 +16,7 @@ using Nova.Library;
 // 
 #endregion
 
+using Nova.Library;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -37,7 +36,12 @@ namespace Nova.Validation
 	/// You don't need to specify the Errors property for every child of this control, just the fieldnames.
 	/// </summary>
 	public class ValidationControl : Grid
-	{
+    {
+        /// <summary>
+        /// A cache for the fields on the screen.
+        /// </summary>
+        private ICollection<UIElement> _fields;
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ValidationControl"/> class.
 		/// </summary>
@@ -82,11 +86,6 @@ namespace Nova.Validation
             return parent as IView ?? GetView(parent);
         }
 
-	    /// <summary>
-		/// A cache for the fields on the screen.
-		/// </summary>
-		private ICollection<UIElement> _Fields;
-
 		/// <summary>
 		/// The list of errors.
 		/// </summary>
@@ -107,8 +106,8 @@ namespace Nova.Validation
 			{
 				SetValue(ErrorsProperty, value);
 				
-				if (_Fields != null)
-					_Fields.Clear();
+				if (_fields != null)
+					_fields.Clear();
 			}
 		}
 
@@ -201,18 +200,18 @@ namespace Nova.Validation
 		/// <param name="validationControl">The validation control.</param>
 		private static void ValidateCache(ValidationControl validationControl)
 		{
-			if (validationControl._Fields == null)
+			if (validationControl._fields == null)
 			{
-				validationControl._Fields = new List<UIElement>();
+				validationControl._fields = new List<UIElement>();
 				CacheTree(validationControl);
 			}
-			else if (validationControl._Fields.Count == 0)
+			else if (validationControl._fields.Count == 0)
 			{
 				CacheTree(validationControl);
 			}
 
 			var errors = validationControl.Errors;
-			foreach (var dependencyObject in validationControl._Fields)
+			foreach (var dependencyObject in validationControl._fields)
 			{
 				Validate(dependencyObject, errors);
 			}
@@ -227,10 +226,10 @@ namespace Nova.Validation
 			switch (validationControl.ValidationMethod)
 			{
 				case TreeType.LogicalTree:
-					CacheLogicalTree(validationControl, validationControl._Fields);
+					CacheLogicalTree(validationControl, validationControl._fields);
 					break;
 				case TreeType.VisualTree:
-					CacheVisualTree(validationControl, validationControl._Fields);
+					CacheVisualTree(validationControl, validationControl._fields);
 					break;
 			}
 		}
@@ -453,13 +452,13 @@ namespace Nova.Validation
 
 	    private IEnumerable<KeyValuePair<Guid, string>> ValidateRequiredCache()
         {
-            if (_Fields == null)
+            if (_fields == null)
             {
-                _Fields = new List<UIElement>();
+                _fields = new List<UIElement>();
                 CacheTree(this);
             }
 
-            return _Fields.Where(x => !CheckIfFilledIn(x))
+            return _fields.Where(x => !CheckIfFilledIn(x))
                           .Select(x => new KeyValuePair<Guid, string>(NovaValidation.GetEntityID(x), NovaValidation.GetFieldName(x)))
                           .ToList();
         }

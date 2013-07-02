@@ -1,5 +1,3 @@
-using Nova.Library.Actions;
-
 #region License
 // 
 //  Copyright 2013 Steven Thuriot
@@ -19,6 +17,7 @@ using Nova.Library.Actions;
 #endregion
 
 using System.Threading.Tasks;
+using Nova.Library.Actions;
 
 namespace Nova.Library
 {
@@ -28,13 +27,13 @@ namespace Nova.Library
         /// The viewmodel's EnterAction, which triggers when entering this view.
         /// If not set, the default EnterAction will be used.
         /// </summary>
-        private EnterAction<TView, TViewModel> _EnterAction;
+        private EnterAction<TView, TViewModel> _enterAction;
 
         /// <summary>
         /// The viewmodel's LeaveAction, which triggers when leaving this view.
         /// If not set, the default EnterAction will be used.
         /// </summary>
-        private LeaveAction<TView, TViewModel> _LeaveAction;
+        private LeaveAction<TView, TViewModel> _leaveAction;
 
 
 
@@ -43,12 +42,12 @@ namespace Nova.Library
         /// </summary>
         public Task<bool> Enter()
         {
-            if (_EnterAction == null)
+            if (_enterAction == null)
                 return ActionController.InvokeActionAsync<EnterAction<TView, TViewModel>>();
 
-            var task = ActionController.InternalInvokeActionAsync(_EnterAction, disposeActionDuringCleanup: true);
+            var task = ActionController.InternalInvokeActionAsync(_enterAction);
 
-            _EnterAction = null;
+            _enterAction = null;
 
             return task;
         }
@@ -58,9 +57,9 @@ namespace Nova.Library
         /// </summary>
         public Task<bool> Leave()
         {
-            return _LeaveAction == null
+            return _leaveAction == null
                        ? ActionController.InvokeActionAsync<LeaveAction<TView, TViewModel>>()
-                       : ActionController.InternalInvokeActionAsync(_LeaveAction, disposeActionDuringCleanup: false); //Don't dispose because we might leave several times.
+                       : ActionController.InternalInvokeActionAsync(_leaveAction, disposeActionDuringCleanup: false); //Don't dispose because we might leave several times.
         }
 
 	    /// <summary>
@@ -69,12 +68,12 @@ namespace Nova.Library
         /// <param name="enterAction">The enter action.</param>
         protected void SetEnterAction(EnterAction<TView, TViewModel> enterAction)
         {
-            if (_EnterAction != null)
+            if (_enterAction != null)
             {
-                _EnterAction.Dispose();
+                _enterAction.Dispose();
             }
 
-            _EnterAction = enterAction;
+            _enterAction = enterAction;
         }
 
         /// <summary>
@@ -84,12 +83,12 @@ namespace Nova.Library
         /// <remarks>When setting a custom leave action, it is possible it will be used several times if leaving a view isn't succesful the first time.</remarks>
         protected void SetLeaveAction(LeaveAction<TView, TViewModel> leaveAction)
         {
-            if (_LeaveAction != null)
+            if (_leaveAction != null)
             {
-                _LeaveAction.Dispose();
+                _leaveAction.Dispose();
             }
 
-            _LeaveAction = leaveAction;
+            _leaveAction = leaveAction;
         }
 	}
 }

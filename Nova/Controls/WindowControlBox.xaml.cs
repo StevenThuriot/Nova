@@ -37,7 +37,7 @@ namespace Nova.Controls
 		public static readonly DependencyProperty IsCancelProperty =
 			DependencyProperty.Register("IsCancel", typeof(bool), typeof(WindowControlBox), new PropertyMetadata(false));
 
-		private Window _Parent;
+		private Window _parent;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WindowControlBox"/> class.
@@ -45,7 +45,7 @@ namespace Nova.Controls
 		/// <param name="parent">The parent.</param>
 		public WindowControlBox(Window parent)
 		{
-			_Parent = parent;
+			_parent = parent;
 			InitializeComponent();
 		}
 
@@ -90,7 +90,7 @@ namespace Nova.Controls
 		private void ControlLoaded(object sender, RoutedEventArgs routedEventArgs)
 		{
 			Loaded -= ControlLoaded;
-			_Parent = Window.GetWindow(this);
+			_parent = Window.GetWindow(this);
 		}
 
 		/// <summary>
@@ -100,7 +100,7 @@ namespace Nova.Controls
 		/// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
 		private void MinimizeWindow(object sender, RoutedEventArgs e)
 		{
-			_Parent.WindowState = WindowState.Minimized;
+			_parent.WindowState = WindowState.Minimized;
 		}
 
 		/// <summary>
@@ -110,7 +110,7 @@ namespace Nova.Controls
 		/// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
 		private void MaximizeWindow(object sender, RoutedEventArgs e)
 		{
-			_Parent.WindowState = _Parent.WindowState == WindowState.Maximized
+			_parent.WindowState = _parent.WindowState == WindowState.Maximized
 			                      	? WindowState.Normal
 			                      	: WindowState.Maximized;
 		}
@@ -126,12 +126,12 @@ namespace Nova.Controls
             {
                 if (!IsCancel)
                 {
-                    _Parent.DialogResult = false;
+                    _parent.DialogResult = false;
                 }
             }
             else
             {
-                _Parent.Close();
+                _parent.Close();
             }
 		}
 	}

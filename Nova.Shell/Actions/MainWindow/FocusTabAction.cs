@@ -27,7 +27,7 @@ namespace Nova.Shell.Actions.MainWindow
     /// </summary>
     public class FocusTabAction : Actionflow<MainView, MainViewModel>
     {
-        private SessionView _Session;
+        private SessionView _session;
 
         public override bool Execute()
         {
@@ -42,13 +42,13 @@ namespace Nova.Shell.Actions.MainWindow
                 return false;
             }
 
-            _Session = ViewModel.Sessions[sessionIndex];
+            _session = ViewModel.Sessions[sessionIndex];
             return true;
         }
 
         public override void ExecuteCompleted()
         {
-            ViewModel.CurrentSession = _Session;
+            ViewModel.CurrentSession = _session;
         }
     }
 }

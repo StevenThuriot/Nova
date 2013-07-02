@@ -39,8 +39,8 @@ namespace Nova.Controls
 		public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Content", typeof (string),
 		                                                                                     typeof (ImageButton));
 
-		private readonly Image _Icon;
-		private readonly TextBlock _TextBlock;
+		private readonly Image _icon;
+		private readonly TextBlock _textBlock;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ImageButton"/> class.
@@ -51,24 +51,24 @@ namespace Nova.Controls
 
 			var panel = new StackPanel {Orientation = Orientation.Horizontal};
 
-			_Icon = new Image {Margin = new Thickness(0, 0, 6, 0)};
+			_icon = new Image {Margin = new Thickness(0, 0, 6, 0)};
 			var imageBinding = new Binding("Icon")
 			                   	{
 			                   		Source = this,
 			                   		UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
 			                   	};
-			_Icon.SetBinding(Image.SourceProperty, imageBinding);
+			_icon.SetBinding(Image.SourceProperty, imageBinding);
 
-			panel.Children.Add(_Icon);
+			panel.Children.Add(_icon);
 
-			_TextBlock = new TextBlock();
+			_textBlock = new TextBlock();
 			var textBinding = new Binding("Content")
 			                  	{
 			                  		Source = this,
 			                  		UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
 			                  	};
-			_TextBlock.SetBinding(TextBlock.TextProperty, textBinding);
-			panel.Children.Add(_TextBlock);
+			_textBlock.SetBinding(TextBlock.TextProperty, textBinding);
+			panel.Children.Add(_textBlock);
 
 			base.Content = panel;
 

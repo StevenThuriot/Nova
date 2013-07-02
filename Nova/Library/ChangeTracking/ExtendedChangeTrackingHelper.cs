@@ -28,7 +28,7 @@ namespace Nova.Library.ChangeTracking
     /// <typeparam name="T">Type of instance</typeparam>
     public class ExtendedChangeTrackingHelper<T> : ChangeTrackingHelper<T>
     {
-        private readonly Action<T> _StopChangeTracking;
+        private readonly Action<T> _stopChangeTracking;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtendedChangeTrackingHelper{T}" /> class.
@@ -42,7 +42,7 @@ namespace Nova.Library.ChangeTracking
             if (stopChangeTracking == null)
                 throw new ArgumentNullException("stopChangeTracking");
 
-            _StopChangeTracking = stopChangeTracking;
+            _stopChangeTracking = stopChangeTracking;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Nova.Library.ChangeTracking
             if (instance == null)
                 throw new ArgumentNullException("instance");
 
-            _StopChangeTracking(instance);
+            _stopChangeTracking(instance);
         }
     }
 }

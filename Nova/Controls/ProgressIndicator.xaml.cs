@@ -9,7 +9,7 @@ namespace Nova.Controls
     /// </summary>
     public partial class ProgressIndicator
     {
-        private readonly Action<FrameworkElement, DependencyPropertyChangedEventArgs> _StartStopAnimationAction;
+        private readonly Action<FrameworkElement, DependencyPropertyChangedEventArgs> _startStopAnimationAction;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProgressIndicator" /> class.
@@ -17,7 +17,7 @@ namespace Nova.Controls
         public  ProgressIndicator()
         {
             InitializeComponent();
-            _StartStopAnimationAction = StartStopAnimation;
+            _startStopAnimationAction = StartStopAnimation;
             IsVisibleChanged += StartStopAnimationHandler;
         }
 
@@ -28,7 +28,7 @@ namespace Nova.Controls
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private void StartStopAnimationHandler(object sender, DependencyPropertyChangedEventArgs e)
         {
-            Dispatcher.BeginInvoke(_StartStopAnimationAction, sender, e);
+            Dispatcher.BeginInvoke(_startStopAnimationAction, sender, e);
         }
 
         /// <summary>

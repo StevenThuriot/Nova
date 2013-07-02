@@ -26,11 +26,11 @@ namespace Nova.Shell.Actions.MainWindow
 {
     public class CreateNewSessionAction : Actionflow<MainView, MainViewModel>
     {
-        private bool _HasOpenSessions;
+        private bool _hasOpenSessions;
 
         public override bool Execute()
         {
-            _HasOpenSessions = ViewModel.Sessions.Any();
+            _hasOpenSessions = ViewModel.Sessions.Any();
             return true;
         }
 
@@ -42,7 +42,7 @@ namespace Nova.Shell.Actions.MainWindow
 
             ViewModel.Sessions.Add(session);
             
-            if (!_HasOpenSessions || Keyboard.Modifiers != (ModifierKeys.Control | ModifierKeys.Shift))
+            if (!_hasOpenSessions || Keyboard.Modifiers != (ModifierKeys.Control | ModifierKeys.Shift))
             {
                 ViewModel.CurrentSession = session;
             }

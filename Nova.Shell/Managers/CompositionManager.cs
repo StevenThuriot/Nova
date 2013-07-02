@@ -32,7 +32,7 @@ namespace Nova.Shell.Managers
     /// </summary>
     internal class CompositionManager
     {
-        private readonly Lazy<CompositionContainer> _CompositionContainer;
+        private readonly Lazy<CompositionContainer> _compositionContainer;
 
         /// <summary>
         /// Gets the composition container.
@@ -42,7 +42,7 @@ namespace Nova.Shell.Managers
         /// </value>
         public CompositionContainer CompositionContainer
         {
-            get { return _CompositionContainer.Value; }
+            get { return _compositionContainer.Value; }
         }
         
         /// <summary>
@@ -51,7 +51,7 @@ namespace Nova.Shell.Managers
         public CompositionManager()
         {
             var task = Task.Run(() => CreateContainer());
-            _CompositionContainer = new Lazy<CompositionContainer>(() => task.Result);
+            _compositionContainer = new Lazy<CompositionContainer>(() => task.Result);
         }
 
         /// <summary>

@@ -30,7 +30,7 @@ namespace Nova.Controls
     /// </summary>
     public class MaskedTextBox : TextBox
     {
-        private MaskedTextProvider _MaskedTextProvider;
+        private MaskedTextProvider _maskedTextProvider;
 
         /// <summary>
         /// Initializes the <see cref="MaskedTextBox" /> class.
@@ -95,7 +95,7 @@ namespace Nova.Controls
             var maskedTextProvider = new MaskedTextProvider((string)e.NewValue);
             maskedTextProvider.Set(maskedTextBox.Text);
 
-            maskedTextBox._MaskedTextProvider = maskedTextProvider;
+            maskedTextBox._maskedTextProvider = maskedTextProvider;
             maskedTextBox.Refresh(0);
         }
 
@@ -108,7 +108,7 @@ namespace Nova.Controls
         /// <returns></returns>
         private static object CoerceTextValueCallback(DependencyObject sender, object value)
         {
-            var maskedTextProvider = ((MaskedTextBox)sender)._MaskedTextProvider;
+            var maskedTextProvider = ((MaskedTextBox)sender)._maskedTextProvider;
 
             if (maskedTextProvider == null)
             {
@@ -137,12 +137,12 @@ namespace Nova.Controls
 
                 if (Keyboard.IsKeyToggled(Key.Insert))
                 {
-                    if (_MaskedTextProvider.Replace(e.Text, position))
+                    if (_maskedTextProvider.Replace(e.Text, position))
                         position++;
                 }
                 else
                 {
-                    if (_MaskedTextProvider.InsertAt(e.Text, position))
+                    if (_maskedTextProvider.InsertAt(e.Text, position))
                         position++;
                 }
 
@@ -189,7 +189,7 @@ namespace Nova.Controls
             {
                 position = FindCharacterPosition(--position, false);
 
-                if (_MaskedTextProvider.RemoveAt(position))
+                if (_maskedTextProvider.RemoveAt(position))
                 {
                     Refresh(position);
                 }
@@ -198,7 +198,7 @@ namespace Nova.Controls
             }
 
             //Multi char
-            if (_MaskedTextProvider.RemoveAt(position, endposition))
+            if (_maskedTextProvider.RemoveAt(position, endposition))
             {
                 position = FindCharacterPosition(position, false);
                 Refresh(position);
@@ -207,7 +207,7 @@ namespace Nova.Controls
 
         private void HandleSpaceKey(int position)
         {
-            if (!_MaskedTextProvider.InsertAt(" ", position)) return;
+            if (!_maskedTextProvider.InsertAt(" ", position)) return;
 
             Refresh(position);
         }
@@ -215,20 +215,20 @@ namespace Nova.Controls
         private void HandleDeleteKey(int position, int endposition)
         {
             if (position >= Text.Length) return;
-            if (!_MaskedTextProvider.RemoveAt(position, endposition)) return;
+            if (!_maskedTextProvider.RemoveAt(position, endposition)) return;
 
             Refresh(position);
         }
 
         private void Refresh(int position)
         {
-            Text = _MaskedTextProvider.ToDisplayString();
+            Text = _maskedTextProvider.ToDisplayString();
             SelectionStart = position;
         }
 
         private int FindCharacterPosition(int startPosition, bool direction = true)
         {
-            var position = _MaskedTextProvider.FindEditPositionFrom(startPosition, direction);
+            var position = _maskedTextProvider.FindEditPositionFrom(startPosition, direction);
             return position == -1 ? startPosition : position;
         }
     }
