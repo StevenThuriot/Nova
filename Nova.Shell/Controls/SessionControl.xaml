@@ -52,6 +52,6 @@
                  HorizontalAlignment="Center"
                  FontSize="16"
                  Text="{x:Static RESX:Resources.NoOpenSessions}"
-                 Visibility="{Binding ElementName=_TabControl, Path=IsEmpty, Converter={StaticResource _BooleanToVisibilityConverter}}" />  
+                 Visibility="{Binding ElementName=_TabControl, Path=IsEmpty, Converter={StaticResource _BooleanToVisibilityConverter}}" />
     </Grid>
 </UserControl>

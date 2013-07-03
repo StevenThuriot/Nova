@@ -6,7 +6,7 @@
                     mc:Ignorable="d"
                     xmlns:converters="clr-namespace:Nova.Shell.Converters" 
                     xmlns:shell="clr-namespace:Nova.Shell"
-                    xmlns:controls="clr-namespace:Nova.Shell.Controls"
+                    xmlns:controls="clr-namespace:Nova.Shell.Controls" xmlns:views="clr-namespace:Nova.Shell.Views"
 
                     x:Name="_This"
         
@@ -38,9 +38,9 @@
   <Window.Resources>
     <converters:BoolToProgressStateConverter x:Key="_ProgressConverter" />
 
-    <converters:StateConverter x:Key="_BrushStateConverter"
+    <converters:WindowStateConverter x:Key="_BrushStateConverter"
                                UnfocusedResource="{StaticResource Unfocused}"
-                               HasOpenDocumentsResource="{StaticResource Blue}"
+                               DefaultStateResource="{StaticResource Blue}"
                                IsWaitingResource="{StaticResource Purple}"
                                IsInErrorResource="{StaticResource RedBrush}"/>
 
@@ -183,6 +183,12 @@
                 CurrentSession="{Binding CurrentSession}"
                 AddCommand="{ActionBinding CreateNewSession}" />
 
+<!--TestCase
+      <Overlay Grid.Row="1" Grid.ColumnSpan="5"
+               Delay="0" IsLoading="True">
+        <Canvas x:Name="_overlayCanvas" />
+      </Overlay>-->
+      
       <Grid Grid.Row="2" Grid.ColumnSpan="5">
         <Grid.Background>
           <MultiBinding Converter="{StaticResource _BrushStateConverter}">

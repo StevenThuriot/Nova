@@ -1,20 +1,19 @@
 #region License
-
-// 
-// Copyright 2012 Steven Thuriot
+//   
+//  Copyright 2013 Steven Thuriot
 //  
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
 // 
-// http://www.apache.org/licenses/LICENSE-2.0
+//    http://www.apache.org/licenses/LICENSE-2.0
 // 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//  
 #endregion
 
 using System;
@@ -27,8 +26,9 @@ using System.Windows.Media;
 using System.Windows.Shell;
 using System.Windows.Threading;
 using Nova.Controls;
-using Nova.Shell.Actions.MainWindow;
 using Nova.Library;
+using Nova.Shell.Actions.MainWindow;
+using Nova.Shell.Views;
 using RESX = Nova.Shell.Properties.Resources;
 
 namespace Nova.Shell
@@ -56,7 +56,7 @@ namespace Nova.Shell
             _sessions = new ObservableCollection<SessionView>();
             _sessions.CollectionChanged += SessionsChanged;
         }
-        
+
         /// <summary>
         /// Gets the shut down command.
         /// </summary>
@@ -149,6 +149,13 @@ namespace Nova.Shell
             HasOpenDocuments = list != null && list.Count > 0;
         }
 
+        //public void OnAfterEnter()
+        //{
+        //    //TODO: Temp testing
+        //    var wizard = CreatePage<WizardView, WizardViewModel>();
+        //    View._overlayCanvas.Children.Add(wizard);
+        //}
+        
         /// <summary>
         /// Called when [created].
         /// </summary>
@@ -157,7 +164,7 @@ namespace Nova.Shell
             SetKnownActionTypes(typeof(CloseSessionAction),
                                 typeof(CreateNewSessionAction),
                                 typeof(FocusTabAction));
-
+            
             var enterAction = CreateAction<ComposeAndInitializeAction>();
             SetEnterAction(enterAction);
 

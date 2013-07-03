@@ -12,6 +12,7 @@
 
     <SolidColorBrush ice:Freeze="True" x:Key="Gray">#FF1E1E1E</SolidColorBrush>
     <SolidColorBrush ice:Freeze="True" x:Key="Unfocused">#999999</SolidColorBrush>
+    <SolidColorBrush ice:Freeze="True" x:Key="NavigationalBackground">#999999</SolidColorBrush>
     <SolidColorBrush ice:Freeze="True" x:Key="Blue" Color="{StaticResource BlueColor}" />
     <SolidColorBrush ice:Freeze="True" x:Key="Purple" Color="{StaticResource PurpleColor}" />
     <SolidColorBrush ice:Freeze="True" x:Key="RedBrush" Color="{StaticResource RedColor}" />
