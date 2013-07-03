@@ -38,6 +38,28 @@ namespace Nova.Shell.Domain
         private bool _isCurrentNode;
 
         /// <summary>
+        /// Gets the type of the page.
+        /// </summary>
+        /// <value>
+        /// The type of the page.
+        /// </value>
+        public Type PageType
+        {
+            get { return _pageType; }
+        }
+
+        /// <summary>
+        /// Gets the type of the view model.
+        /// </summary>
+        /// <value>
+        /// The type of the view model.
+        /// </value>
+        public Type ViewModelType
+        {
+            get { return _viewModelType; }
+        }
+
+        /// <summary>
         /// Gets the title.
         /// </summary>
         /// <value>

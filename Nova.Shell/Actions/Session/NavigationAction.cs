@@ -82,9 +82,12 @@ namespace Nova.Shell.Actions.Session
             if (!result)
             {
                 StepNotAvailableView notAvailableView = null;
-                await View.Dispatcher.InvokeAsync(() => notAvailableView = ViewModel.CreatePage<StepNotAvailableView, StepNotAvailableViewModel>(true));
-                
-                notAvailableView.ViewModel.StepName = _pageType.Name; //TODO: Find actual name in tree.
+                await View.Dispatcher.InvokeAsync(() =>
+                    {
+                        notAvailableView = ViewModel.CreatePage<StepNotAvailableView, StepNotAvailableViewModel>(true);
+                        notAvailableView.ViewModel.StepName = View._NovaTree.FindTitle(_pageType, _viewModelType) ?? _pageType.Name;
+                    });
+
                 _nextView = notAvailableView;
             }
 
