@@ -1,0 +1,15 @@
+﻿<views:StepNotAvailableBaseView x:Class="Nova.Shell.Views.StepNotAvailableView"
+                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                                xmlns:views="clr-namespace:Nova.Shell.Views"
+                                mc:Ignorable="d" d:DataContext="{d:DesignData d:Source=StepNotAvailableViewModel.cs}">
+
+  <!--TODO: Prettify-->
+    <TextBlock>
+        <Run Text="The step" />
+        <Run Text="{Binding StepName, StringFormat='&quot;{0}&quot;'}" />
+        <Run Text="is not available." />
+    </TextBlock>
+</views:StepNotAvailableBaseView>

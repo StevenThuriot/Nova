@@ -105,6 +105,13 @@
     <Compile Include="SessionViewModel.cs">
       <DependentUpon>SessionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\StepNotAvailableBaseView.cs">
+      <DependentUpon>StepNotAvailableView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StepNotAvailableView.xaml.cs">
+      <DependentUpon>StepNotAvailableView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StepNotAvailableViewModel.cs" />
     <Page Include="Controls\NovaTree.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -143,6 +150,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="SessionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StepNotAvailableView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

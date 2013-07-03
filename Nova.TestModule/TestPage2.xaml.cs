@@ -18,6 +18,7 @@
 
 #endregion
 
+using System;
 using System.Windows.Input;
 using Nova.Controls;
 using Nova.Shell.Library;

@@ -39,7 +39,7 @@ namespace Nova.Shell
     public class SessionViewModel : ViewModel<SessionView, SessionViewModel>, ISessionViewModel
     {
         internal const string CurrentViewConstant = "CurrentSessionContentView";
-        internal const string NextViewConstant = "NextSessionContentView";
+        internal const string CreateNextViewConstant = "CreateNextSessionContentView";
 
         private IView _currentView;
         private string _title;

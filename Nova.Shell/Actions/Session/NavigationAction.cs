@@ -21,6 +21,7 @@
 using System;
 using System.Threading.Tasks;
 using Nova.Controls;
+using Nova.Shell.Views;
 using Nova.Threading.Metadata;
 using Nova.Library;
 
@@ -45,7 +46,7 @@ namespace Nova.Shell.Actions.Session
 
         public override void OnBefore()
         {
-            var createNextView = ActionContext.GetValue<Func<IView>>(SessionViewModel.NextViewConstant);
+            var createNextView = ActionContext.GetValue<Func<IView>>(SessionViewModel.CreateNextViewConstant);
             
             if (createNextView != null)
             {
@@ -77,10 +78,14 @@ namespace Nova.Shell.Actions.Session
             _viewModelType = _nextView.ViewModel.GetType();
 
             var result = await _nextView.ViewModel.Enter();
-            
+
             if (!result)
             {
-                //TODO: Set _NextView to "Step not available" view and enter that instead.
+                StepNotAvailableView notAvailableView = null;
+                await View.Dispatcher.InvokeAsync(() => notAvailableView = ViewModel.CreatePage<StepNotAvailableView, StepNotAvailableViewModel>(true));
+                
+                notAvailableView.ViewModel.StepName = _pageType.Name; //TODO: Find actual name in tree.
+                _nextView = notAvailableView;
             }
 
             return true;
