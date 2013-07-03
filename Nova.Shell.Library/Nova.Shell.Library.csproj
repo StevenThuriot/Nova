@@ -38,6 +38,10 @@
     <AssemblyOriginatorKeyFile>..\packages\Thuriot.PFX.1.0.0\lib\Thuriot.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Nova.Threading.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=03252df91086a919, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Nova.Threading.Metadata.1.0.0\lib\net45\Nova.Threading.Metadata.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -51,6 +55,9 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Actions\Aliases.cs" />
+    <Compile Include="Actions\ReturnAction.cs" />
+    <Compile Include="Actions\StackAction.cs" />
     <Compile Include="ContentViewModel.cs" />
     <Compile Include="INavigationActionManager.cs" />
     <Compile Include="INavigatablePage.cs" />
