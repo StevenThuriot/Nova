@@ -149,12 +149,12 @@ namespace Nova.Shell
             HasOpenDocuments = list != null && list.Count > 0;
         }
 
-        //public void OnAfterEnter()
-        //{
-        //    //TODO: Temp testing
-        //    var wizard = CreatePage<WizardView, WizardViewModel>();
-        //    View._overlayCanvas.Children.Add(wizard);
-        //}
+        public void OnAfterEnter()
+        {
+            //TODO: Remove Test Wizard
+            var wizard = CreatePage<WizardView, WizardViewModel>();
+            View._overlayCanvas.Children.Add(wizard);
+        }
         
         /// <summary>
         /// Called when [created].

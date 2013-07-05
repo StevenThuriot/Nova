@@ -6,7 +6,7 @@
                     mc:Ignorable="d"
                     xmlns:converters="clr-namespace:Nova.Shell.Converters" 
                     xmlns:shell="clr-namespace:Nova.Shell"
-                    xmlns:controls="clr-namespace:Nova.Shell.Controls" xmlns:views="clr-namespace:Nova.Shell.Views"
+                    xmlns:controls="clr-namespace:Nova.Shell.Controls"
 
                     x:Name="_This"
         
@@ -183,11 +183,11 @@
                 CurrentSession="{Binding CurrentSession}"
                 AddCommand="{ActionBinding CreateNewSession}" />
 
-<!--TestCase
+      <!-- TODO: Remove Test Wizard -->
       <Overlay Grid.Row="1" Grid.ColumnSpan="5"
                Delay="0" IsLoading="True">
         <Canvas x:Name="_overlayCanvas" />
-      </Overlay>-->
+      </Overlay>
       
       <Grid Grid.Row="2" Grid.ColumnSpan="5">
         <Grid.Background>
