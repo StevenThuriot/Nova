@@ -29,6 +29,7 @@ namespace Nova.Shell.Views
     public partial class WizardView
     {
         //TODO: Listen to window resizing
+        //TODO: Draggable window
 
         /// <summary>
         /// Initializes the <see cref="WizardView" /> class.

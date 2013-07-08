@@ -1,5 +1,3 @@
-using Nova.Library.ActionMethodRepository;
-
 #region License
 // 
 //  Copyright 2013 Steven Thuriot
@@ -23,6 +21,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using Nova.Controls;
 using Nova.Threading;
+using Nova.Library.ActionMethodRepository;
 
 namespace Nova.Library
 {
@@ -41,7 +40,7 @@ namespace Nova.Library
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">view</exception>
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
-        internal static TViewModel Create(TView view, IActionQueueManager actionQueueManager, bool enterOnInitialize = true)
+        public static TViewModel Create(TView view, IActionQueueManager actionQueueManager, bool enterOnInitialize = true)
         {
             if (view == null)
                 throw new ArgumentNullException("view");
@@ -107,7 +106,7 @@ namespace Nova.Library
         /// <param name="actionQueueManager">The action queue manager.</param>
         /// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
         /// <exception cref="System.ArgumentNullException">view</exception>
-        internal void Initialize(TView view, IActionQueueManager actionQueueManager, bool enterOnInitialize)
+        private void Initialize(TView view, IActionQueueManager actionQueueManager, bool enterOnInitialize)
         {
             if (view == null)
                 throw new ArgumentNullException("view");

@@ -17,6 +17,7 @@
 #endregion
 
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using Nova.Library;
 using Nova.Shell.Domain;
 
@@ -34,7 +35,7 @@ namespace Nova.Shell.Views
         {
             Buttons = new ObservableCollection<WizardButton>();
 
-            var test = new WizardButton("Test", new RelayCommand(() => {}));
+            var test = new WizardButton("Test", new RelayCommand(() => Debug.WriteLine("test")));
             Buttons.Add(test);
         }
 
@@ -45,5 +46,8 @@ namespace Nova.Shell.Views
         /// The buttons.
         /// </value>
         public ObservableCollection<WizardButton> Buttons { get; private set; }
+
+
+        //TODO: Add Wizard property containing the multistep view.
     }
 }
