@@ -251,7 +251,6 @@
     <Compile Include="Controls\ExceptionHandler\ExceptionHandlerWindow.xaml.cs">
       <DependentUpon>ExceptionHandlerWindow.xaml</DependentUpon>
     </Compile>
-    <None Include="app.config" />
     <None Include="Controls\ExtendedControls.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ExtendedControls.cs</LastGenOutput>
