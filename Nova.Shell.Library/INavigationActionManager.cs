@@ -36,6 +36,6 @@ namespace Nova.Shell.Library
         /// <returns></returns>
         ICommand New<TPageView, TPageViewModel>()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new();
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new();
     }
 }

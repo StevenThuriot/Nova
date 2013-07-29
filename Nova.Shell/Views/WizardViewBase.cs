@@ -23,7 +23,7 @@ namespace Nova.Shell.Views
     /// <summary>
     /// Base class to avoid generics in XAML
     /// </summary>
-    public abstract class WizardViewBase : ExtendedUserControl<WizardView, WizardViewModel>
+    public abstract class WizardViewBase : ExtendedContentControl<WizardView, WizardViewModel>
     {
     }
 }

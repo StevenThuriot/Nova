@@ -85,7 +85,7 @@ namespace Nova.Shell.Domain
         /// <param name="rank">The ranking in the navigational tree. Default value is 10.</param>
         /// <returns>A new treenode instance.</returns>
         public static TreeNode New<TPageView, TPageViewModel>(string title, int rank)
-            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
             var type = typeof (TPageView);

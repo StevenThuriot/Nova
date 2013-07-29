@@ -23,7 +23,7 @@ namespace Nova.Shell.Views
     /// <summary>
     /// Base for StepNotAvailableView
     /// </summary>
-    public abstract class StepNotAvailableBaseView : ExtendedUserControl<StepNotAvailableView, StepNotAvailableViewModel>
+    public abstract class StepNotAvailableBaseView : ExtendedContentControl<StepNotAvailableView, StepNotAvailableViewModel>
     {
         
     }

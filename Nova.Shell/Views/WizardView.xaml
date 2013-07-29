@@ -18,7 +18,7 @@
                       mc:Ignorable="d"
                       d:DataContext="{d:DesignData Source=WizardViewModel.cs}">
 
-    <UserControl.Resources>
+  <views:WizardViewBase.Resources>
         <converters:WizardStateConverter x:Key="_brushStateConverter"
                                          UnfocusedResource="{StaticResource Unfocused}"
                                          DefaultStateResource="{StaticResource Blue}"
@@ -34,14 +34,14 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </UserControl.Resources>
+    </views:WizardViewBase.Resources>
 
-    <UserControl.BorderBrush>
-        <MultiBinding Converter="{StaticResource _brushStateConverter}">
-            <Binding Path="IsValid" />
-            <Binding Path="Wizard.IsValid" />
-        </MultiBinding>
-    </UserControl.BorderBrush>
+  <views:WizardViewBase.BorderBrush>
+    <MultiBinding Converter="{StaticResource _brushStateConverter}">
+      <Binding Path="IsValid" />
+      <Binding Path="Wizard.IsValid" />
+    </MultiBinding>
+  </views:WizardViewBase.BorderBrush>
 
     <Grid Background="{StaticResource White}">
         <Grid.RowDefinitions>
@@ -60,7 +60,7 @@
         <ContentPresenter />
 
         <!-- Buttons -->
-        <ItemsControl Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="3"
+        <ItemsControl Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="3" Grid.Column="0"
                       ItemsSource="{Binding Buttons}"
                       Background="{StaticResource NavigationalBackground}"
                       HorizontalContentAlignment="Right"

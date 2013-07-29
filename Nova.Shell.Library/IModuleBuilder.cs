@@ -37,7 +37,7 @@ namespace Nova.Shell.Library
         /// <returns>The module builder instance.</returns>
         IModuleBuilder AddNavigation<TPageView, TPageViewModel>(string title = null, int rank = 10)
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new();
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new();
 
         /// <summary>
         /// Sets the module title.

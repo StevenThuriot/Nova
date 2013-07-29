@@ -38,7 +38,7 @@ namespace Nova.TestModule
         }
     }
 
-    public abstract class TestPageBase : ExtendedUserControl<TestPage, TestPageViewModel>
+    public abstract class TestPageBase : ExtendedContentControl<TestPage, TestPageViewModel>
     {
 
     }

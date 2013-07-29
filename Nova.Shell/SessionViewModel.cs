@@ -159,7 +159,7 @@ namespace Nova.Shell
         /// <returns></returns>
         internal TPageView CreatePage<TPageView, TPageViewModel>()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new()
         {
             var page = CreatePage<TPageView, TPageViewModel>(false);
             page.ViewModel.Initialize(this);
@@ -175,7 +175,7 @@ namespace Nova.Shell
         /// <returns></returns>
         /// <exception cref="System.NotImplementedException"></exception>
         public ICommand CreateNavigationalAction<TPageView, TPageViewModel>()
-            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new() 
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new() 
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
             return NavigationActionManager.New<TPageView, TPageViewModel>();

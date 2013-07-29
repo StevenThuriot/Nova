@@ -15,6 +15,7 @@
         {
             typeof (Page),
             typeof (UserControl),
+			typeof (ContentControl)
         };
 #>
 #region License
