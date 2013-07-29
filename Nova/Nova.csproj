@@ -75,9 +75,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nova.Threading, Version=1.5.0.0, Culture=neutral, PublicKeyToken=03252df91086a919, processorArchitecture=MSIL">
+    <Reference Include="Nova.Threading, Version=2.0.0.0, Culture=neutral, PublicKeyToken=03252df91086a919, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nova.Threading.1.5.3\lib\net45\Nova.Threading.dll</HintPath>
+      <HintPath>..\packages\Nova.Threading.2.0.0\lib\net45\Nova.Threading.dll</HintPath>
     </Reference>
     <Reference Include="Nova.Threading.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=03252df91086a919, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
