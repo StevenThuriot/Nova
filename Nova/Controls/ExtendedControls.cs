@@ -58,6 +58,13 @@ namespace Nova.Library
 		/// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
 		/// <typeparam name="TGeneralView">The type of the view.</typeparam>
 		/// <typeparam name="TGeneralViewModel">The type of the view model.</typeparam>
+		/// <remarks>
+		/// Supported types:
+	    ///     - ExtendedPage
+	    ///     - ExtendedUserControl
+	    ///     - ExtendedContentControl
+	    ///     - ExtendedControl
+		/// </remarks>
         public TGeneralView CreateView<TGeneralView, TGeneralViewModel>(bool enterOnInitialize = true)		
             where TGeneralViewModel : ViewModel<TGeneralView, TGeneralViewModel>, new()
             where TGeneralView : class, IView, new()
