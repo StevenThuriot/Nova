@@ -52,9 +52,50 @@ using Nova.Library;
 
 namespace Nova.Library
 {
+    /// <summary>
+    /// Interface to help initialize views.
+    /// </summary>
+    /// <typeparam name="TView">The type of the view.</typeparam>
+    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+	internal interface ICanInjectStuff<TView, in TViewModel>
+        where TViewModel : ViewModel<TView, TViewModel>, new()
+		where TView : class, IView
+    {
+        /// <summary>
+        /// Injects the specified viewmodel and parent.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="viewModel">The view model.</param>
+        void Inject(IView parent, TViewModel viewModel);
+	}
+
 	public abstract partial class ViewModel<TView, TViewModel>
     {
 	    //ViewModel.Creation
+		
+	    /// <summary>
+	    /// Creates a new view with the current View as parent.
+	    /// </summary>
+		/// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
+		/// <typeparam name="TGeneralView">The type of the view.</typeparam>
+		/// <typeparam name="TGeneralViewModel">The type of the view model.</typeparam>
+        public TGeneralView CreateView<TGeneralView, TGeneralViewModel>(bool enterOnInitialize = true)		
+            where TGeneralViewModel : ViewModel<TGeneralView, TGeneralViewModel>, new()
+            where TGeneralView : class, IView, new()
+        {
+            var view = new TGeneralView();
+            
+            var injectableView = view as ICanInjectStuff<TGeneralView, TGeneralViewModel>;
+
+            if (injectableView == null)
+                throw new NotSupportedException();
+
+            var viewModel = ViewModel<TGeneralView, TGeneralViewModel>.Create(view, _actionQueueManager, enterOnInitialize);
+            injectableView.Inject(View, viewModel);
+
+            return view;
+        }
+
 <# foreach (var type in types)
 {
 	var name = type.Name; 
@@ -90,7 +131,7 @@ namespace Nova.Controls
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class Extended<#= name #><TView, TViewModel> : <#= name #>, IView
+    public abstract class Extended<#= name #><TView, TViewModel> : <#= name #>, IView, ICanInjectStuff<TView, TViewModel>
         where TViewModel : ViewModel<TView, TViewModel>, new()
         where TView : Extended<#= name #><TView, TViewModel>, new()
     {
@@ -231,15 +272,24 @@ namespace Nova.Controls
             if (actionQueueManager == null)
                 throw new ArgumentNullException("actionQueueManager");
             
-            var <#= name.ToLowerInvariant() #> = new TView
-                {
-                    _parent = parent
-                };
+            var <#= name.ToLowerInvariant() #> = new TView();
+			var viewModel = ViewModel<TView, TViewModel>.Create(<#= name.ToLowerInvariant() #>, actionQueueManager, enterOnInitialize);
 
-            <#= name.ToLowerInvariant() #>.ViewModel = ViewModel<TView, TViewModel>.Create(<#= name.ToLowerInvariant() #>, actionQueueManager, enterOnInitialize);
+			((ICanInjectStuff<TView, TViewModel>)<#= name.ToLowerInvariant() #>).Inject(parent, viewModel);
 
             return <#= name.ToLowerInvariant() #>;
-        }        
+        }   
+		
+        /// <summary>
+        /// Injects the specified viewmodel and parent.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="viewModel">The view model.</param>
+        void ICanInjectStuff<TView, TViewModel>.Inject(IView parent, TViewModel viewModel)
+        {
+            _parent = parent;
+            ViewModel = viewModel;
+        }     
         
         
         private int _loadingCounter;

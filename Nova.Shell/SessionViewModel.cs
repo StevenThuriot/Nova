@@ -157,12 +157,12 @@ namespace Nova.Shell
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         /// <returns></returns>
-        internal TPageView CreatePage<TPageView, TPageViewModel>()
+        internal TPageView Create<TPageView, TPageViewModel>()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new()
+            where TPageView : class, IView, new()
         {
-            var page = CreateContentControl<TPageView, TPageViewModel>(false);
-            page.ViewModel.Initialize(this);
+            var page = CreateView<TPageView, TPageViewModel>(false);
+            ((ContentViewModel<TPageView, TPageViewModel>) page.ViewModel).Initialize(this);
 
             return page;
         }

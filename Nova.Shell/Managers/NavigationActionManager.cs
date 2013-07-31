@@ -60,7 +60,7 @@ namespace Nova.Shell.Managers
         {
             var viewModel = _session.ViewModel;
 
-            var createNextView = new Func<IView>(viewModel.CreatePage<TPageView, TPageViewModel>);
+            var createNextView = new Func<IView>(viewModel.Create<TPageView, TPageViewModel>);
             var next = ActionContextEntry.Create(SessionViewModel.CreateNextViewConstant, createNextView, false);
 
             var command = RoutedAction.New<NavigationAction, SessionView, SessionViewModel>(_session, viewModel, next);
