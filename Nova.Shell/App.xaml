@@ -144,6 +144,8 @@
                      Cursor="{x:Static Cursors.SizeWE}" />
 
 
+              
+              
               <Thumb x:Name="Part_LeftTopCorner" Style="{StaticResource _resizeThumb}"
                      Grid.Row="0" Grid.Column="0"
                      Margin="-2 -2 0 0"

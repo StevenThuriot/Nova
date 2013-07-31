@@ -32,10 +32,10 @@ namespace Nova.Shell.Views
     [TemplatePart(Name = "PART_LeftBorder", Type = typeof(Thumb))]
     [TemplatePart(Name = "PART_TopBorder", Type = typeof(Thumb))]
     [TemplatePart(Name = "PART_BottomBorder", Type = typeof(Thumb))]
-    [TemplatePart(Name = "PART_RightTopBorder", Type = typeof(Thumb))]
-    [TemplatePart(Name = "PART_RightBottomBorder", Type = typeof(Thumb))]
-    [TemplatePart(Name = "PART_LeftTopBorder", Type = typeof(Thumb))]
-    [TemplatePart(Name = "PART_LeftBottomBorder", Type = typeof(Thumb))]
+    [TemplatePart(Name = "PART_RightTopCorner", Type = typeof(Thumb))]
+    [TemplatePart(Name = "PART_RightBottomCorner", Type = typeof(Thumb))]
+    [TemplatePart(Name = "PART_LeftTopCorner", Type = typeof(Thumb))]
+    [TemplatePart(Name = "PART_LeftBottomCorner", Type = typeof(Thumb))]
     public partial class WizardView
     {
         //TODO: Listen to window resizing and restrict wizard if needed.
@@ -47,10 +47,11 @@ namespace Nova.Shell.Views
         private Thumb _leftBorder;
         private Thumb _topBorder;
         private Thumb _bottomBorder;
-        private Thumb _rightTopBorder;
-        private Thumb _rightBottomBorder;
-        private Thumb _leftTopBorder;
-        private Thumb _leftBottomBorder;
+
+        private Thumb _rightTopCorner;
+        private Thumb _rightBottomCorner;
+        private Thumb _leftTopCorner;
+        private Thumb _leftBottomCorner;
 
         /// <summary>
         /// Initializes the <see cref="WizardView" /> class.
@@ -92,17 +93,17 @@ namespace Nova.Shell.Views
         }
 
         private static object CoerceSize(DependencyObject dependencyObject, object baseValue, 
-                                         Func<Canvas, double> getCanvasActualSize,
+                                         Func<FrameworkElement, double> getParentActualSize,
                                          Func<UIElement, double> getCanvasProperty,
                                          Func<FrameworkElement, double> getMinimumSize)
         {
             var wizard = (WizardView) dependencyObject;
             var size = (double) baseValue;
-            var canvas = (Canvas) wizard.Parent;
+            var element = (FrameworkElement) wizard.Parent;
             
-            if (canvas != null)
+            if (element != null)
             {
-                var availableWidth = getCanvasActualSize(canvas) - getCanvasProperty(wizard) - 3;
+                var availableWidth = getParentActualSize(element) - getCanvasProperty(wizard) - 3;
 
                 if (size > availableWidth)
                     return availableWidth;
@@ -121,7 +122,7 @@ namespace Nova.Shell.Views
             Loaded -= Initialize;
 
             //Center!
-            var canvas = (Canvas)Parent;
+            var canvas = (FrameworkElement)Parent;
 
             var top = (canvas.ActualHeight - Height) / 2d;
             var left = (canvas.ActualWidth - Width) / 2d;
@@ -208,8 +209,8 @@ namespace Nova.Shell.Views
             left = Math.Max(8d, left);
             top = Math.Max(30d, top);
 
-            var canvas = (Canvas) Parent;
-
+            var canvas = (FrameworkElement)Parent;
+            
             var minLeft = canvas.ActualWidth - Width - 8;
             left = Math.Min(minLeft, left);
 
@@ -242,69 +243,69 @@ namespace Nova.Shell.Views
 
         private void ConfigureLeftBottom()
         {
-            if (_leftBottomBorder != null)
+            if (_leftBottomCorner != null)
             {
-                _leftBottomBorder.DragDelta -= LeftBorderDrag;
-                _leftBottomBorder.DragDelta -= BottomBorderDrag;
+                _leftBottomCorner.DragDelta -= LeftBorderDrag;
+                _leftBottomCorner.DragDelta -= BottomBorderDrag;
             }
 
-            _leftBottomBorder = GetTemplateChild("Part_LeftBottomCorner") as Thumb;
+            _leftBottomCorner = GetTemplateChild("Part_LeftBottomCorner") as Thumb;
 
-            if (_leftBottomBorder != null)
+            if (_leftBottomCorner != null)
             {
-                _leftBottomBorder.DragDelta += LeftBorderDrag;
-                _leftBottomBorder.DragDelta += BottomBorderDrag;
+                _leftBottomCorner.DragDelta += LeftBorderDrag;
+                _leftBottomCorner.DragDelta += BottomBorderDrag;
             }
         }
 
         private void ConfigureLeftTopCorner()
         {
-            if (_leftTopBorder != null)
+            if (_leftTopCorner != null)
             {
-                _leftTopBorder.DragDelta -= LeftBorderDrag;
-                _leftTopBorder.DragDelta -= TopBorderDrag;
+                _leftTopCorner.DragDelta -= LeftBorderDrag;
+                _leftTopCorner.DragDelta -= TopBorderDrag;
             }
 
-            _leftTopBorder = GetTemplateChild("Part_LeftTopCorner") as Thumb;
+            _leftTopCorner = GetTemplateChild("Part_LeftTopCorner") as Thumb;
 
-            if (_leftTopBorder != null)
+            if (_leftTopCorner != null)
             {
-                _leftTopBorder.DragDelta += LeftBorderDrag;
-                _leftTopBorder.DragDelta += TopBorderDrag;
+                _leftTopCorner.DragDelta += LeftBorderDrag;
+                _leftTopCorner.DragDelta += TopBorderDrag;
             }
         }
 
         private void ConfigureRightBottomCorner()
         {
-            if (_rightBottomBorder != null)
+            if (_rightBottomCorner != null)
             {
-                _rightBottomBorder.DragDelta -= RightBorderDrag;
-                _rightBottomBorder.DragDelta -= BottomBorderDrag;
+                _rightBottomCorner.DragDelta -= RightBorderDrag;
+                _rightBottomCorner.DragDelta -= BottomBorderDrag;
             }
 
-            _rightBottomBorder = GetTemplateChild("Part_RightBottomCorner") as Thumb;
+            _rightBottomCorner = GetTemplateChild("Part_RightBottomCorner") as Thumb;
 
-            if (_rightBottomBorder != null)
+            if (_rightBottomCorner != null)
             {
-                _rightBottomBorder.DragDelta += RightBorderDrag;
-                _rightBottomBorder.DragDelta += BottomBorderDrag;
+                _rightBottomCorner.DragDelta += RightBorderDrag;
+                _rightBottomCorner.DragDelta += BottomBorderDrag;
             }
         }
 
         private void ConfigureRightTopBorder()
         {
-            if (_rightTopBorder != null)
+            if (_rightTopCorner != null)
             {
-                _rightTopBorder.DragDelta -= RightBorderDrag;
-                _rightTopBorder.DragDelta -= TopBorderDrag;
+                _rightTopCorner.DragDelta -= RightBorderDrag;
+                _rightTopCorner.DragDelta -= TopBorderDrag;
             }
 
-            _rightTopBorder = GetTemplateChild("Part_RightTopBorder") as Thumb;
+            _rightTopCorner = GetTemplateChild("Part_RightTopCorner") as Thumb;
 
-            if (_rightTopBorder != null)
+            if (_rightTopCorner != null)
             {
-                _rightTopBorder.DragDelta += RightBorderDrag;
-                _rightTopBorder.DragDelta += TopBorderDrag;
+                _rightTopCorner.DragDelta += RightBorderDrag;
+                _rightTopCorner.DragDelta += TopBorderDrag;
             }
         }
 
