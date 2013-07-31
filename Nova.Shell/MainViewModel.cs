@@ -23,6 +23,7 @@ using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using System.Windows.Shell;
 using System.Windows.Threading;
 using Nova.Controls;
@@ -153,6 +154,7 @@ namespace Nova.Shell
         {
             //TODO: Remove Test Wizard
             var wizard = CreatePage<WizardView, WizardViewModel>();
+            wizard.Content = new Rectangle {Fill = Brushes.Yellow};
             View._overlayCanvas.Children.Add(wizard);
         }
         

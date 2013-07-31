@@ -112,7 +112,13 @@ namespace Nova.Library
 		/// <param name="informationalMessage">The informational message.</param>
 		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         private static void InternalHandle(Exception exception, string title, string informationalMessage)
-		{
+        {
+            var application = Application.Current;
+	        if (application == null)
+	            return;
+
+            var dispatcher = application.Dispatcher;
+
 			var handler = new Action(() =>
 			                         	{
 			                         		//TryCatch is here to prevent getting into a loop in case the eventhandling throws an exception.
@@ -159,7 +165,6 @@ namespace Nova.Library
 											}
 			                         	});
 
-			var dispatcher = Application.Current.Dispatcher;
 
 			if (dispatcher.CheckAccess())
 			{
