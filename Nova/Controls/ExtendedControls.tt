@@ -11,13 +11,16 @@
 <#
 	//Because these types have a very similar implementation, yet have a different base class,
 	//a T4 template has been created for these files instead.
-    var types = new List<Type>
-        {
-            typeof (Page),
-            typeof (UserControl),
-			typeof (ContentControl),
-			typeof (Control),
-        };
+	var types = new List<Type>
+    {
+        typeof (Page),
+        typeof (UserControl),
+		typeof (ContentControl),
+		typeof (Control),
+    };
+
+	var comparison = new Comparison<Type>((x, y) => String.Compare(x.Name, y.Name, StringComparison.Ordinal));
+	types.Sort(comparison);
 #>
 #region License
 
