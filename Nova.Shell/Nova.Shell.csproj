@@ -121,14 +121,12 @@
       <DependentUpon>StepNotAvailableView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Domain\WizardButton.cs" />
-    <Compile Include="Views\WizardView.xaml.cs">
-      <DependentUpon>WizardView.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Views\WizardView.cs" />
     <Compile Include="Views\WizardViewBase.cs">
-      <DependentUpon>WizardView.xaml.cs</DependentUpon>
+      <DependentUpon>WizardView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\WizardViewModel.cs">
-      <DependentUpon>WizardView.xaml</DependentUpon>
+      <DependentUpon>WizardView.cs</DependentUpon>
     </Compile>
     <Page Include="Controls\NovaTree.xaml">
       <SubType>Designer</SubType>
@@ -172,10 +170,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\StepNotAvailableView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WizardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

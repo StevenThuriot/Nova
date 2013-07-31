@@ -18,6 +18,7 @@
 
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Nova.Controls;
 using Nova.Library;
 using Nova.Shell.Domain;
 
@@ -49,5 +50,6 @@ namespace Nova.Shell.Views
 
 
         //TODO: Add Wizard property containing the multistep view.
+        public IView Wizard { get; set; }
     }
 }
