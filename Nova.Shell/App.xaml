@@ -56,6 +56,20 @@
         </Style>
 
 
+        <Style TargetType="{x:Type views:StepNotAvailableView}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type views:StepNotAvailableView}">
+                        <TextBlock d:DataContext="{d:DesignInstance views:StepNotAvailableViewModel}">
+                            <Run Text="The step" />
+                            <Run Text="{Binding StepName, StringFormat='&quot;{0}&quot;'}" />
+                            <Run Text="is not available." />
+                        </TextBlock>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <converters:WizardStateConverter x:Key="_wizardBrushStateConverter"
                                          UnfocusedResource="{StaticResource Unfocused}"
                                          DefaultStateResource="{StaticResource Blue}"

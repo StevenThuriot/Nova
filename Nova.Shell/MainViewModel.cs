@@ -153,7 +153,7 @@ namespace Nova.Shell
         public void OnAfterEnter()
         {
             //TODO: Remove Test Wizard
-            var wizard = CreatePage<WizardView, WizardViewModel>();
+            var wizard = CreateContentControl<WizardView, WizardViewModel>();
             wizard.Content = new Rectangle {Fill = Brushes.Yellow};
             View._overlayCanvas.Children.Add(wizard);
         }
@@ -178,7 +178,7 @@ namespace Nova.Shell
         /// </summary>
         internal SessionView CreateSession()
         {
-            var sessionView = CreatePage<SessionView, SessionViewModel>();
+            var sessionView = CreateContentControl<SessionView, SessionViewModel>();
             return sessionView;
         }
 

@@ -76,7 +76,7 @@ namespace Nova.Shell.Library
         /// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        TPageView CreatePage<TPageView, TPageViewModel>(bool enterOnInitialize = true)
+        TPageView CreateContentControl<TPageView, TPageViewModel>(bool enterOnInitialize = true)
             where TPageViewModel : ViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new();
     }

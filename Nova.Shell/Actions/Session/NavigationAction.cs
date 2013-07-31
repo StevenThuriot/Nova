@@ -19,7 +19,6 @@
 #endregion
 
 using System;
-using System.Threading.Tasks;
 using Nova.Controls;
 using Nova.Shell.Views;
 using Nova.Threading.Metadata;
@@ -61,14 +60,9 @@ namespace Nova.Shell.Actions.Session
 
             _current = ActionContext.GetValue<IView>(SessionViewModel.CurrentViewConstant);
 
-            return EnterCurrentAndLeaveOldStep().Result; //.Result because we want to block this thread until execution finishes!
-        }
-
-        private async Task<bool> EnterCurrentAndLeaveOldStep()
-        {
             if (_current != null)
             {
-                var canLeave = await _current.ViewModel.Leave();
+                var canLeave = _current.ViewModel.Leave().Result;
 
                 if (!canLeave)
                     return false;
@@ -77,16 +71,16 @@ namespace Nova.Shell.Actions.Session
             _pageType = _nextView.GetType();
             _viewModelType = _nextView.ViewModel.GetType();
 
-            var result = await _nextView.ViewModel.Enter();
+            var result = _nextView.ViewModel.Enter().Result;
 
             if (!result)
             {
                 StepNotAvailableView notAvailableView = null;
-                await View.Dispatcher.InvokeAsync(() =>
-                    {
-                        notAvailableView = ViewModel.CreatePage<StepNotAvailableView, StepNotAvailableViewModel>(true);
-                        notAvailableView.ViewModel.StepName = View._NovaTree.FindTitle(_pageType, _viewModelType) ?? _pageType.Name;
-                    });
+                View.Dispatcher.Invoke(() =>
+                {
+                    notAvailableView = ViewModel.CreateControl<StepNotAvailableView, StepNotAvailableViewModel>();
+                    notAvailableView.ViewModel.StepName = View._NovaTree.FindTitle(_pageType, _viewModelType) ?? _pageType.Name;
+                });
 
                 _nextView = notAvailableView;
             }

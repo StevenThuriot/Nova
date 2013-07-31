@@ -15,7 +15,8 @@
         {
             typeof (Page),
             typeof (UserControl),
-			typeof (ContentControl)
+			typeof (ContentControl),
+			typeof (Control),
         };
 #>
 #region License
@@ -43,10 +44,37 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Nova.Controls;
 using Nova.Helpers;
 using Nova.Threading;
 using Nova.Validation;
 using Nova.Library;
+
+namespace Nova.Library
+{
+	public abstract partial class ViewModel<TView, TViewModel>
+    {
+	    //ViewModel.Creation
+<# foreach (var type in types)
+{
+	var name = type.Name; 
+#>
+	    /// <summary>
+	    /// Creates a new <#= name.ToLowerInvariant() #> with the current View as parent.
+	    /// </summary>
+		/// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
+		/// <typeparam name="T<#= name #>View">The type of the page view.</typeparam>
+		/// <typeparam name="T<#= name #>ViewModel">The type of the page view model.</typeparam>
+		public T<#= name #>View Create<#= name #><T<#= name #>View, T<#= name #>ViewModel>(bool enterOnInitialize = true)		
+			where T<#= name #>ViewModel : ViewModel<T<#= name #>View, T<#= name #>ViewModel>, new()
+			where T<#= name #>View : Extended<#= name #><T<#= name #>View, T<#= name #>ViewModel>, new()
+		{
+			return Extended<#= name #><T<#= name #>View, T<#= name #>ViewModel>.Create(View, _actionQueueManager, enterOnInitialize);
+		}
+<#}#>
+	}
+}
+
 
 namespace Nova.Controls
 {

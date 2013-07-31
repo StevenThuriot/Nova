@@ -161,7 +161,7 @@ namespace Nova.Shell
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new()
         {
-            var page = CreatePage<TPageView, TPageViewModel>(false);
+            var page = CreateContentControl<TPageView, TPageViewModel>(false);
             page.ViewModel.Initialize(this);
 
             return page;

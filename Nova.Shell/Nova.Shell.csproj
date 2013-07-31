@@ -111,20 +111,12 @@
     <Compile Include="SessionViewModel.cs">
       <DependentUpon>SessionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StepNotAvailableBaseView.cs">
-      <DependentUpon>StepNotAvailableView.xaml.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\StepNotAvailableView.xaml.cs">
-      <DependentUpon>StepNotAvailableView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\StepNotAvailableViewModel.cs">
-      <DependentUpon>StepNotAvailableView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Domain\WizardButton.cs" />
-    <Compile Include="Views\WizardView.cs" />
-    <Compile Include="Views\WizardViewBase.cs">
-      <DependentUpon>WizardView.cs</DependentUpon>
+    <Compile Include="Views\StepNotAvailableView.cs" />
+    <Compile Include="Views\StepNotAvailableViewModel.cs">
+      <DependentUpon>StepNotAvailableView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\WizardView.cs" />
     <Compile Include="Views\WizardViewModel.cs">
       <DependentUpon>WizardView.cs</DependentUpon>
     </Compile>
@@ -166,10 +158,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="SessionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\StepNotAvailableView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

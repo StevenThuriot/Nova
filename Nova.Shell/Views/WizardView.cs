@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using Nova.Controls;
 
 namespace Nova.Shell.Views
 {
@@ -18,7 +19,7 @@ namespace Nova.Shell.Views
     [TemplatePart(Name = "PART_RightBottomCorner", Type = typeof(Thumb))]
     [TemplatePart(Name = "PART_LeftTopCorner", Type = typeof(Thumb))]
     [TemplatePart(Name = "PART_LeftBottomCorner", Type = typeof(Thumb))]
-    public class WizardView : WizardViewBase
+    public class WizardView : ExtendedContentControl<WizardView, WizardViewModel>
     {
         //TODO: Listen to window resizing and restrict wizard if needed.
 
