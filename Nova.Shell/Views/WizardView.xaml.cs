@@ -205,15 +205,15 @@ namespace Nova.Shell.Views
             var left = Canvas.GetLeft(this) - (_clickPosition.X - currentPosition.X);
             var top = Canvas.GetTop(this) - (_clickPosition.Y - currentPosition.Y);
 
-            left = Math.Max(7.7d, left);
-            top = Math.Max(30.2d, top);
+            left = Math.Max(8d, left);
+            top = Math.Max(30d, top);
 
             var canvas = (Canvas) Parent;
 
-            var minLeft = canvas.ActualWidth - Width - 9;
+            var minLeft = canvas.ActualWidth - Width - 8;
             left = Math.Min(minLeft, left);
 
-            var minTop = canvas.ActualHeight - Height - 9;
+            var minTop = canvas.ActualHeight - Height - 8;
             top = Math.Min(minTop, top);
 
             Canvas.SetTop(this, top);
