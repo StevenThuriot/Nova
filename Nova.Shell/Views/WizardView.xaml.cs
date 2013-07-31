@@ -40,8 +40,6 @@ namespace Nova.Shell.Views
     {
         //TODO: Listen to window resizing and restrict wizard if needed.
         
-        private Window _window;
-
         private Point _clickPosition;
         private FrameworkElement _contentHost;
 
@@ -130,8 +128,6 @@ namespace Nova.Shell.Views
 
             Canvas.SetTop(this, top);
             Canvas.SetLeft(this, left);
-
-            _window = Window.GetWindow(this);
         }
         
         private void HorizontalChange(bool draggingAffectsCanvas, DragDeltaEventArgs args)
@@ -212,10 +208,12 @@ namespace Nova.Shell.Views
             left = Math.Max(7.7d, left);
             top = Math.Max(30.2d, top);
 
-            var minLeft = _window.Width - Width - 10;
+            var canvas = (Canvas) Parent;
+
+            var minLeft = canvas.ActualWidth - Width - 9;
             left = Math.Min(minLeft, left);
 
-            var minTop = _window.Height - Height - 58;
+            var minTop = canvas.ActualHeight - Height - 9;
             top = Math.Min(minTop, top);
 
             Canvas.SetTop(this, top);
@@ -225,11 +223,6 @@ namespace Nova.Shell.Views
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-
-            _window = Window.GetWindow(this);
-
-            if (_window == null)
-                return;
 
             ConfigureContentHost();
             ConfigureThumbs();
