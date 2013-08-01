@@ -27,6 +27,7 @@
 		<ResourceDictionary Source="ToolTip.xaml" />
 		<ResourceDictionary Source="ProgressRing.xaml" />
 		<ResourceDictionary Source="Overlay.xaml" />
-		<ResourceDictionary Source="ValidationBorder.xaml" />
+    <ResourceDictionary Source="ValidationBorder.xaml" />
+    <ResourceDictionary Source="SearchTextBox.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

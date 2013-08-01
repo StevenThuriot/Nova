@@ -31,23 +31,6 @@ using Nova.Library;
 
 namespace Nova.Library
 {
-    /// <summary>
-    /// Interface to help initialize views.
-    /// </summary>
-    /// <typeparam name="TView">The type of the view.</typeparam>
-    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-	internal interface ICanInjectStuff<TView, in TViewModel>
-        where TViewModel : ViewModel<TView, TViewModel>, new()
-		where TView : class, IView
-    {
-        /// <summary>
-        /// Injects the specified viewmodel and parent.
-        /// </summary>
-        /// <param name="parent">The parent.</param>
-        /// <param name="viewModel">The view model.</param>
-        void Inject(IView parent, TViewModel viewModel);
-	}
-
 	public abstract partial class ViewModel<TView, TViewModel>
     {
 	    //ViewModel.Creation
@@ -279,10 +262,10 @@ namespace Nova.Controls
             if (actionQueueManager == null)
                 throw new ArgumentNullException("actionQueueManager");
             
-            var contentcontrol = new TView();
-			var viewModel = ViewModel<TView, TViewModel>.Create(contentcontrol, actionQueueManager, enterOnInitialize);
+            var contentcontrol = new TView { _parent = parent };
 
-			((ICanInjectStuff<TView, TViewModel>)contentcontrol).Inject(parent, viewModel);
+			var viewModel = ViewModel<TView, TViewModel>.Create(contentcontrol, actionQueueManager, enterOnInitialize);
+			contentcontrol.ViewModel = viewModel;
 
             return contentcontrol;
         }   
@@ -533,10 +516,10 @@ namespace Nova.Controls
             if (actionQueueManager == null)
                 throw new ArgumentNullException("actionQueueManager");
             
-            var control = new TView();
-			var viewModel = ViewModel<TView, TViewModel>.Create(control, actionQueueManager, enterOnInitialize);
+            var control = new TView { _parent = parent };
 
-			((ICanInjectStuff<TView, TViewModel>)control).Inject(parent, viewModel);
+			var viewModel = ViewModel<TView, TViewModel>.Create(control, actionQueueManager, enterOnInitialize);
+			control.ViewModel = viewModel;
 
             return control;
         }   
@@ -770,10 +753,10 @@ namespace Nova.Controls
             if (actionQueueManager == null)
                 throw new ArgumentNullException("actionQueueManager");
             
-            var page = new TView();
-			var viewModel = ViewModel<TView, TViewModel>.Create(page, actionQueueManager, enterOnInitialize);
+            var page = new TView { _parent = parent };
 
-			((ICanInjectStuff<TView, TViewModel>)page).Inject(parent, viewModel);
+			var viewModel = ViewModel<TView, TViewModel>.Create(page, actionQueueManager, enterOnInitialize);
+			page.ViewModel = viewModel;
 
             return page;
         }   
@@ -1024,10 +1007,10 @@ namespace Nova.Controls
             if (actionQueueManager == null)
                 throw new ArgumentNullException("actionQueueManager");
             
-            var usercontrol = new TView();
-			var viewModel = ViewModel<TView, TViewModel>.Create(usercontrol, actionQueueManager, enterOnInitialize);
+            var usercontrol = new TView { _parent = parent };
 
-			((ICanInjectStuff<TView, TViewModel>)usercontrol).Inject(parent, viewModel);
+			var viewModel = ViewModel<TView, TViewModel>.Create(usercontrol, actionQueueManager, enterOnInitialize);
+			usercontrol.ViewModel = viewModel;
 
             return usercontrol;
         }   

@@ -55,23 +55,6 @@ using Nova.Library;
 
 namespace Nova.Library
 {
-    /// <summary>
-    /// Interface to help initialize views.
-    /// </summary>
-    /// <typeparam name="TView">The type of the view.</typeparam>
-    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-	internal interface ICanInjectStuff<TView, in TViewModel>
-        where TViewModel : ViewModel<TView, TViewModel>, new()
-		where TView : class, IView
-    {
-        /// <summary>
-        /// Injects the specified viewmodel and parent.
-        /// </summary>
-        /// <param name="parent">The parent.</param>
-        /// <param name="viewModel">The view model.</param>
-        void Inject(IView parent, TViewModel viewModel);
-	}
-
 	public abstract partial class ViewModel<TView, TViewModel>
     {
 	    //ViewModel.Creation
@@ -281,10 +264,10 @@ namespace Nova.Controls
             if (actionQueueManager == null)
                 throw new ArgumentNullException("actionQueueManager");
             
-            var <#= name.ToLowerInvariant() #> = new TView();
-			var viewModel = ViewModel<TView, TViewModel>.Create(<#= name.ToLowerInvariant() #>, actionQueueManager, enterOnInitialize);
+            var <#= name.ToLowerInvariant() #> = new TView { _parent = parent };
 
-			((ICanInjectStuff<TView, TViewModel>)<#= name.ToLowerInvariant() #>).Inject(parent, viewModel);
+			var viewModel = ViewModel<TView, TViewModel>.Create(<#= name.ToLowerInvariant() #>, actionQueueManager, enterOnInitialize);
+			<#= name.ToLowerInvariant() #>.ViewModel = viewModel;
 
             return <#= name.ToLowerInvariant() #>;
         }   

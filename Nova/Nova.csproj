@@ -119,10 +119,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\SearchTextBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\WindowControlBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -144,6 +140,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Expander.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\SearchTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -275,15 +275,13 @@
       <DependentUpon>ProgressIndicator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ProgressRing.cs" />
+    <Compile Include="Controls\SearchTextBox.cs" />
     <Compile Include="Controls\ValidationBorder.cs" />
     <Compile Include="Converters\IsNotNullToVisibilityConverter.cs" />
     <Compile Include="Converters\SubtractionConverter.cs" />
     <Compile Include="Converters\WidthPercentageConverter.cs" />
     <Compile Include="Helpers\FocusHelper.cs" />
     <Compile Include="Helpers\PasswordBoxMonitor.cs" />
-    <Compile Include="Controls\SearchTextBox.xaml.cs">
-      <DependentUpon>SearchTextBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\WindowControlBox.xaml.cs">
       <DependentUpon>WindowControlBox.xaml</DependentUpon>
     </Compile>
@@ -312,6 +310,7 @@
     <Compile Include="Library\ErrorBinding.cs" />
     <Compile Include="Library\ExceptionHandler.cs" />
     <Compile Include="Library\ChangeTracking\ExtendedChangeTrackingHelper.cs" />
+    <Compile Include="Library\ICanInjectStuff.cs" />
     <Compile Include="Library\IViewModel.cs" />
     <Compile Include="Library\NotifyPropertyChanged.cs" />
     <Compile Include="Library\RelayCommand.cs" />
