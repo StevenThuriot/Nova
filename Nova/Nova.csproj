@@ -119,10 +119,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\WindowControlBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -282,9 +278,6 @@
     <Compile Include="Converters\WidthPercentageConverter.cs" />
     <Compile Include="Helpers\FocusHelper.cs" />
     <Compile Include="Helpers\PasswordBoxMonitor.cs" />
-    <Compile Include="Controls\WindowControlBox.xaml.cs">
-      <DependentUpon>WindowControlBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\AutoScrollHandler.cs" />
     <Compile Include="Library\Actions\Aliases.cs" />
     <Compile Include="Library\AliasAttribute.cs" />

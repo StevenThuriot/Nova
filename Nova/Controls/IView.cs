@@ -1,5 +1,3 @@
-using Nova.Library;
-
 #region License
 // 
 //  Copyright 2012 Steven Thuriot
@@ -19,6 +17,7 @@ using Nova.Library;
 #endregion
 
 using System;
+using Nova.Library;
 using Nova.Validation;
 
 namespace Nova.Controls
