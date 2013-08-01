@@ -23,7 +23,14 @@ namespace Nova.Shell.Library.Actions
     /// </summary>
     public static class Aliases
     {
+        /// <summary>
+        /// The stack alias
+        /// </summary>
         public const string Stack = "Stack";
+
+        /// <summary>
+        /// The return alias
+        /// </summary>
         public const string Return = "Return";
     }
 }

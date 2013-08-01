@@ -118,6 +118,9 @@ namespace Nova.Controls
             TextChanged += SearchTextChanged;
         }
 
+        /// <summary>
+        /// Is called when a control template is applied.
+        /// </summary>
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
