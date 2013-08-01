@@ -185,7 +185,7 @@
 
       <!-- TODO: Remove Test Wizard -->
       <Overlay Grid.Row="1" Grid.ColumnSpan="5"
-               Delay="0" IsLoading="True">
+               Delay="0" IsLoading="False">
         <Canvas x:Name="_overlayCanvas" />
       </Overlay>
       

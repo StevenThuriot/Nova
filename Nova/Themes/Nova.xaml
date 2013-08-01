@@ -29,5 +29,6 @@
 		<ResourceDictionary Source="Overlay.xaml" />
     <ResourceDictionary Source="ValidationBorder.xaml" />
     <ResourceDictionary Source="SearchTextBox.xaml" />
+    <ResourceDictionary Source="ClosableTabs.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

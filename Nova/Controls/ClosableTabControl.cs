@@ -19,6 +19,7 @@
 #endregion
 
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Nova.Controls
@@ -26,22 +27,15 @@ namespace Nova.Controls
     /// <summary>
     /// Interaction logic for ClosableTabControl.xaml
     /// </summary>
-    public partial class ClosableTabControl
+    public class ClosableTabControl : TabControl
     {
         /// <summary>
         /// Initializes the <see cref="ClosableTabControl" /> class.
         /// </summary>
         static ClosableTabControl()
         {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ClosableTabControl), new FrameworkPropertyMetadata(typeof(ClosableTabControl)));
             SelectedItemProperty.AddOwner(typeof(ClosableTabControl), new FrameworkPropertyMetadata(SelectedContentChanged));
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClosableTabControl" /> class.
-        /// </summary>
-        public ClosableTabControl()
-        {
-            InitializeComponent();
         }
 
         /// <summary>
@@ -61,7 +55,7 @@ namespace Nova.Controls
         /// The is empty property
         /// </summary>
         public static readonly DependencyProperty IsEmptyProperty =
-            DependencyProperty.Register("IsEmpty", typeof (bool), typeof (ClosableTabControl), new PropertyMetadata(true));
+            DependencyProperty.Register("IsEmpty", typeof(bool), typeof(ClosableTabControl), new PropertyMetadata(true));
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is empty.
@@ -71,7 +65,7 @@ namespace Nova.Controls
         /// </value>
         public bool IsEmpty
         {
-            get { return (bool) GetValue(IsEmptyProperty); }
+            get { return (bool)GetValue(IsEmptyProperty); }
             set { SetValue(IsEmptyProperty, value); }
         }
 
@@ -89,7 +83,7 @@ namespace Nova.Controls
         /// <summary>
         /// The add item command property
         /// </summary>
-        public static readonly DependencyProperty AddItemCommandProperty = DependencyProperty.Register("AddItemCommand", typeof (ICommand), typeof (ClosableTabControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty AddItemCommandProperty = DependencyProperty.Register("AddItemCommand", typeof(ICommand), typeof(ClosableTabControl), new PropertyMetadata(null));
 
         /// <summary>
         /// Gets or sets the add item command.
@@ -99,7 +93,7 @@ namespace Nova.Controls
         /// </value>
         public ICommand AddItemCommand
         {
-            get { return (ICommand) GetValue(AddItemCommandProperty); }
+            get { return (ICommand)GetValue(AddItemCommandProperty); }
             set { SetValue(AddItemCommandProperty, value); }
         }
     }

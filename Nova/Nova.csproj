@@ -103,14 +103,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\ClosableTabControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ClosableTabItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\ExceptionHandler\ExceptionHandlerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -126,6 +118,10 @@
     <Page Include="Themes\Checkbox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ClosableTabs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Combobox.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -233,12 +229,8 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Controls\BindableRun.cs" />
-    <Compile Include="Controls\ClosableTabControl.xaml.cs">
-      <DependentUpon>ClosableTabControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ClosableTabItem.xaml.cs">
-      <DependentUpon>ClosableTabItem.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\ClosableTabControl.cs" />
+    <Compile Include="Controls\ClosableTabItem.cs" />
     <Compile Include="Controls\DataGridHeaderBorder.cs" />
     <Compile Include="Controls\ExceptionHandler\ExceptionHandlerView.cs">
       <DependentUpon>ExceptionHandlerWindow.xaml</DependentUpon>
