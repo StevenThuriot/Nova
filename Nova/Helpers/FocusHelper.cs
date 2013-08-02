@@ -48,13 +48,7 @@ namespace Nova.Helpers
 
             var controlToFocus = FindControl(root, field, entityID) as FrameworkElement;
 
-            if (controlToFocus != null)
-            {
-                controlToFocus.Focus();
-                return true;
-            }
-
-            return false;
+            return controlToFocus != null && controlToFocus.Focus();
         }
 
         /// <summary>
@@ -74,16 +68,12 @@ namespace Nova.Helpers
                 var fieldName = NovaValidation.GetFieldName(child);
 
                 if (entityId == entityID && fieldName == field)
-                {
                     return child;
-                }
 
                 var childOfChild = FindControl(child, field, entityID);
 
                 if (childOfChild != null)
-                {
                     return childOfChild;
-                }
             }
 
             return null;

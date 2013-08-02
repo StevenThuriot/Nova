@@ -109,6 +109,10 @@
       <DependentUpon>SessionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Domain\WizardButton.cs" />
+    <Compile Include="Views\MultiStepView.cs" />
+    <Compile Include="Views\MultiStepViewModel.cs">
+      <DependentUpon>MultiStepView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\StepNotAvailableView.cs" />
     <Compile Include="Views\StepNotAvailableViewModel.cs">
       <DependentUpon>StepNotAvailableView.cs</DependentUpon>

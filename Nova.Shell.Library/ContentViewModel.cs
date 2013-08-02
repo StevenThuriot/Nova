@@ -52,10 +52,11 @@ namespace Nova.Shell.Library
         /// <param name="session">The parent session.</param>
         internal void Initialize(ISessionViewModel session)
         {
-            _session = session;
-
-            _deferral.Dispose();
-            _deferral = null;
+            using (_deferral)
+            {
+                _session = session;
+                _deferral = null;
+            }
         }
 
         /// <summary>

@@ -88,11 +88,11 @@ namespace Nova.Library
 
             return view;
         }
-
 <# foreach (var type in types)
 {
 	var name = type.Name; 
 #>
+
 	    /// <summary>
 	    /// Creates a new <#= name.ToLowerInvariant() #> with the current View as parent.
 	    /// </summary>
@@ -128,6 +128,9 @@ namespace Nova.Controls
         where TViewModel : ViewModel<TView, TViewModel>, new()
         where TView : Extended<#= name #><TView, TViewModel>, new()
     {
+        private int _loadingCounter;
+        private readonly object _lock = new object();
+
         // ReSharper disable StaticFieldInGenericType
 
         /// <summary>
@@ -173,27 +176,6 @@ namespace Nova.Controls
                     DataContext = value;
                 }
             }
-        }        
-
-        /// <summary>
-        /// Focuses the control.
-        /// </summary>
-        /// <param name="fieldName">Name of the field.</param>
-        /// <returns></returns>
-        public bool FocusControl(string fieldName)
-        {
-            return FocusControl(fieldName, (Guid) NovaValidation.EntityIDProperty.DefaultMetadata.DefaultValue);
-        }
-
-        /// <summary>
-        /// Focuses the control.
-        /// </summary>
-        /// <param name="fieldName">Name of the field.</param>
-        /// <param name="entityID">The entity ID.</param>
-        /// <returns></returns>
-        public bool FocusControl(string fieldName, Guid entityID)
-        {
-            return FocusHelper.FocusControl(this, fieldName, entityID);
         }
 
         /// <summary>
@@ -292,11 +274,28 @@ namespace Nova.Controls
         {
             _parent = parent;
             ViewModel = viewModel;
-        }     
-        
-        
-        private int _loadingCounter;
-        private readonly object _lock = new object();
+        }           
+
+        /// <summary>
+        /// Focuses the control.
+        /// </summary>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <returns></returns>
+        public bool FocusControl(string fieldName)
+        {
+            return FocusControl(fieldName, (Guid) NovaValidation.EntityIDProperty.DefaultMetadata.DefaultValue);
+        }
+
+        /// <summary>
+        /// Focuses the control.
+        /// </summary>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <param name="entityID">The entity ID.</param>
+        /// <returns></returns>
+        public bool FocusControl(string fieldName, Guid entityID)
+        {
+            return FocusHelper.FocusControl(this, fieldName, entityID);
+        }
 
         /// <summary>
         ///     Starts the animated loading.
