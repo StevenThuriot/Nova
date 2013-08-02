@@ -17,6 +17,7 @@
         typeof (UserControl),
 		typeof (ContentControl),
 		typeof (Control),
+		typeof (ContentPresenter),
     };
 
 	var comparison = new Comparison<Type>((x, y) => String.Compare(x.Name, y.Name, StringComparison.Ordinal));
@@ -172,15 +173,25 @@ namespace Nova.Controls
                     DataContext = value;
                 }
             }
+        }        
+
+        /// <summary>
+        /// Focuses the control.
+        /// </summary>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <returns></returns>
+        public bool FocusControl(string fieldName)
+        {
+            return FocusControl(fieldName, (Guid) NovaValidation.EntityIDProperty.DefaultMetadata.DefaultValue);
         }
-        
+
         /// <summary>
         /// Focuses the control.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
         /// <param name="entityID">The entity ID.</param>
         /// <returns></returns>
-        public bool FocusControl(string fieldName, Guid entityID = new Guid())
+        public bool FocusControl(string fieldName, Guid entityID)
         {
             return FocusHelper.FocusControl(this, fieldName, entityID);
         }
