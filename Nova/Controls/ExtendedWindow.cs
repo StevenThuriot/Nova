@@ -99,9 +99,19 @@ namespace Nova.Controls
         /// Focuses the control.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
+        /// <returns></returns>
+        public bool FocusControl(string fieldName)
+        {
+            return FocusControl(fieldName, (Guid)NovaValidation.EntityIDProperty.DefaultMetadata.DefaultValue);
+        }
+
+        /// <summary>
+        /// Focuses the control.
+        /// </summary>
+        /// <param name="fieldName">Name of the field.</param>
         /// <param name="entityID">The entity ID.</param>
         /// <returns></returns>
-        public bool FocusControl(string fieldName, Guid entityID = new Guid())
+        public bool FocusControl(string fieldName, Guid entityID)
         {
             return FocusHelper.FocusControl(this, fieldName, entityID);
         }
