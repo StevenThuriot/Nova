@@ -15,7 +15,9 @@
 // limitations under the License.
 #endregion
 
+using System.Windows;
 using System.Windows.Input;
+using RESX = Nova.Shell.Properties.Resources;
 
 namespace Nova.Shell
 {
@@ -24,6 +26,26 @@ namespace Nova.Shell
     /// </summary>
     public partial class SessionView
     {
+        /// <summary>
+        /// Initializes the <see cref="SessionView" /> class.
+        /// </summary>
+        static SessionView()
+        {
+            var propertyMetadata = new PropertyMetadata(RESX.EmptySession)
+            {
+                CoerceValueCallback = OnCoerceTitleCallBack
+            };
+
+            TitleProperty.OverrideMetadata(typeof (SessionView), propertyMetadata);
+        }
+
+        private static object OnCoerceTitleCallBack(DependencyObject d, object basevalue)
+        {
+            return string.IsNullOrWhiteSpace(basevalue as string)
+                ? RESX.EmptySession
+                : basevalue;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SessionView" /> class.
         /// </summary>

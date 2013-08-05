@@ -1,6 +1,4 @@
-﻿using Nova.Library;
-
-#region License
+﻿#region License
 
 // 
 //  Copyright 2012 Steven Thuriot
@@ -29,6 +27,8 @@ using Nova.Shell.Library;
 using Nova.Shell.Managers;
 using System.Windows.Input;
 using RESX = Nova.Shell.Properties.Resources;
+using System.Windows.Data;
+using Nova.Library;
 
 
 namespace Nova.Shell
@@ -42,7 +42,6 @@ namespace Nova.Shell
         internal const string CreateNextViewConstant = "CreateNextSessionContentView";
 
         private IView _currentView;
-        private string _title;
         private readonly dynamic _model;
         private readonly dynamic _applicationModel;
 
@@ -75,26 +74,12 @@ namespace Nova.Shell
         {
             get { return _model; }
         }
-
-        /// <summary>
-        /// Gets the title.
-        /// </summary>
-        /// <value>
-        /// The title.
-        /// </value>
-        public string Title
-        {
-            get { return _title; }
-            set { SetValue(ref _title, value); }
-        }
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="SessionViewModel" /> class.
         /// </summary>
         public SessionViewModel()
         {
-            _title = RESX.EmptySession;
-
             _applicationModel = ((App) Application.Current).Model;
             _model = new ExpandoObject();
         }
@@ -105,6 +90,9 @@ namespace Nova.Shell
         protected override void OnCreated()
         {
             SetKnownActionTypes(typeof(SessionLeaveAction), typeof(NavigationAction)); //Optimalization
+
+            var titleBinding = new Binding("CurrentView.Title") { Mode=BindingMode.OneWay };
+            BindingOperations.SetBinding(View, SessionView.TitleProperty, titleBinding);
 
             NavigationActionManager = new NavigationActionManager(View);
 
@@ -126,9 +114,7 @@ namespace Nova.Shell
             get { return _currentView; }
             internal set
             {
-                if (value == null || !SetValue(ref _currentView, value)) return;
-
-                Title = _currentView.Title;
+                SetValue(ref _currentView, value);
             }
         }
 

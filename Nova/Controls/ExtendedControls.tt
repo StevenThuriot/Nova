@@ -17,7 +17,6 @@
         typeof (UserControl),
 		typeof (ContentControl),
 		typeof (Control),
-		typeof (ContentPresenter),
     };
 
 	var comparison = new Comparison<Type>((x, y) => String.Compare(x.Name, y.Name, StringComparison.Ordinal));
@@ -143,7 +142,7 @@ namespace Nova.Controls
         /// <summary>
         /// The title property
         /// </summary>
-        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(Extended<#= name #><TView, TViewModel>), new PropertyMetadata(""));
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(Extended<#= name #><TView, TViewModel>), new FrameworkPropertyMetadata(""));
 <# } #>
 
         // ReSharper restore StaticFieldInGenericType
