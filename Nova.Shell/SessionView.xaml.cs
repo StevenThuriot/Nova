@@ -31,7 +31,7 @@ namespace Nova.Shell
         /// </summary>
         static SessionView()
         {
-            var propertyMetadata = new PropertyMetadata(RESX.EmptySession)
+            var propertyMetadata = new FrameworkPropertyMetadata(RESX.EmptySession)
             {
                 CoerceValueCallback = OnCoerceTitleCallBack
             };
