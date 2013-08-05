@@ -75,15 +75,40 @@ namespace Nova.Library
             where TGeneralViewModel : ViewModel<TGeneralView, TGeneralViewModel>, new()
             where TGeneralView : class, IView, new()
         {
+			return CreateView<TGeneralView, TGeneralViewModel>(View, enterOnInitialize);
+        }
+		
+		/// <summary>
+        /// Creates a new view with the passed View as parent.
+        /// </summary>
+        /// <typeparam name="TGeneralView">The type of the view.</typeparam>
+        /// <typeparam name="TGeneralViewModel">The type of the view model.</typeparam>
+        /// <param name="parent">The parent.</param>
+        /// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotSupportedException"></exception>
+		/// <remarks>
+		/// Supported types:
+	<# foreach (var type in types)
+	{
+		var name = type.Name;#>    ///     - Extended<#= name #>
+	<#}#>	/// </remarks>
+        public TGeneralView CreateView<TGeneralView, TGeneralViewModel>(IView parent, bool enterOnInitialize = true)		
+            where TGeneralViewModel : ViewModel<TGeneralView, TGeneralViewModel>, new()
+            where TGeneralView : class, IView, new()
+        {
+			if (parent == null)
+				throw new ArgumentNullException("parent");
+
             var view = new TGeneralView();
             
             var injectableView = view as ICanInjectStuff<TGeneralView, TGeneralViewModel>;
 
             if (injectableView == null)
-                throw new NotSupportedException();
+                throw new NotSupportedException(typeof(TGeneralView).FullName);
 
             var viewModel = ViewModel<TGeneralView, TGeneralViewModel>.Create(view, _actionQueueManager, enterOnInitialize);
-            injectableView.Inject(View, viewModel);
+            injectableView.Inject(parent, viewModel);
 
             return view;
         }

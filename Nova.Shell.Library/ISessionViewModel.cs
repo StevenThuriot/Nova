@@ -71,13 +71,39 @@ namespace Nova.Shell.Library
         bool IsSessionValid();
 
         /// <summary>
-        /// Creates a new page with the current window as parent.
+        /// Creates a new view with the current View as parent.
+        /// </summary>
+        /// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
+        /// <typeparam name="TView">The type of the view.</typeparam>
+        /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+        /// <remarks>
+        /// Supported types:
+        ///     - ExtendedContentControl
+        ///     - ExtendedControl
+        ///     - ExtendedPage
+        ///     - ExtendedUserControl
+        /// </remarks>
+        TView CreateView<TView, TViewModel>(bool enterOnInitialize = true)		
+            where TViewModel : ViewModel<TView, TViewModel>, new()
+            where TView : class, IView, new();
+
+        /// <summary>
+        /// Creates a new view with the passed View as parent.
         /// </summary>
         /// <typeparam name="TView">The type of the view.</typeparam>
         /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+        /// <param name="parent">The parent.</param>
         /// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
         /// <returns></returns>
-        TView CreateView<TView, TViewModel>(bool enterOnInitialize = true)		
+        /// <exception cref="System.NotSupportedException"></exception>
+        /// <remarks>
+        /// Supported types:
+        ///     - ExtendedContentControl
+        ///     - ExtendedControl
+        ///     - ExtendedPage
+        ///     - ExtendedUserControl
+        /// </remarks>
+        TView CreateView<TView, TViewModel>(IView parent, bool enterOnInitialize = true)		
             where TViewModel : ViewModel<TView, TViewModel>, new()
             where TView : class, IView, new();
     }
