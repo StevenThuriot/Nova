@@ -52,7 +52,7 @@ namespace Nova.Shell.Controls
     {
         private Type _pageType;
         private Type _viewModelType;
-        private IEnumerable<NovaTreeNode> _treeNodes;
+        private IEnumerable<NovaTreeNodeBase> _treeNodes;
         private bool _showModules;
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Nova.Shell.Controls
         /// <value>
         /// The tree nodes.
         /// </value>
-        public IEnumerable<NovaTreeNode> TreeNodes
+        public IEnumerable<NovaTreeNodeBase> TreeNodes
         {
             get { return _treeNodes; }
             private set
@@ -151,7 +151,7 @@ namespace Nova.Shell.Controls
         /// </summary>
         /// <param name="novaTreeNodes">The nova tree nodes.</param>
         /// <returns>True if one of the nodes is the current node.</returns>
-        private bool ReevaluateNodes(IEnumerable<NovaTreeNode> novaTreeNodes)
+        private bool ReevaluateNodes(IEnumerable<NovaTreeNodeBase> novaTreeNodes)
         {
             return novaTreeNodes.Select(node => node.ReevaluateState(_pageType, _viewModelType))
                                 .Aggregate(false, (current, result) => current || result);
@@ -176,7 +176,7 @@ namespace Nova.Shell.Controls
         /// <returns></returns>
         public string FindTitle(Type pageType, Type viewModelType)
         {
-            var node = TreeNodes.FirstOrDefault(x => x.PageType == pageType && x.ViewModelType == viewModelType);
+            var node = TreeNodes.OfType<NovaTreeNode>().FirstOrDefault(x => x.PageType == pageType && x.ViewModelType == viewModelType);
 
             return node == null ? string.Empty : node.Title;
         }
@@ -186,7 +186,7 @@ namespace Nova.Shell.Controls
         /// </summary>
         public void NavigateToStartupPage()
         {
-            var node = TreeNodes.FirstOrDefault(x => x.IsStartupNode) ?? TreeNodes.First();
+            var node = TreeNodes.OfType<NovaTreeNode>().FirstOrDefault(x => x.IsStartupNode) ?? TreeNodes.OfType<NovaTreeNode>().First();
             
             node.Navigate();
         }

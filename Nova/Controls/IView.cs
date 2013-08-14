@@ -17,6 +17,7 @@
 #endregion
 
 using System;
+using System.Windows.Threading;
 using Nova.Library;
 using Nova.Validation;
 

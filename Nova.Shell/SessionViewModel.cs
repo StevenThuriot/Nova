@@ -19,13 +19,16 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Windows;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
+using Nova.Shell.Domain;
 using Nova.Shell.Library;
 using Nova.Shell.Managers;
 using System.Windows.Input;
+using Nova.Shell.Views;
 using RESX = Nova.Shell.Properties.Resources;
 using System.Windows.Data;
 using Nova.Library;
@@ -40,6 +43,8 @@ namespace Nova.Shell
     {
         internal const string CurrentViewConstant = "CurrentSessionContentView";
         internal const string CreateNextViewConstant = "CreateNextSessionContentView";
+        internal const string ViewTypeConstant = "ViewTypeConstant";
+        internal const string ViewModelTypeConstant = "ViewModelTypeConstant";
 
         private IView _currentView;
         private readonly dynamic _model;
@@ -152,7 +157,7 @@ namespace Nova.Shell
 
             return page;
         }
-
+        
         /// <summary>
         /// Creates the navigational action.
         /// </summary>

@@ -33,7 +33,6 @@
     <Setter Property="FontFamily" Value="{DynamicResource Font}" />
     <Setter Property="BorderBrush" Value="Transparent" />
     <Setter Property="SnapsToDevicePixels" Value="True" />
-    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
   </Style>
 
   <Style x:Key="_NavigationalTreeItemStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource _BaseNavigationalTreeItemStyle}">
@@ -117,12 +116,40 @@
     </Setter>
   </Style>
 
-
   <DataTemplate DataType="{x:Type Domain:NovaTreeNode}">
 
     <Button x:Name="_TreeNodeButton"
             Style="{StaticResource _NavigationalTreeItemStyle}"
             Command="{Binding NavigationalCommand, Mode=OneWay}"
+            Content="{Binding Title, Mode=OneWay}"
+                  />
+
+    <DataTemplate.Triggers>
+      <DataTrigger Binding="{Binding IsCurrentNode, Mode=OneWay}" Value="True">
+        <Setter TargetName="_TreeNodeButton" Property="Style" Value="{StaticResource _CurrentNavigationalTreeItemStyle}" />
+      </DataTrigger>
+    </DataTemplate.Triggers>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type Domain:NovaMultiStepTreeNode}">
+    <Expander IsExpanded="{Binding IsCurrentNode, Mode=OneWay}"
+              Header="{Binding Title, Mode=OneWay}">
+      <Expander.Content>
+        <ItemsControl ItemsSource="{Binding Steps, Mode=OneWay}"
+                      Padding="0"
+                      Margin="0 0 -1 0"
+                      FocusVisualStyle="{x:Null}"
+                      />
+      </Expander.Content>
+    </Expander>
+  </DataTemplate>
+  
+  <DataTemplate DataType="{x:Type Domain:NovaTreeNodeStep}">
+
+    <Button x:Name="_TreeNodeButton"
+            Style="{StaticResource _NavigationalTreeItemStyle}"
+            Command="{Binding NavigationalCommand, Mode=OneWay}"
+            CommandParameter="{Binding}"
             Content="{Binding Title, Mode=OneWay}"
                   />
 

@@ -18,6 +18,7 @@
 
 #endregion
 
+using System;
 using Nova.Controls;
 
 namespace Nova.Shell.Library
@@ -38,6 +39,17 @@ namespace Nova.Shell.Library
         IModuleBuilder AddNavigation<TPageView, TPageViewModel>(string title = null, int rank = 10)
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new();
+
+        /// <summary>
+        /// Adds a navigational action which will populate the tree.
+        /// </summary>
+        /// <param name="builder">The multi step builder.</param>
+        /// <param name="title">The title of the node.</param>
+        /// <param name="rank">The ranking in the navigational tree. Default value is 10.</param>
+        /// <returns>
+        /// The module builder instance.
+        /// </returns>
+        IModuleBuilder AddNavigation(string title, Action<IMultiStepBuilder> builder, int rank = 10);
 
         /// <summary>
         /// Sets the module title.

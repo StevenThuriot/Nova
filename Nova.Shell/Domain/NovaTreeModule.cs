@@ -50,7 +50,7 @@ namespace Nova.Shell.Domain
         /// <value>
         /// The tree nodes.
         /// </value>
-        public IEnumerable<NovaTreeNode> TreeNodes { get; private set; }
+        public IEnumerable<NovaTreeNodeBase> TreeNodes { get; private set; }
 
         /// <summary>
         /// Gets the navigational command.
@@ -68,7 +68,7 @@ namespace Nova.Shell.Domain
         /// <param name="nodes">The nodes.</param>
         /// <exception cref="System.ArgumentNullException">nodes</exception>
         /// <exception cref="System.ArgumentException">@A module has to have nodes.;nodes</exception>
-        internal NovaTreeModule(string title, INovaTree tree, IEnumerable<NovaTreeNode> nodes)
+        internal NovaTreeModule(string title, INovaTree tree, IEnumerable<NovaTreeNodeBase> nodes)
         {
             if (tree == null)
                 throw new ArgumentNullException("tree");

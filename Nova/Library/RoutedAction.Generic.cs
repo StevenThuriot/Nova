@@ -185,7 +185,7 @@ namespace Nova.Library
 
 		    if (parameter == null) return;
 
-		    var parameterEntry = ActionContextEntry.Create(RoutedAction.CommandParameter, parameter);
+		    var parameterEntry = ActionContextEntry.Create(RoutedAction.CommandParameter, parameter, false);
             _action.ActionContext.Add(parameterEntry);
 		}
 

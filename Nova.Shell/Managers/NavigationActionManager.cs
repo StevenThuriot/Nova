@@ -63,7 +63,10 @@ namespace Nova.Shell.Managers
             var createNextView = new Func<IView>(viewModel.Create<TPageView, TPageViewModel>);
             var next = ActionContextEntry.Create(SessionViewModel.CreateNextViewConstant, createNextView, false);
 
-            var command = RoutedAction.New<NavigationAction, SessionView, SessionViewModel>(_session, viewModel, next);
+            var viewtype = ActionContextEntry.Create(SessionViewModel.ViewTypeConstant, typeof(TPageView), false);
+            var viewModeltype = ActionContextEntry.Create(SessionViewModel.ViewModelTypeConstant, typeof(TPageViewModel), false);
+
+            var command = RoutedAction.New<NavigationAction, SessionView, SessionViewModel>(_session, viewModel, next, viewtype, viewModeltype);
 
             _navigatableActions.Add((IDisposable) command);
 

@@ -60,6 +60,7 @@
     <Compile Include="Actions\ReturnAction.cs" />
     <Compile Include="Actions\StackAction.cs" />
     <Compile Include="ContentViewModel.cs" />
+    <Compile Include="IMultiStepBuilder.cs" />
     <Compile Include="INavigationActionManager.cs" />
     <Compile Include="INavigatablePage.cs" />
     <Compile Include="ISessionViewModel.cs" />
