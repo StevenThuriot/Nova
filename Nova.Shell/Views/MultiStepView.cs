@@ -205,6 +205,8 @@ namespace Nova.Shell.Views
                 {
                     step.Dispose();
                 }
+
+                ViewModel = null;
             }
 
             _disposed = true;
@@ -330,7 +332,7 @@ namespace Nova.Shell.Views
         public bool FocusControl(string fieldName, Guid entityID)
         {
             //TODO: foreach view in _views
-                    //if focus; break
+                    //if focus; break + navigate if needed
 
             return FocusHelper.FocusControl(this, fieldName, entityID);
         }
