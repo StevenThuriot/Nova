@@ -63,10 +63,13 @@
     <Compile Include="IMultiStepBuilder.cs" />
     <Compile Include="INavigationActionManager.cs" />
     <Compile Include="INavigatablePage.cs" />
+    <Compile Include="INovaStep.cs" />
     <Compile Include="ISessionViewModel.cs" />
     <Compile Include="IModuleBuilder.cs" />
     <Compile Include="IModule.cs" />
+    <Compile Include="IWizardBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WizardContentViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nova\Nova.csproj">

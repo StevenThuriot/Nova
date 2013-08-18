@@ -1,4 +1,5 @@
-﻿using Nova.Library;
+﻿using System.Windows.Controls;
+using Nova.Library;
 
 #region License
 
@@ -106,5 +107,46 @@ namespace Nova.Shell.Library
         TView CreateView<TView, TViewModel>(IView parent, bool enterOnInitialize = true)		
             where TViewModel : ViewModel<TView, TViewModel>, new()
             where TView : class, IView, new();
+
+        /// <summary>
+        /// Creates a page specifically for the content zone and fills in the session model.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <returns></returns>
+        TPageView Create<TPageView, TPageViewModel>()
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : class, IView, new();
+
+        /// <summary>
+        /// Creates a page specifically for the content zone and fills in the session model.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <param name="parent">The parent.</param>
+        /// <returns></returns>
+        TPageView Create<TPageView, TPageViewModel>(IView parent)
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : class, IView, new();
+
+
+
+        /// <summary>
+        /// Creates a wizard builder.
+        /// </summary>
+        /// <returns></returns>
+        IWizardBuilder CreateWizardBuilder();
+
+        /// <summary>
+        /// Stacks a new wizard.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        void StackWizard(IWizardBuilder builder);
+
+        /// <summary>
+        /// unstacks a wizard.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        void UnstackWizard(Guid id);
     }
 }

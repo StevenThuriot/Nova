@@ -150,14 +150,6 @@ namespace Nova.Shell
             HasOpenDocuments = list != null && list.Count > 0;
         }
 
-        public void OnAfterEnter()
-        {
-            //TODO: Remove Test Wizard
-            var wizard = CreateContentControl<WizardView, WizardViewModel>();
-            wizard.Content = new Rectangle {Fill = Brushes.Yellow};
-            View._overlayCanvas.Children.Add(wizard);
-        }
-        
         /// <summary>
         /// Called when [created].
         /// </summary>

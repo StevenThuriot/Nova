@@ -91,12 +91,16 @@
     <Compile Include="Actions\Session\SessionLeaveAction.cs" />
     <Compile Include="Builders\MultiStepBuilder.cs" />
     <Compile Include="Builders\StepBuilder.cs" />
+    <Compile Include="Builders\WizardBuilder.cs" />
+    <Compile Include="Builders\WizardStepBuilder.cs" />
     <Compile Include="Controls\NovaTree.xaml.cs">
       <DependentUpon>NovaTree.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SessionControl.xaml.cs">
       <DependentUpon>SessionControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\AggregateConverter.cs" />
+    <Compile Include="Converters\OrConverter.cs" />
     <Compile Include="Converters\WindowStateConverter.cs" />
     <Compile Include="Converters\WizardStateConverter.cs" />
     <Compile Include="Domain\NovaModule.cs" />

@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Dynamic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -40,6 +41,9 @@ namespace Nova.Shell.Views
     /// <remarks>Useful for sharing a model between these steps.</remarks>
     internal class MultiStepView : ContentPresenter, IView
     {
+        //TODO: Model that carries through the steps.
+
+
         private int _loadingCounter;
         private readonly object _lock = new object();
 
@@ -266,9 +270,10 @@ namespace Nova.Shell.Views
         {
             var multiStepView = (MultiStepView) d;
 
-            var step = ((LinkedListNode<NovaStep>) e.NewValue).Value;
+            var node = (LinkedListNode<NovaStep>) e.NewValue;
+            var step = node.Value;
 
-            var view = step.GetOrCreateView(multiStepView);
+            var view = step.GetOrCreateView(multiStepView, node);
 
             multiStepView.Content = view;
             multiStepView.ViewModel = view.ViewModel;
@@ -448,28 +453,49 @@ namespace Nova.Shell.Views
             var viewType = treeStep.PageType;
             var viewModelType = treeStep.ViewModelType;
 
-            var step = CurrentView.List.FirstOrDefault(x => x.ViewType == viewType && x.ViewModelType == viewModelType);
+            var node = CurrentView.List.First;
 
-            if (step == null) 
+            while (node != null)
+            {
+                var novaStep = node.Value;
+                if (novaStep.ViewType == viewType && novaStep.ViewModelType == viewModelType)
+                {
+
+                    break;
+                }
+
+                node = node.Next;
+            }
+
+            if (node == null || node.Value == null) 
                 return false;
 
-            view = step.GetOrCreateView(this);
+            view = node.Value.GetOrCreateView(this, node);
             return true;
         }
 
         /// <summary>
         /// Creates a page specifically for the content zone and fills in the session model.
         /// </summary>
+        /// <param name="novaStep"></param>
+        /// <param name="node"></param>
         /// <typeparam name="TView">The type of the view.</typeparam>
         /// <typeparam name="TViewModel">The type of the view model.</typeparam>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">parent</exception>
         /// <exception cref="System.NotSupportedException"></exception>
-        internal TView CreateStep<TView, TViewModel>()
+        internal TView CreateStep<TView, TViewModel>(NovaStep novaStep, LinkedListNode<NovaStep> node)
             where TView : class, IView, new()
             where TViewModel : ContentViewModel<TView, TViewModel>, new()
         {
             var view = SessionViewModel.CreateView<TView, TViewModel>(this, false);
+            
+            dynamic initializer = new ExpandoObject();
+            initializer.Session = SessionViewModel;
+            initializer.Node = node;
+            
+            ((ContentViewModel<TView, TViewModel>)view.ViewModel).Initialize(initializer);
+
             return view;
         }
     }

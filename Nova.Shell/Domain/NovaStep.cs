@@ -17,6 +17,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using Nova.Controls;
 using Nova.Shell.Library;
 using Nova.Shell.Views;
@@ -24,7 +25,7 @@ using Nova.Shell.Views;
 namespace Nova.Shell.Domain
 {
     /// <summary>
-    /// 
+    /// Step
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
@@ -42,25 +43,26 @@ namespace Nova.Shell.Domain
         {
 
         }
-        
+
         /// <summary>
         /// Gets the or create view.
         /// </summary>
         /// <param name="parent">The parent.</param>
+        /// <param name="node">The node.</param>
         /// <returns></returns>
-        internal override IView GetOrCreateView(MultiStepView parent)
+        internal override IView GetOrCreateView(MultiStepView parent, LinkedListNode<NovaStep> node)
         {
             if (View != null)
                 return View;
 
-            return View = parent.CreateStep<TView, TViewModel>();
+            return View = parent.CreateStep<TView, TViewModel>(this, node);
         }
     }
 
     /// <summary>
-    /// 
+    /// Step
     /// </summary>
-    internal abstract class NovaStep
+    internal abstract class NovaStep : INovaStep
     {
         /// <summary>
         /// Gets the title.
@@ -117,6 +119,6 @@ namespace Nova.Shell.Domain
             ViewModelType = viewModelType;
         }
 
-        internal abstract IView GetOrCreateView(MultiStepView parent);
+        internal abstract IView GetOrCreateView(MultiStepView parent, LinkedListNode<NovaStep> node);
     }
 }

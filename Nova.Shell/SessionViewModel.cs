@@ -19,12 +19,13 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
-using Nova.Shell.Domain;
+using Nova.Shell.Builders;
 using Nova.Shell.Library;
 using Nova.Shell.Managers;
 using System.Windows.Input;
@@ -148,14 +149,31 @@ namespace Nova.Shell
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         /// <returns></returns>
-        internal TPageView Create<TPageView, TPageViewModel>()
+        public TPageView Create<TPageView, TPageViewModel>(IView parent)
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : class, IView, new()
         {
-            var page = CreateView<TPageView, TPageViewModel>(false);
-            ((ContentViewModel<TPageView, TPageViewModel>) page.ViewModel).Initialize(this);
+            var page = CreateView<TPageView, TPageViewModel>(parent, false);
+
+            dynamic initializer = new ExpandoObject();
+            initializer.Session = this;
+
+            ((ContentViewModel<TPageView, TPageViewModel>)page.ViewModel).Initialize(initializer);
+
 
             return page;
+        }
+        /// <summary>
+        /// Creates a page specifically for the content zone and fills in the session model.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <returns></returns>
+        public TPageView Create<TPageView, TPageViewModel>()
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : class, IView, new()
+        {
+            return CreateView<TPageView, TPageViewModel>(View);
         }
         
         /// <summary>
@@ -186,6 +204,69 @@ namespace Nova.Shell
             var currentView = CurrentView;
 
             return currentView == null || currentView.ViewModel.IsValid; //The content zone level.
+        }
+
+        /// <summary>
+        /// Creates a wizard builder.
+        /// </summary>
+        /// <returns></returns>
+        IWizardBuilder ISessionViewModel.CreateWizardBuilder()
+        {
+            return new WizardBuilder();
+        }
+
+        /// <summary>
+        /// Creates the wizard.
+        /// </summary>
+        /// <returns></returns>
+        void ISessionViewModel.StackWizard(IWizardBuilder builder)
+        {
+            var wizardBuilder = (WizardBuilder)builder;
+
+            var overlay = new Overlay();
+
+            Grid.SetRowSpan(overlay, 2);
+            Grid.SetColumnSpan(overlay, 2);
+
+            Grid.SetRow(overlay, 0);
+            Grid.SetColumn(overlay, 0);
+
+            overlay.Delay = 0;
+            overlay.MinimumDuration = 0;
+            overlay.AnimationSpeed = 1;
+
+            overlay.IsLoading = true;
+
+            var wizard = CreateContentControl<WizardView, WizardViewModel>(false);
+
+            WizardViewModel wizardViewModel = wizard.ViewModel;
+
+            overlay.Tag = wizardViewModel.ID;
+            wizardViewModel.Initialize(this, wizardBuilder);
+
+            overlay.Content = wizard;
+            View._root.Children.Add(overlay);
+        }
+
+        /// <summary>
+        /// unstacks a wizard.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        void ISessionViewModel.UnstackWizard(Guid id)
+        {
+            var frameworkElements = View._root.Children.OfType<FrameworkElement>().Where(x => x.Tag != null).ToList();
+            for (var i = frameworkElements.Count - 1; i >= 0; i--)
+            {
+                var child = frameworkElements[i];
+                var input = child.Tag.ToString();
+
+                Guid tag;
+                if (!Guid.TryParse(input, out tag)) continue;
+                if (tag != id) continue;
+
+                View._root.Children.Remove(child);
+                break;
+            }
         }
 
         /// <summary>

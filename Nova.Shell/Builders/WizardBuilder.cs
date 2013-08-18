@@ -22,60 +22,57 @@ using System.Linq;
 using Nova.Controls;
 using Nova.Shell.Domain;
 using Nova.Shell.Library;
+using Nova.Shell.Views;
 
 namespace Nova.Shell.Builders
 {
     /// <summary>
-    /// The multi step builder.
+    /// Wizard builder
     /// </summary>
-    internal class MultiStepBuilder : IMultiStepBuilder
+    internal class WizardBuilder : IWizardBuilder
     {
-        private readonly int _rank;
-        private readonly List<StepBuilder> _steps;
-        private readonly string _title;
+        private readonly List<WizardStepBuilder> _steps;
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="MultiStepBuilder" /> class.
+        /// Initializes a new instance of the <see cref="WizardBuilder" /> class.
         /// </summary>
-        /// <param name="title">The title.</param>
-        /// <param name="rank">The rank.</param>
-        /// <exception cref="System.ArgumentNullException">title</exception>
-        public MultiStepBuilder(string title, int rank)
+        public WizardBuilder()
         {
-            if (string.IsNullOrWhiteSpace(title))
-                throw new ArgumentNullException("title");
-
-            _title = title;
-            _rank = rank;
-            _steps = new List<StepBuilder>();
+            _steps = new List<WizardStepBuilder>();
         }
 
         /// <summary>
-        /// Adds the step.
+        /// Adds a navigational action which will populate the tree.
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        /// <returns></returns>
-        public IMultiStepBuilder AddStep<TPageView, TPageViewModel>(string title = null)
-            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new() 
-            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+        /// <param name="title">The title.</param>
+        /// <returns>
+        /// The module builder instance.
+        /// </returns>
+        public IWizardBuilder AddStep<TPageView, TPageViewModel>(string title = null) 
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new()
+            where TPageViewModel : WizardContentViewModel<TPageView, TPageViewModel>, new()
         {
+
             if (string.IsNullOrWhiteSpace(title))
                 title = typeof(TPageView).Name;
 
-            var step = new StepBuilder<TPageView, TPageViewModel>(title);
+            var step = new WizardStepBuilder<TPageView, TPageViewModel>(title);
             _steps.Add(step);
 
             return this;
         }
 
-
         /// <summary>
-        /// Builds this instance.
+        /// Builds the steps.
         /// </summary>
-        internal TreeNodeBase Build()
+        /// <param name="id">The id.</param>
+        /// <returns></returns>
+        public IEnumerable<NovaStep> Build(Guid id)
         {
-            return new MultiStepTreeNode(_title, _rank, _steps.AsReadOnly());
+            var steps = _steps.Select(x => x.Build(id)).ToList();
+            return steps.AsReadOnly();
         }
     }
 }

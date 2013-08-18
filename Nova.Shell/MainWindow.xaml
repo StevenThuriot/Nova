@@ -182,12 +182,6 @@
                 Sessions="{Binding Sessions}"
                 CurrentSession="{Binding CurrentSession}"
                 AddCommand="{ActionBinding CreateNewSession}" />
-
-      <!-- TODO: Remove Test Wizard -->
-      <Overlay Grid.Row="1" Grid.ColumnSpan="5"
-               Delay="0" IsLoading="False">
-        <Canvas x:Name="_overlayCanvas" />
-      </Overlay>
       
       <Grid Grid.Row="2" Grid.ColumnSpan="5">
         <Grid.Background>

@@ -68,12 +68,10 @@ namespace Nova.Library
         /// <param name="enterAction">The enter action.</param>
         protected void SetEnterAction(EnterAction<TView, TViewModel> enterAction)
         {
-            if (_enterAction != null)
-            {
-                _enterAction.Dispose();
-            }
+	        if (_enterAction != null)
+	            _enterAction.Dispose();
 
-            _enterAction = enterAction;
+	        _enterAction = enterAction;
         }
 
         /// <summary>
@@ -84,9 +82,7 @@ namespace Nova.Library
         protected void SetLeaveAction(LeaveAction<TView, TViewModel> leaveAction)
         {
             if (_leaveAction != null)
-            {
                 _leaveAction.Dispose();
-            }
 
             _leaveAction = leaveAction;
         }

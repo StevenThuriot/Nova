@@ -9,7 +9,7 @@
       mc:Ignorable="d" 
       d:DataContext="{d:DesignData Source=SessionViewModel.cs}">
 
-  <Grid>
+  <Grid x:Name="_root">
     <Grid.RowDefinitions>
       <RowDefinition Height="90" />
       <RowDefinition Height="*" />
@@ -47,6 +47,5 @@
                     Foreground="{DynamicResource WhiteBrush}"
                     />
     </Overlay>
-    
   </Grid>
 </shell:SessionViewBase>

@@ -16,6 +16,7 @@
 //  
 #endregion
 
+using System;
 using Nova.Controls;
 using Nova.Library;
 using Nova.Threading.Metadata;
@@ -29,9 +30,11 @@ namespace Nova.Shell.Library.Actions
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     [Terminating, Alias(Aliases.Stack)]
     public abstract class StackAction<TView, TViewModel> : Actionflow<TView, TViewModel>
-        where TView : IView
-        where TViewModel : IViewModel
+        where TView : class, IView
+        where TViewModel : ContentViewModel<TView, TViewModel>, new()
     {
+        private IWizardBuilder _builder;
+
         /// <summary>
         /// Executes async.
         /// </summary>
@@ -41,16 +44,27 @@ namespace Nova.Shell.Library.Actions
             if (!base.Execute())
                 return false;
 
-            //TODO: Add stacking logic
+            if (!Stack())
+                return false;
 
-            return Stack();
+            _builder = ViewModel.Session.CreateWizardBuilder();
+            BuildWizard(_builder);
+
+            return true;
         }
+
+        /// <summary>
+        /// Builds the wizard.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        protected abstract void BuildWizard(IWizardBuilder builder);
 
         /// <summary>
         /// Executes when the async execution succesfully completed.
         /// </summary>
         public sealed override void ExecuteCompleted()
         {
+            ViewModel.Session.StackWizard(_builder);
             StackCompleted();
         }
 
@@ -62,7 +76,7 @@ namespace Nova.Shell.Library.Actions
         {
             return true;
         }
-
+        
         /// <summary>
         /// Called when stacking a wizard has completed.
         /// </summary>

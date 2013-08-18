@@ -22,7 +22,7 @@ namespace Nova.Shell.Views
     public class WizardView : ExtendedContentControl<WizardView, WizardViewModel>
     {
         //TODO: Listen to window resizing and restrict wizard if needed.
-
+        
         private Point _clickPosition;
         private FrameworkElement _contentHost;
 

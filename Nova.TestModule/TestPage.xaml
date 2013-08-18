@@ -13,5 +13,6 @@
     <TextBlock>Content goes here.</TextBlock>
     <Button Command="{Library:ActionBinding LongRunning}" Width="200">Start Long Running Task.</Button>
     <Button Command="{Binding GoToPage2Command}" Width="200">Navigate to the second step.</Button>
+    <Button Command="{Binding GoToPage2Command}" Width="200">Open wizard.</Button>
   </StackPanel>
 </shell:TestPageBase>
