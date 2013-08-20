@@ -22,7 +22,7 @@ namespace Nova.Library
 {
     public abstract partial class ViewModel<TView, TViewModel>
     {
-        private bool _isValid = false;
+        private bool _isValid = true;
         private ReadOnlyErrorCollection _errorCollection;
 
         /// <summary>
