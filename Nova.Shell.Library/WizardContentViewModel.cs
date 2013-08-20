@@ -1,30 +1,25 @@
 ﻿#region License
-
+//   
+//  Copyright 2013 Steven Thuriot
+//   
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
 //  
-// Copyright 2013 Steven Thuriot
+//    http://www.apache.org/licenses/LICENSE-2.0
 //  
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//   http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//  
-
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//   
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using Nova.Controls;
-using Nova.Library;
 
 namespace Nova.Shell.Library
 {
@@ -39,15 +34,7 @@ namespace Nova.Shell.Library
     {
         private IWizard _wizard;
         private IMultiStep _multistep;
-
-        /// <summary>
-        /// Gets the steps.
-        /// </summary>
-        /// <value>
-        /// The steps.
-        /// </value>
-        public LinkedList<StepInfo> Steps { get; private set; }
-
+        
         /// <summary>
         /// Gets the current step.
         /// </summary>
@@ -55,6 +42,34 @@ namespace Nova.Shell.Library
         /// The current step.
         /// </value>
         public LinkedListNode<StepInfo> CurrentStep { get; private set; }
+
+        /// <summary>
+        /// Gets the next step.
+        /// </summary>
+        /// <value>
+        /// The next step.
+        /// </value>
+        public virtual LinkedListNode<StepInfo> NextStep
+        {
+            get
+            {
+                return CurrentStep.Next;
+            }
+        }
+
+        /// <summary>
+        /// Gets the previous step.
+        /// </summary>
+        /// <value>
+        /// The previous step.
+        /// </value>
+        public virtual LinkedListNode<StepInfo> PreviousStep
+        {
+            get
+            {
+                return CurrentStep.Previous;
+            }
+        }
 
         /// <summary>
         /// Gets the buttons.
@@ -72,23 +87,10 @@ namespace Nova.Shell.Library
         {
             try
             {
-                var nodeId = (Guid) initializer["Node"];
+                CurrentStep = (LinkedListNode<StepInfo>)initializer["Node"];
                 _wizard = (IWizard) initializer["Wizard"];
                 _multistep = (IMultiStep)initializer["Multistep"];
-                Steps = (LinkedList<StepInfo>) initializer["Steps"];
-
-                var node = Steps.First;
-
-                while (node != null)
-                {
-                    if (node.Value.NodeID == nodeId)
-                        break;
-
-                    node = node.Next;
-                }
-
-                CurrentStep = node;
-
+                
                 var buttons = CreateButtons();
 
                 if (buttons == null || !buttons.Any())
@@ -137,13 +139,23 @@ namespace Nova.Shell.Library
         }
 
 
+
+        /// <summary>
+        /// Creates the previous button.
+        /// </summary>
+        /// <returns></returns>
+        protected IWizardButton CreatePreviousButton()
+        {
+            return CreateWizardButton("Previous", _ => DoStep(PreviousStep), _ => PreviousStep != null && PreviousStep.Value != null);
+        }
+
         /// <summary>
         /// Creates the next button.
         /// </summary>
         /// <returns></returns>
         protected IWizardButton CreateNextButton()
         {
-            return CreateWizardButton("Next", _ => _multistep.GoToNextStep(), _ => _multistep.CanGoToNextStep());
+            return CreateWizardButton("Next", _ => DoStep(NextStep), _ => NextStep != null && NextStep.Value != null);
         }
 
         /// <summary>
@@ -156,21 +168,23 @@ namespace Nova.Shell.Library
         }
 
         /// <summary>
-        /// Creates the previous button.
-        /// </summary>
-        /// <returns></returns>
-        protected IWizardButton CreatePreviousButton()
-        {
-            return CreateWizardButton("Previous", _ => _multistep.GoToPreviousStep(), _ => _multistep.CanGoToPreviousStep());
-        }
-
-        /// <summary>
         /// Creates the cancel button.
         /// </summary>
         /// <returns></returns>
         protected IWizardButton CreateCancelButton()
         {
             return CreateWizardButton("Cancel", _ => _multistep.Cancel(), _ => CanCancel);
+        }
+
+
+        /// <summary>
+        /// Does the step to the specified node.
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns></returns>
+        protected bool DoStep(LinkedListNode<StepInfo> node)
+        {
+            return node != null && DoStep(node.Value);
         }
 
         /// <summary>
@@ -180,10 +194,10 @@ namespace Nova.Shell.Library
         /// <returns></returns>
         protected bool DoStep(StepInfo step)
         {
-            return _multistep.DoStep(step.NodeID);
+            //TODO: ActionQueue!
+            return step != null && _multistep.DoStep(step.NodeID);
         }
 
-        
         /// <summary>
         /// Gets a value indicating whether this instance can cancel.
         /// </summary>

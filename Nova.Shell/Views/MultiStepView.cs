@@ -385,15 +385,7 @@ namespace Nova.Shell.Views
         {
             return CurrentView.Next != null;
         }
-
-        /// <summary>
-        /// Goes to next step.
-        /// </summary>
-        public void GoToNextStep()
-        {
-            DoStep(CurrentView.Next);
-        }
-
+        
         /// <summary>
         /// Determines whether this instance can go to previous step.
         /// </summary>
@@ -404,15 +396,7 @@ namespace Nova.Shell.Views
         {
             return CurrentView.Previous != null;
         }
-
-        /// <summary>
-        /// Goes to previous step.
-        /// </summary>
-        public void GoToPreviousStep()
-        {
-            DoStep(CurrentView.Previous);
-        }
-
+        
         /// <summary>
         /// Cancels this instance.
         /// </summary>
@@ -447,27 +431,7 @@ namespace Nova.Shell.Views
 
                 node = node.Next;
             }
-            
-            return DoStep(node);
-        }
 
-        /// <summary>
-        /// Attempts to do a step to the specified step.
-        /// </summary>
-        /// <param name="stepName">Name of the step.</param>
-        /// <returns>True is successful.</returns>
-        public bool DoStep(string stepName)
-        {
-            var node = CurrentView.List.First;
-
-            while (node != null)
-            {
-                if (node.Value.Title == stepName)
-                    break;
-
-                node = node.Next;
-            }
-            
             return DoStep(node);
         }
         
@@ -486,10 +450,8 @@ namespace Nova.Shell.Views
             return DoStep(node);
         }
 
-        public bool DoStep(LinkedListNode<NovaStep> node)
+        private bool DoStep(LinkedListNode<NovaStep> node)
         {
-            //TODO: Navigate using action to kill previous queue and create new.
-
             if (node == null || node.Value == null)
                 return false;
 
@@ -543,13 +505,23 @@ namespace Nova.Shell.Views
         {
             var view = SessionViewModel.CreateView<TView, TViewModel>(this, false);
 
+            var nodes = new LinkedList<StepInfo>(_steps);
+            var node = nodes.First;
+
+            while (node != null)
+            {
+                if (node.Value.NodeID == novaStep.NodeID)
+                    break;
+
+                node = node.Next;
+            }
+
             var initializer = new Dictionary<string, object>
             {
                 {"Session", SessionViewModel},
-                {"Node", novaStep.NodeID},
+                {"Node", node},
                 {"Wizard", ((WizardView) _parent).ViewModel},
                 {"Multistep", this},
-                {"Steps", new LinkedList<StepInfo>(_steps)}
             };
 
             ((ContentViewModel<TView, TViewModel>)view.ViewModel).Initialize(initializer);

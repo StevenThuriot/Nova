@@ -35,22 +35,12 @@ namespace Nova.Shell.Library
         bool CanGoToNextStep();
 
         /// <summary>
-        /// Goes to next step.
-        /// </summary>
-        void GoToNextStep();
-
-        /// <summary>
         /// Determines whether this instance can go to previous step.
         /// </summary>
         /// <returns>
         ///   <c>true</c> if this instance [can go to previous step]; otherwise, <c>false</c>.
         /// </returns>
         bool CanGoToPreviousStep();
-
-        /// <summary>
-        /// Goes to previous step.
-        /// </summary>
-        void GoToPreviousStep();
 
         /// <summary>
         /// Cancels this instance.

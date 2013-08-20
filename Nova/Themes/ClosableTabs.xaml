@@ -125,13 +125,14 @@
   <Style TargetType="{x:Type controls:ClosableTabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
     
     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+    <Setter Property="Margin" Value="0,0,0,1"/>
 
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type controls:ClosableTabItem}">
 
           <Border x:Name="Border"
-                  Margin="0,3,0,0"
+                  Margin="0,2,0,0"
                   BorderThickness="1,1,1,0"
                   Padding="4,2"
                   BorderBrush="{DynamicResource UnfocusedControlBorderBrush}"
