@@ -18,9 +18,13 @@
 
 #endregion
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using Nova.Controls;
+using Nova.Library;
 
 namespace Nova.Shell.Library
 {
@@ -33,8 +37,16 @@ namespace Nova.Shell.Library
         where TView : class, IView
         where TViewModel : WizardContentViewModel<TView, TViewModel>, new()
     {
-        //TODO: Link up buttons
+        private IWizard _wizard;
+        private IMultiStep _multistep;
 
+        /// <summary>
+        /// Gets the steps.
+        /// </summary>
+        /// <value>
+        /// The steps.
+        /// </value>
+        public LinkedList<StepInfo> Steps { get; private set; }
 
         /// <summary>
         /// Gets the current step.
@@ -42,69 +54,136 @@ namespace Nova.Shell.Library
         /// <value>
         /// The current step.
         /// </value>
-        public LinkedListNode<INovaStep> CurrentStep { get; private set; }
+        public LinkedListNode<StepInfo> CurrentStep { get; private set; }
+
+        /// <summary>
+        /// Gets the buttons.
+        /// </summary>
+        /// <value>
+        /// The buttons.
+        /// </value>
+        public IEnumerable<IWizardButton> Buttons { get; private set; }
         
         /// <summary>
         /// Initializes the ContentViewModel using the parent session instance.
         /// </summary>
         /// <param name="initializer">The initializer.</param>
-        internal override void Initialize(dynamic initializer)
+        internal override void Initialize(IDictionary<string, object> initializer)
         {
-            CurrentStep = initializer.Node;
+            try
+            {
+                var nodeId = (Guid) initializer["Node"];
+                _wizard = (IWizard) initializer["Wizard"];
+                _multistep = (IMultiStep)initializer["Multistep"];
+                Steps = (LinkedList<StepInfo>) initializer["Steps"];
 
-            //Error	103	The call to method 'Initialize' needs to be dynamically dispatched, but cannot be because it is part of a base access expression.
-            //Consider casting the dynamic arguments or eliminating the base access.
-            base.Initialize((ExpandoObject)initializer);
+                var node = Steps.First;
+
+                while (node != null)
+                {
+                    if (node.Value.NodeID == nodeId)
+                        break;
+
+                    node = node.Next;
+                }
+
+                CurrentStep = node;
+
+                var buttons = CreateButtons();
+
+                if (buttons == null || !buttons.Any())
+                    throw new NotSupportedException("Created buttons are invalid.");
+
+                Buttons = buttons;
+            }
+            finally
+            {
+                base.Initialize(initializer);
+            }
         }
 
         /// <summary>
-        /// Gets a value indicating whether this instance can go next.
+        /// Creates the buttons.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance can go next; otherwise, <c>false</c>.
-        /// </value>
-        public virtual bool CanGoNext
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        protected virtual IEnumerable<IWizardButton> CreateButtons()
         {
-            get { return CurrentStep.Next != null; }
-        }
+            var list = new List<IWizardButton>();
 
-        /// <summary>
-        /// Gets a value indicating whether this instance can go previous.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance can go previous; otherwise, <c>false</c>.
-        /// </value>
-        public virtual bool CanGoPrevious
-        {
-            get { return CurrentStep.Previous != null; }
-        }
+            var cancelButton = CreateCancelButton();
+            list.Add(cancelButton);
+            
+            list.Add(_multistep.CanGoToNextStep() ? CreateNextButton() : CreateFinishButton());
 
+            if (_multistep.CanGoToPreviousStep())
+                list.Add(CreatePreviousButton());
+
+
+            return list;
+        }
 
 
         /// <summary>
-        /// Gets the next step.
+        /// Creates the button.
         /// </summary>
-        /// <value>
-        /// The next step.
-        /// </value>
-        public virtual LinkedListNode<INovaStep> Next
+        /// <param name="title">The title.</param>
+        /// <param name="action">The action.</param>
+        /// <param name="canExecute">The can execute.</param>
+        /// <returns></returns>
+        protected IWizardButton CreateWizardButton(string title, Action<object> action, Predicate<object> canExecute = null)
         {
-            get { return CurrentStep.Next; }
+            return _wizard.CreateWizardButton(title, action, canExecute);
+        }
+
+
+        /// <summary>
+        /// Creates the next button.
+        /// </summary>
+        /// <returns></returns>
+        protected IWizardButton CreateNextButton()
+        {
+            return CreateWizardButton("Next", _ => _multistep.GoToNextStep(), _ => _multistep.CanGoToNextStep());
         }
 
         /// <summary>
-        /// Gets the previous step.
+        /// Creates the finish button.
         /// </summary>
-        /// <value>
-        /// The previous step.
-        /// </value>
-        public virtual LinkedListNode<INovaStep> Previous
+        /// <returns></returns>
+        protected IWizardButton CreateFinishButton()
         {
-            get { return CurrentStep.Previous; }
+            return CreateWizardButton("Finish", _ => _multistep.Finish());
         }
 
+        /// <summary>
+        /// Creates the previous button.
+        /// </summary>
+        /// <returns></returns>
+        protected IWizardButton CreatePreviousButton()
+        {
+            return CreateWizardButton("Previous", _ => _multistep.GoToPreviousStep(), _ => _multistep.CanGoToPreviousStep());
+        }
 
+        /// <summary>
+        /// Creates the cancel button.
+        /// </summary>
+        /// <returns></returns>
+        protected IWizardButton CreateCancelButton()
+        {
+            return CreateWizardButton("Cancel", _ => _multistep.Cancel(), _ => CanCancel);
+        }
 
+        /// <summary>
+        /// Does the step to the specified node.
+        /// </summary>
+        /// <param name="step">The step.</param>
+        /// <returns></returns>
+        protected bool DoStep(StepInfo step)
+        {
+            return _multistep.DoStep(step.NodeID);
+        }
+
+        
         /// <summary>
         /// Gets a value indicating whether this instance can cancel.
         /// </summary>

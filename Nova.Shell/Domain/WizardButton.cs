@@ -18,13 +18,14 @@
 
 using System;
 using System.Windows.Input;
+using Nova.Shell.Library;
 
 namespace Nova.Shell.Domain
 {
     /// <summary>
     /// Buttons in a wizard
     /// </summary>
-    public class WizardButton
+    public class WizardButton : IWizardButton
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WizardButton"/> class.

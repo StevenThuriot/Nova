@@ -147,6 +147,7 @@ namespace Nova.Shell.Library
         /// unstacks a wizard.
         /// </summary>
         /// <param name="id">The id.</param>
-        void UnstackWizard(Guid id);
+        /// <param name="context">The context.</param>
+        void UnstackWizard(Guid id, ActionContext context);
     }
 }

@@ -100,7 +100,7 @@
                             <Border.BorderBrush>
                                 <MultiBinding Converter="{StaticResource _wizardBrushStateConverter}">
                                     <Binding Path="IsValid" />
-                                    <Binding Path="Wizard.ViewModel.IsValid" />
+                                    <Binding Path="View.Content.ViewModel.IsValid" />
                                 </MultiBinding>
                             </Border.BorderBrush>
 
@@ -123,7 +123,7 @@
 
                                 <!-- Buttons -->
                                 <ItemsControl Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="3" Grid.Column="0"
-                                              ItemsSource="{Binding Buttons}"
+                                              ItemsSource="{Binding View.Content.ViewModel.Buttons}"
                                               Background="{StaticResource NavigationalBackground}"
                                               HorizontalContentAlignment="Right"
                                               Padding="5 6"

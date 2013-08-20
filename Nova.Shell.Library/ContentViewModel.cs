@@ -19,6 +19,8 @@
 #endregion
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Nova.Controls;
 using System.Windows.Input;
 using Nova.Library;
@@ -48,11 +50,11 @@ namespace Nova.Shell.Library
         /// Initializes the ContentViewModel using the parent session instance.
         /// </summary>
         /// <param name="initializer">The initializer.</param>
-        internal virtual void Initialize(dynamic initializer)
+        internal virtual void Initialize(IDictionary<string, object> initializer)
         {
             using (_deferral)
             {
-                Session = initializer.Session;
+                Session = (ISessionViewModel) initializer["Session"];
             }
         }
 

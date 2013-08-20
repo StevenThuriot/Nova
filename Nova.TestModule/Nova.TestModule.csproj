@@ -64,6 +64,12 @@
     <Compile Include="TestPage2.xaml.cs">
       <DependentUpon>TestPage2.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WizardView1.xaml.cs">
+      <DependentUpon>WizardView1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WizardView2.xaml.cs">
+      <DependentUpon>WizardView2.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nova.Shell.Library\Nova.Shell.Library.csproj">
@@ -77,6 +83,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="TestPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WizardView1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WizardView2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

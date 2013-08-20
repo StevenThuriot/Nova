@@ -73,9 +73,9 @@ namespace Nova.Controls
         /// Focuses the control.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        /// <param name="entityID">The entity ID.</param>
+        /// <param name="entityId">The entity ID.</param>
         /// <returns></returns>
-        bool FocusControl(string fieldName, Guid entityID);
+        bool FocusControl(string fieldName, Guid entityId);
 
         /// <summary>
         /// Gets or sets the validation control.

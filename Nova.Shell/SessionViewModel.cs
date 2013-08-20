@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Windows;
@@ -155,8 +156,7 @@ namespace Nova.Shell
         {
             var page = CreateView<TPageView, TPageViewModel>(parent, false);
 
-            dynamic initializer = new ExpandoObject();
-            initializer.Session = this;
+            var initializer = new Dictionary<string, object> {{"Session", this}};
 
             ((ContentViewModel<TPageView, TPageViewModel>)page.ViewModel).Initialize(initializer);
 
@@ -173,7 +173,7 @@ namespace Nova.Shell
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : class, IView, new()
         {
-            return CreateView<TPageView, TPageViewModel>(View);
+            return Create<TPageView, TPageViewModel>(View);
         }
         
         /// <summary>
@@ -244,7 +244,10 @@ namespace Nova.Shell
             overlay.Tag = wizardViewModel.ID;
             wizardViewModel.Initialize(this, wizardBuilder);
 
-            overlay.Content = wizard;
+            var canvas = new Canvas();
+            canvas.Children.Add(wizard);
+
+            overlay.Content = canvas;
             View._root.Children.Add(overlay);
         }
 
@@ -252,7 +255,8 @@ namespace Nova.Shell
         /// unstacks a wizard.
         /// </summary>
         /// <param name="id">The id.</param>
-        void ISessionViewModel.UnstackWizard(Guid id)
+        /// <param name="context">The context.</param>
+        void ISessionViewModel.UnstackWizard(Guid id, ActionContext context)
         {
             var frameworkElements = View._root.Children.OfType<FrameworkElement>().Where(x => x.Tag != null).ToList();
             for (var i = frameworkElements.Count - 1; i >= 0; i--)
@@ -267,6 +271,8 @@ namespace Nova.Shell
                 View._root.Children.Remove(child);
                 break;
             }
+
+           //TODO: CurrentView.ViewModel.InvokeReturn(id, context);
         }
 
         /// <summary>

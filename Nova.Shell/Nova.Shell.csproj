@@ -82,6 +82,9 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Actions\Folder\CancelAction.cs" />
+    <Compile Include="Actions\Folder\FinishAction.cs" />
+    <Compile Include="Actions\Folder\ReturnAction.cs" />
     <Compile Include="Actions\MainWindow\CloseSessionAction.cs" />
     <Compile Include="Actions\MainWindow\ComposeAndInitializeAction.cs" />
     <Compile Include="Actions\MainWindow\CreateNewSessionAction.cs" />

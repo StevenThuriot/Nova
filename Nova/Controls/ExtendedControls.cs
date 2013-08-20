@@ -316,11 +316,11 @@ namespace Nova.Controls
         /// Focuses the control.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        /// <param name="entityID">The entity ID.</param>
+        /// <param name="entityId">The entity ID.</param>
         /// <returns></returns>
-        public bool FocusControl(string fieldName, Guid entityID)
+        public bool FocusControl(string fieldName, Guid entityId)
         {
-            return FocusHelper.FocusControl(this, fieldName, entityID);
+            return FocusHelper.FocusControl(this, fieldName, entityId);
         }
 
         /// <summary>
@@ -579,11 +579,11 @@ namespace Nova.Controls
         /// Focuses the control.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        /// <param name="entityID">The entity ID.</param>
+        /// <param name="entityId">The entity ID.</param>
         /// <returns></returns>
-        public bool FocusControl(string fieldName, Guid entityID)
+        public bool FocusControl(string fieldName, Guid entityId)
         {
-            return FocusHelper.FocusControl(this, fieldName, entityID);
+            return FocusHelper.FocusControl(this, fieldName, entityId);
         }
 
         /// <summary>
@@ -825,11 +825,11 @@ namespace Nova.Controls
         /// Focuses the control.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        /// <param name="entityID">The entity ID.</param>
+        /// <param name="entityId">The entity ID.</param>
         /// <returns></returns>
-        public bool FocusControl(string fieldName, Guid entityID)
+        public bool FocusControl(string fieldName, Guid entityId)
         {
-            return FocusHelper.FocusControl(this, fieldName, entityID);
+            return FocusHelper.FocusControl(this, fieldName, entityId);
         }
 
         /// <summary>
@@ -1088,11 +1088,11 @@ namespace Nova.Controls
         /// Focuses the control.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        /// <param name="entityID">The entity ID.</param>
+        /// <param name="entityId">The entity ID.</param>
         /// <returns></returns>
-        public bool FocusControl(string fieldName, Guid entityID)
+        public bool FocusControl(string fieldName, Guid entityId)
         {
-            return FocusHelper.FocusControl(this, fieldName, entityID);
+            return FocusHelper.FocusControl(this, fieldName, entityId);
         }
 
         /// <summary>

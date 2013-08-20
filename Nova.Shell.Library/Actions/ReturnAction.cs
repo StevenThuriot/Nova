@@ -16,6 +16,7 @@
 //  
 #endregion
 
+using System;
 using Nova.Controls;
 using Nova.Library;
 using Nova.Threading.Metadata;
@@ -29,8 +30,8 @@ namespace Nova.Shell.Library.Actions
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     [Creational, Alias(Aliases.Return)]
     public abstract class ReturnAction<TView, TViewModel> : Actionflow<TView, TViewModel>
-        where TView : IView
-        where TViewModel : IViewModel
+        where TView : class, IView
+        where TViewModel : ContentViewModel<TView, TViewModel>, new()
     {
         /// <summary>
         /// Executes async.
@@ -40,7 +41,7 @@ namespace Nova.Shell.Library.Actions
         {
             if (!base.Execute())
                 return false;
-
+            
             //TODO: Add unstacking logic
 
             return Return();

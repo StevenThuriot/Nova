@@ -60,6 +60,7 @@
     <Compile Include="Actions\ReturnAction.cs" />
     <Compile Include="Actions\StackAction.cs" />
     <Compile Include="ContentViewModel.cs" />
+    <Compile Include="IMultiStep.cs" />
     <Compile Include="IMultiStepBuilder.cs" />
     <Compile Include="INavigationActionManager.cs" />
     <Compile Include="INavigatablePage.cs" />
@@ -67,8 +68,11 @@
     <Compile Include="ISessionViewModel.cs" />
     <Compile Include="IModuleBuilder.cs" />
     <Compile Include="IModule.cs" />
+    <Compile Include="IWizard.cs" />
     <Compile Include="IWizardBuilder.cs" />
+    <Compile Include="IWizardButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StepInfo.cs" />
     <Compile Include="WizardContentViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

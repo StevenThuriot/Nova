@@ -19,18 +19,29 @@
 using System;
 using System.Collections.Generic;
 using Nova.Library;
+using Nova.Shell.Actions.Folder;
 using Nova.Shell.Builders;
 using Nova.Shell.Domain;
 using Nova.Shell.Library;
 
 namespace Nova.Shell.Views
 {
+
     /// <summary>
     /// The Wizard's ViewModel
     /// </summary>
-    public class WizardViewModel : ViewModel<WizardView, WizardViewModel>
+    public class WizardViewModel : ViewModel<WizardView, WizardViewModel>, IWizard
     {
         private IDisposable _deferral;
+        private LinkedListNode<NovaStep> _initialView;
+
+        /// <summary>
+        /// Gets the session view model.
+        /// </summary>
+        /// <value>
+        /// The session view model.
+        /// </value>
+        internal ISessionViewModel SessionViewModel { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WizardViewModel"/> class.
@@ -38,6 +49,14 @@ namespace Nova.Shell.Views
         public WizardViewModel()
         {
             _deferral = DeferCreated(); //Defer Created logic so we can call it manually in our extended initialize method.
+        }
+
+        protected override void OnCreated()
+        {
+            SetKnownActionTypes(typeof(CancelAction), typeof(FinishAction));
+
+            var multiStepView = new MultiStepView(View, SessionViewModel, ID, _initialView);
+            View.Content = multiStepView;
         }
 
         internal void Initialize(ISessionViewModel sessionViewModel, WizardBuilder builder)
@@ -57,12 +76,31 @@ namespace Nova.Shell.Views
                 if (initialView == null)
                     throw new ArgumentNullException("initialView");
 
-                var multiStepView = new MultiStepView(View, sessionViewModel, ID, initialView);
-
-                View.Content = multiStepView;
+                SessionViewModel = sessionViewModel;
+                _initialView = initialView;
             }
 
             _deferral = null;
+        }
+
+
+        /// <summary>
+        /// Creates the wizard button.
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <param name="action">The action.</param>
+        /// <param name="canExecute">The can execute.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">title</exception>
+        public IWizardButton CreateWizardButton(string title, Action<object> action, Predicate<object> canExecute = null)
+        {
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentNullException("title");
+
+            var command = new RelayCommand(action, canExecute);
+            var button = new WizardButton(title, command);
+
+            return button;
         }
     }
 }

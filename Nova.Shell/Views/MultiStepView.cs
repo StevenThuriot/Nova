@@ -1,27 +1,24 @@
 ﻿#region License
-
-// 
+//   
 //  Copyright 2013 Steven Thuriot
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//   http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-// 
-
+//   
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//  
+//    http://www.apache.org/licenses/LICENSE-2.0
+//  
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//   
 #endregion
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Dynamic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,11 +36,13 @@ namespace Nova.Shell.Views
     /// A view that has several steps inside.
     /// </summary>
     /// <remarks>Useful for sharing a model between these steps.</remarks>
-    internal class MultiStepView : ContentPresenter, IView
+    internal class MultiStepView : ContentPresenter, IView, IMultiStep
     {
         //TODO: Model that carries through the steps.
 
 
+
+        private readonly LinkedList<StepInfo> _steps;
         private int _loadingCounter;
         private readonly object _lock = new object();
 
@@ -59,6 +58,14 @@ namespace Nova.Shell.Views
         /// The title property
         /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(MultiStepView), new PropertyMetadata(""));
+
+
+        /// <summary>
+        /// The view model property
+        /// </summary>
+        public static readonly DependencyProperty ViewModelProperty =
+            DependencyProperty.Register("ViewModel", typeof (IViewModel), typeof (MultiStepView), new PropertyMetadata(null));
+
 
         // ReSharper restore StaticFieldInGenericType
 
@@ -99,7 +106,11 @@ namespace Nova.Shell.Views
         /// <value>
         /// The view model.
         /// </value>
-        public IViewModel ViewModel { get; private set; }
+        public IViewModel ViewModel
+        {
+            get { return (IViewModel)GetValue(ViewModelProperty); }
+            private set { SetValue(ViewModelProperty, value); }
+        }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance is loading.
@@ -273,7 +284,7 @@ namespace Nova.Shell.Views
             var node = (LinkedListNode<NovaStep>) e.NewValue;
             var step = node.Value;
 
-            var view = step.GetOrCreateView(multiStepView, node);
+            var view = step.GetOrCreateView(multiStepView);
 
             multiStepView.Content = view;
             multiStepView.ViewModel = view.ViewModel;
@@ -314,7 +325,10 @@ namespace Nova.Shell.Views
             RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
 
             VisualTextRenderingMode = TextRenderingMode.ClearType;
-            
+
+
+            var stepInfos = initialView.List.Select(x => new StepInfo(x.Title, x.ViewType, x.ViewModelType, x.NodeID));
+            _steps = new LinkedList<StepInfo>(stepInfos);
             CurrentView = initialView;
         }
         
@@ -332,14 +346,14 @@ namespace Nova.Shell.Views
         /// Focuses the control.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        /// <param name="entityID">The entity ID.</param>
+        /// <param name="entityId">The entity ID.</param>
         /// <returns></returns>
-        public bool FocusControl(string fieldName, Guid entityID)
+        public bool FocusControl(string fieldName, Guid entityId)
         {
             //TODO: foreach view in _views
                     //if focus; break + navigate if needed
 
-            return FocusHelper.FocusControl(this, fieldName, entityID);
+            return FocusHelper.FocusControl(this, fieldName, entityId);
         }
 
 
@@ -400,6 +414,44 @@ namespace Nova.Shell.Views
         }
 
         /// <summary>
+        /// Cancels this instance.
+        /// </summary>
+        public void Cancel()
+        {
+            //TODO:
+        }
+
+        /// <summary>
+        /// Finishes this instance.
+        /// </summary>
+        public void Finish()
+        {
+            //TODO:
+        }
+
+        /// <summary>
+        /// Attempts to do a step to the specified step.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns>
+        /// True is successful.
+        /// </returns>
+        public bool DoStep(Guid id)
+        {
+            var node = CurrentView.List.First;
+
+            while (node != null)
+            {
+                if (node.Value.NodeID == id)
+                    break;
+
+                node = node.Next;
+            }
+            
+            return DoStep(node);
+        }
+
+        /// <summary>
         /// Attempts to do a step to the specified step.
         /// </summary>
         /// <param name="stepName">Name of the step.</param>
@@ -434,8 +486,10 @@ namespace Nova.Shell.Views
             return DoStep(node);
         }
 
-        private bool DoStep(LinkedListNode<NovaStep> node)
+        public bool DoStep(LinkedListNode<NovaStep> node)
         {
+            //TODO: Navigate using action to kill previous queue and create new.
+
             if (node == null || node.Value == null)
                 return false;
 
@@ -470,30 +524,34 @@ namespace Nova.Shell.Views
             if (node == null || node.Value == null) 
                 return false;
 
-            view = node.Value.GetOrCreateView(this, node);
+            view = node.Value.GetOrCreateView(this);
             return true;
         }
 
         /// <summary>
         /// Creates a page specifically for the content zone and fills in the session model.
         /// </summary>
-        /// <param name="novaStep"></param>
-        /// <param name="node"></param>
         /// <typeparam name="TView">The type of the view.</typeparam>
         /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+        /// <param name="novaStep">The nova step.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">parent</exception>
         /// <exception cref="System.NotSupportedException"></exception>
-        internal TView CreateStep<TView, TViewModel>(NovaStep novaStep, LinkedListNode<NovaStep> node)
+        internal TView CreateStep<TView, TViewModel>(NovaStep novaStep)
             where TView : class, IView, new()
             where TViewModel : ContentViewModel<TView, TViewModel>, new()
         {
             var view = SessionViewModel.CreateView<TView, TViewModel>(this, false);
-            
-            dynamic initializer = new ExpandoObject();
-            initializer.Session = SessionViewModel;
-            initializer.Node = node;
-            
+
+            var initializer = new Dictionary<string, object>
+            {
+                {"Session", SessionViewModel},
+                {"Node", novaStep.NodeID},
+                {"Wizard", ((WizardView) _parent).ViewModel},
+                {"Multistep", this},
+                {"Steps", new LinkedList<StepInfo>(_steps)}
+            };
+
             ((ContentViewModel<TView, TViewModel>)view.ViewModel).Initialize(initializer);
 
             return view;

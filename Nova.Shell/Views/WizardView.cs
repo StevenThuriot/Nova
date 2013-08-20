@@ -81,8 +81,8 @@ namespace Nova.Shell.Views
         {
             var wizard = (WizardView)dependencyObject;
             var size = (double)baseValue;
-            var element = (FrameworkElement)wizard.Parent;
-
+            var element = (Canvas) wizard.Parent;
+            
             if (element != null)
             {
                 var availableWidth = getParentActualSize(element) - getCanvasProperty(wizard) - 3;
@@ -104,7 +104,7 @@ namespace Nova.Shell.Views
             Loaded -= Initialize;
 
             //Center!
-            var canvas = (FrameworkElement)Parent;
+            var canvas = (Canvas) Parent;
 
             var top = (canvas.ActualHeight - Height) / 2d;
             var left = (canvas.ActualWidth - Width) / 2d;
@@ -120,7 +120,7 @@ namespace Nova.Shell.Views
             Action<double> setCanvasPosition = x => Canvas.SetLeft(this, x);
             Func<double> getMinimum = () => MinWidth;
             Func<double> getCurrent = () => Width;
-            Action<double> addToCurrent = x => Width += x;
+            Action<double> addToCurrent = x => Width = Math.Min(Math.Max(Width + x, MinWidth), MaxWidth);
 
             ChangeSize(draggingAffectsCanvas, args, getDelta, getCanvasPosition, getCurrent, getMinimum, addToCurrent, setCanvasPosition);
         }
@@ -132,7 +132,7 @@ namespace Nova.Shell.Views
             Action<double> setCanvasPosition = x => Canvas.SetTop(this, x);
             Func<double> getMinimum = () => MinHeight;
             Func<double> getCurrent = () => Height;
-            Action<double> addToCurrent = x => Height += x;
+            Action<double> addToCurrent = x => Height = Math.Min(Math.Max(Height + x, MinHeight), MaxHeight);
 
             ChangeSize(draggingAffectsCanvas, args, getDelta, getCanvasPosition, getCurrent, getMinimum, addToCurrent, setCanvasPosition);
         }
@@ -178,25 +178,27 @@ namespace Nova.Shell.Views
         {
             var element = (FrameworkElement)sender;
 
-            if (e.Handled || !element.IsMouseCaptureWithin)
+            if (!element.IsMouseCaptureWithin)
                 return;
 
             e.Handled = true;
+
+            const double margin = 3d;
 
             var currentPosition = e.GetPosition(element);
 
             var left = Canvas.GetLeft(this) - (_clickPosition.X - currentPosition.X);
             var top = Canvas.GetTop(this) - (_clickPosition.Y - currentPosition.Y);
 
-            left = Math.Max(8d, left);
-            top = Math.Max(30d, top);
+            left = Math.Max(margin, left);
+            top = Math.Max(margin, top);
 
             var canvas = (FrameworkElement)Parent;
 
-            var minLeft = canvas.ActualWidth - Width - 8;
+            var minLeft = canvas.ActualWidth - Width - margin;
             left = Math.Min(minLeft, left);
 
-            var minTop = canvas.ActualHeight - Height - 8;
+            var minTop = canvas.ActualHeight - Height - margin;
             top = Math.Min(minTop, top);
 
             Canvas.SetTop(this, top);

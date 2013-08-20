@@ -24,6 +24,7 @@ using System.Threading;
 using System.Windows.Input;
 using Nova.Controls;
 using Nova.Shell.Library;
+using Nova.Shell.Library.Actions;
 
 namespace Nova.TestModule
 {
@@ -70,6 +71,15 @@ namespace Nova.TestModule
             Thread.Sleep(5000);
 
             return base.Execute();
+        }
+    }
+
+    public class Stack : StackAction<TestPage, TestPageViewModel>
+    {
+        protected override void BuildWizard(IWizardBuilder builder)
+        {
+            builder.AddStep<WizardView1, WizardViewModel1>()
+                   .AddStep<WizardView2, WizardViewModel2>();
         }
     }
 }
