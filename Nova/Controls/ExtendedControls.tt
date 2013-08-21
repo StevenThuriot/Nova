@@ -182,25 +182,13 @@ namespace Nova.Controls
         /// </summary>
         private IView _parent;
 
-        private TViewModel _viewModel;
         /// <summary>
         /// Gets the view model.
         /// </summary>
         /// <value>
         /// The view model.
         /// </value>
-        public TViewModel ViewModel
-        {
-            get { return _viewModel; }
-            private set
-            {
-                if (_viewModel != value)
-                {
-                    _viewModel = value;
-                    DataContext = value;
-                }
-            }
-        }
+        public TViewModel ViewModel { get; private set; }
 
         /// <summary>
         /// Gets or sets the validation control.
@@ -400,9 +388,9 @@ namespace Nova.Controls
                     _parent = null;
                 }
 
-                if (_viewModel != null)
+                if (ViewModel != null)
                 {
-                    _viewModel.Dispose();
+                    ViewModel.Dispose();
                 }
             }
 

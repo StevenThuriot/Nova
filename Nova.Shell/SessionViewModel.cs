@@ -237,7 +237,7 @@ namespace Nova.Shell
 
             overlay.IsLoading = true;
 
-            var wizard = CreateContentControl<WizardView, WizardViewModel>(false);
+            var wizard = CreateContentControl<WizardView, WizardViewModel>();
 
             WizardViewModel wizardViewModel = wizard.ViewModel;
 

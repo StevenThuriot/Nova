@@ -15,12 +15,13 @@
 //  limitations under the License.
 //   
 #endregion
-namespace Nova.Shell.Actions.Folder
+
+namespace Nova.Shell.Actions.Wizard
 {
     /// <summary>
-    /// Finish action
+    /// Cancel Action
     /// </summary>
-    internal class FinishAction : ReturnAction
+    internal class CancelAction : ReturnAction
     {
         /// <summary>
         /// Gets a value indicating whether this instance is cancelled.
@@ -30,7 +31,7 @@ namespace Nova.Shell.Actions.Folder
         /// </value>
         protected override bool IsCancelled
         {
-            get { return false; }
+            get { return true; }
         }
     }
 }

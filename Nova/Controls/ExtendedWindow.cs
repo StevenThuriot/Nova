@@ -51,7 +51,6 @@ namespace Nova.Controls
 // ReSharper restore StaticFieldInGenericType
 
         private bool _disposed;
-        private TViewModel _viewModel;
 
         private int _loadingCounter;
         private ActionQueueManager _actionQueueManager;
@@ -83,17 +82,7 @@ namespace Nova.Controls
         /// <value>
         /// The view model.
         /// </value>
-        public TViewModel ViewModel
-        {
-            get { return _viewModel; }
-            private set
-            {
-                if (_viewModel == value) return;
-
-                _viewModel = value;
-                DataContext = value;
-            }
-        }
+        public TViewModel ViewModel { get; private set; }
 
         /// <summary>
         /// Focuses the control.
@@ -209,9 +198,9 @@ namespace Nova.Controls
 
             if (disposing)
             {
-                if (_viewModel != null)
+                if (ViewModel != null)
                 {
-                    _viewModel.Dispose();
+                    ViewModel.Dispose();
                 }
 
                 if (_actionQueueManager != null)

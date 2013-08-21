@@ -33,8 +33,7 @@ namespace Nova.Shell.Library
         where TViewModel : WizardContentViewModel<TView, TViewModel>, new()
     {
         private IWizard _wizard;
-        private IMultiStep _multistep;
-        
+
         /// <summary>
         /// Gets the current step.
         /// </summary>
@@ -78,7 +77,7 @@ namespace Nova.Shell.Library
         /// The buttons.
         /// </value>
         public IEnumerable<IWizardButton> Buttons { get; private set; }
-        
+
         /// <summary>
         /// Initializes the ContentViewModel using the parent session instance.
         /// </summary>
@@ -88,9 +87,8 @@ namespace Nova.Shell.Library
             try
             {
                 CurrentStep = (LinkedListNode<StepInfo>)initializer["Node"];
-                _wizard = (IWizard) initializer["Wizard"];
-                _multistep = (IMultiStep)initializer["Multistep"];
-                
+                _wizard = (IWizard)initializer["Wizard"];
+
                 var buttons = CreateButtons();
 
                 if (buttons == null || !buttons.Any())
@@ -103,7 +101,7 @@ namespace Nova.Shell.Library
                 base.Initialize(initializer);
             }
         }
-
+        
         /// <summary>
         /// Creates the buttons.
         /// </summary>
@@ -115,13 +113,12 @@ namespace Nova.Shell.Library
 
             var cancelButton = CreateCancelButton();
             list.Add(cancelButton);
-            
-            list.Add(_multistep.CanGoToNextStep() ? CreateNextButton() : CreateFinishButton());
 
-            if (_multistep.CanGoToPreviousStep())
+            list.Add(CurrentStep.Next != null ? CreateNextButton() : CreateFinishButton());
+
+            if (CurrentStep.Previous != null)
                 list.Add(CreatePreviousButton());
-
-
+            
             return list;
         }
 
@@ -164,7 +161,7 @@ namespace Nova.Shell.Library
         /// <returns></returns>
         protected IWizardButton CreateFinishButton()
         {
-            return CreateWizardButton("Finish", _ => _multistep.Finish());
+            return CreateWizardButton("Finish", _ => _wizard.Finish());
         }
 
         /// <summary>
@@ -173,7 +170,7 @@ namespace Nova.Shell.Library
         /// <returns></returns>
         protected IWizardButton CreateCancelButton()
         {
-            return CreateWizardButton("Cancel", _ => _multistep.Cancel(), _ => CanCancel);
+            return CreateWizardButton("Cancel", _ => _wizard.Cancel(), _ => CanCancel);
         }
 
 
@@ -182,9 +179,12 @@ namespace Nova.Shell.Library
         /// </summary>
         /// <param name="node">The node.</param>
         /// <returns></returns>
-        protected bool DoStep(LinkedListNode<StepInfo> node)
+        protected void DoStep(LinkedListNode<StepInfo> node)
         {
-            return node != null && DoStep(node.Value);
+            if (node == null)
+                return;
+
+            DoStep(node.Value);
         }
 
         /// <summary>
@@ -192,10 +192,12 @@ namespace Nova.Shell.Library
         /// </summary>
         /// <param name="step">The step.</param>
         /// <returns></returns>
-        protected bool DoStep(StepInfo step)
+        protected void DoStep(StepInfo step)
         {
-            //TODO: ActionQueue!
-            return step != null && _multistep.DoStep(step.NodeID);
+            if (step == null)
+                return;
+
+            _wizard.DoStep(step);
         }
 
         /// <summary>

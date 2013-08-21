@@ -47,7 +47,6 @@ namespace Nova.Shell.Domain
         /// Gets the or create view.
         /// </summary>
         /// <param name="parent">The parent.</param>
-        /// <param name="node">The node.</param>
         /// <returns></returns>
         internal override IView GetOrCreateView(MultiStepView parent)
         {

@@ -23,6 +23,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Nova.Controls;
 using Nova.Helpers;
 using Nova.Library;
@@ -503,14 +504,18 @@ namespace Nova.Shell.Views
             where TView : class, IView, new()
             where TViewModel : ContentViewModel<TView, TViewModel>, new()
         {
+            if (!Dispatcher.CheckAccess())
+                return Dispatcher.Invoke(() => CreateStep<TView, TViewModel>(novaStep), DispatcherPriority.Send);
+
             var view = SessionViewModel.CreateView<TView, TViewModel>(this, false);
 
+            var nodeId = novaStep.NodeID;
             var nodes = new LinkedList<StepInfo>(_steps);
             var node = nodes.First;
-
+            
             while (node != null)
             {
-                if (node.Value.NodeID == novaStep.NodeID)
+                if (node.Value.NodeID == nodeId)
                     break;
 
                 node = node.Next;
@@ -520,13 +525,28 @@ namespace Nova.Shell.Views
             {
                 {"Session", SessionViewModel},
                 {"Node", node},
-                {"Wizard", ((WizardView) _parent).ViewModel},
-                {"Multistep", this},
+                {"Wizard", ((WizardView) _parent).ViewModel}
             };
 
             ((ContentViewModel<TView, TViewModel>)view.ViewModel).Initialize(initializer);
 
             return view;
+        }
+
+        public NovaStep GetNovaStep(StepInfo step)
+        {
+            var nodeId = step.NodeID;
+            var node = CurrentView.List.First;
+            
+            while (node != null && node.Value != null)
+            {
+                if (node.Value.NodeID == nodeId)
+                    return node.Value;
+
+                node = node.Next;
+            }
+
+            throw new ArgumentOutOfRangeException("step");
         }
     }
 }

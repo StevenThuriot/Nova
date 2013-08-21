@@ -18,6 +18,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using System.Windows.Input;
 using Nova.Threading;
 using Nova.Library.ActionMethodRepository;
@@ -61,7 +62,7 @@ namespace Nova.Library
         /// <typeparam name="T">The type of action to create.</typeparam>
         /// <param name="actionContext">The action context.</param>
         /// <returns>A new actionflow instance.</returns>
-        public T CreateAction<T>(ActionContext actionContext = null)
+        internal T CreateAction<T>(ActionContext actionContext = null)
             where T : Actionflow<TView, TViewModel>, new()
         {
             return Actionflow<TView, TViewModel>.New<T>(View, (TViewModel) this, actionContext);
@@ -135,6 +136,12 @@ namespace Nova.Library
 
             _created = true;
             OnCreated();
+
+            var frameworkElement = View as FrameworkElement;
+            if (frameworkElement != null)
+            {
+                frameworkElement.DataContext = this;
+            }
 
             if (!_enterOnInitialize) return;
 

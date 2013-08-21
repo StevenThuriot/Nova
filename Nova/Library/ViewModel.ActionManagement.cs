@@ -49,16 +49,17 @@ namespace Nova.Library
         {
             _actionManager.SetKnownTypes(knownTypes);
         }
+
         /// <summary>
         /// Invokes the specified action.
         /// </summary>
         /// <typeparam name="T">The type of action to invoke.</typeparam>
-        /// <param name="arguments">The arguments.</param>
+        /// <param name="entries">The entries.</param>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
-        public void InvokeAction<T>(params ActionContextEntry[] arguments)
+        public void InvokeAction<T>(params ActionContextEntry[] entries)
             where T : Actionflow<TView, TViewModel>, new()
         {
-            ActionController.InvokeAction<T>(arguments);
+            ActionController.InvokeAction<T>(entries);
         }
     }
 }

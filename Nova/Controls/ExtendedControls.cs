@@ -186,25 +186,13 @@ namespace Nova.Controls
         /// </summary>
         private IView _parent;
 
-        private TViewModel _viewModel;
         /// <summary>
         /// Gets the view model.
         /// </summary>
         /// <value>
         /// The view model.
         /// </value>
-        public TViewModel ViewModel
-        {
-            get { return _viewModel; }
-            private set
-            {
-                if (_viewModel != value)
-                {
-                    _viewModel = value;
-                    DataContext = value;
-                }
-            }
-        }
+        public TViewModel ViewModel { get; private set; }
 
         /// <summary>
         /// Gets or sets the validation control.
@@ -316,11 +304,11 @@ namespace Nova.Controls
         /// Focuses the control.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        /// <param name="entityId">The entity ID.</param>
+        /// <param name="entityID">The entity ID.</param>
         /// <returns></returns>
-        public bool FocusControl(string fieldName, Guid entityId)
+        public bool FocusControl(string fieldName, Guid entityID)
         {
-            return FocusHelper.FocusControl(this, fieldName, entityId);
+            return FocusHelper.FocusControl(this, fieldName, entityID);
         }
 
         /// <summary>
@@ -402,9 +390,9 @@ namespace Nova.Controls
                     _parent = null;
                 }
 
-                if (_viewModel != null)
+                if (ViewModel != null)
                 {
-                    _viewModel.Dispose();
+                    ViewModel.Dispose();
                 }
             }
 
@@ -449,25 +437,13 @@ namespace Nova.Controls
         /// </summary>
         private IView _parent;
 
-        private TViewModel _viewModel;
         /// <summary>
         /// Gets the view model.
         /// </summary>
         /// <value>
         /// The view model.
         /// </value>
-        public TViewModel ViewModel
-        {
-            get { return _viewModel; }
-            private set
-            {
-                if (_viewModel != value)
-                {
-                    _viewModel = value;
-                    DataContext = value;
-                }
-            }
-        }
+        public TViewModel ViewModel { get; private set; }
 
         /// <summary>
         /// Gets or sets the validation control.
@@ -579,11 +555,11 @@ namespace Nova.Controls
         /// Focuses the control.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        /// <param name="entityId">The entity ID.</param>
+        /// <param name="entityID">The entity ID.</param>
         /// <returns></returns>
-        public bool FocusControl(string fieldName, Guid entityId)
+        public bool FocusControl(string fieldName, Guid entityID)
         {
-            return FocusHelper.FocusControl(this, fieldName, entityId);
+            return FocusHelper.FocusControl(this, fieldName, entityID);
         }
 
         /// <summary>
@@ -665,9 +641,9 @@ namespace Nova.Controls
                     _parent = null;
                 }
 
-                if (_viewModel != null)
+                if (ViewModel != null)
                 {
-                    _viewModel.Dispose();
+                    ViewModel.Dispose();
                 }
             }
 
@@ -707,25 +683,13 @@ namespace Nova.Controls
         /// </summary>
         private IView _parent;
 
-        private TViewModel _viewModel;
         /// <summary>
         /// Gets the view model.
         /// </summary>
         /// <value>
         /// The view model.
         /// </value>
-        public TViewModel ViewModel
-        {
-            get { return _viewModel; }
-            private set
-            {
-                if (_viewModel != value)
-                {
-                    _viewModel = value;
-                    DataContext = value;
-                }
-            }
-        }
+        public TViewModel ViewModel { get; private set; }
 
         /// <summary>
         /// Gets or sets the validation control.
@@ -825,11 +789,11 @@ namespace Nova.Controls
         /// Focuses the control.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        /// <param name="entityId">The entity ID.</param>
+        /// <param name="entityID">The entity ID.</param>
         /// <returns></returns>
-        public bool FocusControl(string fieldName, Guid entityId)
+        public bool FocusControl(string fieldName, Guid entityID)
         {
-            return FocusHelper.FocusControl(this, fieldName, entityId);
+            return FocusHelper.FocusControl(this, fieldName, entityID);
         }
 
         /// <summary>
@@ -911,9 +875,9 @@ namespace Nova.Controls
                     _parent = null;
                 }
 
-                if (_viewModel != null)
+                if (ViewModel != null)
                 {
-                    _viewModel.Dispose();
+                    ViewModel.Dispose();
                 }
             }
 
@@ -958,25 +922,13 @@ namespace Nova.Controls
         /// </summary>
         private IView _parent;
 
-        private TViewModel _viewModel;
         /// <summary>
         /// Gets the view model.
         /// </summary>
         /// <value>
         /// The view model.
         /// </value>
-        public TViewModel ViewModel
-        {
-            get { return _viewModel; }
-            private set
-            {
-                if (_viewModel != value)
-                {
-                    _viewModel = value;
-                    DataContext = value;
-                }
-            }
-        }
+        public TViewModel ViewModel { get; private set; }
 
         /// <summary>
         /// Gets or sets the validation control.
@@ -1088,11 +1040,11 @@ namespace Nova.Controls
         /// Focuses the control.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        /// <param name="entityId">The entity ID.</param>
+        /// <param name="entityID">The entity ID.</param>
         /// <returns></returns>
-        public bool FocusControl(string fieldName, Guid entityId)
+        public bool FocusControl(string fieldName, Guid entityID)
         {
-            return FocusHelper.FocusControl(this, fieldName, entityId);
+            return FocusHelper.FocusControl(this, fieldName, entityID);
         }
 
         /// <summary>
@@ -1174,9 +1126,9 @@ namespace Nova.Controls
                     _parent = null;
                 }
 
-                if (_viewModel != null)
+                if (ViewModel != null)
                 {
-                    _viewModel.Dispose();
+                    ViewModel.Dispose();
                 }
             }
 

@@ -34,5 +34,21 @@ namespace Nova.Shell.Library
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">title</exception>
         IWizardButton CreateWizardButton(string title, Action<object> action, Predicate<object> canExecute = null);
+
+        /// <summary>
+        /// Navigates to the specified step.
+        /// </summary>
+        /// <param name="step">The step.</param>
+        void DoStep(StepInfo step);
+
+        /// <summary>
+        /// Finishes this instance.
+        /// </summary>
+        void Finish();
+
+        /// <summary>
+        /// Cancels this instance.
+        /// </summary>
+        void Cancel();
     }
 }

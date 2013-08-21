@@ -16,12 +16,17 @@
 //   
 #endregion
 
-namespace Nova.Shell.Actions.Folder
+using Nova.Library;
+using Nova.Shell.Views;
+using Nova.Threading.Metadata;
+
+namespace Nova.Shell.Actions.Wizard
 {
     /// <summary>
-    /// Cancel Action
+    /// Return action
     /// </summary>
-    internal class CancelAction : ReturnAction
+    [Terminating]
+    internal abstract class ReturnAction : Actionflow<WizardView, WizardViewModel>
     {
         /// <summary>
         /// Gets a value indicating whether this instance is cancelled.
@@ -29,9 +34,20 @@ namespace Nova.Shell.Actions.Folder
         /// <value>
         /// <c>true</c> if this instance is cancelled; otherwise, <c>false</c>.
         /// </value>
-        protected override bool IsCancelled
+        protected abstract bool IsCancelled { get; }
+
+        public sealed override bool Execute()
         {
-            get { return true; }
+            var actionContextEntry = ActionContextEntry.Create("Cancelled", IsCancelled, false);
+            ActionContext.Add(actionContextEntry);
+            
+            return base.Execute();
+        }
+
+        public sealed override void ExecuteCompleted()
+        {
+            ViewModel.SessionViewModel.UnstackWizard(ViewModel.ID, ActionContext);
+            View.Dispose();
         }
     }
 }
