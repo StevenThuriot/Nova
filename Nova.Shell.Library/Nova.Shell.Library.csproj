@@ -57,8 +57,10 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Actions\Aliases.cs" />
-    <Compile Include="Actions\ReturnAction.cs" />
-    <Compile Include="Actions\StackAction.cs" />
+    <Compile Include="Actions\Wizard\FinishAction.cs" />
+    <Compile Include="Actions\Wizard\ReturnAction.cs" />
+    <Compile Include="Actions\Wizard\StackAction.cs" />
+    <Compile Include="Actions\Wizard\ValidatableFinishAction.cs" />
     <Compile Include="ContentViewModel.cs" />
     <Compile Include="IMultiStep.cs" />
     <Compile Include="IMultiStepBuilder.cs" />

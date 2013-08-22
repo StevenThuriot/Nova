@@ -1,6 +1,4 @@
-﻿using Nova.Library;
-
-#region License
+﻿#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -20,11 +18,12 @@
 
 #endregion
 
+using Nova.Library;
 using System.Threading;
 using System.Windows.Input;
 using Nova.Controls;
 using Nova.Shell.Library;
-using Nova.Shell.Library.Actions;
+using Nova.Shell.Library.Actions.Wizard;
 
 namespace Nova.TestModule
 {

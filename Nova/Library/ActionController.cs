@@ -242,23 +242,5 @@ namespace Nova.Library
                        ? Task.FromResult(false)
                        : action.GetSuccessAsync();
         }
-
-        /// <summary>
-        ///     Invokes the action.
-        ///     This call is for internal means only.
-        /// </summary>
-        /// <typeparam name="T">The type of action to invoke.</typeparam>
-        /// <param name="actionToRun">The action to run.</param>
-        /// <param name="disposeActionDuringCleanup">Dispose the action after execution, during cleanup.</param>
-        /// <param name="executeCompleted">The action to execute after completion.</param>
-        internal Task<bool> InternalInvokeActionAsync<T>(T actionToRun, bool disposeActionDuringCleanup = true, Action executeCompleted = null)
-            where T : Actionflow<TView, TViewModel>, new()
-        {
-            var action = Invoke(actionToRun, disposeActionDuringCleanup, executeCompleted);
-
-            return action == null
-                       ? Task.FromResult(false)
-                       : action.GetSuccessAsync();
-        }
     }
 }

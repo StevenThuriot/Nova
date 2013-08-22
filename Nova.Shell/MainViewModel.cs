@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -159,12 +160,14 @@ namespace Nova.Shell
                                 typeof(CreateNewSessionAction),
                                 typeof(FocusTabAction));
             
-            var enterAction = CreateAction<ComposeAndInitializeAction>();
-            SetEnterAction(enterAction);
-
             View.AddHandler(ClosableTabItem.CloseTabEvent, new RoutedEventHandler(CloseSession));
         }
-        
+
+        public override Task<bool> Enter()
+        {
+            return InvokeActionAsync<ComposeAndInitializeAction>();
+        }
+
         /// <summary>
         /// Creates a new session using the default module.
         /// </summary>

@@ -18,6 +18,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Nova.Threading;
 
 namespace Nova.Library
@@ -60,6 +61,18 @@ namespace Nova.Library
             where T : Actionflow<TView, TViewModel>, new()
         {
             ActionController.InvokeAction<T>(entries);
+        }
+
+        /// <summary>
+        /// Invokes the specified action.
+        /// </summary>
+        /// <typeparam name="T">The type of action to invoke.</typeparam>
+        /// <param name="entries">The entries.</param>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        public Task<bool> InvokeActionAsync<T>(params ActionContextEntry[] entries)
+            where T : Actionflow<TView, TViewModel>, new()
+        {
+            return ActionController.InvokeActionAsync<T>(entries);
         }
     }
 }

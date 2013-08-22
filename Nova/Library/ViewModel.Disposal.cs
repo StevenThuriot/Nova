@@ -61,18 +61,6 @@ namespace Nova.Library
                     _actionManager.Dispose();
                 }
 
-                if (_enterAction != null)
-                {
-                    _enterAction.Dispose();
-                    _enterAction = null;
-                }
-
-                if (_leaveAction != null)
-                {
-                    _leaveAction.Dispose();
-                    _leaveAction = null;
-                }
-
                 _actionQueueManager = null;
             }
 

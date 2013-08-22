@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Nova.Library;
 using Nova.Shell.Actions.Wizard;
@@ -76,9 +77,6 @@ namespace Nova.Shell.Views
             var multiStepView = new MultiStepView(View, SessionViewModel, ID, _initialView);
 
             MultiStepView = multiStepView;
-
-            var enterWizardAction = EnterWizardAction.New<EnterWizardAction>(View, this);
-            SetEnterAction(enterWizardAction);
         }
 
         internal void Initialize(ISessionViewModel sessionViewModel, WizardBuilder builder)
@@ -103,6 +101,12 @@ namespace Nova.Shell.Views
             }
 
             _deferral = null;
+        }
+
+
+        public sealed override Task<bool> Enter()
+        {
+            return InvokeActionAsync<EnterWizardAction>();
         }
 
 

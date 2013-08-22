@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nova.Controls;
+using Nova.Shell.Library.Actions.Wizard;
 
 namespace Nova.Shell.Library
 {
@@ -71,6 +72,17 @@ namespace Nova.Shell.Library
         }
 
         /// <summary>
+        /// Gets a value indicating whether this instance can cancel.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance can cancel; otherwise, <c>false</c>.
+        /// </value>
+        public virtual bool CanCancel
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// Gets the buttons.
         /// </summary>
         /// <value>
@@ -101,7 +113,7 @@ namespace Nova.Shell.Library
                 base.Initialize(initializer);
             }
         }
-        
+
         /// <summary>
         /// Creates the buttons.
         /// </summary>
@@ -111,13 +123,11 @@ namespace Nova.Shell.Library
         {
             var list = new List<IWizardButton>();
 
-            var cancelButton = CreateCancelButton();
-            list.Add(cancelButton);
+            if (CanCancel) list.Add(CreateCancelButton());
 
-            list.Add(CurrentStep.Next != null ? CreateNextButton() : CreateFinishButton());
+            list.Add(NextStep != null ? CreateNextButton() : CreateFinishButton());
 
-            if (CurrentStep.Previous != null)
-                list.Add(CreatePreviousButton());
+            if (PreviousStep != null) list.Add(CreatePreviousButton());
             
             return list;
         }
@@ -135,7 +145,7 @@ namespace Nova.Shell.Library
             return _wizard.CreateWizardButton(title, action, canExecute);
         }
 
-
+        //TODO: Place strings in resources.
 
         /// <summary>
         /// Creates the previous button.
@@ -161,7 +171,20 @@ namespace Nova.Shell.Library
         /// <returns></returns>
         protected IWizardButton CreateFinishButton()
         {
-            return CreateWizardButton("Finish", _ => _wizard.Finish());
+            return CreateWizardButton("Finish", _ => RunFinishAction());
+        }
+
+        protected virtual void RunFinishAction()
+        {
+            InvokeAction<FinishAction<TView, TViewModel>>();
+        }
+        
+        /// <summary>
+        /// Finishes this instance.
+        /// </summary>
+        internal void Finish()
+        {
+            _wizard.Finish();
         }
 
         /// <summary>
@@ -198,17 +221,6 @@ namespace Nova.Shell.Library
                 return;
 
             _wizard.DoStep(step);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance can cancel.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance can cancel; otherwise, <c>false</c>.
-        /// </value>
-        public virtual bool CanCancel
-        {
-            get { return true; }
         }
     }
 }

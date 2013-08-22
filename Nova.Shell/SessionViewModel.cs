@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Nova.Controls;
@@ -102,14 +103,18 @@ namespace Nova.Shell
             BindingOperations.SetBinding(View, SessionView.TitleProperty, titleBinding);
 
             NavigationActionManager = new NavigationActionManager(View);
-
-            var enterAction = CreateAction<SessionEnterAction>();
-            SetEnterAction(enterAction);
-
-            var leaveAction = CreateAction<SessionLeaveAction>();
-            SetLeaveAction(leaveAction);
         }
-        
+
+        public override Task<bool> Enter()
+        {
+            return InvokeActionAsync<SessionEnterAction>();
+        }
+
+        public override Task<bool> Leave()
+        {
+            return InvokeActionAsync<SessionLeaveAction>();
+        }
+
         /// <summary>
         /// Gets or sets the current view.
         /// </summary>
@@ -271,7 +276,7 @@ namespace Nova.Shell
                 View._root.Children.Remove(child);
                 break;
             }
-
+            
            //TODO: CurrentView.ViewModel.InvokeReturn(id, context);
         }
 

@@ -16,23 +16,24 @@
 //  
 #endregion
 
-using System;
 using Nova.Controls;
 using Nova.Library;
 using Nova.Threading.Metadata;
 
-namespace Nova.Shell.Library.Actions
+namespace Nova.Shell.Library.Actions.Wizard
 {
-    /// <summary> 
-    /// Action used for returning from a wizard on top of the current step.
+    /// <summary>
+    /// Action used for stacking a wizard on top of the current step.
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    [Creational, Alias(Aliases.Return)]
-    public abstract class ReturnAction<TView, TViewModel> : Actionflow<TView, TViewModel>
+    [Terminating, Alias(Aliases.Stack)]
+    public abstract class StackAction<TView, TViewModel> : Actionflow<TView, TViewModel>
         where TView : class, IView
         where TViewModel : ContentViewModel<TView, TViewModel>, new()
     {
+        private IWizardBuilder _builder;
+
         /// <summary>
         /// Executes async.
         /// </summary>
@@ -41,33 +42,44 @@ namespace Nova.Shell.Library.Actions
         {
             if (!base.Execute())
                 return false;
-            
-            //TODO: Add unstacking logic
 
-            return Return();
+            if (!Stack())
+                return false;
+
+            _builder = ViewModel.Session.CreateWizardBuilder();
+            BuildWizard(_builder);
+
+            return true;
         }
+
+        /// <summary>
+        /// Builds the wizard.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        protected abstract void BuildWizard(IWizardBuilder builder);
 
         /// <summary>
         /// Executes when the async execution succesfully completed.
         /// </summary>
         public sealed override void ExecuteCompleted()
         {
-            ReturnCompleted();
+            ViewModel.Session.StackWizard(_builder);
+            StackCompleted();
         }
 
         /// <summary>
-        /// Called when returning from a wizard.
+        /// Called when stacking a wizard.
         /// </summary>
         /// <returns></returns>
-        public virtual bool Return()
+        public virtual bool Stack()
         {
             return true;
         }
-
+        
         /// <summary>
-        /// Called when returning from a wizard has completed.
+        /// Called when stacking a wizard has completed.
         /// </summary>
-        public virtual void ReturnCompleted()
+        public virtual void StackCompleted()
         {
         }
     }
