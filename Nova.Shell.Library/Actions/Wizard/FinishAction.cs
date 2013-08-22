@@ -18,6 +18,7 @@
 
 using Nova.Controls;
 using Nova.Library;
+using Nova.Threading.Metadata;
 
 namespace Nova.Shell.Library.Actions.Wizard
 {
@@ -26,6 +27,7 @@ namespace Nova.Shell.Library.Actions.Wizard
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+    [Terminating]
     public class FinishAction<TView, TViewModel> : Actionflow<TView, TViewModel>
         where TView : class, IView
         where TViewModel : WizardContentViewModel<TView, TViewModel>, new()

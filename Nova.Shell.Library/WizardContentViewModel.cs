@@ -174,6 +174,9 @@ namespace Nova.Shell.Library
             return CreateWizardButton("Finish", _ => RunFinishAction());
         }
 
+        /// <summary>
+        /// Runs the finish action.
+        /// </summary>
         protected virtual void RunFinishAction()
         {
             InvokeAction<FinishAction<TView, TViewModel>>();
