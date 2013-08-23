@@ -28,7 +28,7 @@ namespace Nova.Shell.Library.Actions.Wizard
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     [Creational, Alias(Aliases.Return)]
-    public abstract class ReturnAction<TView, TViewModel> : Actionflow<TView, TViewModel>
+    public class ReturnAction<TView, TViewModel> : Actionflow<TView, TViewModel>
         where TView : class, IView
         where TViewModel : ContentViewModel<TView, TViewModel>, new()
     {
@@ -41,8 +41,6 @@ namespace Nova.Shell.Library.Actions.Wizard
             if (!base.Execute())
                 return false;
             
-            //TODO: Add unstacking logic
-
             return Return();
         }
 

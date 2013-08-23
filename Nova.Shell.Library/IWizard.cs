@@ -17,6 +17,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using Nova.Library;
 
 namespace Nova.Shell.Library
 {
@@ -44,7 +46,8 @@ namespace Nova.Shell.Library
         /// <summary>
         /// Finishes this instance.
         /// </summary>
-        void Finish();
+        /// <param name="entries"></param>
+        void Finish(IEnumerable<ActionContextEntry> entries);
 
         /// <summary>
         /// Cancels this instance.

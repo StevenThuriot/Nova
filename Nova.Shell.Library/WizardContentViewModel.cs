@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nova.Controls;
+using Nova.Library;
 using Nova.Shell.Library.Actions.Wizard;
 
 namespace Nova.Shell.Library
@@ -185,9 +186,9 @@ namespace Nova.Shell.Library
         /// <summary>
         /// Finishes this instance.
         /// </summary>
-        internal void Finish()
+        internal void Finish(IEnumerable<ActionContextEntry> entries)
         {
-            _wizard.Finish();
+            _wizard.Finish(entries);
         }
 
         /// <summary>

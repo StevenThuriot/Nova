@@ -19,11 +19,12 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Nova.Controls;
 using System.Windows.Input;
 using Nova.Library;
+using Nova.Shell.Library.Actions.Wizard;
 
 namespace Nova.Shell.Library
 {
@@ -32,7 +33,7 @@ namespace Nova.Shell.Library
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class ContentViewModel<TView, TViewModel> : ViewModel<TView, TViewModel>, INavigatablePage
+    public abstract class ContentViewModel<TView, TViewModel> : ViewModel<TView, TViewModel>, IContentViewModel 
         where TView : class, IView
         where TViewModel : ContentViewModel<TView, TViewModel>, new()
     {
@@ -98,6 +99,17 @@ namespace Nova.Shell.Library
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new()
         {
             return Session.CreateNavigationalAction<TPageView, TPageViewModel>();
+        }
+
+
+        /// <summary>
+        /// Returns to use case.
+        /// </summary>
+        /// <param name="entries">The entries.</param>
+        public virtual void ReturnToUseCase(IEnumerable<ActionContextEntry> entries)
+        {
+            var actionContextEntries = entries.ToArray();
+            InvokeAction<ReturnAction<TView, TViewModel>>(actionContextEntries);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Collections.Generic;
+using System.Windows.Controls;
 using Nova.Library;
 
 #region License
@@ -147,7 +148,7 @@ namespace Nova.Shell.Library
         /// unstacks a wizard.
         /// </summary>
         /// <param name="id">The id.</param>
-        /// <param name="context">The context.</param>
-        void UnstackWizard(Guid id, ActionContext context);
+        /// <param name="entries">The entries.</param>
+        void UnstackWizard(Guid id, IEnumerable<ActionContextEntry> entries);
     }
 }

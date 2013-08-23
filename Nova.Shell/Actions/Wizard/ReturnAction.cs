@@ -16,6 +16,7 @@
 //   
 #endregion
 
+using System.Collections.Generic;
 using Nova.Library;
 using Nova.Shell.Views;
 using Nova.Threading.Metadata;
@@ -28,6 +29,8 @@ namespace Nova.Shell.Actions.Wizard
     [Terminating]
     internal abstract class ReturnAction : Actionflow<WizardView, WizardViewModel>
     {
+        private IEnumerable<ActionContextEntry> _entries;
+
         /// <summary>
         /// Gets a value indicating whether this instance is cancelled.
         /// </summary>
@@ -40,13 +43,15 @@ namespace Nova.Shell.Actions.Wizard
         {
             var actionContextEntry = ActionContextEntry.Create("Cancelled", IsCancelled, false);
             ActionContext.Add(actionContextEntry);
+
+            _entries = ActionContext.GetEntries();
             
             return base.Execute();
         }
 
         public sealed override void ExecuteCompleted()
         {
-            ViewModel.SessionViewModel.UnstackWizard(ViewModel.ID, ActionContext);
+            ViewModel.SessionViewModel.UnstackWizard(ViewModel.ID, _entries);
             View.Dispose();
         }
     }

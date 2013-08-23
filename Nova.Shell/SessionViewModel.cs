@@ -260,8 +260,8 @@ namespace Nova.Shell
         /// unstacks a wizard.
         /// </summary>
         /// <param name="id">The id.</param>
-        /// <param name="context">The context.</param>
-        void ISessionViewModel.UnstackWizard(Guid id, ActionContext context)
+        /// <param name="entries">The entries.</param>
+        void ISessionViewModel.UnstackWizard(Guid id, IEnumerable<ActionContextEntry> entries)
         {
             var frameworkElements = View._root.Children.OfType<FrameworkElement>().Where(x => x.Tag != null).ToList();
             for (var i = frameworkElements.Count - 1; i >= 0; i--)
@@ -276,8 +276,8 @@ namespace Nova.Shell
                 View._root.Children.Remove(child);
                 break;
             }
-            
-           //TODO: CurrentView.ViewModel.InvokeReturn(id, context);
+
+           ((IContentViewModel)CurrentView.ViewModel).ReturnToUseCase(entries);
         }
 
         /// <summary>

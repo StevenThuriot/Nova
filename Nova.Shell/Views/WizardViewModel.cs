@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Nova.Library;
@@ -145,9 +146,9 @@ namespace Nova.Shell.Views
         /// <summary>
         /// Finishes this instance.
         /// </summary>
-        public void Finish()
+        public void Finish(IEnumerable<ActionContextEntry> entries)
         {
-            InvokeAction<FinishAction>();
+            InvokeAction<FinishAction>(entries.ToArray());
         }
 
         /// <summary>

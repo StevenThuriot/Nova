@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Nova.Library.ActionMethodRepository;
 
 namespace Nova.Library
@@ -190,5 +191,15 @@ namespace Nova.Library
         {
             return _context.ContainsKey(key);
         }
+
+
+        /// <summary>
+        /// Gets the entries.
+        /// </summary>
+        /// <returns></returns>
+	    public IEnumerable<ActionContextEntry> GetEntries()
+	    {
+	        return _context.Select(x => ActionContextEntry.Create(x.Key, x.Value, false)).ToList().AsReadOnly();
+	    }
     }
 }

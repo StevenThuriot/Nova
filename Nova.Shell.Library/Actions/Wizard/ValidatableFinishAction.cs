@@ -16,6 +16,7 @@
 //   
 #endregion
 
+using System.Collections.Generic;
 using Nova.Controls;
 using Nova.Library;
 using Nova.Threading.Metadata;
@@ -32,9 +33,18 @@ namespace Nova.Shell.Library.Actions.Wizard
         where TView : class, IView
         where TViewModel : WizardContentViewModel<TView, TViewModel>, new()
     {
+        private IEnumerable<ActionContextEntry> _entries;
+
         public sealed override bool Execute()
         {
-            return base.Execute() && Finish();
+            var execute = base.Execute() && Finish();
+
+            if (!execute)
+                return false;
+
+            _entries = ActionContext.GetEntries();
+
+            return true;
         }
 
         /// <summary>
@@ -49,7 +59,7 @@ namespace Nova.Shell.Library.Actions.Wizard
         public sealed override void ExecuteCompleted()
         {
             base.ExecuteCompleted();
-            ViewModel.Finish();
+            ViewModel.Finish(_entries);
         }
     }
 }
