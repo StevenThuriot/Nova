@@ -6,6 +6,7 @@
       xmlns:testModule="clr-namespace:Nova.TestModule">
 
     <Grid>
-        <TextBlock>first view!</TextBlock>        
+        <TextBox>first view!</TextBox>       
+        
     </Grid>
 </testModule:BaseWizardView1>

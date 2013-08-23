@@ -1,4 +1,22 @@
-﻿using System;
+﻿#region License
+//   
+//  Copyright 2013 Steven Thuriot
+//   
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//  
+//    http://www.apache.org/licenses/LICENSE-2.0
+//  
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//   
+#endregion
+
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -11,6 +29,7 @@ namespace Nova.Shell.Views
     /// Interaction logic for WizardView.xaml
     /// </summary>
     [TemplatePart(Name = "PART_ContentHost", Type = typeof(FrameworkElement))]
+    [TemplatePart(Name = "PART_Wizard", Type = typeof(Grid))]
     [TemplatePart(Name = "PART_RightBorder", Type = typeof(Thumb))]
     [TemplatePart(Name = "PART_LeftBorder", Type = typeof(Thumb))]
     [TemplatePart(Name = "PART_TopBorder", Type = typeof(Thumb))]
@@ -24,7 +43,7 @@ namespace Nova.Shell.Views
         //TODO: Listen to window resizing and restrict wizard if needed.
         
         private Point _clickPosition;
-        private FrameworkElement _contentHost;
+        private Grid _grid;
 
         private Thumb _rightBorder;
         private Thumb _leftBorder;
@@ -359,20 +378,20 @@ namespace Nova.Shell.Views
 
         private void ConfigureContentHost()
         {
-            if (_contentHost != null)
+            if (_grid != null)
             {
-                _contentHost.MouseLeftButtonDown -= ContentMouseDown;
-                _contentHost.MouseLeftButtonUp -= ContentMouseUp;
-                _contentHost.MouseMove -= ContentMouseMove;
+                _grid.MouseLeftButtonDown -= ContentMouseDown;
+                _grid.MouseLeftButtonUp -= ContentMouseUp;
+                _grid.MouseMove -= ContentMouseMove;
             }
 
-            _contentHost = GetTemplateChild("PART_ContentHost") as FrameworkElement;
+            _grid = GetTemplateChild("PART_Wizard") as Grid;
 
-            if (_contentHost != null)
+            if (_grid != null)
             {
-                _contentHost.MouseLeftButtonDown += ContentMouseDown;
-                _contentHost.MouseLeftButtonUp += ContentMouseUp;
-                _contentHost.MouseMove += ContentMouseMove;
+                _grid.MouseLeftButtonDown += ContentMouseDown;
+                _grid.MouseLeftButtonUp += ContentMouseUp;
+                _grid.MouseMove += ContentMouseMove;
             }
         }
     }

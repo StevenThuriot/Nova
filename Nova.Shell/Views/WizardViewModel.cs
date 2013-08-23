@@ -78,6 +78,12 @@ namespace Nova.Shell.Views
             var multiStepView = new MultiStepView(View, SessionViewModel, ID, _initialView);
 
             MultiStepView = multiStepView;
+
+            var keyGesture = new KeyGesture(Key.Escape);
+            var relayCommand = new RelayCommand(Cancel);
+            var inputBinding = new KeyBinding(relayCommand, keyGesture);
+            
+            View.InputBindings.Add(inputBinding);
         }
 
         internal void Initialize(ISessionViewModel sessionViewModel, WizardBuilder builder)

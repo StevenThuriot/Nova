@@ -104,7 +104,7 @@
                                 </MultiBinding>
                             </Border.BorderBrush>
 
-                            <Grid Background="{StaticResource White}">
+                            <Grid Background="{StaticResource White}" x:Name="PART_Wizard" >
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="3" />
                                     <RowDefinition Height="*" />
