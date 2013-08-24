@@ -74,6 +74,7 @@
     <Compile Include="IWizard.cs" />
     <Compile Include="IWizardBuilder.cs" />
     <Compile Include="IWizardButton.cs" />
+    <Compile Include="MultistepContentViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StepInfo.cs" />
     <Compile Include="WizardContentViewModel.cs" />

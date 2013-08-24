@@ -57,8 +57,8 @@ namespace Nova.Shell.Builders
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         /// <returns></returns>
         public IMultiStepBuilder AddStep<TPageView, TPageViewModel>(string title = null)
-            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new() 
-            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new()
+            where TPageViewModel : MultistepContentViewModel<TPageView, TPageViewModel>, new()
         {
             if (string.IsNullOrWhiteSpace(title))
                 title = typeof(TPageView).Name;

@@ -30,19 +30,11 @@ namespace Nova.Shell.Library
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class WizardContentViewModel<TView, TViewModel> : ContentViewModel<TView, TViewModel>
+    public abstract class WizardContentViewModel<TView, TViewModel> : MultistepContentViewModel<TView, TViewModel>
         where TView : class, IView
         where TViewModel : WizardContentViewModel<TView, TViewModel>, new()
     {
         private IWizard _wizard;
-
-        /// <summary>
-        /// Gets the current step.
-        /// </summary>
-        /// <value>
-        /// The current step.
-        /// </value>
-        public LinkedListNode<StepInfo> CurrentStep { get; private set; }
 
         /// <summary>
         /// Gets the next step.
@@ -91,28 +83,24 @@ namespace Nova.Shell.Library
         /// </value>
         public IEnumerable<IWizardButton> Buttons { get; private set; }
 
+
         /// <summary>
         /// Initializes the ContentViewModel using the parent session instance.
         /// </summary>
         /// <param name="initializer">The initializer.</param>
-        internal override void Initialize(IDictionary<string, object> initializer)
+        internal override void Initialize(IDictionary<string, object> initializer, bool triggerDeferal = true)
         {
-            try
-            {
-                CurrentStep = (LinkedListNode<StepInfo>)initializer["Node"];
-                _wizard = (IWizard)initializer["Wizard"];
+            base.Initialize(initializer, false);
+            _wizard = (IWizard)initializer["Wizard"];
 
-                var buttons = CreateButtons();
+            var buttons = CreateButtons();
 
-                if (buttons == null || !buttons.Any())
-                    throw new NotSupportedException("Created buttons are invalid.");
+            if (buttons == null || !buttons.Any())
+                throw new NotSupportedException("Created buttons are invalid.");
 
-                Buttons = buttons;
-            }
-            finally
-            {
-                base.Initialize(initializer);
-            }
+            Buttons = buttons;
+
+            if (triggerDeferal) TriggerDeferal();
         }
 
         /// <summary>

@@ -27,8 +27,8 @@ namespace Nova.Shell.Builders
     /// A step
     /// </summary>
     internal class StepBuilder<TView, TViewModel> : StepBuilder, IEquatable<StepBuilder<TView, TViewModel>> 
-        where TView : ExtendedContentControl<TView, TViewModel>, new() 
-        where TViewModel : ContentViewModel<TView, TViewModel>, new()
+        where TView : ExtendedContentControl<TView, TViewModel>, new()
+        where TViewModel : MultistepContentViewModel<TView, TViewModel>, new()
     {
         private readonly Type _viewType;
         private readonly Type _viewModelType;

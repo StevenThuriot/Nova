@@ -51,12 +51,20 @@ namespace Nova.Shell.Library
         /// Initializes the ContentViewModel using the parent session instance.
         /// </summary>
         /// <param name="initializer">The initializer.</param>
-        internal virtual void Initialize(IDictionary<string, object> initializer)
+        /// <param name="triggerDeferal">if set to <c>true</c> [triggerDeferal].</param>
+        internal virtual void Initialize(IDictionary<string, object> initializer, bool triggerDeferal = true)
         {
-            using (_deferral)
-            {
-                Session = (ISessionViewModel) initializer["Session"];
-            }
+            Session = (ISessionViewModel) initializer["Session"];
+
+            if (triggerDeferal) TriggerDeferal();
+        }
+
+        /// <summary>
+        /// Triggers the deferal.
+        /// </summary>
+        internal void TriggerDeferal()
+        {
+            _deferral.Dispose();
         }
 
         /// <summary>

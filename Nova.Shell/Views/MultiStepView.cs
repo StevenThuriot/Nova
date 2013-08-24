@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Dynamic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,7 +43,7 @@ namespace Nova.Shell.Views
         //TODO: Model that carries through the steps.
 
 
-
+        private readonly dynamic _model = new ExpandoObject();
         private readonly LinkedList<StepInfo> _steps;
         private int _loadingCounter;
         private readonly object _lock = new object();
@@ -109,7 +110,13 @@ namespace Nova.Shell.Views
         /// </value>
         public IViewModel ViewModel
         {
-            get { return (IViewModel)GetValue(ViewModelProperty); }
+            get
+            {
+                if (Dispatcher.CheckAccess())
+                    return (IViewModel)GetValue(ViewModelProperty);
+
+                return Dispatcher.Invoke(() => ViewModel, DispatcherPriority.Send);
+            }
             private set { SetValue(ViewModelProperty, value); }
         }
 
@@ -525,8 +532,14 @@ namespace Nova.Shell.Views
             {
                 {"Session", SessionViewModel},
                 {"Node", node},
-                {"Wizard", ((WizardView) _parent).ViewModel}
+                {"Model", _model}
             };
+
+            var wizard = _parent as WizardView;
+            if (wizard != null)
+            {
+                initializer.Add("Wizard", wizard.ViewModel);
+            }
 
             ((ContentViewModel<TView, TViewModel>)view.ViewModel).Initialize(initializer);
 

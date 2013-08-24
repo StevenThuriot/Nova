@@ -35,7 +35,7 @@ namespace Nova.Shell.Library
         /// The module builder instance.
         /// </returns>
         IMultiStepBuilder AddStep<TPageView, TPageViewModel>(string title = null)
-            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageViewModel : MultistepContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new();
     }
 }
