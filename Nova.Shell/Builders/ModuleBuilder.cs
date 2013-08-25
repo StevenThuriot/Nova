@@ -33,9 +33,9 @@ namespace Nova.Shell.Builders
     internal class ModuleBuilder : IModuleBuilder
     {
         public const int DefaultRanking = 10;
-        
-        private TreeNode _startupTreeNode;
-        private readonly List<TreeNode> _treeNodes = new List<TreeNode>();
+
+        private TreeNodeBase _startupTreeNode;
+        private readonly List<TreeNodeBase> _treeNodes = new List<TreeNodeBase>();
         private int? _ranking;
         private string _title;
 
@@ -79,7 +79,7 @@ namespace Nova.Shell.Builders
         /// <param name="rank">The ranking in the navigational tree. Default value is 10.</param>
         /// <returns>The module builder instance.</returns>
         public IModuleBuilder AddNavigation<TPageView, TPageViewModel>(string title = null, int rank = 10)
-            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new() 
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new() 
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
             //TODO: Allow parameter (so one screen can be used for several purposed depending on the parameter, e.g full/light)
@@ -87,6 +87,30 @@ namespace Nova.Shell.Builders
             var treeNode = TreeNode.New<TPageView, TPageViewModel>(title, rank);
             _treeNodes.Add(treeNode);
 
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a navigational action which will populate the tree.
+        /// </summary>
+        /// <param name="builder">The multi step builder.</param>
+        /// <param name="title">The title of the node.</param>
+        /// <param name="rank">The ranking in the navigational tree. Default value is 10.</param>
+        /// <returns>
+        /// The module builder instance.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">builder</exception>
+        public IModuleBuilder AddNavigation(string title, Action<IMultiStepBuilder> builder, int rank = 10)
+        {
+            if (builder == null)
+                throw new ArgumentNullException("builder");
+
+            var multiStepBuilder = new MultiStepBuilder(title, rank);
+            builder(multiStepBuilder);
+
+            var treeNode = multiStepBuilder.Build();
+            _treeNodes.Add(treeNode);
+            
             return this;
         }
 

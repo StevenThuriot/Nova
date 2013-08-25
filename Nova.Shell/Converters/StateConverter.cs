@@ -1,22 +1,21 @@
 ﻿#region License
-
+//   
+//  Copyright 2013 Steven Thuriot
+//  
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
 // 
-//  Copyright 2012 Steven Thuriot
+//    http://www.apache.org/licenses/LICENSE-2.0
 // 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//   http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-// 
-
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//  
 #endregion
+
 using System;
 using System.Globalization;
 using System.Linq;
@@ -28,7 +27,7 @@ namespace Nova.Shell.Converters
     /// <summary>
     /// A converter to easily set the correct resource depending on the passed states.
     /// </summary>
-    internal class StateConverter : IMultiValueConverter
+    internal abstract class StateConverter : IMultiValueConverter
     {
         /// <summary>
         /// Gets or sets the "Has open documents" resource.
@@ -36,7 +35,7 @@ namespace Nova.Shell.Converters
         /// <value>
         /// The "Has open documents" resource.
         /// </value>
-        public SolidColorBrush HasOpenDocumentsResource { get; set; }
+        public SolidColorBrush DefaultStateResource { get; set; }
         /// <summary>
         /// Gets or sets the "Is waiting" resource.
         /// </summary>
@@ -69,25 +68,7 @@ namespace Nova.Shell.Converters
         /// <returns>
         /// A converted value.If the method returns null, the valid null value is used.A return value of <see cref="T:System.Windows.DependencyProperty" />.<see cref="F:System.Windows.DependencyProperty.UnsetValue" /> indicates that the converter did not produce a value, and that the binding will use the <see cref="P:System.Windows.Data.BindingBase.FallbackValue" /> if it is available, or else will use the default value.A return value of <see cref="T:System.Windows.Data.Binding" />.<see cref="F:System.Windows.Data.Binding.DoNothing" /> indicates that the binding does not transfer the value or use the <see cref="P:System.Windows.Data.BindingBase.FallbackValue" /> or the default value.
         /// </returns>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (values.Length > 3)
-            {
-                var focused = values[3] as bool?;
-                if (!focused.GetValueOrDefault(true)) return UnfocusedResource;
-            }
-
-            var isValidContent = values[2] as bool?;
-            if (!isValidContent.GetValueOrDefault(true)) return IsInErrorResource;
-
-            var isValidSession = values[1] as bool?;
-            if (!isValidSession.GetValueOrDefault(true)) return IsInErrorResource;
-
-            var isExecuting = values[0] as bool?;
-            if (isExecuting.GetValueOrDefault()) return HasOpenDocumentsResource;
-
-            return IsWaitingResource;
-        }
+        public abstract object Convert(object[] values, Type targetType, object parameter, CultureInfo culture);
 
         /// <summary>
         /// Converts a binding target value to the source binding values.

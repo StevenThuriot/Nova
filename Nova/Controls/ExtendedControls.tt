@@ -11,11 +11,16 @@
 <#
 	//Because these types have a very similar implementation, yet have a different base class,
 	//a T4 template has been created for these files instead.
-    var types = new List<Type>
-        {
-            typeof (Page),
-            typeof (UserControl),
-        };
+	var types = new List<Type>
+    {
+        typeof (Page),
+        typeof (UserControl),
+		typeof (ContentControl),
+		typeof (Control),
+    };
+
+	var comparison = new Comparison<Type>((x, y) => String.Compare(x.Name, y.Name, StringComparison.Ordinal));
+	types.Sort(comparison);
 #>
 #region License
 
@@ -42,10 +47,92 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Nova.Controls;
 using Nova.Helpers;
 using Nova.Threading;
 using Nova.Validation;
 using Nova.Library;
+
+namespace Nova.Library
+{
+	public abstract partial class ViewModel<TView, TViewModel>
+    {
+	    //ViewModel.Creation
+		
+	    /// <summary>
+	    /// Creates a new view with the current View as parent.
+	    /// </summary>
+		/// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
+		/// <typeparam name="TGeneralView">The type of the view.</typeparam>
+		/// <typeparam name="TGeneralViewModel">The type of the view model.</typeparam>
+		/// <remarks>
+		/// Supported types:
+	<# foreach (var type in types)
+	{
+		var name = type.Name;#>    ///     - Extended<#= name #>
+	<#}#>	/// </remarks>
+        public TGeneralView CreateView<TGeneralView, TGeneralViewModel>(bool enterOnInitialize = true)		
+            where TGeneralViewModel : ViewModel<TGeneralView, TGeneralViewModel>, new()
+            where TGeneralView : class, IView, new()
+        {
+			return CreateView<TGeneralView, TGeneralViewModel>(View, enterOnInitialize);
+        }
+		
+		/// <summary>
+        /// Creates a new view with the passed View as parent.
+        /// </summary>
+        /// <typeparam name="TGeneralView">The type of the view.</typeparam>
+        /// <typeparam name="TGeneralViewModel">The type of the view model.</typeparam>
+        /// <param name="parent">The parent.</param>
+        /// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotSupportedException"></exception>
+		/// <remarks>
+		/// Supported types:
+	<# foreach (var type in types)
+	{
+		var name = type.Name;#>    ///     - Extended<#= name #>
+	<#}#>	/// </remarks>
+        public TGeneralView CreateView<TGeneralView, TGeneralViewModel>(IView parent, bool enterOnInitialize = true)		
+            where TGeneralViewModel : ViewModel<TGeneralView, TGeneralViewModel>, new()
+            where TGeneralView : class, IView, new()
+        {
+			if (parent == null)
+				throw new ArgumentNullException("parent");
+
+            var view = new TGeneralView();
+            
+            var injectableView = view as ICanInjectStuff<TGeneralView, TGeneralViewModel>;
+
+            if (injectableView == null)
+                throw new NotSupportedException(typeof(TGeneralView).FullName);
+
+            var viewModel = ViewModel<TGeneralView, TGeneralViewModel>.Create(view, _actionQueueManager, enterOnInitialize);
+            injectableView.Inject(parent, viewModel);
+
+            return view;
+        }
+<# foreach (var type in types)
+{
+	var name = type.Name; 
+#>
+
+	    /// <summary>
+	    /// Creates a new <#= name.ToLowerInvariant() #> with the current View as parent.
+	    /// </summary>
+		/// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
+		/// <typeparam name="T<#= name #>View">The type of the page view.</typeparam>
+		/// <typeparam name="T<#= name #>ViewModel">The type of the page view model.</typeparam>
+		public T<#= name #>View Create<#= name #><T<#= name #>View, T<#= name #>ViewModel>(bool enterOnInitialize = true)		
+			where T<#= name #>ViewModel : ViewModel<T<#= name #>View, T<#= name #>ViewModel>, new()
+			where T<#= name #>View : Extended<#= name #><T<#= name #>View, T<#= name #>ViewModel>, new()
+		{
+			return Extended<#= name #><T<#= name #>View, T<#= name #>ViewModel>.Create(View, _actionQueueManager, enterOnInitialize);
+		}
+<#}#>
+	}
+}
+
 
 namespace Nova.Controls
 {
@@ -61,10 +148,13 @@ namespace Nova.Controls
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class Extended<#= name #><TView, TViewModel> : <#= name #>, IView
+    public abstract class Extended<#= name #><TView, TViewModel> : <#= name #>, IView, ICanInjectStuff<TView, TViewModel>
         where TViewModel : ViewModel<TView, TViewModel>, new()
         where TView : Extended<#= name #><TView, TViewModel>, new()
     {
+        private int _loadingCounter;
+        private readonly object _lock = new object();
+
         // ReSharper disable StaticFieldInGenericType
 
         /// <summary>
@@ -77,7 +167,7 @@ namespace Nova.Controls
         /// <summary>
         /// The title property
         /// </summary>
-        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(Extended<#= name #><TView, TViewModel>), new PropertyMetadata(""));
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(Extended<#= name #><TView, TViewModel>), new FrameworkPropertyMetadata(""));
 <# } #>
 
         // ReSharper restore StaticFieldInGenericType
@@ -92,36 +182,13 @@ namespace Nova.Controls
         /// </summary>
         private IView _parent;
 
-        private TViewModel _viewModel;
         /// <summary>
         /// Gets the view model.
         /// </summary>
         /// <value>
         /// The view model.
         /// </value>
-        public TViewModel ViewModel
-        {
-            get { return _viewModel; }
-            private set
-            {
-                if (_viewModel != value)
-                {
-                    _viewModel = value;
-                    DataContext = value;
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Focuses the control.
-        /// </summary>
-        /// <param name="fieldName">Name of the field.</param>
-        /// <param name="entityID">The entity ID.</param>
-        /// <returns></returns>
-        public bool FocusControl(string fieldName, Guid entityID = new Guid())
-        {
-            return FocusHelper.FocusControl(this, fieldName, entityID);
-        }
+        public TViewModel ViewModel { get; private set; }
 
         /// <summary>
         /// Gets or sets the validation control.
@@ -202,19 +269,45 @@ namespace Nova.Controls
             if (actionQueueManager == null)
                 throw new ArgumentNullException("actionQueueManager");
             
-            var <#= name.ToLowerInvariant() #> = new TView
-                {
-                    _parent = parent
-                };
+            var <#= name.ToLowerInvariant() #> = new TView { _parent = parent };
 
-            <#= name.ToLowerInvariant() #>.ViewModel = ViewModel<TView, TViewModel>.Create(<#= name.ToLowerInvariant() #>, actionQueueManager, enterOnInitialize);
+			var viewModel = ViewModel<TView, TViewModel>.Create(<#= name.ToLowerInvariant() #>, actionQueueManager, enterOnInitialize);
+			<#= name.ToLowerInvariant() #>.ViewModel = viewModel;
 
             return <#= name.ToLowerInvariant() #>;
-        }        
-        
-        
-        private int _loadingCounter;
-        private readonly object _lock = new object();
+        }   
+		
+        /// <summary>
+        /// Injects the specified viewmodel and parent.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="viewModel">The view model.</param>
+        void ICanInjectStuff<TView, TViewModel>.Inject(IView parent, TViewModel viewModel)
+        {
+            _parent = parent;
+            ViewModel = viewModel;
+        }           
+
+        /// <summary>
+        /// Focuses the control.
+        /// </summary>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <returns></returns>
+        public bool FocusControl(string fieldName)
+        {
+            return FocusControl(fieldName, (Guid) NovaValidation.EntityIDProperty.DefaultMetadata.DefaultValue);
+        }
+
+        /// <summary>
+        /// Focuses the control.
+        /// </summary>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <param name="entityID">The entity ID.</param>
+        /// <returns></returns>
+        public bool FocusControl(string fieldName, Guid entityID)
+        {
+            return FocusHelper.FocusControl(this, fieldName, entityID);
+        }
 
         /// <summary>
         ///     Starts the animated loading.
@@ -295,9 +388,9 @@ namespace Nova.Controls
                     _parent = null;
                 }
 
-                if (_viewModel != null)
+                if (ViewModel != null)
                 {
-                    _viewModel.Dispose();
+                    ViewModel.Dispose();
                 }
             }
 

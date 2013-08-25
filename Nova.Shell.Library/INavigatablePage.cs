@@ -18,6 +18,8 @@
 
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using Nova.Controls;
 
@@ -26,7 +28,7 @@ namespace Nova.Shell.Library
     /// <summary>
     /// A content page that allows navigation.
     /// </summary>
-    public interface INavigatablePage
+    internal interface INavigatablePage
     {
         /// <summary>
         /// Creates a navigational action that navigates the parent session to the specified page.
@@ -35,6 +37,6 @@ namespace Nova.Shell.Library
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         ICommand CreateNavigationalAction<TPageView, TPageViewModel>()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new();
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new();
     }
 }

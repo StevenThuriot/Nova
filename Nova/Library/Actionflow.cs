@@ -281,7 +281,7 @@ namespace Nova.Library
         /// <param name="view">The view.</param>
         /// <param name="viewModel">The view model.</param>
         /// <param name="actionContext">The action context.</param>
-        public static TResult New<TResult>(TView view, TViewModel viewModel, ActionContext actionContext = null)
+        internal static TResult New<TResult>(TView view, TViewModel viewModel, ActionContext actionContext = null)
             where TResult : Actionflow<TView, TViewModel>, new()
         {
             if (view == null)

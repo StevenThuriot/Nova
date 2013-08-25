@@ -1,6 +1,4 @@
-﻿using Nova.Library;
-
-#region License
+﻿#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -20,10 +18,12 @@
 
 #endregion
 
+using Nova.Library;
 using System.Threading;
 using System.Windows.Input;
 using Nova.Controls;
 using Nova.Shell.Library;
+using Nova.Shell.Library.Actions.Wizard;
 
 namespace Nova.TestModule
 {
@@ -38,7 +38,7 @@ namespace Nova.TestModule
         }
     }
 
-    public abstract class TestPageBase : ExtendedUserControl<TestPage, TestPageViewModel>
+    public abstract class TestPageBase : ExtendedContentControl<TestPage, TestPageViewModel>
     {
 
     }
@@ -70,6 +70,15 @@ namespace Nova.TestModule
             Thread.Sleep(5000);
 
             return base.Execute();
+        }
+    }
+
+    public class Stack : StackAction<TestPage, TestPageViewModel>
+    {
+        protected override void BuildWizard(IWizardBuilder builder)
+        {
+            builder.AddStep<WizardView1, WizardViewModel1>()
+                   .AddStep<WizardView2, WizardViewModel2>();
         }
     }
 }

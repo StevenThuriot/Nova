@@ -1,6 +1,4 @@
-﻿using Nova.Library;
-
-#region License
+﻿#region License
 
 // 
 //  Copyright 2012 Steven Thuriot
@@ -21,14 +19,22 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
+using Nova.Shell.Builders;
 using Nova.Shell.Library;
 using Nova.Shell.Managers;
 using System.Windows.Input;
+using Nova.Shell.Views;
 using RESX = Nova.Shell.Properties.Resources;
+using System.Windows.Data;
+using Nova.Library;
 
 
 namespace Nova.Shell
@@ -40,9 +46,10 @@ namespace Nova.Shell
     {
         internal const string CurrentViewConstant = "CurrentSessionContentView";
         internal const string CreateNextViewConstant = "CreateNextSessionContentView";
+        internal const string ViewTypeConstant = "ViewTypeConstant";
+        internal const string ViewModelTypeConstant = "ViewModelTypeConstant";
 
         private IView _currentView;
-        private string _title;
         private readonly dynamic _model;
         private readonly dynamic _applicationModel;
 
@@ -75,26 +82,12 @@ namespace Nova.Shell
         {
             get { return _model; }
         }
-
-        /// <summary>
-        /// Gets the title.
-        /// </summary>
-        /// <value>
-        /// The title.
-        /// </value>
-        public string Title
-        {
-            get { return _title; }
-            set { SetValue(ref _title, value); }
-        }
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="SessionViewModel" /> class.
         /// </summary>
         public SessionViewModel()
         {
-            _title = RESX.EmptySession;
-
             _applicationModel = ((App) Application.Current).Model;
             _model = new ExpandoObject();
         }
@@ -106,15 +99,22 @@ namespace Nova.Shell
         {
             SetKnownActionTypes(typeof(SessionLeaveAction), typeof(NavigationAction)); //Optimalization
 
+            var titleBinding = new Binding("CurrentView.Title") { Mode=BindingMode.OneWay };
+            BindingOperations.SetBinding(View, SessionView.TitleProperty, titleBinding);
+
             NavigationActionManager = new NavigationActionManager(View);
-
-            var enterAction = CreateAction<SessionEnterAction>();
-            SetEnterAction(enterAction);
-
-            var leaveAction = CreateAction<SessionLeaveAction>();
-            SetLeaveAction(leaveAction);
         }
-        
+
+        public override Task<bool> Enter()
+        {
+            return InvokeActionAsync<SessionEnterAction>();
+        }
+
+        public override Task<bool> Leave()
+        {
+            return InvokeActionAsync<SessionLeaveAction>();
+        }
+
         /// <summary>
         /// Gets or sets the current view.
         /// </summary>
@@ -126,9 +126,7 @@ namespace Nova.Shell
             get { return _currentView; }
             internal set
             {
-                if (value == null || !SetValue(ref _currentView, value)) return;
-
-                Title = _currentView.Title;
+                SetValue(ref _currentView, value);
             }
         }
 
@@ -157,16 +155,32 @@ namespace Nova.Shell
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         /// <returns></returns>
-        internal TPageView CreatePage<TPageView, TPageViewModel>()
+        public TPageView Create<TPageView, TPageViewModel>(IView parent)
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new()
+            where TPageView : class, IView, new()
         {
-            var page = CreatePage<TPageView, TPageViewModel>(false);
-            page.ViewModel.Initialize(this);
+            var page = CreateView<TPageView, TPageViewModel>(parent, false);
+
+            var initializer = new Dictionary<string, object> {{"Session", this}};
+
+            ((ContentViewModel<TPageView, TPageViewModel>)page.ViewModel).Initialize(initializer);
+
 
             return page;
         }
-
+        /// <summary>
+        /// Creates a page specifically for the content zone and fills in the session model.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <returns></returns>
+        public TPageView Create<TPageView, TPageViewModel>()
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : class, IView, new()
+        {
+            return Create<TPageView, TPageViewModel>(View);
+        }
+        
         /// <summary>
         /// Creates the navigational action.
         /// </summary>
@@ -175,7 +189,7 @@ namespace Nova.Shell
         /// <returns></returns>
         /// <exception cref="System.NotImplementedException"></exception>
         public ICommand CreateNavigationalAction<TPageView, TPageViewModel>()
-            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new() 
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new() 
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
             return NavigationActionManager.New<TPageView, TPageViewModel>();
@@ -195,6 +209,75 @@ namespace Nova.Shell
             var currentView = CurrentView;
 
             return currentView == null || currentView.ViewModel.IsValid; //The content zone level.
+        }
+
+        /// <summary>
+        /// Creates a wizard builder.
+        /// </summary>
+        /// <returns></returns>
+        IWizardBuilder ISessionViewModel.CreateWizardBuilder()
+        {
+            return new WizardBuilder();
+        }
+
+        /// <summary>
+        /// Creates the wizard.
+        /// </summary>
+        /// <returns></returns>
+        void ISessionViewModel.StackWizard(IWizardBuilder builder)
+        {
+            var wizardBuilder = (WizardBuilder)builder;
+
+            var overlay = new Overlay();
+
+            Grid.SetRowSpan(overlay, 2);
+            Grid.SetColumnSpan(overlay, 2);
+
+            Grid.SetRow(overlay, 0);
+            Grid.SetColumn(overlay, 0);
+
+            overlay.Delay = 0;
+            overlay.MinimumDuration = 0;
+            overlay.AnimationSpeed = 1;
+
+            overlay.IsLoading = true;
+
+            var wizard = CreateContentControl<WizardView, WizardViewModel>();
+
+            WizardViewModel wizardViewModel = wizard.ViewModel;
+
+            overlay.Tag = wizardViewModel.ID;
+            wizardViewModel.Initialize(this, wizardBuilder);
+
+            var canvas = new Canvas();
+            canvas.Children.Add(wizard);
+
+            overlay.Content = canvas;
+            View._root.Children.Add(overlay);
+        }
+
+        /// <summary>
+        /// unstacks a wizard.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="entries">The entries.</param>
+        void ISessionViewModel.UnstackWizard(Guid id, IEnumerable<ActionContextEntry> entries)
+        {
+            var frameworkElements = View._root.Children.OfType<FrameworkElement>().Where(x => x.Tag != null).ToList();
+            for (var i = frameworkElements.Count - 1; i >= 0; i--)
+            {
+                var child = frameworkElements[i];
+                var input = child.Tag.ToString();
+
+                Guid tag;
+                if (!Guid.TryParse(input, out tag)) continue;
+                if (tag != id) continue;
+
+                View._root.Children.Remove(child);
+                break;
+            }
+
+           ((IContentViewModel)CurrentView.ViewModel).ReturnToUseCase(entries);
         }
 
         /// <summary>

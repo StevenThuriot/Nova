@@ -19,11 +19,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Input;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace Nova.Shell.Domain
 {
@@ -31,11 +28,10 @@ namespace Nova.Shell.Domain
     /// A Nova Tree Node.
     /// </summary>
     [DebuggerDisplay("Title = {Title}", Name = "Nova Tree Node")]
-    public class NovaTreeNode : INotifyPropertyChanged
+    public class NovaTreeNode : NovaTreeNodeBase, IEquatable<NovaTreeNode>
     {
         private readonly Type _pageType;
         private readonly Type _viewModelType;
-        private bool _isCurrentNode;
 
         /// <summary>
         /// Gets the type of the page.
@@ -60,46 +56,12 @@ namespace Nova.Shell.Domain
         }
 
         /// <summary>
-        /// Gets the title.
-        /// </summary>
-        /// <value>
-        /// The title.
-        /// </value>
-        public string Title { get; private set; }
-
-        /// <summary>
         /// Gets the navigational command.
         /// </summary>
         /// <value>
         /// The navigational command.
         /// </value>
         public ICommand NavigationalCommand { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance is startup node.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is startup node; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsStartupNode { get; private set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is current node.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is current node; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsCurrentNode
-        {
-            get { return _isCurrentNode; }
-            private set
-            {
-                if (_isCurrentNode == value) return;
-
-                _isCurrentNode = value;
-                OnPropertyChanged();
-            }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NovaTreeNode" /> class.
@@ -111,9 +73,8 @@ namespace Nova.Shell.Domain
         /// <param name="isStartupNode">if set to <c>true</c> [is startup node].</param>
         /// <exception cref="System.ArgumentNullException">title</exception>
         public NovaTreeNode(string title, Type pageType, Type viewModelType, ICommand navigationalCommand, bool isStartupNode)
+            : base (title, isStartupNode)
         {
-            if (string.IsNullOrWhiteSpace(title))
-                throw new ArgumentNullException("title");
 
             if (navigationalCommand == null)
                 throw new ArgumentNullException("navigationalCommand");
@@ -121,89 +82,59 @@ namespace Nova.Shell.Domain
             _pageType = pageType;
             _viewModelType = viewModelType;
 
-            Title = title;
             NavigationalCommand = navigationalCommand;
-            IsStartupNode = isStartupNode;
         }
         
         /// <summary>
         /// Navigates this instance.
         /// </summary>
-        public void Navigate()
+        public virtual void Navigate()
         {
-            //TODO: Pass parameter, if any.
             NavigationalCommand.Execute(null);
         }
-        
-        /// <summary>
-        /// Reevaluates the state.
-        /// </summary>
-        /// <param name="pageType">Type of the page.</param>
-        /// <param name="viewModelType">Type of the view model.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
-        internal bool ReevaluateState(Type pageType, Type viewModelType)
+
+
+        protected override bool CheckIfCurrent(Type pageType, Type viewModelType)
         {
             var result = pageType == _pageType && viewModelType == _viewModelType;
-            IsCurrentNode = result;
-            
             return result;
         }
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Called when property changed.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public bool Equals(NovaTreeNode other)
         {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && _pageType == other._pageType && _viewModelType == other._viewModelType;
         }
 
-
-
-
-        /// <summary>
-        /// <see cref="NovaTreeNode" /> Comparer
-        /// </summary>
-        private sealed class PageTypeViewModelTypeEqualityComparer : IEqualityComparer<NovaTreeNode>
+        public override bool Equals(object obj)
         {
-            /// <summary>
-            /// Determines whether the specified <see cref="NovaTreeNode" /> are equal.
-            /// </summary>
-            /// <param name="x">The x.</param>
-            /// <param name="y">The y.</param>
-            /// <returns></returns>
-            public bool Equals(NovaTreeNode x, NovaTreeNode y)
-            {
-                if (ReferenceEquals(x, y)) return true;
-                if (ReferenceEquals(x, null)) return false;
-                if (ReferenceEquals(y, null)) return false;
-                if (x.GetType() != y.GetType()) return false;
-                return x._pageType == y._pageType && x._viewModelType == y._viewModelType;
-            }
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((NovaTreeNode) obj);
+        }
 
-            /// <summary>
-            /// Returns a hash code for this instance.
-            /// </summary>
-            /// <param name="obj">The obj.</param>
-            /// <returns>
-            /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
-            /// </returns>
-            public int GetHashCode(NovaTreeNode obj)
+        public override int GetHashCode()
+        {
+            unchecked
             {
-                unchecked
-                {
-                    return ((obj._pageType != null ? obj._pageType.GetHashCode() : 0)*397) ^ (obj._viewModelType != null ? obj._viewModelType.GetHashCode() : 0);
-                }
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode*397) ^ (_pageType != null ? _pageType.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (_viewModelType != null ? _viewModelType.GetHashCode() : 0);
+                return hashCode;
             }
         }
 
-        /// <summary>
-        /// <see cref="NovaTreeNode" /> comparer instance
-        /// </summary>
-        public static readonly IEqualityComparer<NovaTreeNode> NovaTreeNodeComparer = new PageTypeViewModelTypeEqualityComparer();
+        public static bool operator ==(NovaTreeNode left, NovaTreeNode right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(NovaTreeNode left, NovaTreeNode right)
+        {
+            return !Equals(left, right);
+        }
     }
 }

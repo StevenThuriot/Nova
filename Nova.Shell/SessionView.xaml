@@ -7,10 +7,9 @@
       xmlns:Controls="clr-namespace:Nova.Shell.Controls"
       FocusVisualStyle="{x:Null}"
       mc:Ignorable="d" 
-      d:DataContext="{d:DesignData Source=SessionViewModel.cs}"
-	    Title="{Binding Title, Mode=OneWay}" >
+      d:DataContext="{d:DesignData Source=SessionViewModel.cs}">
 
-  <Grid>
+  <Grid x:Name="_root">
     <Grid.RowDefinitions>
       <RowDefinition Height="90" />
       <RowDefinition Height="*" />
@@ -48,6 +47,5 @@
                     Foreground="{DynamicResource WhiteBrush}"
                     />
     </Overlay>
-    
   </Grid>
 </shell:SessionViewBase>

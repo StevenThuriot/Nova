@@ -112,27 +112,23 @@ namespace Nova.Library
 		/// <param name="informationalMessage">The informational message.</param>
 		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         private static void InternalHandle(Exception exception, string title, string informationalMessage)
-		{
+        {
+            var application = Application.Current;
+	        if (application == null)
+	            return;
+
+            var dispatcher = application.Dispatcher;
+
 			var handler = new Action(() =>
 			                         	{
 			                         		//TryCatch is here to prevent getting into a loop in case the eventhandling throws an exception.
 											try
 											{
-                                                var aggregateException = exception as AggregateException;
-
-											    Action<Exception> format;
-											    
-                                                if (ShowStackTrace)
-											    {
-											        format = FormatMessage;
-											    }
-											    else
-											    {
-											        format = FormatException;
-											    }
+											    var format = ShowStackTrace ? (Action<Exception>) FormatMessage : FormatException;
 
 											    format(exception);
 
+                                                var aggregateException = exception as AggregateException;
                                                 if (aggregateException != null)
                                                 {
                                                     aggregateException.Handle(x =>
@@ -144,7 +140,7 @@ namespace Nova.Library
                                                 }
 
 											    var message = Builder.ToString();
-                                                Builder.Clear();
+                                                Builder.Clear(); //Reuse for performance reasons.
 
 												Log(exception);
 
@@ -159,7 +155,6 @@ namespace Nova.Library
 											}
 			                         	});
 
-			var dispatcher = Application.Current.Dispatcher;
 
 			if (dispatcher.CheckAccess())
 			{

@@ -1,6 +1,4 @@
-﻿using Nova.Library;
-
-#region License
+﻿#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -21,8 +19,12 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Nova.Controls;
 using System.Windows.Input;
+using Nova.Library;
+using Nova.Shell.Library.Actions.Wizard;
 
 namespace Nova.Shell.Library
 {
@@ -31,12 +33,11 @@ namespace Nova.Shell.Library
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class ContentViewModel<TView, TViewModel> : ViewModel<TView, TViewModel>, INavigatablePage
+    public abstract class ContentViewModel<TView, TViewModel> : ViewModel<TView, TViewModel>, IContentViewModel 
         where TView : class, IView
-        where TViewModel : ViewModel<TView, TViewModel>, new()
+        where TViewModel : ContentViewModel<TView, TViewModel>, new()
     {
-        private IDisposable _deferral;
-        private ISessionViewModel _session;
+        private readonly IDisposable _deferral;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentViewModel{TView, TViewModel}"/> class.
@@ -49,14 +50,30 @@ namespace Nova.Shell.Library
         /// <summary>
         /// Initializes the ContentViewModel using the parent session instance.
         /// </summary>
-        /// <param name="session">The parent session.</param>
-        internal void Initialize(ISessionViewModel session)
+        /// <param name="initializer">The initializer.</param>
+        /// <param name="triggerDeferal">if set to <c>true</c> [triggerDeferal].</param>
+        internal virtual void Initialize(IDictionary<string, object> initializer, bool triggerDeferal = true)
         {
-            _session = session;
+            Session = (ISessionViewModel) initializer["Session"];
 
-            _deferral.Dispose();
-            _deferral = null;
+            if (triggerDeferal) TriggerDeferal();
         }
+
+        /// <summary>
+        /// Triggers the deferal.
+        /// </summary>
+        internal void TriggerDeferal()
+        {
+            _deferral.Dispose();
+        }
+
+        /// <summary>
+        /// Gets the session view model.
+        /// </summary>
+        /// <value>
+        /// The session view model.
+        /// </value>
+        internal ISessionViewModel Session { get; private set; }
 
         /// <summary>
         /// Gets the application model.
@@ -66,7 +83,7 @@ namespace Nova.Shell.Library
         /// </value>
         public dynamic ApplicationModel
         {
-            get { return _session.ApplicationModel; }
+            get { return Session.ApplicationModel; }
         }
 
         /// <summary>
@@ -77,9 +94,9 @@ namespace Nova.Shell.Library
         /// </value>
         public dynamic SessionModel
         {
-            get { return _session.Model; }
+            get { return Session.Model; }
         }
-        
+
         /// <summary>
         /// Creates a navigational action that navigates the parent session to the specified page.
         /// </summary>
@@ -87,22 +104,20 @@ namespace Nova.Shell.Library
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         public ICommand CreateNavigationalAction<TPageView, TPageViewModel>()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new()
         {
-            return _session.CreateNavigationalAction<TPageView, TPageViewModel>();
+            return Session.CreateNavigationalAction<TPageView, TPageViewModel>();
         }
 
+
         /// <summary>
-        /// Disposes the managed resources.
+        /// Returns to use case.
         /// </summary>
-        protected override void DisposeManagedResources()
+        /// <param name="entries">The entries.</param>
+        public virtual void ReturnToUseCase(IEnumerable<ActionContextEntry> entries)
         {
-            _session = null;
-
-            if (_deferral == null) return;
-
-            _deferral.Dispose();
-            _deferral = null;
+            var actionContextEntries = entries.ToArray();
+            InvokeAction<ReturnAction<TView, TViewModel>>(actionContextEntries);
         }
     }
 }

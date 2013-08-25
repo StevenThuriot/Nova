@@ -1,4 +1,6 @@
-﻿using Nova.Library;
+﻿using System.Collections.Generic;
+using System.Windows.Controls;
+using Nova.Library;
 
 #region License
 
@@ -71,13 +73,82 @@ namespace Nova.Shell.Library
         bool IsSessionValid();
 
         /// <summary>
-        /// Creates a new page with the current window as parent.
+        /// Creates a new view with the current View as parent.
         /// </summary>
         /// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
+        /// <typeparam name="TView">The type of the view.</typeparam>
+        /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+        /// <remarks>
+        /// Supported types:
+        ///     - ExtendedContentControl
+        ///     - ExtendedControl
+        ///     - ExtendedPage
+        ///     - ExtendedUserControl
+        /// </remarks>
+        TView CreateView<TView, TViewModel>(bool enterOnInitialize = true)		
+            where TViewModel : ViewModel<TView, TViewModel>, new()
+            where TView : class, IView, new();
+
+        /// <summary>
+        /// Creates a new view with the passed View as parent.
+        /// </summary>
+        /// <typeparam name="TView">The type of the view.</typeparam>
+        /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+        /// <param name="parent">The parent.</param>
+        /// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotSupportedException"></exception>
+        /// <remarks>
+        /// Supported types:
+        ///     - ExtendedContentControl
+        ///     - ExtendedControl
+        ///     - ExtendedPage
+        ///     - ExtendedUserControl
+        /// </remarks>
+        TView CreateView<TView, TViewModel>(IView parent, bool enterOnInitialize = true)		
+            where TViewModel : ViewModel<TView, TViewModel>, new()
+            where TView : class, IView, new();
+
+        /// <summary>
+        /// Creates a page specifically for the content zone and fills in the session model.
+        /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        TPageView CreatePage<TPageView, TPageViewModel>(bool enterOnInitialize = true)
-            where TPageViewModel : ViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new();
+        /// <returns></returns>
+        TPageView Create<TPageView, TPageViewModel>()
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : class, IView, new();
+
+        /// <summary>
+        /// Creates a page specifically for the content zone and fills in the session model.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <param name="parent">The parent.</param>
+        /// <returns></returns>
+        TPageView Create<TPageView, TPageViewModel>(IView parent)
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : class, IView, new();
+
+
+
+        /// <summary>
+        /// Creates a wizard builder.
+        /// </summary>
+        /// <returns></returns>
+        IWizardBuilder CreateWizardBuilder();
+
+        /// <summary>
+        /// Stacks a new wizard.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        void StackWizard(IWizardBuilder builder);
+
+        /// <summary>
+        /// unstacks a wizard.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="entries">The entries.</param>
+        void UnstackWizard(Guid id, IEnumerable<ActionContextEntry> entries);
     }
 }

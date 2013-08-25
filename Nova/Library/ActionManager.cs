@@ -130,7 +130,7 @@ namespace Nova.Library
 			if (_createAction == null)
 			{
 				_createAction =
-                    typeof(TViewModel).GetMethods().First(x => "CreateRoutedAction".Equals((string) x.Name, StringComparison.OrdinalIgnoreCase) && x.GetParameters().Length == 1);
+                    typeof(TViewModel).GetMethods().First(x => "CreateRoutedAction".Equals(x.Name, StringComparison.OrdinalIgnoreCase) && x.GetParameters().Length == 1);
 			}
 
 			var generic = _createAction.MakeGenericMethod(actionType);

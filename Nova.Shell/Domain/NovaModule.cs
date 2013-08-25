@@ -33,8 +33,8 @@ namespace Nova.Shell.Domain
     [DebuggerDisplay("Title = {Title}, Ranking = {Ranking}", Name = "Nova Module")]
     internal class NovaModule
     {
-        private readonly TreeNode _startUpTreeNode;
-        private readonly IEnumerable<TreeNode> _treeNodes;
+        private readonly TreeNodeBase _startUpTreeNode;
+        private readonly IEnumerable<TreeNodeBase> _treeNodes;
 
         /// <summary>
         /// Gets the title.
@@ -53,12 +53,15 @@ namespace Nova.Shell.Domain
         public int Ranking { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NovaModule"/> class.
+        /// Initializes a new instance of the <see cref="NovaModule" /> class.
         /// </summary>
         /// <param name="title">The title.</param>
         /// <param name="ranking">The ranking.</param>
         /// <param name="treeNodes">The tree nodes.</param>
-        public NovaModule(string title, int ranking, IEnumerable<TreeNode> treeNodes, TreeNode startUpTreeNode = null)
+        /// <param name="startUpTreeNode">The start up tree node.</param>
+        /// <exception cref="System.ArgumentNullException">title</exception>
+        /// <exception cref="System.ArgumentException">@There haven't been any tree nodes defined.</exception>
+        public NovaModule(string title, int ranking, IEnumerable<TreeNodeBase> treeNodes, TreeNodeBase startUpTreeNode = null)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentNullException("title");
@@ -94,11 +97,11 @@ namespace Nova.Shell.Domain
         /// </summary>
         /// <param name="page">The page.</param>
         /// <returns></returns>
-        internal IEnumerable<NovaTreeNode> BuildNovaTreeNodes(INavigatablePage page)
+        internal IEnumerable<NovaTreeNodeBase> BuildNovaTreeNodes(INavigatablePage page)
         {
             var nodes = _treeNodes.OrderByDescending(x => x.Rank)
                                   .Select(x => x.Build(page, x == _startUpTreeNode))
-                                  .Distinct(NovaTreeNode.NovaTreeNodeComparer)
+                                  .Distinct()
                                   .ToList()
                                   .AsReadOnly();
             

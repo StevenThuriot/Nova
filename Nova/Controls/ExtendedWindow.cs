@@ -51,7 +51,6 @@ namespace Nova.Controls
 // ReSharper restore StaticFieldInGenericType
 
         private bool _disposed;
-        private TViewModel _viewModel;
 
         private int _loadingCounter;
         private ActionQueueManager _actionQueueManager;
@@ -83,27 +82,27 @@ namespace Nova.Controls
         /// <value>
         /// The view model.
         /// </value>
-        public TViewModel ViewModel
-        {
-            get { return _viewModel; }
-            private set
-            {
-                if (_viewModel == value) return;
+        public TViewModel ViewModel { get; private set; }
 
-                _viewModel = value;
-                DataContext = value;
-            }
+        /// <summary>
+        /// Focuses the control.
+        /// </summary>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <returns></returns>
+        public bool FocusControl(string fieldName)
+        {
+            return FocusControl(fieldName, (Guid)NovaValidation.EntityIDProperty.DefaultMetadata.DefaultValue);
         }
 
         /// <summary>
         /// Focuses the control.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        /// <param name="entityID">The entity ID.</param>
+        /// <param name="entityId">The entity ID.</param>
         /// <returns></returns>
-        public bool FocusControl(string fieldName, Guid entityID = new Guid())
+        public bool FocusControl(string fieldName, Guid entityId)
         {
-            return FocusHelper.FocusControl(this, fieldName, entityID);
+            return FocusHelper.FocusControl(this, fieldName, entityId);
         }
 
         /// <summary>
@@ -199,9 +198,9 @@ namespace Nova.Controls
 
             if (disposing)
             {
-                if (_viewModel != null)
+                if (ViewModel != null)
                 {
-                    _viewModel.Dispose();
+                    ViewModel.Dispose();
                 }
 
                 if (_actionQueueManager != null)

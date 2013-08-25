@@ -1,5 +1,3 @@
-using Nova.Library;
-
 #region License
 // 
 //  Copyright 2012 Steven Thuriot
@@ -19,6 +17,8 @@ using Nova.Library;
 #endregion
 
 using System;
+using System.Windows.Threading;
+using Nova.Library;
 using Nova.Validation;
 
 namespace Nova.Controls
@@ -66,9 +66,16 @@ namespace Nova.Controls
         /// Focuses the control.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        /// <param name="entityID">The entity ID.</param>
         /// <returns></returns>
-        bool FocusControl(string fieldName, Guid entityID = default(Guid));
+        bool FocusControl(string fieldName);
+
+        /// <summary>
+        /// Focuses the control.
+        /// </summary>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <param name="entityId">The entity ID.</param>
+        /// <returns></returns>
+        bool FocusControl(string fieldName, Guid entityId);
 
         /// <summary>
         /// Gets or sets the validation control.

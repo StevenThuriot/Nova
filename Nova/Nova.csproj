@@ -51,10 +51,11 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\packages\Thuriot.PFX.1.0.0\lib\Thuriot.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Publish|AnyCPU'">
     <OutputPath>R:\Nova\Main\</OutputPath>
@@ -75,22 +76,22 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nova.Threading, Version=1.0.0.0, Culture=neutral, PublicKeyToken=03252df91086a919, processorArchitecture=MSIL">
+    <Reference Include="Nova.Threading, Version=2.0.0.0, Culture=neutral, PublicKeyToken=03252df91086a919, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nova.Threading.1.0.0\lib\net45\Nova.Threading.dll</HintPath>
+      <HintPath>..\packages\Nova.Threading.2.1.0\lib\net45\Nova.Threading.dll</HintPath>
     </Reference>
     <Reference Include="Nova.Threading.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=03252df91086a919, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Nova.Threading.Metadata.1.0.0\lib\net45\Nova.Threading.Metadata.dll</HintPath>
     </Reference>
-    <Reference Include="Nova.Threading.WPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=03252df91086a919, processorArchitecture=MSIL">
+    <Reference Include="Nova.Threading.WPF, Version=2.2.0.0, Culture=neutral, PublicKeyToken=03252df91086a919, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nova.Threading.WPF.1.0.0\lib\net45\Nova.Threading.WPF.dll</HintPath>
+      <HintPath>..\packages\Nova.Threading.WPF.2.2.0\lib\net45\Nova.Threading.WPF.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.9.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.11.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.9\lib\net45\System.Threading.Tasks.Dataflow.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.11\lib\portable-net45+win8\System.Threading.Tasks.Dataflow.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -103,14 +104,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\ClosableTabControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ClosableTabItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\ExceptionHandler\ExceptionHandlerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -119,14 +112,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\SearchTextBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\WindowControlBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -134,6 +119,10 @@
     <Page Include="Themes\Checkbox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ClosableTabs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Combobox.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -144,6 +133,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Expander.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\SearchTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -237,12 +230,8 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Controls\BindableRun.cs" />
-    <Compile Include="Controls\ClosableTabControl.xaml.cs">
-      <DependentUpon>ClosableTabControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ClosableTabItem.xaml.cs">
-      <DependentUpon>ClosableTabItem.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\ClosableTabControl.cs" />
+    <Compile Include="Controls\ClosableTabItem.cs" />
     <Compile Include="Controls\DataGridHeaderBorder.cs" />
     <Compile Include="Controls\ExceptionHandler\ExceptionHandlerView.cs">
       <DependentUpon>ExceptionHandlerWindow.xaml</DependentUpon>
@@ -275,18 +264,13 @@
       <DependentUpon>ProgressIndicator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ProgressRing.cs" />
+    <Compile Include="Controls\SearchTextBox.cs" />
     <Compile Include="Controls\ValidationBorder.cs" />
     <Compile Include="Converters\IsNotNullToVisibilityConverter.cs" />
     <Compile Include="Converters\SubtractionConverter.cs" />
     <Compile Include="Converters\WidthPercentageConverter.cs" />
     <Compile Include="Helpers\FocusHelper.cs" />
     <Compile Include="Helpers\PasswordBoxMonitor.cs" />
-    <Compile Include="Controls\SearchTextBox.xaml.cs">
-      <DependentUpon>SearchTextBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\WindowControlBox.xaml.cs">
-      <DependentUpon>WindowControlBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\AutoScrollHandler.cs" />
     <Compile Include="Library\Actions\Aliases.cs" />
     <Compile Include="Library\AliasAttribute.cs" />
@@ -312,6 +296,7 @@
     <Compile Include="Library\ErrorBinding.cs" />
     <Compile Include="Library\ExceptionHandler.cs" />
     <Compile Include="Library\ChangeTracking\ExtendedChangeTrackingHelper.cs" />
+    <Compile Include="Library\ICanInjectStuff.cs" />
     <Compile Include="Library\IViewModel.cs" />
     <Compile Include="Library\NotifyPropertyChanged.cs" />
     <Compile Include="Library\RelayCommand.cs" />

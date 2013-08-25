@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Nova.Controls;
 using Nova.Properties;
@@ -79,13 +80,13 @@ namespace Nova.Library.ActionMethodRepository
 			{
 			    var actionType = action.GetType();
 
-                var viewModelMethods = GetOnBeforeMethods<TViewModel>(actionType);
+                var viewModelMethods = GetOnBeforeMethods<TViewModel>(actionType).ToList();
 				foreach (var viewModelMethod in viewModelMethods)
 				{
 					viewModelMethod.Invoke(action.ViewModel, action.ActionContext);
 				}
 
-				var viewMethods = GetOnBeforeMethods<TView>(actionType);
+				var viewMethods = GetOnBeforeMethods<TView>(actionType).ToList();
 				foreach (var viewMethod in viewMethods)
 				{
 					viewMethod.Invoke(action.View, action.ActionContext);

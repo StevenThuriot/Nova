@@ -1,5 +1,3 @@
-using Nova.Library.ActionMethodRepository;
-
 #region License
 // 
 //  Copyright 2013 Steven Thuriot
@@ -20,9 +18,10 @@ using Nova.Library.ActionMethodRepository;
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using System.Windows.Input;
-using Nova.Controls;
 using Nova.Threading;
+using Nova.Library.ActionMethodRepository;
 
 namespace Nova.Library
 {
@@ -41,7 +40,7 @@ namespace Nova.Library
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">view</exception>
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
-        internal static TViewModel Create(TView view, IActionQueueManager actionQueueManager, bool enterOnInitialize = true)
+        public static TViewModel Create(TView view, IActionQueueManager actionQueueManager, bool enterOnInitialize = true)
         {
             if (view == null)
                 throw new ArgumentNullException("view");
@@ -63,7 +62,7 @@ namespace Nova.Library
         /// <typeparam name="T">The type of action to create.</typeparam>
         /// <param name="actionContext">The action context.</param>
         /// <returns>A new actionflow instance.</returns>
-        public T CreateAction<T>(ActionContext actionContext = null)
+        internal T CreateAction<T>(ActionContext actionContext = null)
             where T : Actionflow<TView, TViewModel>, new()
         {
             return Actionflow<TView, TViewModel>.New<T>(View, (TViewModel) this, actionContext);
@@ -107,7 +106,7 @@ namespace Nova.Library
         /// <param name="actionQueueManager">The action queue manager.</param>
         /// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
         /// <exception cref="System.ArgumentNullException">view</exception>
-        internal void Initialize(TView view, IActionQueueManager actionQueueManager, bool enterOnInitialize)
+        private void Initialize(TView view, IActionQueueManager actionQueueManager, bool enterOnInitialize)
         {
             if (view == null)
                 throw new ArgumentNullException("view");
@@ -138,6 +137,12 @@ namespace Nova.Library
             _created = true;
             OnCreated();
 
+            var frameworkElement = View as FrameworkElement;
+            if (frameworkElement != null)
+            {
+                frameworkElement.DataContext = this;
+            }
+
             if (!_enterOnInitialize) return;
 
             Enter();
@@ -148,19 +153,6 @@ namespace Nova.Library
         /// </summary>
         protected virtual void OnCreated()
         {
-        }
-        
-        /// <summary>
-        /// Creates a new page with the current window as parent.
-        /// </summary>
-        /// <param name="enterOnInitialize">if set to <c>true</c>, the Enter Action will be triggered automatically. Default is true.</param>
-        /// <typeparam name="TPageView">The type of the page view.</typeparam>
-        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        public TPageView CreatePage<TPageView, TPageViewModel>(bool enterOnInitialize = true)
-            where TPageViewModel : ViewModel<TPageView, TPageViewModel>, new()
-            where TPageView : ExtendedUserControl<TPageView, TPageViewModel>, new()
-        {
-            return ExtendedUserControl<TPageView, TPageViewModel>.Create(View, _actionQueueManager, enterOnInitialize);
         }
 
 

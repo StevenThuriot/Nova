@@ -1,5 +1,3 @@
-using Nova.Library.ActionMethodRepository;
-
 #region License
 // 
 //  Copyright 2012 Steven Thuriot
@@ -20,12 +18,16 @@ using Nova.Library.ActionMethodRepository;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using Nova.Library.ActionMethodRepository;
 
 namespace Nova.Library
 {
 	/// <summary>
 	/// Context used to pass data to actions and back.
 	/// </summary>
+	[DebuggerDisplay("Action: {ActionName}, Count: {_context.Count}")]
 	public class ActionContext
 	{
         private readonly Dictionary<string, object> _context;
@@ -189,5 +191,15 @@ namespace Nova.Library
         {
             return _context.ContainsKey(key);
         }
+
+
+        /// <summary>
+        /// Gets the entries.
+        /// </summary>
+        /// <returns></returns>
+	    public IEnumerable<ActionContextEntry> GetEntries()
+	    {
+	        return _context.Select(x => ActionContextEntry.Create(x.Key, x.Value, false)).ToList().AsReadOnly();
+	    }
     }
 }

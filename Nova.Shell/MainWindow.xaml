@@ -38,9 +38,9 @@
   <Window.Resources>
     <converters:BoolToProgressStateConverter x:Key="_ProgressConverter" />
 
-    <converters:StateConverter x:Key="_BrushStateConverter"
+    <converters:WindowStateConverter x:Key="_BrushStateConverter"
                                UnfocusedResource="{StaticResource Unfocused}"
-                               HasOpenDocumentsResource="{StaticResource Blue}"
+                               DefaultStateResource="{StaticResource Blue}"
                                IsWaitingResource="{StaticResource Purple}"
                                IsInErrorResource="{StaticResource RedBrush}"/>
 
@@ -182,7 +182,7 @@
                 Sessions="{Binding Sessions}"
                 CurrentSession="{Binding CurrentSession}"
                 AddCommand="{ActionBinding CreateNewSession}" />
-
+      
       <Grid Grid.Row="2" Grid.ColumnSpan="5">
         <Grid.Background>
           <MultiBinding Converter="{StaticResource _BrushStateConverter}">

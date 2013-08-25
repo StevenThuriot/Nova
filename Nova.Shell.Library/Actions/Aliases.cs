@@ -16,19 +16,21 @@
 //  
 #endregion
 
-namespace Nova.Shell.Views
+namespace Nova.Shell.Library.Actions
 {
     /// <summary>
-    /// Interaction logic for StepNotAvailableView.xaml
+    /// Class containing all the Nova Shell action aliases.
     /// </summary>
-    public partial class StepNotAvailableView
+    public static class Aliases
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StepNotAvailableView"/> class.
+        /// The stack alias
         /// </summary>
-        public StepNotAvailableView()
-        {
-            InitializeComponent();
-        }
+        public const string Stack = "Stack";
+
+        /// <summary>
+        /// The return alias
+        /// </summary>
+        public const string Return = "Return";
     }
 }

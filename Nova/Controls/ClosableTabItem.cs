@@ -18,12 +18,14 @@
 
 #endregion
 
+using System;
 using System.Windows.Input;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace Nova.Controls
 {
@@ -31,8 +33,16 @@ namespace Nova.Controls
     /// Interaction logic for ClosableTabItem.xaml
     /// </summary>
     [TemplatePart(Name = "PART_CloseTab", Type = typeof(Button))]
-    public partial class ClosableTabItem
+    public class ClosableTabItem : TabItem
     {
+        /// <summary>
+        /// Initializes the <see cref="ClosableTabItem" /> class.
+        /// </summary>
+        static ClosableTabItem()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ClosableTabItem), new FrameworkPropertyMetadata(typeof(ClosableTabItem)));
+        }
+
         /// <summary>
         /// The close button
         /// </summary>
@@ -57,11 +67,31 @@ namespace Nova.Controls
         /// </summary>
         public ClosableTabItem()
         {
-            InitializeComponent();
+            RenderTransform = new ScaleTransform();
             AddHandler(CloseTabEvent, new RoutedEventHandler(CloseCurrentTabItem));
 
             PreviewMouseUp += OnMiddleClick;
+            Loaded += TabItemLoaded;
         }
+
+        /// <summary>
+        /// Triggers when the tab item loads.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
+        private void TabItemLoaded(object sender, RoutedEventArgs e)
+        {
+            var storyBoard = new Storyboard();
+            var animation = new DoubleAnimation(0.65d, 1d,  TimeSpan.FromMilliseconds(70));
+
+            Storyboard.SetTarget(animation, this);
+            Storyboard.SetTargetProperty(animation, new PropertyPath("RenderTransform.(ScaleTransform.ScaleX)"));
+
+            storyBoard.Children.Add(animation);
+
+            storyBoard.Begin();
+        }
+
 
         /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
@@ -75,7 +105,7 @@ namespace Nova.Controls
                 _closeButton.Click -= RaiseCloseEvent;
             }
 
-            _closeButton = GetTemplateChild("PART_CloseTab") as Button;
+            _closeButton = (Button) GetTemplateChild("PART_CloseTab");
 
             if (_closeButton != null)
             {
