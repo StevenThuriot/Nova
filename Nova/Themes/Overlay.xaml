@@ -3,7 +3,6 @@
                     xmlns:Controls="clr-namespace:Nova.Controls">
   
   <Style TargetType="Controls:Overlay">
-    <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
     <Setter Property="OverlayBrush" Value="{DynamicResource OverlayBrush}"/>
     <Setter Property="Visibility" Value="Collapsed" />
     <Setter Property="Opacity" Value="0" />
