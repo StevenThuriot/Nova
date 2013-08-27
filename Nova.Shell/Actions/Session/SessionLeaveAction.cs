@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -29,17 +29,28 @@ namespace Nova.Shell.Actions.Session
     {
         public override bool Leave()
         {
-            if (!ViewModel.IsSessionValid())
+			var canLeave = true;
+			
+            if (ViewModel.IsChanged)
             {
-                //Todo: Handle error state.
+                //Todo: Save Cancel
+				//var result = ShowDialog(Buttons.SaveCancel, "changes have been made", "Save?");
+				//if (result == Save)
+				{
+					//var changesSaved = ViewModel.SaveChanges() && ViewModel.IsSessionValid();
+					//if (!changesSaved)
+					{
+						//ShowDialog(Buttons.OK, "Changes could not be saved...");
+						//canLeave = false;
+					}
+				}
+				//else
+				{
+					//canLeave = false;
+				}
             }
-
-            //if (!ViewModel.IsDirty)
-            //{
-            //    //Todo: Handle dirty state.
-            //}
-
-            return base.Leave();
+			
+            return canLeave;
         }
     }
 }
