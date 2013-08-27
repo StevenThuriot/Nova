@@ -96,7 +96,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type views:WizardView}">
-                        <Border d:DataContext="{d:DesignInstance views:WizardViewModel}" BorderThickness="1">
+                        <Border d:DataContext="{d:DesignInstance views:WizardViewModel}" BorderThickness="1"
+                                Background="{StaticResource White}" x:Name="PART_Wizard">
                             <Border.BorderBrush>
                                 <MultiBinding Converter="{StaticResource _wizardBrushStateConverter}">
                                     <Binding Path="IsValid" />
@@ -104,7 +105,7 @@
                                 </MultiBinding>
                             </Border.BorderBrush>
 
-                            <Grid Background="{StaticResource White}" x:Name="PART_Wizard" >
+                            <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="3" />
                                     <RowDefinition Height="*" />
@@ -118,8 +119,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Content -->
-                                <ContentPresenter Grid.Row="1" Grid.Column="1"
-                                                  x:Name="PART_ContentHost" />
+                                <ContentPresenter Grid.Row="1" Grid.Column="1" x:Name="PART_ContentHost" />
 
                                 <!-- Buttons -->
                                 <ItemsControl Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="3" Grid.Column="0"

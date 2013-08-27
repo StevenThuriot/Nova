@@ -28,8 +28,8 @@ namespace Nova.Shell.Views
     /// <summary>
     /// Interaction logic for WizardView.xaml
     /// </summary>
-    [TemplatePart(Name = "PART_ContentHost", Type = typeof(FrameworkElement))]
-    [TemplatePart(Name = "PART_Wizard", Type = typeof(Grid))]
+    [TemplatePart(Name = "PART_ContentHost", Type = typeof(ContentPresenter))]
+    [TemplatePart(Name = "PART_Wizard", Type = typeof(IInputElement))]
     [TemplatePart(Name = "PART_RightBorder", Type = typeof(Thumb))]
     [TemplatePart(Name = "PART_LeftBorder", Type = typeof(Thumb))]
     [TemplatePart(Name = "PART_TopBorder", Type = typeof(Thumb))]
@@ -43,7 +43,7 @@ namespace Nova.Shell.Views
         //TODO: Listen to window resizing and restrict wizard if needed.
         
         private Point _clickPosition;
-        private Grid _grid;
+        private IInputElement _inputElement;
 
         private Thumb _rightBorder;
         private Thumb _leftBorder;
@@ -167,8 +167,15 @@ namespace Nova.Shell.Views
                 var position = getCanvasPosition() + getDelta(args);
                 var size = getCurrent() + delta;
 
-                if (position <= 3 || size < getMinimum())
+                if (size < getMinimum())
                     return;
+
+                if (position <= 3)
+                {
+                    var positionDelta = 4 - position;
+                    position = 4;
+                    delta -= positionDelta;
+                }
 
                 setCanvasPosition(position);
             }
@@ -178,26 +185,29 @@ namespace Nova.Shell.Views
 
         private void ContentMouseDown(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
-
+            if (e.Handled)
+                return;
+            
             var element = (FrameworkElement)sender;
             _clickPosition = e.GetPosition(element);
-            element.CaptureMouse();
+
+            e.Handled = element.CaptureMouse();
         }
 
         private static void ContentMouseUp(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
-
             var element = (FrameworkElement)sender;
             element.ReleaseMouseCapture();
         }
 
         private void ContentMouseMove(object sender, MouseEventArgs e)
         {
+            if (e.Handled)
+                return;
+
             var element = (FrameworkElement)sender;
 
-            if (!element.IsMouseCaptureWithin)
+            if (!element.IsMouseCaptured)
                 return;
 
             e.Handled = true;
@@ -378,20 +388,20 @@ namespace Nova.Shell.Views
 
         private void ConfigureContentHost()
         {
-            if (_grid != null)
+            if (_inputElement != null)
             {
-                _grid.MouseLeftButtonDown -= ContentMouseDown;
-                _grid.MouseLeftButtonUp -= ContentMouseUp;
-                _grid.MouseMove -= ContentMouseMove;
+                _inputElement.MouseLeftButtonDown -= ContentMouseDown;
+                _inputElement.MouseLeftButtonUp -= ContentMouseUp;
+                _inputElement.MouseMove -= ContentMouseMove;
             }
 
-            _grid = GetTemplateChild("PART_Wizard") as Grid;
+            _inputElement = (IInputElement) GetTemplateChild("PART_Wizard");
 
-            if (_grid != null)
+            if (_inputElement != null)
             {
-                _grid.MouseLeftButtonDown += ContentMouseDown;
-                _grid.MouseLeftButtonUp += ContentMouseUp;
-                _grid.MouseMove += ContentMouseMove;
+                _inputElement.MouseLeftButtonDown += ContentMouseDown;
+                _inputElement.MouseLeftButtonUp += ContentMouseUp;
+                _inputElement.MouseMove += ContentMouseMove;
             }
         }
     }

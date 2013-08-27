@@ -42,7 +42,12 @@ namespace Nova.Shell
         /// </param>
         private void MoveWindow(object sender, MouseButtonEventArgs e)
         {
+            if (e.Handled)
+                return;
+
             DragMove();
+
+            e.Handled = true;
         }
 
         /// <summary>

@@ -28,9 +28,9 @@ using System.Windows.Threading;
 namespace Nova.Controls
 {
     /// <summary>
-    /// Interaction logic for Overlay.xaml
+    /// Interaction logic for Overlay
     /// </summary>
-    public class Overlay : UserControl
+    public class Overlay : ContentControl
     {
         private DateTime? _lastShown;
         private DispatcherTimer _fadeInTimer;
