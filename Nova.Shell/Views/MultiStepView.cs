@@ -38,11 +38,8 @@ namespace Nova.Shell.Views
     /// A view that has several steps inside.
     /// </summary>
     /// <remarks>Useful for sharing a model between these steps.</remarks>
-    internal class MultiStepView : ContentPresenter, IView, IMultiStep
+    internal class MultiStepView : ContentPresenter, IView
     {
-        //TODO: Model that carries through the steps.
-
-
         private readonly dynamic _model = new ExpandoObject();
         private readonly LinkedList<StepInfo> _steps;
         private int _loadingCounter;
@@ -87,20 +84,20 @@ namespace Nova.Shell.Views
         private readonly Guid _groupId;
 
         /// <summary>
+        /// Gets the session view model.
+        /// </summary>
+        /// <value>
+        /// The session view model.
+        /// </value>
+        private readonly ISessionViewModel _sessionViewModel;
+
+        /// <summary>
         /// Gets or sets the validation control.
         /// </summary>
         /// <value>
         /// The validation control.
         /// </value>
         public ValidationControl ValidationControl { get; set; }
-
-        /// <summary>
-        /// Gets the session view model.
-        /// </summary>
-        /// <value>
-        /// The session view model.
-        /// </value>
-        public ISessionViewModel SessionViewModel { get; private set; }
         
         /// <summary>
         /// Gets the view model.
@@ -130,7 +127,7 @@ namespace Nova.Shell.Views
         public bool IsLoading
         {
             get { return (bool)GetValue(IsLoadingProperty); }
-            set { SetValue(IsLoadingProperty, value); }
+            private set { SetValue(IsLoadingProperty, value); }
         }
 
         /// <summary>
@@ -142,7 +139,7 @@ namespace Nova.Shell.Views
         public string Title
         {
             get { return (string)GetValue(TitleProperty); }
-            set { SetValue(TitleProperty, value); }
+            private set { SetValue(TitleProperty, value); }
         }
 
         /// <summary>
@@ -273,7 +270,7 @@ namespace Nova.Shell.Views
         public LinkedListNode<NovaStep> CurrentView
         {
             get { return (LinkedListNode<NovaStep>)GetValue(CurrentViewProperty); }
-            set { SetValue(CurrentViewProperty, value); }
+            private set { SetValue(CurrentViewProperty, value); }
         }
         
         private static object OnCoerceCurrentView(DependencyObject d, object basevalue)
@@ -323,7 +320,7 @@ namespace Nova.Shell.Views
             _parent = parent;
             _groupId = groupId;
 
-            SessionViewModel = sessionViewModel;
+            _sessionViewModel = sessionViewModel;
             
             SnapsToDevicePixels = true;
             FocusVisualStyle = null;
@@ -335,7 +332,7 @@ namespace Nova.Shell.Views
             VisualTextRenderingMode = TextRenderingMode.ClearType;
 
 
-            var stepInfos = initialView.List.Select(x => new StepInfo(x.Title, x.ViewType, x.ViewModelType, x.NodeID));
+            var stepInfos = initialView.List.Select(x => new StepInfo(x.Title, x.ViewType, x.ViewModelType, x.NodeId));
             _steps = new LinkedList<StepInfo>(stepInfos);
             CurrentView = initialView;
         }
@@ -382,45 +379,6 @@ namespace Nova.Shell.Views
 
 
 
-
-        /// <summary>
-        /// Determines whether this instance can go to next step.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if this instance [can go to next step]; otherwise, <c>false</c>.
-        /// </returns>
-        public bool CanGoToNextStep()
-        {
-            return CurrentView.Next != null;
-        }
-        
-        /// <summary>
-        /// Determines whether this instance can go to previous step.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if this instance [can go to previous step]; otherwise, <c>false</c>.
-        /// </returns>
-        public bool CanGoToPreviousStep()
-        {
-            return CurrentView.Previous != null;
-        }
-        
-        /// <summary>
-        /// Cancels this instance.
-        /// </summary>
-        public void Cancel()
-        {
-            //TODO:
-        }
-
-        /// <summary>
-        /// Finishes this instance.
-        /// </summary>
-        public void Finish()
-        {
-            //TODO:
-        }
-
         /// <summary>
         /// Attempts to do a step to the specified step.
         /// </summary>
@@ -434,7 +392,7 @@ namespace Nova.Shell.Views
 
             while (node != null)
             {
-                if (node.Value.NodeID == id)
+                if (node.Value.NodeId == id)
                     break;
 
                 node = node.Next;
@@ -514,9 +472,9 @@ namespace Nova.Shell.Views
             if (!Dispatcher.CheckAccess())
                 return Dispatcher.Invoke(() => CreateStep<TView, TViewModel>(novaStep), DispatcherPriority.Send);
 
-            var view = SessionViewModel.CreateView<TView, TViewModel>(this, false);
+            var view = _sessionViewModel.CreateView<TView, TViewModel>(this, false);
 
-            var nodeId = novaStep.NodeID;
+            var nodeId = novaStep.NodeId;
             var nodes = new LinkedList<StepInfo>(_steps);
             var node = nodes.First;
             
@@ -530,7 +488,7 @@ namespace Nova.Shell.Views
 
             var initializer = new Dictionary<string, object>
             {
-                {"Session", SessionViewModel},
+                {"Session", _sessionViewModel},
                 {"Node", node},
                 {"Model", _model}
             };
@@ -553,7 +511,7 @@ namespace Nova.Shell.Views
             
             while (node != null && node.Value != null)
             {
-                if (node.Value.NodeID == nodeId)
+                if (node.Value.NodeId == nodeId)
                     return node.Value;
 
                 node = node.Next;

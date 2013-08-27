@@ -63,7 +63,6 @@
     <Compile Include="Actions\Wizard\ValidatableFinishAction.cs" />
     <Compile Include="ContentViewModel.cs" />
     <Compile Include="IContentViewModel.cs" />
-    <Compile Include="IMultiStep.cs" />
     <Compile Include="IMultiStepBuilder.cs" />
     <Compile Include="INavigationActionManager.cs" />
     <Compile Include="INavigatablePage.cs" />

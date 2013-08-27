@@ -64,7 +64,7 @@ namespace Nova.Shell.Actions.Wizard
 
         public override void ExecuteCompleted()
         {
-            ViewModel.MultiStepView.DoStep(_nextStep.NodeID);
+            ViewModel.MultiStepView.DoStep(_nextStep.NodeId);
         }
     }
 }

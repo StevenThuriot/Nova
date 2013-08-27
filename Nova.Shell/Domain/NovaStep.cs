@@ -108,7 +108,7 @@ namespace Nova.Shell.Domain
         /// <value>
         /// The node ID.
         /// </value>
-        public Guid NodeID { get; private set; }
+        public Guid NodeId { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NovaStep" /> class.
@@ -119,7 +119,7 @@ namespace Nova.Shell.Domain
         /// <param name="viewModelType">Type of the view model.</param>
         protected NovaStep(string title, Guid @group, Type viewType, Type viewModelType)
         {
-            NodeID = Guid.NewGuid();
+            NodeId = Guid.NewGuid();
             Title = title;
             Group = @group;
             ViewType = viewType;
