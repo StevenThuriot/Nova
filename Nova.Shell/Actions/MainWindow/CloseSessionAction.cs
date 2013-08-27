@@ -42,7 +42,6 @@ namespace Nova.Shell.Actions.MainWindow
 
         public override void ExecuteCompleted()
         {
-            //TODO: Check if leave was successful.
             ViewModel.Sessions.Remove(_session);
         }
     }
