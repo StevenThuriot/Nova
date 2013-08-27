@@ -17,7 +17,9 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Nova.Controls;
+using Nova.Shell.Library.Actions.Multistep;
 
 namespace Nova.Shell.Library
 {
@@ -59,6 +61,11 @@ namespace Nova.Shell.Library
             Model = initializer["Model"];
 
             if (triggerDeferal) TriggerDeferal();
+        }
+
+        public override Task<bool> Leave()
+        {
+            return InvokeActionAsync<LeaveMultistepAction<TView, TViewModel>>();
         }
     }
 }
