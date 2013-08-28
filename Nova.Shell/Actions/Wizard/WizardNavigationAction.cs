@@ -16,6 +16,7 @@
 //   
 #endregion
 
+using System.Collections.Generic;
 using Nova.Library;
 using Nova.Shell.Domain;
 using Nova.Shell.Library;
@@ -48,6 +49,20 @@ namespace Nova.Shell.Actions.Wizard
             if (!canLeave)
                 return false;
 
+            var previousStep = ViewModel.PreviousStep;
+            var isReturning = previousStep != null && previousStep.Value.NodeId == _nextStep.NodeId;
+            
+            LinkedListNode<StepInfo> poppedStep = null;
+            if (isReturning)
+            {
+                poppedStep = ViewModel.PreviousSteps.Pop();
+            }
+            else
+            {
+                var currentStepInfo = ViewModel.MultiStepView.GetStepInfoNode(_current);
+                ViewModel.PreviousSteps.Push(currentStepInfo);
+            }
+            
             var nextView = _nextStep.GetOrCreateView(ViewModel.MultiStepView);
             
             if (nextView != null)
@@ -58,6 +73,16 @@ namespace Nova.Shell.Actions.Wizard
                 if (result)
                     return true;
             }
+
+            return RollBack(isReturning, poppedStep);
+        }
+
+        private bool RollBack(bool isReturning, LinkedListNode<StepInfo> poppedStep)
+        {
+            if (isReturning)
+                ViewModel.PreviousSteps.Push(poppedStep);
+            else
+                ViewModel.PreviousSteps.Pop();
 
             return _current.View.ViewModel.Enter().Result; // Stay on current.
         }

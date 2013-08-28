@@ -68,6 +68,7 @@ namespace Nova.Shell.Views
         /// </summary>
         public WizardViewModel()
         {
+            PreviousSteps = new Stack<LinkedListNode<StepInfo>>();
             _deferral = DeferCreated(); //Defer Created logic so we can call it manually in our extended initialize method.
         }
 
@@ -144,7 +145,7 @@ namespace Nova.Shell.Views
         {
             if (step == null)
                 throw new ArgumentNullException("step");
-
+            
             var entry = ActionContextEntry.Create(step, false);
             InvokeAction<WizardNavigationAction>(entry);
         }
@@ -165,7 +166,31 @@ namespace Nova.Shell.Views
             InvokeAction<CancelAction>();
         }
 
+        /// <summary>
+        /// Gets the previous steps.
+        /// </summary>
+        /// <value>
+        /// The previous steps.
+        /// </value>
+        public Stack<LinkedListNode<StepInfo>> PreviousSteps { get; private set; }
 
+        /// <summary>
+        /// Gets the previous step.
+        /// </summary>
+        /// <value>
+        /// The previous step.
+        /// </value>
+        public LinkedListNode<StepInfo> PreviousStep
+        {
+            get
+            {
+                return PreviousSteps.Count == 0 ? null : PreviousSteps.Peek();
+            }
+        }
+
+        /// <summary>
+        /// Disposes the managed resources.
+        /// </summary>
         protected override void DisposeManagedResources()
         {
             MultiStepView.Dispose();

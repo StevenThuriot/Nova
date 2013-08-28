@@ -30,7 +30,7 @@ namespace Nova.Shell.Library
             Title = title;
             ViewType = viewType;
             ViewModelType = viewModelType;
-            NodeID = nodeId;
+            NodeId = nodeId;
         }
 
         /// <summary>
@@ -63,6 +63,6 @@ namespace Nova.Shell.Library
         /// <value>
         /// The node ID.
         /// </value>
-        public Guid NodeID { get; private set; }
+        public Guid NodeId { get; private set; }
     }
 }

@@ -23,7 +23,7 @@ using Nova.Library;
 namespace Nova.Shell.Library
 {
     /// <summary>
-    ///     Wizard
+    /// Wizard
     /// </summary>
     internal interface IWizard
     {
@@ -53,5 +53,13 @@ namespace Nova.Shell.Library
         /// Cancels this instance.
         /// </summary>
         void Cancel();
+
+        /// <summary>
+        /// Gets the previous step.
+        /// </summary>
+        /// <value>
+        /// The previous step.
+        /// </value>
+        LinkedListNode<StepInfo> PreviousStep { get; }
     }
 }

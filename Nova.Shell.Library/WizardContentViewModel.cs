@@ -58,10 +58,7 @@ namespace Nova.Shell.Library
         /// </value>
         public virtual LinkedListNode<StepInfo> PreviousStep
         {
-            get
-            {
-                return CurrentStep.Previous;
-            }
+            get { return _wizard.PreviousStep; }
         }
 
         /// <summary>
@@ -203,10 +200,9 @@ namespace Nova.Shell.Library
         }
 
         /// <summary>
-        /// Does the step to the specified node.
+        /// Does the step.
         /// </summary>
         /// <param name="step">The step.</param>
-        /// <returns></returns>
         protected void DoStep(StepInfo step)
         {
             if (step == null)

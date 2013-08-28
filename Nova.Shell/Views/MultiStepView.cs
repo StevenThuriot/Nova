@@ -42,6 +42,7 @@ namespace Nova.Shell.Views
     {
         private readonly dynamic _model = new ExpandoObject();
         private readonly LinkedList<StepInfo> _steps;
+
         private int _loadingCounter;
         private readonly object _lock = new object();
 
@@ -475,12 +476,11 @@ namespace Nova.Shell.Views
             var view = _sessionViewModel.CreateView<TView, TViewModel>(this, false);
 
             var nodeId = novaStep.NodeId;
-            var nodes = new LinkedList<StepInfo>(_steps);
-            var node = nodes.First;
+            var node = _steps.First;
             
             while (node != null)
             {
-                if (node.Value.NodeID == nodeId)
+                if (node.Value.NodeId == nodeId)
                     break;
 
                 node = node.Next;
@@ -503,10 +503,14 @@ namespace Nova.Shell.Views
 
             return view;
         }
-
+        
         public NovaStep GetNovaStep(StepInfo step)
         {
-            var nodeId = step.NodeID;
+            return GetNovaStep(step.NodeId);
+        }
+
+        public NovaStep GetNovaStep(Guid nodeId)
+        {
             var node = CurrentView.List.First;
             
             while (node != null && node.Value != null)
@@ -518,6 +522,26 @@ namespace Nova.Shell.Views
             }
 
             throw new ArgumentOutOfRangeException("step");
+        }
+
+        public LinkedListNode<StepInfo> GetStepInfoNode(NovaStep current)
+        {
+            return GetStepInfoNode(current.NodeId);
+        }
+
+        public LinkedListNode<StepInfo> GetStepInfoNode(Guid nodeId)
+        {
+            var node = _steps.First;
+
+            while (node != null)
+            {
+                if (node.Value.NodeId == nodeId)
+                    break;
+
+                node = node.Next;
+            }
+
+            return node;
         }
     }
 }
