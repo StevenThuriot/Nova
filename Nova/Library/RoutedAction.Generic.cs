@@ -162,12 +162,16 @@ namespace Nova.Library
 		/// <param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to null.</param>
 		public bool CanExecute(object parameter)
 		{
+		    if (_isExecuting)
+		        return false;
+
             //Making sure this doesn't throw an exception while being disposed.
             if (_action == null || _action.ActionContext == null)
                 return false;
 
-			SetActionContext(parameter);
-			return !_isExecuting && _action.CanExecute();
+            _action.ActionContext.Clear();
+
+			return _action.CanExecute();
 		}
 
 		/// <summary>

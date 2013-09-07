@@ -28,7 +28,7 @@ namespace Nova.Shell.Library
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public abstract class MultistepContentViewModel<TView, TViewModel> : ContentViewModel<TView, TViewModel>
+    public abstract class MultistepContentViewModel<TView, TViewModel> : ContentViewModel<TView, TViewModel>, IMultistepContentViewModel 
         where TView : class, IView
         where TViewModel : MultistepContentViewModel<TView, TViewModel>, new()
     {

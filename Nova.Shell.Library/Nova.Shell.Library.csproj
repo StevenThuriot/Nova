@@ -65,6 +65,7 @@
     <Compile Include="ContentViewModel.cs" />
     <Compile Include="IContentViewModel.cs" />
     <Compile Include="IMultiStepBuilder.cs" />
+    <Compile Include="IMultistepContentViewModel.cs" />
     <Compile Include="INavigationActionManager.cs" />
     <Compile Include="INavigatablePage.cs" />
     <Compile Include="INovaStep.cs" />

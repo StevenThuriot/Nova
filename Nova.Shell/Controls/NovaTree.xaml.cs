@@ -158,35 +158,11 @@ namespace Nova.Shell.Controls
         }
 
         /// <summary>
-        /// Finds the node title for the specified types.
-        /// </summary>
-        /// <typeparam name="TPage">The type of the page.</typeparam>
-        /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-        /// <returns></returns>
-        public string FindTitle<TPage, TViewModel>()
-        {
-            return FindTitle(typeof(TPage), typeof(TViewModel));
-        }
-
-        /// <summary>
-        /// Finds the node title for the specified types.
-        /// </summary>
-        /// <param name="pageType">Type of the page.</param>
-        /// <param name="viewModelType">Type of the view model.</param>
-        /// <returns></returns>
-        public string FindTitle(Type pageType, Type viewModelType)
-        {
-            var node = TreeNodes.OfType<NovaTreeNode>().FirstOrDefault(x => x.PageType == pageType && x.ViewModelType == viewModelType);
-
-            return node == null ? string.Empty : node.Title;
-        }
-
-        /// <summary>
         /// Navigates to the startup page.
         /// </summary>
         public void NavigateToStartupPage()
         {
-            var node = TreeNodes.OfType<NovaTreeNode>().FirstOrDefault(x => x.IsStartupNode) ?? TreeNodes.OfType<NovaTreeNode>().First();
+            var node = TreeNodes.FirstOrDefault(x => x.IsStartupNode) ?? TreeNodes.First();
             
             node.Navigate();
         }

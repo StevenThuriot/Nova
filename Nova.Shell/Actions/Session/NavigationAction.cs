@@ -24,6 +24,7 @@ using System.Linq;
 using System.Windows.Threading;
 using Nova.Controls;
 using Nova.Shell.Domain;
+using Nova.Shell.Library;
 using Nova.Shell.Views;
 using Nova.Threading.Metadata;
 using Nova.Library;
@@ -81,7 +82,7 @@ namespace Nova.Shell.Actions.Session
             Dispatch(() =>
             {
                 notAvailableView = ViewModel.CreateControl<StepNotAvailableView, StepNotAvailableViewModel>();
-                notAvailableView.ViewModel.StepName = View._NovaTree.FindTitle(_viewType, _viewModelType) ?? _viewType.Name;
+                notAvailableView.ViewModel.StepName = /* TODO View._NovaTree.FindTitle(_viewType, _viewModelType) ?? */_viewType.Name;
             });
 
             _nextView = notAvailableView;
@@ -92,22 +93,21 @@ namespace Nova.Shell.Actions.Session
             _viewType = ActionContext.GetValue<Type>(SessionViewModel.ViewTypeConstant);
             _viewModelType = ActionContext.GetValue<Type>(SessionViewModel.ViewModelTypeConstant);
             
-            NovaTreeNodeStep novaTreeNodeStep;
-            var navigatingToMultistep = ActionContext.TryGetValue(RoutedAction.CommandParameter, out novaTreeNodeStep) && novaTreeNodeStep != null;
-
-            if (navigatingToMultistep)
-                CreateMultistep(novaTreeNodeStep);
+            if (typeof(IMultistepContentViewModel).IsAssignableFrom(_viewModelType))
+                CreateMultistep();
             else
                 CreateNormalView();
         }
 
-        private void CreateMultistep(NovaTreeNodeStep novaTreeNodeStep)
+        private void CreateMultistep()
         {
+            NovaTreeNodeStep novaTreeNodeStep; //TODO: Find navigation through button solution.
+            var navigatingToMultistep = ActionContext.TryGetValue(RoutedAction.CommandParameter, out novaTreeNodeStep) && novaTreeNodeStep != null;
+
             var multistep = _current as MultiStepView;
-            if (multistep != null)
-            {
-                _navigatingInsideMultiStep = Dispatch(() => multistep.GetOrCreateStep(novaTreeNodeStep, out _nextView));
-            }
+
+            _navigatingInsideMultiStep = navigatingToMultistep && multistep != null &&
+                                         Dispatch(() => multistep.GetOrCreateStep(novaTreeNodeStep, out _nextView));
 
             if (_navigatingInsideMultiStep) return;
 

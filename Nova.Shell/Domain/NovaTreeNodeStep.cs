@@ -88,11 +88,6 @@ namespace Nova.Shell.Domain
             return PageType == pageType && ViewModelType == viewModelType;
         }
 
-        public override void Navigate()
-        {
-            NavigationalCommand.Execute(this);
-        }
-
         internal abstract NovaStep ConvertToNovaStep();
 
         public override bool Equals(object obj)

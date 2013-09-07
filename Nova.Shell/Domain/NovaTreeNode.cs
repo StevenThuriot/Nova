@@ -21,6 +21,7 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Input;
+using Nova.Shell.Library;
 
 namespace Nova.Shell.Domain
 {
@@ -88,9 +89,9 @@ namespace Nova.Shell.Domain
         /// <summary>
         /// Navigates this instance.
         /// </summary>
-        public virtual void Navigate()
+        public override void Navigate()
         {
-            NavigationalCommand.Execute(null);
+            NavigationalCommand.Execute(this);
         }
 
 

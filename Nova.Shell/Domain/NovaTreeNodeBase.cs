@@ -94,6 +94,11 @@ namespace Nova.Shell.Domain
         /// <returns></returns>
         protected abstract bool CheckIfCurrent(Type pageType, Type viewModelType);
 
+        /// <summary>
+        /// Navigates this instance.
+        /// </summary>
+        public abstract void Navigate();
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>

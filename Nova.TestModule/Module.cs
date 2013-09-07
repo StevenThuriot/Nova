@@ -41,13 +41,13 @@ namespace Nova.TestModule
 
             builder.SetModuleTitle("Module #" + randomRanking)
                    .SetModuleRanking(randomRanking)
-                   
+                     /*
                    .AddNavigation<TestPage2, TestPage2ViewModel>("Page #" + random.Next(1, 100))
                    
                    .AddNavigation<TestPage, TestPageViewModel>(rank: 20)
-                   /*
+                 */
                    .AddNavigation("Multistep", x => x.AddStep<TestPage, TestPageViewModel>()
-                                                     .AddStep<TestPage2, TestPage2ViewModel>())*/.AsStartup();
+                                                     .AddStep<TestPage2, TestPage2ViewModel>()).AsStartup();
         }
     }
 }
