@@ -50,8 +50,6 @@ namespace Nova.Shell.Controls
     /// </summary>
     public partial class NovaTree : INotifyPropertyChanged, INovaTree
     {
-        private Type _pageType;
-        private Type _viewModelType;
         private IEnumerable<NovaTreeNodeBase> _treeNodes;
         private bool _showModules;
 
@@ -115,46 +113,106 @@ namespace Nova.Shell.Controls
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
+
         /// <summary>
         /// Reevaluates the state.
         /// </summary>
-        public void ReevaluateState()
+        /// <param name="key">The key.</param>
+        /// <param name="pageType">Type of the page.</param>
+        /// <param name="viewModelType">Type of the view model.</param>
+        public bool ReevaluateState(Guid key, Type pageType, Type viewModelType)
         {
-            ReevaluateState(_pageType, _viewModelType);
+            return ReevaluateState(key) || ReevaluateState(pageType, viewModelType);
         }
+
+
+        /// <summary>
+        /// Reevaluates the state.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        private bool ReevaluateState(Guid key)
+        {
+            if (key == Guid.Empty)
+                return false;
+
+            var novaTreeNodes = TreeNodes;
+            if (ReevaluateNodes(novaTreeNodes, key)) return true; //Node found in current module
+
+            //Search TreeNodes in a different module.
+            var nodes = Modules.Select(x => x.TreeNodes)
+                               .Where(x => x != novaTreeNodes)
+                               .FirstOrDefault(x => ReevaluateNodes(x, key));
+
+            if (nodes == null) return false; //Leave the navigational tree intact if the current node was not found.
+
+            TreeNodes = nodes;
+            return true;
+        }
+
 
         /// <summary>
         /// Reevaluates the state.
         /// </summary>
         /// <param name="pageType">Type of the page.</param>
         /// <param name="viewModelType">Type of the view model.</param>
-        public void ReevaluateState(Type pageType, Type viewModelType)
+        private bool ReevaluateState(Type pageType, Type viewModelType)
         {
-            _pageType = pageType;
-            _viewModelType = viewModelType;
-
             var novaTreeNodes = TreeNodes;
-            if (ReevaluateNodes(novaTreeNodes)) return; //Node found in current module
+            if (ReevaluateNodes(novaTreeNodes, pageType, viewModelType)) return true; //Node found in current module
             
             //Search TreeNodes in a different module.
             var nodes = Modules.Select(x => x.TreeNodes)
                                .Where(x => x != novaTreeNodes)
-                               .FirstOrDefault(ReevaluateNodes);
+                               .FirstOrDefault(x => ReevaluateNodes(x, pageType, viewModelType));
 
-            if (nodes == null) return; //Leave the navigational tree intact if the current node was not found.
+            if (nodes == null) return false; //Leave the navigational tree intact if the current node was not found.
 
             TreeNodes = nodes;
+            return true;
         }
 
         /// <summary>
         /// Reevaluates the nodes.
         /// </summary>
         /// <param name="novaTreeNodes">The nova tree nodes.</param>
-        /// <returns>True if one of the nodes is the current node.</returns>
-        private bool ReevaluateNodes(IEnumerable<NovaTreeNodeBase> novaTreeNodes)
+        /// <param name="_pageType">Type of the _page.</param>
+        /// <param name="_viewModelType">Type of the _view model.</param>
+        /// <returns>
+        /// True if one of the nodes is the current node.
+        /// </returns>
+        private static bool ReevaluateNodes(IEnumerable<NovaTreeNodeBase> novaTreeNodes, Type _pageType, Type _viewModelType)
         {
             return novaTreeNodes.Select(node => node.ReevaluateState(_pageType, _viewModelType))
                                 .Aggregate(false, (current, result) => current || result);
+        }
+
+        /// <summary>
+        /// Reevaluates the nodes.
+        /// </summary>
+        /// <param name="novaTreeNodes">The nova tree nodes.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>
+        /// True if one of the nodes is the current node.
+        /// </returns>
+        private static bool ReevaluateNodes(IEnumerable<NovaTreeNodeBase> novaTreeNodes, Guid key)
+        {
+            return novaTreeNodes.Select(node => node.ReevaluateState(key))
+                                .Aggregate(false, (current, result) => current || result);
+        }
+
+        /// <summary>
+        /// Finds the step.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
+        internal NovaTreeNodeStep FindStep(Guid key)
+        {
+            var nodes = new[] {TreeNodes}
+                            .Union(Modules.Select(x => x.TreeNodes))
+                            .SelectMany(x => x).OfType<NovaMultiStepTreeNode>();
+
+            return nodes.Select(multiStep => multiStep.FindStep(key))
+                        .FirstOrDefault(step => step != null);
         }
 
         /// <summary>
@@ -197,8 +255,6 @@ namespace Nova.Shell.Controls
         void INovaTree.ActivateModule(NovaTreeModule module)
         {
             TreeNodes = module.TreeNodes;
-            
-            ReevaluateState();
         }
     }
 }

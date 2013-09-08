@@ -37,8 +37,9 @@ namespace Nova.Shell.Domain
         /// </summary>
         /// <param name="title">The title.</param>
         /// <param name="group">The group.</param>
-        public NovaStep(string title, Guid @group)
-            : base(title, @group, typeof(TView), typeof(TViewModel))
+        /// <param name="id">The id.</param>
+        public NovaStep(string title, Guid @group, Guid id)
+            : base(title, @group, id, typeof(TView), typeof(TViewModel))
         {
 
         }
@@ -115,11 +116,12 @@ namespace Nova.Shell.Domain
         /// </summary>
         /// <param name="title">The title.</param>
         /// <param name="group">The group.</param>
+        /// <param name="id">The id.</param>
         /// <param name="viewType">Type of the view.</param>
         /// <param name="viewModelType">Type of the view model.</param>
-        protected NovaStep(string title, Guid @group, Type viewType, Type viewModelType)
+        protected NovaStep(string title, Guid @group, Guid id, Type viewType, Type viewModelType)
         {
-            NodeId = Guid.NewGuid();
+            NodeId = id;
             Title = title;
             Group = @group;
             ViewType = viewType;

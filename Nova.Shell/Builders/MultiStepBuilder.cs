@@ -60,10 +60,25 @@ namespace Nova.Shell.Builders
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new()
             where TPageViewModel : MultistepContentViewModel<TPageView, TPageViewModel>, new()
         {
+            return AddStep<TPageView, TPageViewModel>(Guid.NewGuid(), title);
+        }
+
+        /// <summary>
+        /// Adds the step.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <param name="id">The id.</param>
+        /// <param name="title">The title.</param>
+        /// <returns></returns>
+        public IMultiStepBuilder AddStep<TPageView, TPageViewModel>(Guid id, string title = null) 
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new() 
+            where TPageViewModel : MultistepContentViewModel<TPageView, TPageViewModel>, new()
+        {
             if (string.IsNullOrWhiteSpace(title))
                 title = typeof(TPageView).Name;
 
-            var step = new StepBuilder<TPageView, TPageViewModel>(title);
+            var step = new StepBuilder<TPageView, TPageViewModel>(id, title);
             _steps.Add(step);
 
             return this;

@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Windows.Threading;
 using Nova.Controls;
 using Nova.Shell.Domain;
@@ -52,7 +53,7 @@ namespace Nova.Shell.Actions.Session
 
         public override void OnBefore()
         {
-            _current = ActionContext.GetValue<IView>(SessionViewModel.CurrentViewConstant);
+            _current = ActionContext.GetValue<IView>(ActionContextConstants.CurrentViewConstant);
         }
 
         public override bool Execute()
@@ -75,25 +76,45 @@ namespace Nova.Shell.Actions.Session
             return true;
         }
 
-        private void CreateNotAvailableView()
+        public override void ExecuteCompleted()
         {
-            StepNotAvailableView notAvailableView = null;
-            
-            Dispatch(() =>
+            if (_navigatingInsideMultiStep)
             {
-                notAvailableView = ViewModel.CreateControl<StepNotAvailableView, StepNotAvailableViewModel>();
-                notAvailableView.ViewModel.StepName = /* TODO View._NovaTree.FindTitle(_viewType, _viewModelType) ?? */_viewType.Name;
-            });
+                ((MultiStepView)ViewModel.CurrentView).DoStep(_nextView);
+            }
+            else
+            {
+                ViewModel.CurrentView = _nextView;
+            }
 
-            _nextView = notAvailableView;
+
+            Guid key;
+            ActionContext.TryGetValue(ActionContextConstants.NodeId, out key);
+            View._NovaTree.ReevaluateState(key, _viewType, _viewModelType);
         }
+
+        protected override void DisposeManagedResources()
+        {
+            _current = null;
+            _nextView = null;
+        }
+
+
+
+
+
+
+
+
 
         private void InitializeNextView()
         {
-            _viewType = ActionContext.GetValue<Type>(SessionViewModel.ViewTypeConstant);
-            _viewModelType = ActionContext.GetValue<Type>(SessionViewModel.ViewModelTypeConstant);
-            
-            if (typeof(IMultistepContentViewModel).IsAssignableFrom(_viewModelType))
+            _viewType = ActionContext.GetValue<Type>(ActionContextConstants.ViewTypeConstant);
+            _viewModelType = ActionContext.GetValue<Type>(ActionContextConstants.ViewModelTypeConstant);
+
+            var isMultiStep = typeof(IMultistepContentViewModel).IsAssignableFrom(_viewModelType);
+
+            if (isMultiStep)
                 CreateMultistep();
             else
                 CreateNormalView();
@@ -101,29 +122,36 @@ namespace Nova.Shell.Actions.Session
 
         private void CreateMultistep()
         {
-            NovaTreeNodeStep novaTreeNodeStep; //TODO: Find navigation through button solution.
-            var navigatingToMultistep = ActionContext.TryGetValue(RoutedAction.CommandParameter, out novaTreeNodeStep) && novaTreeNodeStep != null;
+            Guid key;
+
+            if (!ActionContext.TryGetValue(ActionContextConstants.NodeId, out key))
+                throw new NotSupportedException("Navigating to a multistep view without providing a step key is not supported.");
+
+            var novaTreeNodeStep = View._NovaTree.FindStep(key);
+
+            if (novaTreeNodeStep == null)
+                throw new NotSupportedException("Navigating to an unknown step.");
 
             var multistep = _current as MultiStepView;
-
-            _navigatingInsideMultiStep = navigatingToMultistep && multistep != null &&
-                                         Dispatch(() => multistep.GetOrCreateStep(novaTreeNodeStep, out _nextView));
-
-            if (_navigatingInsideMultiStep) return;
-
             var groupId = novaTreeNodeStep.GroupId;
+
+            _navigatingInsideMultiStep = multistep != null && multistep.GroupId == groupId &&
+                                            Dispatch(() => multistep.GetOrCreateStep(novaTreeNodeStep, out _nextView));
+
+            
+            if (_navigatingInsideMultiStep) return;
+            //Create new one.
             var steps = novaTreeNodeStep.Parent.Steps.Select(x => x.ConvertToNovaStep());
 
             var list = new LinkedList<NovaStep>(steps);
             var initialView = GetInitialView(novaTreeNodeStep, list);
-
-
+            
             _nextView = Dispatch(() => new MultiStepView(View, ViewModel, groupId, initialView));
         }
 
         private void CreateNormalView()
         {
-            var createNextView = ActionContext.GetValue<Func<IView>>(SessionViewModel.CreateNextViewConstant);
+            var createNextView = ActionContext.GetValue<Func<IView>>(ActionContextConstants.CreateNextViewConstant);
             if (createNextView != null)
             {
                 _nextView = Dispatch(createNextView);
@@ -136,7 +164,7 @@ namespace Nova.Shell.Actions.Session
 
             while (node != null)
             {
-                if (node.Value.ViewType == treeNode.PageType && node.Value.ViewModelType == treeNode.ViewModelType)
+                if (node.Value.NodeId == treeNode.Id)
                     return node;
 
                 node = node.Next;
@@ -145,24 +173,17 @@ namespace Nova.Shell.Actions.Session
             return list.First;
         }
 
-        public override void ExecuteCompleted()
+        private void CreateNotAvailableView()
         {
-            if (_navigatingInsideMultiStep)
-            {
-                ((MultiStepView)ViewModel.CurrentView).DoStep(_nextView);
-            }
-            else
-            {
-                ViewModel.CurrentView = _nextView;
-            }
+            StepNotAvailableView notAvailableView = null;
 
-            View._NovaTree.ReevaluateState(_viewType, _viewModelType);
-        }
+            Dispatch(() =>
+            {
+                notAvailableView = ViewModel.CreateControl<StepNotAvailableView, StepNotAvailableViewModel>();
+                notAvailableView.ViewModel.StepName = /* TODO View._NovaTree.FindTitle(_viewType, _viewModelType) ?? */_viewType.Name;
+            });
 
-        protected override void DisposeManagedResources()
-        {
-            _current = null;
-            _nextView = null;
+            _nextView = notAvailableView;
         }
 
         /// <summary>

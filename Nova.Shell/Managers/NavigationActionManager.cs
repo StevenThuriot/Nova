@@ -49,24 +49,51 @@ namespace Nova.Shell.Managers
         }
 
         /// <summary>
+        /// News the specified id.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
+        public ICommand New<TPageView, TPageViewModel>(params ActionContextEntry[] parameters)
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new()
+        {
+            return New<TPageView, TPageViewModel>(Guid.Empty, parameters);
+        }
+
+        /// <summary>
         /// Creates a command that navigates the current session to the specified page.
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         /// <returns></returns>
-        public ICommand New<TPageView, TPageViewModel>()
+        public ICommand New<TPageView, TPageViewModel>(Guid nodeId, params ActionContextEntry[] parameters)
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new()
         {
             var viewModel = _session.ViewModel;
-
             var createNextView = new Func<IView>(viewModel.Create<TPageView, TPageViewModel>);
-            var next = ActionContextEntry.Create(SessionViewModel.CreateNextViewConstant, createNextView, false);
 
-            var viewtype = ActionContextEntry.Create(SessionViewModel.ViewTypeConstant, typeof(TPageView), false);
-            var viewModeltype = ActionContextEntry.Create(SessionViewModel.ViewModelTypeConstant, typeof(TPageViewModel), false);
+            var next = ActionContextEntry.Create(ActionContextConstants.CreateNextViewConstant, createNextView, false);
+            var viewtype = ActionContextEntry.Create(ActionContextConstants.ViewTypeConstant, typeof(TPageView), false);
+            var viewModeltype = ActionContextEntry.Create(ActionContextConstants.ViewModelTypeConstant, typeof(TPageViewModel), false);
 
-            var command = RoutedAction.New<NavigationAction, SessionView, SessionViewModel>(_session, viewModel, next, viewtype, viewModeltype);
+
+            var actionContextEntries = new List<ActionContextEntry>(parameters)
+            {
+                next,
+                viewtype,
+                viewModeltype
+            };
+
+            if (nodeId != Guid.Empty)
+            {
+                var id = ActionContextEntry.Create(ActionContextConstants.NodeId, nodeId);
+                actionContextEntries.Add(id);
+            }
+
+            var command = RoutedAction.New<NavigationAction, SessionView, SessionViewModel>(_session, viewModel, actionContextEntries.ToArray());
 
             _navigatableActions.Add((IDisposable) command);
 

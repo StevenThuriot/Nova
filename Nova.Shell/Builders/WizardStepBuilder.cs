@@ -43,11 +43,11 @@ namespace Nova.Shell.Builders
         /// <summary>
         /// Builds the step.
         /// </summary>
-        /// <param name="id">The id.</param>
+        /// <param name="groupId">The group Id.</param>
         /// <returns></returns>
-        public override NovaStep Build(Guid id)
+        public override NovaStep Build(Guid groupId)
         {
-            return new NovaStep<TView, TViewModel>(Title, id);
+            return new NovaStep<TView, TViewModel>(Title, groupId, Guid.NewGuid());
         }
     }
 
@@ -98,7 +98,7 @@ namespace Nova.Shell.Builders
         /// <summary>
         /// Builds the step.
         /// </summary>
-        /// <param name="id">The id.</param>
+        /// <param name="id">The groupId.</param>
         /// <returns></returns>
         public abstract NovaStep Build(Guid id);
     }

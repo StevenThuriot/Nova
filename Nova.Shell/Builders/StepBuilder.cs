@@ -36,8 +36,9 @@ namespace Nova.Shell.Builders
         /// <summary>
         /// Initializes a new instance of the StepBuilder class.
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="title">The title.</param>
-        public StepBuilder(string title) : base(title)
+        public StepBuilder(Guid id, string title) : base(id, title)
         {
             _viewType = typeof (TView);
             _viewModelType = typeof (TViewModel);
@@ -122,8 +123,8 @@ namespace Nova.Shell.Builders
         /// <returns></returns>
         internal override NovaTreeNodeStep Build(INavigatablePage page)
         {
-            var command = page.CreateNavigationalAction<TView, TViewModel>();
-            var node = new NovaTreeNodeStep<TView, TViewModel>(Title, command);
+            var command = page.CreateNavigationalAction<TView, TViewModel>(Id);
+            var node = new NovaTreeNodeStep<TView, TViewModel>(Id, Title, command);
 
             return node;
         }
@@ -135,12 +136,22 @@ namespace Nova.Shell.Builders
     internal abstract class StepBuilder : IEquatable<StepBuilder>
     {
         /// <summary>
+        /// Gets the id.
+        /// </summary>
+        /// <value>
+        /// The id.
+        /// </value>
+        public Guid Id { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="StepBuilder" /> class.
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="title">The title.</param>
         /// <exception cref="System.ArgumentNullException">title</exception>
-        protected StepBuilder(string title)
+        protected StepBuilder(Guid id, string title)
         {
+            Id = id;
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentNullException("title");
 

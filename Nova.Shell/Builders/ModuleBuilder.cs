@@ -82,9 +82,25 @@ namespace Nova.Shell.Builders
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new() 
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
+            return AddNavigation<TPageView, TPageViewModel>(Guid.NewGuid(), title, rank);
+        }
+
+        /// <summary>
+        /// Adds the navigation.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <param name="id">The id.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="rank">The rank.</param>
+        /// <returns></returns>
+        public IModuleBuilder AddNavigation<TPageView, TPageViewModel>(Guid id, string title = null, int rank = 10)
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new() 
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+        {
             //TODO: Allow parameter (so one screen can be used for several purposed depending on the parameter, e.g full/light)
-            
-            var treeNode = TreeNode.New<TPageView, TPageViewModel>(title, rank);
+
+            var treeNode = TreeNode.New<TPageView, TPageViewModel>(id, title, rank);
             _treeNodes.Add(treeNode);
 
             return this;
@@ -110,7 +126,7 @@ namespace Nova.Shell.Builders
 
             var treeNode = multiStepBuilder.Build();
             _treeNodes.Add(treeNode);
-            
+
             return this;
         }
 

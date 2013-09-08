@@ -16,6 +16,7 @@
 //  
 #endregion
 
+using System;
 using Nova.Controls;
 
 namespace Nova.Shell.Library
@@ -35,6 +36,20 @@ namespace Nova.Shell.Library
         /// The module builder instance.
         /// </returns>
         IMultiStepBuilder AddStep<TPageView, TPageViewModel>(string title = null)
+            where TPageViewModel : MultistepContentViewModel<TPageView, TPageViewModel>, new()
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new();
+
+        /// <summary>
+        /// Adds a navigational action which will populate the tree.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <param name="id">The id.</param>
+        /// <param name="title">The title.</param>
+        /// <returns>
+        /// The module builder instance.
+        /// </returns>
+        IMultiStepBuilder AddStep<TPageView, TPageViewModel>(Guid id, string title = null)
             where TPageViewModel : MultistepContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new();
     }

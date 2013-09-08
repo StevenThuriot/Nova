@@ -119,6 +119,20 @@ namespace Nova.Shell.Views
         }
 
         /// <summary>
+        /// Gets the group id.
+        /// </summary>
+        /// <value>
+        /// The group id.
+        /// </value>
+        public Guid GroupId
+        {
+            get
+            {
+                return _groupId;
+            }
+        }
+
+        /// <summary>
         ///     Gets or sets a value indicating whether this instance is loading.
         ///     This can also be interpreted as "busy".
         /// </summary>

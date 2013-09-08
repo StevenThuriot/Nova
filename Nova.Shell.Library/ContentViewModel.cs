@@ -102,11 +102,28 @@ namespace Nova.Shell.Library
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        public ICommand CreateNavigationalAction<TPageView, TPageViewModel>()
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
+        public ICommand CreateNavigationalAction<TPageView, TPageViewModel>(params ActionContextEntry[] parameters)
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new()
         {
-            return Session.CreateNavigationalAction<TPageView, TPageViewModel>();
+            return Session.CreateNavigationalAction<TPageView, TPageViewModel>(parameters);
+        }
+
+        /// <summary>
+        /// Creates a navigational action that navigates the parent session to the specified page.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <param name="nodeId">The node id.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
+        public ICommand CreateNavigationalAction<TPageView, TPageViewModel>(Guid nodeId, params ActionContextEntry[] parameters) 
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new() 
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+        {
+            return Session.CreateNavigationalAction<TPageView, TPageViewModel>(nodeId, parameters);
         }
 
 

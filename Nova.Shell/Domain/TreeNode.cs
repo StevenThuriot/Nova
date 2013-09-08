@@ -77,6 +77,7 @@ namespace Nova.Shell.Domain
     /// </summary>
     internal class TreeNode : TreeNodeBase
     {
+        private readonly Guid _id;
         private readonly Type _pageType;
         private readonly Type _viewModelType;
 
@@ -85,18 +86,20 @@ namespace Nova.Shell.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="TreeNode" /> class.
         /// </summary>
+        /// <param name="id">The id.</param>
         /// <param name="title">The title.</param>
         /// <param name="pageType">Type of the page.</param>
         /// <param name="viewModelType">Type of the view model.</param>
         /// <param name="rank">The rank.</param>
         /// <param name="createNavigationalAction">The create navigational command.</param>
         /// <exception cref="System.ArgumentNullException">title</exception>
-        private TreeNode(string title, Type pageType, Type viewModelType, int rank, Func<INavigatablePage, ICommand> createNavigationalAction)
+        private TreeNode(Guid id, string title, Type pageType, Type viewModelType, int rank, Func<INavigatablePage, ICommand> createNavigationalAction)
             :base(title, rank)
         {
             if (createNavigationalAction == null)
                 throw new ArgumentNullException("createNavigationalAction");
-            
+
+            _id = id;
             _pageType = pageType;
             _viewModelType = viewModelType;
             _createNavigationalAction = createNavigationalAction;
@@ -107,10 +110,11 @@ namespace Nova.Shell.Domain
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <param name="id"></param>
         /// <param name="title">The title of the node. Default value is the type name.</param>
         /// <param name="rank">The ranking in the navigational tree. Default value is 10.</param>
         /// <returns>A new treenode instance.</returns>
-        public static TreeNodeBase New<TPageView, TPageViewModel>(string title, int rank)
+        public static TreeNodeBase New<TPageView, TPageViewModel>(Guid id, string title, int rank)
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
@@ -119,9 +123,9 @@ namespace Nova.Shell.Domain
             if (string.IsNullOrWhiteSpace(title))
                 title = type.Name;
 
-            Func<INavigatablePage, ICommand> navigationalAction = x => x.CreateNavigationalAction<TPageView, TPageViewModel>();
+            Func<INavigatablePage, ICommand> navigationalAction = x => x.CreateNavigationalAction<TPageView, TPageViewModel>(id);
 
-            return new TreeNode(title, type, typeof(TPageViewModel), rank, navigationalAction);
+            return new TreeNode(id, title, type, typeof(TPageViewModel), rank, navigationalAction);
         }
 
 
@@ -135,7 +139,7 @@ namespace Nova.Shell.Domain
         {
             var command = _createNavigationalAction(page);
 
-            var node = new NovaTreeNode(Title, _pageType, _viewModelType, command, isStartupNode);
+            var node = new NovaTreeNode(_id, Title, _pageType, _viewModelType, command, isStartupNode);
             return node;
         }
         

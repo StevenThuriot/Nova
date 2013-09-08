@@ -21,6 +21,7 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Input;
+using Nova.Library;
 using Nova.Shell.Library;
 
 namespace Nova.Shell.Domain
@@ -67,14 +68,15 @@ namespace Nova.Shell.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="NovaTreeNode" /> class.
         /// </summary>
+        /// <param name="id">The id.</param>
         /// <param name="title">The title.</param>
         /// <param name="pageType">Type of the page.</param>
         /// <param name="viewModelType">Type of the view model.</param>
         /// <param name="navigationalCommand">The navigational command.</param>
         /// <param name="isStartupNode">if set to <c>true</c> [is startup node].</param>
         /// <exception cref="System.ArgumentNullException">title</exception>
-        public NovaTreeNode(string title, Type pageType, Type viewModelType, ICommand navigationalCommand, bool isStartupNode)
-            : base (title, isStartupNode)
+        public NovaTreeNode(Guid id, string title, Type pageType, Type viewModelType, ICommand navigationalCommand, bool isStartupNode)
+            : base (id, title, isStartupNode)
         {
 
             if (navigationalCommand == null)
@@ -91,7 +93,7 @@ namespace Nova.Shell.Domain
         /// </summary>
         public override void Navigate()
         {
-            NavigationalCommand.Execute(this);
+            NavigationalCommand.Execute(null);
         }
 
 

@@ -44,11 +44,6 @@ namespace Nova.Shell
     /// </summary>
     public class SessionViewModel : ViewModel<SessionView, SessionViewModel>, ISessionViewModel
     {
-        internal const string CurrentViewConstant = "CurrentSessionContentView";
-        internal const string CreateNextViewConstant = "CreateNextSessionContentView";
-        internal const string ViewTypeConstant = "ViewTypeConstant";
-        internal const string ViewModelTypeConstant = "ViewModelTypeConstant";
-
         private IView _currentView;
         private readonly dynamic _model;
         private readonly dynamic _applicationModel;
@@ -145,7 +140,7 @@ namespace Nova.Shell
         /// <param name="context">The context.</param>
         public void OnBeforeNavigation(ActionContext context)
         {
-            var current = ActionContextEntry.Create(CurrentViewConstant, CurrentView, false);
+            var current = ActionContextEntry.Create(ActionContextConstants.CurrentViewConstant, CurrentView, false);
             context.Add(current);
         }
 
@@ -180,19 +175,34 @@ namespace Nova.Shell
         {
             return Create<TPageView, TPageViewModel>(View);
         }
-        
+
         /// <summary>
         /// Creates the navigational action.
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public ICommand CreateNavigationalAction<TPageView, TPageViewModel>()
+        public ICommand CreateNavigationalAction<TPageView, TPageViewModel>(params ActionContextEntry[] parameters)
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new() 
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
-            return NavigationActionManager.New<TPageView, TPageViewModel>();
+            return NavigationActionManager.New<TPageView, TPageViewModel>(parameters);
+        }
+
+        /// <summary>
+        /// Creates the navigational action.
+        /// </summary>
+        /// <typeparam name="TPageView">The type of the page view.</typeparam>
+        /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
+        /// <param name="nodeId">The node id.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
+        public ICommand CreateNavigationalAction<TPageView, TPageViewModel>(Guid nodeId, params ActionContextEntry[] parameters)
+            where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new() 
+            where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
+        {
+            return NavigationActionManager.New<TPageView, TPageViewModel>(nodeId, parameters);
         }
 
         /// <summary>

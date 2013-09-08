@@ -149,7 +149,6 @@
     <Button x:Name="_TreeNodeButton"
             Style="{StaticResource _NavigationalTreeItemStyle}"
             Command="{Binding NavigationalCommand, Mode=OneWay}"
-            CommandParameter="{Binding}"
             Content="{Binding Title, Mode=OneWay}"
                   />
 

@@ -106,5 +106,15 @@ namespace Nova.Shell.Domain
         {
             return RuntimeHelpers.GetHashCode(this);
         }
+
+        /// <summary>
+        /// Finds the step.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
+        public NovaTreeNodeStep FindStep(Guid key)
+        {
+            return Steps.FirstOrDefault(x => x.Id == key);
+        }
     }
 }

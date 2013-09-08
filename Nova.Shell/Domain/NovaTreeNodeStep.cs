@@ -30,16 +30,17 @@ namespace Nova.Shell.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="NovaTreeNodeStep{TView,TViewModel}" /> class.
         /// </summary>
+        /// <param name="id">The id.</param>
         /// <param name="title">The title.</param>
         /// <param name="command">The command.</param>
-        public NovaTreeNodeStep(string title, ICommand command)
-            : base(title, typeof(TView), typeof(TViewModel), command)
+        public NovaTreeNodeStep(Guid id, string title, ICommand command)
+            : base(id, title, typeof(TView), typeof(TViewModel), command)
         {
         }
 
         internal override NovaStep ConvertToNovaStep()
         {
-            return new NovaStep<TView, TViewModel>(Title, GroupId);
+            return new NovaStep<TView, TViewModel>(Title, GroupId, Id);
         }
     }
 
@@ -51,12 +52,13 @@ namespace Nova.Shell.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="NovaTreeNodeStep" /> class.
         /// </summary>
+        /// <param name="id">The id.</param>
         /// <param name="title">The title.</param>
         /// <param name="viewType">Type of the view.</param>
         /// <param name="viewModelType">Type of the view model.</param>
         /// <param name="command">The command.</param>
-        protected NovaTreeNodeStep(string title, Type viewType, Type viewModelType, ICommand command)
-            : base(title, viewType, viewModelType, command, false)
+        protected NovaTreeNodeStep(Guid id, string title, Type viewType, Type viewModelType, ICommand command)
+            : base(id , title, viewType, viewModelType, command, false)
         {
         }
 

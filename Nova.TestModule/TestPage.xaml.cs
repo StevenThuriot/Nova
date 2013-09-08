@@ -43,7 +43,7 @@ namespace Nova.TestModule
 
     }
 
-    public class TestPageViewModel : MultistepContentViewModel<TestPage, TestPageViewModel> 
+    public class TestPageViewModel : ContentViewModel<TestPage, TestPageViewModel> 
     {
         protected override void OnCreated()
         {
