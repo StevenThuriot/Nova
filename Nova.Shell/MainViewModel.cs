@@ -163,9 +163,9 @@ namespace Nova.Shell
             View.AddHandler(ClosableTabItem.CloseTabEvent, new RoutedEventHandler(CloseSession));
         }
 
-        public override Task<bool> Enter()
+        public override Task<bool> Enter(params ActionContextEntry[] parameters)
         {
-            return InvokeActionAsync<ComposeAndInitializeAction>();
+            return InvokeActionAsync<ComposeAndInitializeAction>(parameters);
         }
 
         /// <summary>

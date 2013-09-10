@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nova.Controls;
+using Nova.Library;
 using Nova.Shell.Domain;
 using Nova.Shell.Library;
 
@@ -77,12 +78,15 @@ namespace Nova.Shell.Builders
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         /// <param name="title">The title of the node. Default value is the type name.</param>
         /// <param name="rank">The ranking in the navigational tree. Default value is 10.</param>
-        /// <returns>The module builder instance.</returns>
-        public IModuleBuilder AddNavigation<TPageView, TPageViewModel>(string title = null, int rank = 10)
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>
+        /// The module builder instance.
+        /// </returns>
+        public IModuleBuilder AddNavigation<TPageView, TPageViewModel>(string title = null, int rank = 10, params ActionContextEntry[] parameters)
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new() 
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
-            return AddNavigation<TPageView, TPageViewModel>(Guid.NewGuid(), title, rank);
+            return AddNavigation<TPageView, TPageViewModel>(Guid.NewGuid(), title, rank, parameters);
         }
 
         /// <summary>
@@ -93,14 +97,13 @@ namespace Nova.Shell.Builders
         /// <param name="id">The id.</param>
         /// <param name="title">The title.</param>
         /// <param name="rank">The rank.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
-        public IModuleBuilder AddNavigation<TPageView, TPageViewModel>(Guid id, string title = null, int rank = 10)
+        public IModuleBuilder AddNavigation<TPageView, TPageViewModel>(Guid id, string title = null, int rank = 10, params ActionContextEntry[] parameters)
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new() 
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
-            //TODO: Allow parameter (so one screen can be used for several purposed depending on the parameter, e.g full/light)
-
-            var treeNode = TreeNode.New<TPageView, TPageViewModel>(id, title, rank);
+            var treeNode = TreeNode.New<TPageView, TPageViewModel>(id, title, rank, parameters);
             _treeNodes.Add(treeNode);
 
             return this;
@@ -109,19 +112,20 @@ namespace Nova.Shell.Builders
         /// <summary>
         /// Adds a navigational action which will populate the tree.
         /// </summary>
-        /// <param name="builder">The multi step builder.</param>
         /// <param name="title">The title of the node.</param>
+        /// <param name="builder">The multi step builder.</param>
         /// <param name="rank">The ranking in the navigational tree. Default value is 10.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <returns>
         /// The module builder instance.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">builder</exception>
-        public IModuleBuilder AddNavigation(string title, Action<IMultiStepBuilder> builder, int rank = 10)
+        public IModuleBuilder AddNavigation(string title, Action<IMultiStepBuilder> builder, int rank = 10, params ActionContextEntry[] parameters)
         {
             if (builder == null)
                 throw new ArgumentNullException("builder");
 
-            var multiStepBuilder = new MultiStepBuilder(title, rank);
+            var multiStepBuilder = new MultiStepBuilder(title, rank, parameters);
             builder(multiStepBuilder);
 
             var treeNode = multiStepBuilder.Build();

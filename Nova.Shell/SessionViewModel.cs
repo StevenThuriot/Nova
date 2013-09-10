@@ -100,14 +100,14 @@ namespace Nova.Shell
             NavigationActionManager = new NavigationActionManager(View);
         }
 
-        public override Task<bool> Enter()
+        public override Task<bool> Enter(params ActionContextEntry[] parameters)
         {
-            return InvokeActionAsync<SessionEnterAction>();
+            return InvokeActionAsync<SessionEnterAction>(parameters);
         }
 
-        public override Task<bool> Leave()
+        public override Task<bool> Leave(params ActionContextEntry[] parameters)
         {
-            return InvokeActionAsync<SessionLeaveAction>();
+            return InvokeActionAsync<SessionLeaveAction>(parameters);
         }
 
         /// <summary>

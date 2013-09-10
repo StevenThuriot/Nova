@@ -19,6 +19,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Nova.Controls;
+using Nova.Library;
 using Nova.Shell.Library.Actions.Multistep;
 
 namespace Nova.Shell.Library
@@ -63,9 +64,9 @@ namespace Nova.Shell.Library
             if (triggerDeferal) TriggerDeferal();
         }
 
-        public override Task<bool> Leave()
+        public override Task<bool> Leave(params ActionContextEntry[] parameters)
         {
-            return InvokeActionAsync<LeaveMultistepAction<TView, TViewModel>>();
+            return InvokeActionAsync<LeaveMultistepAction<TView, TViewModel>>(parameters);
         }
     }
 }

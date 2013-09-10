@@ -18,6 +18,7 @@
 
 using System;
 using Nova.Controls;
+using Nova.Library;
 using Nova.Shell.Domain;
 using Nova.Shell.Library;
 
@@ -30,16 +31,19 @@ namespace Nova.Shell.Builders
         where TView : ExtendedContentControl<TView, TViewModel>, new()
         where TViewModel : MultistepContentViewModel<TView, TViewModel>, new()
     {
+        private readonly ActionContextEntry[] _parameters;
         private readonly Type _viewType;
         private readonly Type _viewModelType;
 
         /// <summary>
         /// Initializes a new instance of the StepBuilder class.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">The id.</param>
         /// <param name="title">The title.</param>
-        public StepBuilder(Guid id, string title) : base(id, title)
+        /// <param name="parameters">The parameters.</param>
+        public StepBuilder(Guid id, string title, params ActionContextEntry[] parameters) : base(id, title)
         {
+            _parameters = parameters;
             _viewType = typeof (TView);
             _viewModelType = typeof (TViewModel);
         }
@@ -123,7 +127,7 @@ namespace Nova.Shell.Builders
         /// <returns></returns>
         internal override NovaTreeNodeStep Build(INavigatablePage page)
         {
-            var command = page.CreateNavigationalAction<TView, TViewModel>(Id);
+            var command = page.CreateNavigationalAction<TView, TViewModel>(Id, _parameters);
             var node = new NovaTreeNodeStep<TView, TViewModel>(Id, Title, command);
 
             return node;

@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nova.Controls;
+using Nova.Library;
 using Nova.Shell.Builders;
 using Nova.Shell.Library;
 using System.Windows.Input;
@@ -110,11 +111,14 @@ namespace Nova.Shell.Domain
         /// </summary>
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
-        /// <param name="id"></param>
+        /// <param name="id">The id.</param>
         /// <param name="title">The title of the node. Default value is the type name.</param>
         /// <param name="rank">The ranking in the navigational tree. Default value is 10.</param>
-        /// <returns>A new treenode instance.</returns>
-        public static TreeNodeBase New<TPageView, TPageViewModel>(Guid id, string title, int rank)
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>
+        /// A new treenode instance.
+        /// </returns>
+        public static TreeNodeBase New<TPageView, TPageViewModel>(Guid id, string title, int rank, ActionContextEntry[] parameters)
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new()
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
         {
@@ -123,7 +127,7 @@ namespace Nova.Shell.Domain
             if (string.IsNullOrWhiteSpace(title))
                 title = type.Name;
 
-            Func<INavigatablePage, ICommand> navigationalAction = x => x.CreateNavigationalAction<TPageView, TPageViewModel>(id);
+            Func<INavigatablePage, ICommand> navigationalAction = x => x.CreateNavigationalAction<TPageView, TPageViewModel>(id, parameters);
 
             return new TreeNode(id, title, type, typeof(TPageViewModel), rank, navigationalAction);
         }

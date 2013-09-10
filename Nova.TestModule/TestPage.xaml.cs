@@ -18,6 +18,7 @@
 
 #endregion
 
+using System.Diagnostics;
 using Nova.Library;
 using System.Threading;
 using System.Windows.Input;
@@ -55,6 +56,11 @@ namespace Nova.TestModule
         {
             get { return _goToPage2Command; }
             set { SetValue(ref _goToPage2Command, value); }
+        }
+
+        public void OnAfterEnter(ActionContext context)
+        {
+            Debug.Assert(context.ContainsKey("this is a string"));
         }
     }
 

@@ -20,6 +20,7 @@
 
 using System;
 using Nova.Controls;
+using Nova.Library;
 
 namespace Nova.Shell.Library
 {
@@ -35,8 +36,11 @@ namespace Nova.Shell.Library
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         /// <param name="title">The title of the node. Default value is the type name.</param>
         /// <param name="rank">The ranking in the navigational tree. Default value is 10.</param>
-        /// <returns>The module builder instance.</returns>
-        IModuleBuilder AddNavigation<TPageView, TPageViewModel>(string title = null, int rank = 10)
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>
+        /// The module builder instance.
+        /// </returns>
+        IModuleBuilder AddNavigation<TPageView, TPageViewModel>(string title = null, int rank = 10, params ActionContextEntry[] parameters)
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new();
         /// <summary>
@@ -47,23 +51,29 @@ namespace Nova.Shell.Library
         /// <param name="id">The id.</param>
         /// <param name="title">The title of the node. Default value is the type name.</param>
         /// <param name="rank">The ranking in the navigational tree. Default value is 10.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <returns>
         /// The module builder instance.
         /// </returns>
-        IModuleBuilder AddNavigation<TPageView, TPageViewModel>(Guid id, string title = null, int rank = 10)
+        IModuleBuilder AddNavigation<TPageView, TPageViewModel>(Guid id, string title = null, int rank = 10, params ActionContextEntry[] parameters)
             where TPageViewModel : ContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new();
 
         /// <summary>
         /// Adds a navigational action which will populate the tree.
         /// </summary>
-        /// <param name="builder">The multi step builder.</param>
         /// <param name="title">The title of the node.</param>
+        /// <param name="builder">The multi step builder.</param>
         /// <param name="rank">The ranking in the navigational tree. Default value is 10.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <returns>
         /// The module builder instance.
         /// </returns>
-        IModuleBuilder AddNavigation(string title, Action<IMultiStepBuilder> builder, int rank = 10);
+        IModuleBuilder AddNavigation(string title, Action<IMultiStepBuilder> builder, int rank = 10, params ActionContextEntry[] parameters);
+
+
+
+
 
         /// <summary>
         /// Sets the module title.

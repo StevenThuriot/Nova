@@ -67,13 +67,18 @@ namespace Nova.Library
         /// <summary>
         /// Called to trigger all the Entering logic for this ViewModel.
         /// </summary>
-        Task<bool> Enter();
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
+        Task<bool> Enter(params ActionContextEntry[] parameters);
 
         /// <summary>
         /// Called to trigger all the Leaving logic for this ViewModel.
         /// </summary>
-        /// <returns>True if leaving was successful.</returns>
-        Task<bool> Leave();
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>
+        /// True if leaving was successful.
+        /// </returns>
+        Task<bool> Leave(params ActionContextEntry[] parameters);
 
         /// <summary>
         /// Saves this instance.

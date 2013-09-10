@@ -112,9 +112,9 @@ namespace Nova.Shell.Views
         }
 
 
-        public sealed override Task<bool> Enter()
+        public sealed override Task<bool> Enter(params ActionContextEntry[] parameters)
         {
-            return InvokeActionAsync<EnterWizardAction>();
+            return InvokeActionAsync<EnterWizardAction>(parameters);
         }
 
 

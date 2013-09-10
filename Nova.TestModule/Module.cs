@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using Nova.Library;
 using Nova.Shell.Library;
 
 namespace Nova.TestModule
@@ -44,7 +45,7 @@ namespace Nova.TestModule
             builder.SetModuleTitle("Module #" + randomRanking)
                    .SetModuleRanking(randomRanking)
 
-                   .AddNavigation<TestPage, TestPageViewModel>(rank: 20)
+                   .AddNavigation<TestPage, TestPageViewModel>(rank: 10, parameters: ActionContextEntry.Create("this is a string", "test", false))
 
                    .AddNavigation<TestPage2, TestPage2ViewModel>("Page #" + random.Next(1, 100))
                    .AddNavigation<TestPage2, TestPage2ViewModel>("Page #" + random.Next(1, 100))

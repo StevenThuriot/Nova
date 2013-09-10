@@ -58,16 +58,18 @@ namespace Nova.Shell.Actions.Session
 
         public override bool Execute()
         {
+            var actionContextEntries = ActionContext.GetEntries().ToArray();
+
             if (_current != null)
             {
-                var canLeave = _current.ViewModel.Leave().Result;
+                var canLeave = _current.ViewModel.Leave(actionContextEntries).Result;
 
                 if (!canLeave) return false;
             }
 
             InitializeNextView();
 
-            var result = _nextView != null && _nextView.ViewModel.Enter().Result;
+            var result = _nextView != null && _nextView.ViewModel.Enter(actionContextEntries).Result;
 
             if (result) return true;
 
