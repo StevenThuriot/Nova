@@ -16,19 +16,16 @@
 //   
 #endregion
 
-namespace Nova.Shell.Library
+namespace Nova.Shell.Views
 {
     /// <summary>
-    /// Action context constants
+    /// Interaction logic for DialogView.xaml
     /// </summary>
-    public static class ActionContextConstants
+    public partial class DialogView
     {
-        public const string NodeId = "### NODE ID ###";
-        public const string DialogBoxMessage = "### DIALOGBOX MESSAGE ###";
-
-        internal const string CurrentViewConstant = "### CurrentSessionContentView ###";
-        internal const string CreateNextViewConstant = "### CreateNextSessionContentView ###";
-        internal const string ViewTypeConstant = "### ViewTypeConstant ###";
-        internal const string ViewModelTypeConstant = "### ViewModelTypeConstant ###";
+        public DialogView()
+        {
+            InitializeComponent();
+        }
     }
 }

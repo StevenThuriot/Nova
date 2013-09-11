@@ -17,7 +17,10 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Nova.Controls;
+using Nova.Library;
 using Nova.Shell.Domain;
 using Nova.Shell.Library;
 
@@ -34,8 +37,9 @@ namespace Nova.Shell.Builders
         /// Initializes a new instance of the <see cref="WizardStepBuilder{TView,TViewModel}" /> class.
         /// </summary>
         /// <param name="title">The title.</param>
-        public WizardStepBuilder(string title)
-            : base(title, typeof(TView), typeof(TViewModel))
+        /// <param name="parameters">The parameters.</param>
+        public WizardStepBuilder(string title, params ActionContextEntry[] parameters)
+            : base(title, typeof(TView), typeof(TViewModel), parameters)
         {
         }
 
@@ -47,7 +51,7 @@ namespace Nova.Shell.Builders
         /// <returns></returns>
         public override NovaStep Build(Guid groupId)
         {
-            return new NovaStep<TView, TViewModel>(Title, groupId, Guid.NewGuid());
+            return new NovaStep<TView, TViewModel>(Title, groupId, Guid.NewGuid(), Parameters.ToArray());
         }
     }
 
@@ -72,6 +76,14 @@ namespace Nova.Shell.Builders
         public Type ViewModelType { get; private set; }
 
         /// <summary>
+        /// Gets the parameters.
+        /// </summary>
+        /// <value>
+        /// The parameters.
+        /// </value>
+        public IEnumerable<ActionContextEntry> Parameters { get; private set; }
+
+        /// <summary>
         /// Gets the title.
         /// </summary>
         /// <value>
@@ -85,7 +97,8 @@ namespace Nova.Shell.Builders
         /// <param name="title">The title.</param>
         /// <param name="viewType">Type of the view.</param>
         /// <param name="viewModelType">Type of the view model.</param>
-        protected WizardStepBuilder(string title, Type viewType, Type viewModelType)
+        /// <param name="parameters">The parameters.</param>
+        protected WizardStepBuilder(string title, Type viewType, Type viewModelType, params ActionContextEntry[] parameters)
         {
             if (string.IsNullOrWhiteSpace(title))
                 title = viewType.Name;
@@ -93,6 +106,7 @@ namespace Nova.Shell.Builders
             Title = title;
             ViewType = viewType;
             ViewModelType = viewModelType;
+            Parameters = parameters;
         }
 
         /// <summary>

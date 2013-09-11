@@ -132,6 +132,15 @@
       <DependentUpon>SessionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Domain\WizardButton.cs" />
+    <Compile Include="Views\DialogView.xaml.cs">
+      <DependentUpon>DialogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DialogViewBase.cs">
+      <DependentUpon>DialogView.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DialogViewModel.cs">
+      <DependentUpon>DialogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MultiStepView.cs" />
     <Compile Include="Views\StepNotAvailableView.cs" />
     <Compile Include="Views\StepNotAvailableViewModel.cs">
@@ -179,6 +188,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="SessionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

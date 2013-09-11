@@ -225,7 +225,7 @@ namespace Nova.Shell
         /// Creates a wizard builder.
         /// </summary>
         /// <returns></returns>
-        IWizardBuilder ISessionViewModel.CreateWizardBuilder()
+        public IWizardBuilder CreateWizardBuilder()
         {
             return new WizardBuilder();
         }
@@ -234,7 +234,7 @@ namespace Nova.Shell
         /// Creates the wizard.
         /// </summary>
         /// <returns></returns>
-        void ISessionViewModel.StackWizard(IWizardBuilder builder)
+        public void StackWizard(IWizardBuilder builder)
         {
             var wizardBuilder = (WizardBuilder)builder;
 
@@ -271,7 +271,7 @@ namespace Nova.Shell
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="entries">The entries.</param>
-        void ISessionViewModel.UnstackWizard(Guid id, IEnumerable<ActionContextEntry> entries)
+        public void UnstackWizard(Guid id, IEnumerable<ActionContextEntry> entries)
         {
             var frameworkElements = View._root.Children.OfType<FrameworkElement>().Where(x => x.Tag != null).ToList();
             for (var i = frameworkElements.Count - 1; i >= 0; i--)
@@ -289,6 +289,21 @@ namespace Nova.Shell
 
            ((IContentViewModel)CurrentView.ViewModel).ReturnToUseCase(entries);
         }
+
+        /// <summary>
+        /// Shows the dialog box.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void ShowDialogBox(string message)
+        {
+            var entry = ActionContextEntry.Create(ActionContextConstants.DialogBoxMessage, message, false);
+
+            var builder = CreateWizardBuilder();
+            builder.AddStep<DialogView, DialogViewModel>(parameters: entry);
+
+            StackWizard(builder);
+        }
+
 
         /// <summary>
         /// Disposes the managed resources.

@@ -18,6 +18,7 @@
 
 using System;
 using Nova.Controls;
+using Nova.Library;
 using Nova.Shell.Library;
 using Nova.Shell.Views;
 
@@ -32,16 +33,17 @@ namespace Nova.Shell.Domain
         where TView : class, IView, new()
         where TViewModel : ContentViewModel<TView, TViewModel>, new()
     {
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NovaStep{TView,TViewModel}" /> class.
         /// </summary>
         /// <param name="title">The title.</param>
         /// <param name="group">The group.</param>
         /// <param name="id">The id.</param>
-        public NovaStep(string title, Guid @group, Guid id)
-            : base(title, @group, id, typeof(TView), typeof(TViewModel))
+        /// <param name="parameters">The parameters.</param>
+        public NovaStep(string title, Guid @group, Guid id, params ActionContextEntry[] parameters)
+            : base(title, @group, id, typeof(TView), typeof(TViewModel), parameters)
         {
-
         }
 
         /// <summary>
@@ -96,6 +98,14 @@ namespace Nova.Shell.Domain
         public Type ViewModelType { get; private set; }
 
         /// <summary>
+        /// Gets the parameters.
+        /// </summary>
+        /// <value>
+        /// The parameters.
+        /// </value>
+        public ActionContextEntry[] Parameters { get; private set; }
+
+        /// <summary>
         /// Gets the view.
         /// </summary>
         /// <value>
@@ -119,13 +129,15 @@ namespace Nova.Shell.Domain
         /// <param name="id">The id.</param>
         /// <param name="viewType">Type of the view.</param>
         /// <param name="viewModelType">Type of the view model.</param>
-        protected NovaStep(string title, Guid @group, Guid id, Type viewType, Type viewModelType)
+        /// <param name="parameters">The parameters.</param>
+        protected NovaStep(string title, Guid @group, Guid id, Type viewType, Type viewModelType, params ActionContextEntry[] parameters)
         {
             NodeId = id;
             Title = title;
             Group = @group;
             ViewType = viewType;
             ViewModelType = viewModelType;
+            Parameters = parameters;
         }
 
         internal abstract IView GetOrCreateView(MultiStepView parent);

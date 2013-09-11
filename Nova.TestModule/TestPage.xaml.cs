@@ -49,6 +49,15 @@ namespace Nova.TestModule
         protected override void OnCreated()
         {
             _goToPage2Command = CreateNavigationalAction<TestPage2, TestPage2ViewModel>();
+            _showMessage = new RelayCommand(() => ShowDialogBox("This is a message."));
+        }
+
+
+        private ICommand _showMessage;
+        public ICommand ShowMessage
+        {
+            get { return _showMessage; }
+            set { SetValue(ref _showMessage, value); }
         }
 
         private ICommand _goToPage2Command;

@@ -17,6 +17,7 @@
 #endregion
 
 using Nova.Controls;
+using Nova.Library;
 
 namespace Nova.Shell.Library
 {
@@ -31,10 +32,11 @@ namespace Nova.Shell.Library
         /// <typeparam name="TPageView">The type of the page view.</typeparam>
         /// <typeparam name="TPageViewModel">The type of the page view model.</typeparam>
         /// <param name="title">The title.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <returns>
         /// The module builder instance.
         /// </returns>
-        IWizardBuilder AddStep<TPageView, TPageViewModel>(string title = null)
+        IWizardBuilder AddStep<TPageView, TPageViewModel>(string title = null, params ActionContextEntry[] parameters)
             where TPageViewModel : WizardContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new();
     }

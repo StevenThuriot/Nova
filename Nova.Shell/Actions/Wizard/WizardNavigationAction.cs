@@ -44,7 +44,7 @@ namespace Nova.Shell.Actions.Wizard
 
         public override bool Execute()
         {
-            var canLeave = _current.View.ViewModel.Leave().Result;
+            var canLeave = _current.View.ViewModel.Leave(_current.Parameters).Result;
 
             if (!canLeave)
                 return false;
@@ -68,7 +68,7 @@ namespace Nova.Shell.Actions.Wizard
             if (nextView != null)
             {
                 var nextViewModel = nextView.ViewModel;
-                var result = nextViewModel.Enter().Result;
+                var result = nextViewModel.Enter(_nextStep.Parameters).Result;
 
                 if (result)
                     return true;
@@ -84,7 +84,7 @@ namespace Nova.Shell.Actions.Wizard
             else
                 ViewModel.PreviousSteps.Pop();
 
-            return _current.View.ViewModel.Enter().Result; // Stay on current.
+            return _current.View.ViewModel.Enter(_current.Parameters).Result; // Stay on current.
         }
 
         public override void ExecuteCompleted()

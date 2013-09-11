@@ -126,7 +126,7 @@ namespace Nova.Shell.Library
         /// <param name="action">The action.</param>
         /// <param name="canExecute">The can execute.</param>
         /// <returns></returns>
-        protected IWizardButton CreateWizardButton(string title, Action<object> action, Predicate<object> canExecute = null)
+        protected IWizardButton CreateButton(string title, Action<object> action, Predicate<object> canExecute = null)
         {
             return _wizard.CreateWizardButton(title, action, canExecute);
         }
@@ -139,7 +139,7 @@ namespace Nova.Shell.Library
         /// <returns></returns>
         protected IWizardButton CreatePreviousButton()
         {
-            return CreateWizardButton("Previous", _ => DoStep(PreviousStep), _ => PreviousStep != null && PreviousStep.Value != null);
+            return CreateButton("Previous", _ => DoStep(PreviousStep), _ => PreviousStep != null && PreviousStep.Value != null);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace Nova.Shell.Library
         /// <returns></returns>
         protected IWizardButton CreateNextButton()
         {
-            return CreateWizardButton("Next", _ => DoStep(NextStep), _ => NextStep != null && NextStep.Value != null);
+            return CreateButton("Next", _ => DoStep(NextStep), _ => NextStep != null && NextStep.Value != null);
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace Nova.Shell.Library
         /// <returns></returns>
         protected IWizardButton CreateFinishButton()
         {
-            return CreateWizardButton("Finish", _ => RunFinishAction());
+            return CreateButton("Finish", _ => RunFinishAction());
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace Nova.Shell.Library
         /// <returns></returns>
         protected IWizardButton CreateCancelButton()
         {
-            return CreateWizardButton("Cancel", _ => _wizard.Cancel(), _ => CanCancel);
+            return CreateButton("Cancel", _ => _wizard.Cancel(), _ => CanCancel);
         }
 
 

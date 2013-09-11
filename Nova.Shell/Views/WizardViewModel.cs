@@ -36,7 +36,15 @@ namespace Nova.Shell.Views
     public class WizardViewModel : ViewModel<WizardView, WizardViewModel>, IWizard
     {
         private IDisposable _deferral;
-        private LinkedListNode<NovaStep> _initialView;
+
+        /// <summary>
+        /// Gets the initial view.
+        /// </summary>
+        /// <value>
+        /// The initial view.
+        /// </value>
+        internal LinkedListNode<NovaStep> InitialView { get; private set; }
+
         private MultiStepView _multiStepView;
 
         /// <summary>
@@ -76,7 +84,7 @@ namespace Nova.Shell.Views
         {
             SetKnownActionTypes(typeof(CancelAction), typeof(FinishAction));
 
-            var multiStepView = new MultiStepView(View, SessionViewModel, ID, _initialView);
+            var multiStepView = new MultiStepView(View, SessionViewModel, ID, InitialView);
 
             MultiStepView = multiStepView;
 
@@ -105,7 +113,7 @@ namespace Nova.Shell.Views
                     throw new ArgumentNullException("initialView");
 
                 SessionViewModel = sessionViewModel;
-                _initialView = initialView;
+                InitialView = initialView;
             }
 
             _deferral = null;

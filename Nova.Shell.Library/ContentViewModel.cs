@@ -136,5 +136,14 @@ namespace Nova.Shell.Library
             var actionContextEntries = entries.ToArray();
             InvokeAction<ReturnAction<TView, TViewModel>>(actionContextEntries);
         }
+
+        /// <summary>
+        /// Shows the dialog box.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void ShowDialogBox(string message)
+        {
+            Session.ShowDialogBox(message);
+        }
     }
 }

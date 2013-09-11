@@ -25,7 +25,7 @@ namespace Nova.Shell.Domain
     /// <summary>
     /// Buttons in a wizard
     /// </summary>
-    public class WizardButton : IWizardButton
+    internal class WizardButton : IWizardButton
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WizardButton"/> class.

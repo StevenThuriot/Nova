@@ -150,5 +150,11 @@ namespace Nova.Shell.Library
         /// <param name="id">The id.</param>
         /// <param name="entries">The entries.</param>
         void UnstackWizard(Guid id, IEnumerable<ActionContextEntry> entries);
+
+        /// <summary>
+        /// Shows the dialog box.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        void ShowDialogBox(string message);
     }
 }

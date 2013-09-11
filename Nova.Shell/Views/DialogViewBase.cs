@@ -16,19 +16,14 @@
 //   
 #endregion
 
-namespace Nova.Shell.Library
+using Nova.Controls;
+
+namespace Nova.Shell.Views
 {
     /// <summary>
-    /// Action context constants
+    /// Dialog view base
     /// </summary>
-    public static class ActionContextConstants
+    public abstract class DialogViewBase : ExtendedContentControl<DialogView, DialogViewModel>
     {
-        public const string NodeId = "### NODE ID ###";
-        public const string DialogBoxMessage = "### DIALOGBOX MESSAGE ###";
-
-        internal const string CurrentViewConstant = "### CurrentSessionContentView ###";
-        internal const string CreateNextViewConstant = "### CreateNextSessionContentView ###";
-        internal const string ViewTypeConstant = "### ViewTypeConstant ###";
-        internal const string ViewModelTypeConstant = "### ViewModelTypeConstant ###";
     }
 }

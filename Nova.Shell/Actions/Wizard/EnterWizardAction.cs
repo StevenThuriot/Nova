@@ -28,15 +28,17 @@ namespace Nova.Shell.Actions.Wizard
     public class EnterWizardAction : EnterAction<WizardView, WizardViewModel>
     {
         private IViewModel _viewModel;
+        private ActionContextEntry[] _parameters;
 
         public override void OnBefore()
         {
+            _parameters = ViewModel.InitialView.Value.Parameters;
             _viewModel = ViewModel.MultiStepView.ViewModel;
         }
 
         public override bool Enter()
         {
-            return _viewModel.Enter().Result;
+            return _viewModel.Enter(_parameters).Result;
         }
     }
 }
