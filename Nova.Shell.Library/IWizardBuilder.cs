@@ -39,5 +39,13 @@ namespace Nova.Shell.Library
         IWizardBuilder AddStep<TPageView, TPageViewModel>(string title = null, params ActionContextEntry[] parameters)
             where TPageViewModel : WizardContentViewModel<TPageView, TPageViewModel>, new()
             where TPageView : ExtendedContentControl<TPageView, TPageViewModel>, new();
+
+        /// <summary>
+        /// Gets or sets the size.
+        /// </summary>
+        /// <value>
+        /// The size.
+        /// </value>
+        ExtendedSize Size { get; set; }
     }
 }

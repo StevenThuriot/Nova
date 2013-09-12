@@ -30,6 +30,7 @@ namespace Nova.TestModule
     public class Module : IModule
     {
         public static Guid Step1Id = Guid.NewGuid();
+        public static Guid Step2Id = Guid.NewGuid();
 
         /// <summary>
         /// Configures the module.
@@ -45,9 +46,9 @@ namespace Nova.TestModule
             builder.SetModuleTitle("Module #" + randomRanking)
                    .SetModuleRanking(randomRanking)
 
-                   .AddNavigation<TestPage, TestPageViewModel>(rank: 10, parameters: ActionContextEntry.Create("this is a string", "test", false))
+                   .AddNavigation<TestPage, TestPageViewModel>(Step1Id, rank: 10, parameters: ActionContextEntry.Create("this is a string", "test", false))
 
-                   .AddNavigation<TestPage2, TestPage2ViewModel>("Page #" + random.Next(1, 100))
+                   .AddNavigation<TestPage2, TestPage2ViewModel>(Step2Id, "Page #" + random.Next(1, 100))
                    .AddNavigation<TestPage2, TestPage2ViewModel>("Page #" + random.Next(1, 100))
                    .AddNavigation<TestPage2, TestPage2ViewModel>("Page #" + random.Next(1, 100))
                    .AddNavigation<TestPage2, TestPage2ViewModel>("Page #" + random.Next(1, 100))

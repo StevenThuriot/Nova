@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Nova.Library;
 
 #region License
@@ -155,6 +156,7 @@ namespace Nova.Shell.Library
         /// Shows the dialog box.
         /// </summary>
         /// <param name="message">The message.</param>
-        void ShowDialogBox(string message);
+        /// <param name="image">The image.</param>
+        void ShowDialogBox(string message, ImageSource image = null);
     }
 }

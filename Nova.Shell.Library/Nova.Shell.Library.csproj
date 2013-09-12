@@ -64,6 +64,7 @@
     <Compile Include="Actions\Wizard\StackAction.cs" />
     <Compile Include="Actions\Wizard\ValidatableFinishAction.cs" />
     <Compile Include="ContentViewModel.cs" />
+    <Compile Include="ExtendedSize.cs" />
     <Compile Include="IContentViewModel.cs" />
     <Compile Include="IMultiStepBuilder.cs" />
     <Compile Include="IMultistepContentViewModel.cs" />

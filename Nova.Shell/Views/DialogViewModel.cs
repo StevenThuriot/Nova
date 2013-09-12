@@ -17,6 +17,8 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Media;
 using Nova.Library;
 using Nova.Shell.Library;
 
@@ -28,6 +30,8 @@ namespace Nova.Shell.Views
     public class DialogViewModel : WizardContentViewModel<DialogView, DialogViewModel>
     {
         private string _message;
+        private Visibility _imageVisibility = Visibility.Collapsed;
+        private ImageSource _image;
 
         /// <summary>
         /// Gets the message.
@@ -41,6 +45,30 @@ namespace Nova.Shell.Views
             private set { SetValue(ref _message, value); }
         }
 
+        /// <summary>
+        /// Gets the image visibility.
+        /// </summary>
+        /// <value>
+        /// The image visibility.
+        /// </value>
+        public Visibility ImageVisibility
+        {
+            get { return _imageVisibility; }
+            private set { SetValue(ref _imageVisibility, value); }
+        }
+
+        /// <summary>
+        /// Gets the image.
+        /// </summary>
+        /// <value>
+        /// The image.
+        /// </value>
+        public ImageSource Image
+        {
+            get { return _image; }
+            private set { SetValue(ref _image, value); }
+        }
+
         protected override IEnumerable<IWizardButton> CreateButtons()
         {
             var wizardButton = CreateButton("Ok", _ => RunFinishAction());
@@ -51,6 +79,13 @@ namespace Nova.Shell.Views
         public void OnBeforeEnter(ActionContext context)
         {
             Message = context.GetValue<string>(ActionContextConstants.DialogBoxMessage);
+            
+            ImageSource imageSource;
+            if (context.TryGetValue(ActionContextConstants.DialogBoxImage, out imageSource))
+            {
+                Image = imageSource;
+                ImageVisibility = Visibility.Visible;
+            }
         }
     }
 }

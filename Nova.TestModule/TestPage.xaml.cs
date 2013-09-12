@@ -18,7 +18,10 @@
 
 #endregion
 
+using System;
 using System.Diagnostics;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Nova.Library;
 using System.Threading;
 using System.Windows.Input;
@@ -48,8 +51,14 @@ namespace Nova.TestModule
     {
         protected override void OnCreated()
         {
-            _goToPage2Command = CreateNavigationalAction<TestPage2, TestPage2ViewModel>();
-            _showMessage = new RelayCommand(() => ShowDialogBox("This is a message."));
+            _goToPage2Command = CreateNavigationalAction<TestPage2, TestPage2ViewModel>(Module.Step2Id);
+
+            var pack = new Uri("pack://application:,,,/Nova;component/Resources/Check-icon.png");
+            
+            var image = new BitmapImage(pack);
+            image.Freeze();
+
+            _showMessage = new RelayCommand(() => ShowDialogBox("This is a message.", image));
         }
 
 

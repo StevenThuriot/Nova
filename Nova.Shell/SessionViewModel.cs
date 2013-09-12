@@ -25,6 +25,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
 using Nova.Shell.Builders;
@@ -256,6 +257,14 @@ namespace Nova.Shell
 
             WizardViewModel wizardViewModel = wizard.ViewModel;
 
+            var size = builder.Size;
+
+            wizard.Width = size.Width;
+            wizard.Height = size.Height;
+
+            wizard.MinWidth = size.MinWidth;
+            wizard.MinHeight = size.MinHeight;
+
             overlay.Tag = wizardViewModel.ID;
             wizardViewModel.Initialize(this, wizardBuilder);
 
@@ -294,12 +303,23 @@ namespace Nova.Shell
         /// Shows the dialog box.
         /// </summary>
         /// <param name="message">The message.</param>
-        public void ShowDialogBox(string message)
+        /// <param name="image">The image.</param>
+        public void ShowDialogBox(string message, ImageSource image = null)
         {
+            var entries = new List<ActionContextEntry>();
+
             var entry = ActionContextEntry.Create(ActionContextConstants.DialogBoxMessage, message, false);
+            entries.Add(entry);
+
+            if (image != null)
+            {
+                var imageEntry = ActionContextEntry.Create(ActionContextConstants.DialogBoxImage, image, false);
+                entries.Add(imageEntry);
+            }
 
             var builder = CreateWizardBuilder();
-            builder.AddStep<DialogView, DialogViewModel>(parameters: entry);
+            builder.AddStep<DialogView, DialogViewModel>(parameters: entries.ToArray());
+            builder.Size = new ExtendedSize(480, 120, minWidth: 480, minHeight: 120);
 
             StackWizard(builder);
         }

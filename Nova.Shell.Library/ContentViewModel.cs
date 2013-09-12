@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
 using Nova.Controls;
 using System.Windows.Input;
 using Nova.Library;
@@ -141,9 +142,10 @@ namespace Nova.Shell.Library
         /// Shows the dialog box.
         /// </summary>
         /// <param name="message">The message.</param>
-        public void ShowDialogBox(string message)
+        /// <param name="image">The image.</param>
+        public void ShowDialogBox(string message, ImageSource image = null)
         {
-            Session.ShowDialogBox(message);
+            Session.ShowDialogBox(message, image);
         }
     }
 }

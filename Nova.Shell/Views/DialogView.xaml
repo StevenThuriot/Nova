@@ -6,7 +6,19 @@
                       xmlns:views="clr-namespace:Nova.Shell.Views"
                       mc:Ignorable="d" 
                       d:DataContext="{d:DesignInstance views:DialogViewModel}">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
 
-    <TextBlock Text="{Binding Message, Mode=OneWay}" />
+    <Image     Grid.Row="0" Source="{Binding Image}" 
+               Visibility="{Binding ImageVisibility}"
+               Stretch="None"
+               Margin="10"
+               VerticalAlignment="Center" HorizontalAlignment="Center" />
+    
+    <TextBlock Grid.Column="1" Text="{Binding Message, Mode=OneWay}" />
+  </Grid>
   
 </views:DialogViewBase>

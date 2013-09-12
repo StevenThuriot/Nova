@@ -18,9 +18,9 @@
 
 #endregion
 
-using System;
 using System.Windows.Input;
 using Nova.Controls;
+using Nova.Library;
 using Nova.Shell.Library;
 
 namespace Nova.TestModule
@@ -45,7 +45,7 @@ namespace Nova.TestModule
     {
         protected override void OnCreated()
         {
-            _goToPage1Command = CreateNavigationalAction<TestPage, TestPageViewModel>(Module.Step1Id);
+            _goToPage1Command = CreateNavigationalAction<TestPage, TestPageViewModel>(Module.Step1Id, ActionContextEntry.Create("this is a string", "test", false));
         }
 
         private ICommand _goToPage1Command;
