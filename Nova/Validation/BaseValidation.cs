@@ -16,7 +16,6 @@
 // 
 #endregion
 using System;
-using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
 
@@ -73,9 +72,6 @@ namespace Nova.Validation
 			Message = message;
 			EntityID = entityID;
 		}
-
-
-
 
         /// <summary>
         /// Checks if equal to the specified instance.
