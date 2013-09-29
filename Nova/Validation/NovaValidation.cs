@@ -342,13 +342,13 @@ namespace Nova.Validation
 						return;
 					}
 
-					var mostSevereValidationRanking = validations.Max(x => x.Ranking);
-					var mostSevereValidation = validations.First(x => x.Ranking == mostSevereValidationRanking);
+					var mostSevereValidationRanking = validations.Max(x => x.Severity);
+					var mostSevereValidation = validations.First(x => x.Severity == mostSevereValidationRanking);
 
 					SetSeverity(dependencyObject, mostSevereValidation.SeverityBrush);
 
 					//Since we are showing the most severe brush, show the most severe messages first as well.
-					validations = validations.OrderByDescending(x => x.Ranking).ToList();
+					validations = validations.OrderByDescending(x => x.Severity).ToList();
 
 					if (GetConcatToolTip(dependencyObject))
 					{

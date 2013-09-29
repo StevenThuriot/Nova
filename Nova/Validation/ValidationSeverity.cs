@@ -26,14 +26,14 @@ namespace Nova.Validation
 		/// <summary>
 		/// Lowest level validation error, counts as a suggestion.
 		/// </summary>
-		Suggestion,
+		Suggestion = 0,
 		/// <summary>
 		/// Mid level validation error, counts as a warning.
 		/// </summary>
-		Warning,
+		Warning = 1,
 		/// <summary>
 		/// High level validation error, counts as an error.
 		/// </summary>
-		Error
+		Error = 2
 	}
 }

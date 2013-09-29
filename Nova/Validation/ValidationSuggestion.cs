@@ -16,8 +16,6 @@
 // 
 #endregion
 using System;
-using System.Windows;
-using System.Windows.Media;
 
 namespace Nova.Validation
 {
@@ -41,18 +39,9 @@ namespace Nova.Validation
 		/// Gets the ranking.
 		/// The higher, the more severe a validation message is.
 		/// </summary>
-		public override int Ranking
+        public override ValidationSeverity Severity
 		{
-			get { return 10; }
-		}
-
-		/// <summary>
-		/// Gets the severity brush.
-		/// </summary>
-		/// <returns>A brush from the resource file.</returns>
-		public override Brush SeverityBrush
-		{
-			get { return Application.Current.Resources["Suggestion"] as Brush; }
+            get { return ValidationSeverity.Suggestion; }
 		}
 	}
 }

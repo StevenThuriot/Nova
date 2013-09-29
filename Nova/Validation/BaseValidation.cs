@@ -16,8 +16,8 @@
 // 
 #endregion
 using System;
-using System.ComponentModel;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Nova.Validation
@@ -25,29 +25,31 @@ namespace Nova.Validation
 	/// <summary>
 	/// A validation error.
 	/// </summary>
-	public abstract class BaseValidation : INotifyPropertyChanged, IComparable<BaseValidation>, IEquatable<BaseValidation>
+	public abstract class BaseValidation
 	{
-		/// <summary>
-		/// Occurs when a property value changes.
-		/// </summary>
-		public event PropertyChangedEventHandler PropertyChanged;
-
 		/// <summary>
 		/// Gets the ranking. 
 		/// The higher, the more severe a validation message is.
 		/// </summary>
-		public abstract int Ranking { get; }
+		public abstract ValidationSeverity Severity { get; }
 
 		/// <summary>
 		/// Gets the field.
 		/// </summary>
 		public string Field { get; private set; }
-		
-		/// <summary>
-		/// Gets the severity brush.
-		/// </summary>
-		/// <returns></returns>
-		public abstract Brush SeverityBrush { get; }
+
+	    /// <summary>
+	    /// Gets the severity brush.
+	    /// </summary>
+	    /// <returns></returns>
+	    public Brush SeverityBrush
+	    {
+	        get
+	        {
+	            var severity = Severity.ToString("G");
+	            return Application.Current.Resources[severity] as Brush;
+	        }
+	    }
 
 		/// <summary>
 		/// Gets the message.
@@ -72,140 +74,79 @@ namespace Nova.Validation
 			EntityID = entityID;
 		}
 
-		/// <summary>
-		/// Called when [property changed].
-		/// </summary>
-		/// <param name="propertyName">Name of the property.</param>
-		protected void OnPropertyChanged(string propertyName)
-		{
-			var handler = PropertyChanged;
 
-			if (handler != null)
-			{
-				handler(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
 
-		/// <summary>
-		/// Checks if equal to the specified instance.
-		/// </summary>
-		/// <param name="other">The other instance.</param>
-		/// <returns>
-		///   <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
-		/// </returns>
-		public bool Equals(BaseValidation other)
-		{
-			if (ReferenceEquals(null, other)) return false;
-			if (ReferenceEquals(this, other)) return true;
-			return Equals(other.Field, Field);
-		}
 
-		/// <summary>
-		/// Compares to the other instance.
-		/// </summary>
-		/// <param name="other">The other instance.</param>
-		/// <returns></returns>
-		public int CompareTo(BaseValidation other)
-		{
-			return string.Compare(Field, other.Field, CultureInfo.CurrentCulture, CompareOptions.Ordinal);
-		}
+        /// <summary>
+        /// Checks if equal to the specified instance.
+        /// </summary>
+        /// <param name="other">The other instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+	    public bool Equals(BaseValidation other)
+	    {
+	        if (ReferenceEquals(null, other)) return false;
+	        if (ReferenceEquals(this, other)) return true;
+	        return string.Equals(Field, other.Field) && string.Equals(Message, other.Message) && EntityID.Equals(other.EntityID);
+	    }
 
-		/// <summary>
-		/// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
-		/// </summary>
-		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-		/// <returns>
-		///   <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
-		/// </returns>
-		public override bool Equals(object obj)
-		{
-			if (ReferenceEquals(null, obj)) return false;
-			if (ReferenceEquals(this, obj)) return true;
-			if (obj.GetType() != typeof (BaseValidation)) return false;
-			return Equals((BaseValidation) obj);
-		}
+	    /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+	    public override bool Equals(object obj)
+	    {
+	        if (ReferenceEquals(null, obj)) return false;
+	        if (ReferenceEquals(this, obj)) return true;
+	        if (obj.GetType() != GetType()) return false;
+	        return Equals((BaseValidation) obj);
+	    }
 
-		/// <summary>
-		/// Returns a hash code for this instance.
-		/// </summary>
-		/// <returns>
-		/// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
-		/// </returns>
-		public override int GetHashCode()
-		{
-			return (Field != null ? Field.GetHashCode() : 0);
-		}
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
+	    public override int GetHashCode()
+	    {
+	        unchecked
+	        {
+	            var hashCode = (Field != null ? Field.GetHashCode() : 0);
+	            hashCode = (hashCode*397) ^ (Message != null ? Message.GetHashCode() : 0);
+	            hashCode = (hashCode*397) ^ EntityID.GetHashCode();
+	            return hashCode;
+	        }
+	    }
 
-		/// <summary>
-		/// Implements the operator ==.
-		/// </summary>
-		/// <param name="left">The left.</param>
-		/// <param name="right">The right.</param>
-		/// <returns>
-		/// The result of the operator.
-		/// </returns>
-		public static bool operator ==(BaseValidation left, BaseValidation right)
-		{
-			return Equals(left, right);
-		}
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static bool operator ==(BaseValidation left, BaseValidation right)
+        {
+            return Equals(left, right);
+        }
 
-		/// <summary>
-		/// Implements the operator !=.
-		/// </summary>
-		/// <param name="left">The left.</param>
-		/// <param name="right">The right.</param>
-		/// <returns>
-		/// The result of the operator.
-		/// </returns>
-		public static bool operator !=(BaseValidation left, BaseValidation right)
-		{
-			return !Equals(left, right);
-		}
-
-		/// <summary>
-		/// Implements the operator &lt;.
-		/// </summary>
-		/// <param name="left">The left.</param>
-		/// <param name="right">The right.</param>
-		/// <returns>
-		/// The result of the operator.
-		/// </returns>
-		public static bool operator <(BaseValidation left, BaseValidation right)
-		{
-			return Compare(left, right) < 0;
-		}
-		/// <summary>
-		/// Implements the operator &gt;.
-		/// </summary>
-		/// <param name="left">The left.</param>
-		/// <param name="right">The right.</param>
-		/// <returns>
-		/// The result of the operator.
-		/// </returns>
-		public static bool operator >(BaseValidation left, BaseValidation right)
-		{
-			return Compare(left, right) > 0;
-		}
-
-		/// <summary>
-		/// Compares the specified instances.
-		/// </summary>
-		/// <param name="left">The first instance.</param>
-		/// <param name="right">The second instance.</param>
-		/// <returns></returns>
-		public static int Compare(BaseValidation left, BaseValidation right)
-		{
-			if (ReferenceEquals(left, right))
-			{
-				return 0;
-			}
-
-			if (ReferenceEquals(left, null))
-			{
-				return -1;
-			}
-
-			return left.CompareTo(right);
-		}
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static bool operator !=(BaseValidation left, BaseValidation right)
+        {
+            return !Equals(left, right);
+        }
 	}
 }

@@ -20,6 +20,7 @@
 
 using System;
 using System.Globalization;
+using System.Linq;
 using Nova.Properties;
 using Nova.Validation;
 using Nova.Controls;
@@ -43,6 +44,18 @@ namespace Nova.Library
         protected ValidatableActionflow()
         {
             _validationResults = new ValidationResults();
+        }
+
+        /// <summary>
+        /// Validation Severity that counts as blocking. Messages with a severity lower than the set severity will not be considered blocking.
+        /// However, if there are only non-blocking messages, they will appear to the user the first time. If this action is fired again, messages that have already been shown will be considered resolved.
+        /// </summary>
+        /// <value>
+        /// The validation severity.
+        /// </value>
+        public virtual ValidationSeverity ValidationSeverity
+        {
+            get { return ValidationSeverity.Error; }
         }
 
         /// <summary>
@@ -104,8 +117,21 @@ namespace Nova.Library
         /// </summary>
         internal override void SafeInternalExecute()
         {
+            var errorCollection = ViewModel.ErrorCollection;
+            var hasExistingErrors = errorCollection != null && errorCollection.Count > 0;
+            
             Validate(_validationResults);
             CanComplete = _validationResults.IsValid;
+
+            if (!CanComplete && hasExistingErrors)
+            {
+                var validationMessages = _validationResults.InternalGetValidations();
+
+                var severity = ValidationSeverity;
+                var errors = errorCollection.Where(x => x.Severity < severity).ToList();
+
+                CanComplete = !validationMessages.Except(errors).Any();
+            }
 
             if (CanComplete)
             {
@@ -119,7 +145,7 @@ namespace Nova.Library
         internal override void SafeInternalExecuteCompleted()
         {
             base.SafeInternalExecuteCompleted();
-
+            
             var validationMessages = _validationResults.InternalGetValidations();
             ViewModel.ErrorCollection = new ReadOnlyErrorCollection(validationMessages);
 

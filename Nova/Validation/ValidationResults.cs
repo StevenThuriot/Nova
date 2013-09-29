@@ -17,6 +17,7 @@
 #endregion
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Nova.Validation
 {
@@ -58,7 +59,7 @@ namespace Nova.Validation
 		/// <returns></returns>
 		internal IEnumerable<BaseValidation> InternalGetValidations()
 		{
-			return _validations.AsReadOnly();
+			return _validations.OrderByDescending(x => x.Severity).ToList().AsReadOnly();
 		}
 
 		/// <summary>
@@ -78,7 +79,7 @@ namespace Nova.Validation
 		/// <returns></returns>
 		public IEnumerator<BaseValidation> GetEnumerator()
 		{
-			return _validations.GetEnumerator();
+			return InternalGetValidations().GetEnumerator();
 		}
 
 		/// <summary>
