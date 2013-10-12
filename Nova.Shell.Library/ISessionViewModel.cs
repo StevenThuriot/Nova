@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Controls;
 using System.Windows.Media;
 using Nova.Library;
 
@@ -138,12 +137,19 @@ namespace Nova.Shell.Library
         /// </summary>
         /// <returns></returns>
         IWizardBuilder CreateWizardBuilder();
-
+        
         /// <summary>
         /// Stacks a new wizard.
         /// </summary>
         /// <param name="builder">The builder.</param>
         void StackWizard(IWizardBuilder builder);
+
+        /// <summary>
+        /// Unstacks the session dialog.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="result">The result.</param>
+        void UnstackSessionDialog(Guid id, string result);
 
         /// <summary>
         /// unstacks a wizard.
@@ -158,5 +164,14 @@ namespace Nova.Shell.Library
         /// <param name="message">The message.</param>
         /// <param name="image">The image.</param>
         void ShowDialogBox(string message, ImageSource image = null);
+
+        /// <summary>
+        /// Shows the dialog box.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="buttons">The buttons.</param>
+        /// <param name="image">The image.</param>
+        /// <returns>The dialog results</returns>
+        T ShowDialogBox<T>(string message, IEnumerable<T> buttons, ImageSource image = null);
     }
 }

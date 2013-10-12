@@ -58,18 +58,24 @@ namespace Nova.Shell.Actions.Session
 
         public override bool Execute()
         {
-            var actionContextEntries = ActionContext.GetEntries().ToArray();
+            var actionContextEntries = ActionContext.GetEntries().ToList();
+            var triggerValidation = true; //TODO: false if navigating inside multistep, else true.
+
+            var triggerEntry = ActionContextEntry.Create(ActionContextConstants.TriggerValidation, triggerValidation, false);
+            actionContextEntries.Add(triggerEntry);
+
+            var entries = actionContextEntries.ToArray();
 
             if (_current != null)
             {
-                var canLeave = _current.ViewModel.Leave(actionContextEntries).Result;
+                var canLeave = _current.ViewModel.Leave(entries).Result;
 
                 if (!canLeave) return false;
             }
 
             InitializeNextView();
 
-            var result = _nextView != null && _nextView.ViewModel.Enter(actionContextEntries).Result;
+            var result = _nextView != null && _nextView.ViewModel.Enter(entries).Result;
 
             if (result) return true;
 

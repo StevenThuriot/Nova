@@ -32,6 +32,9 @@ namespace Nova.Shell.Library.Actions.Wizard
         where TView : class, IView
         where TViewModel : ContentViewModel<TView, TViewModel>, new()
     {
+        private StackHandle<string> _handle;
+        private string _result;
+
         /// <summary>
         /// Executes async.
         /// </summary>
@@ -41,7 +44,20 @@ namespace Nova.Shell.Library.Actions.Wizard
             if (!base.Execute())
                 return false;
             
-            return Return();
+            var result = Return();
+            
+            StackInfo info;
+            if (ActionContext.TryGetValue(ActionContextConstants.StackHandle, out info))
+            {
+                _handle = info as StackHandle<string>;
+
+                if (_handle != null)
+                {
+                    _result = ActionContext.GetValue<string>(ActionContextConstants.DialogBoxResult);
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -50,6 +66,9 @@ namespace Nova.Shell.Library.Actions.Wizard
         public sealed override void ExecuteCompleted()
         {
             ReturnCompleted();
+
+            if (_handle == null) return;
+            _handle.Release(_result);
         }
 
         /// <summary>

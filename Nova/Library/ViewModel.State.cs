@@ -23,10 +23,10 @@ namespace Nova.Library
         /// <summary>
         /// Saves this instance.
         /// </summary>
-        public void Save()
+        public void SaveState()
         {
             var objectToSave = new DynamicContext();
-            Save(objectToSave);
+            SaveState(objectToSave);
 
             if (!objectToSave.IsEmpty)
             {
@@ -36,15 +36,15 @@ namespace Nova.Library
 
         /// <summary>
         /// Loads this instance.
-        /// Load(value) will only trigger in case the ViewModel has been saved before.
+        /// LoadState(value) will only trigger in case the ViewModel has been saved before.
         /// </summary>
-        public async void Load()
+        public async void LoadState()
         {
             var dynamicContext = await DynamicContext.Load<TViewModel>();
 
             if (dynamicContext.IsEmpty) return;
 
-            Load(dynamicContext);
+            LoadState(dynamicContext);
         }
 
         /// <summary>
@@ -53,13 +53,13 @@ namespace Nova.Library
         /// All the parameters added should be serializable.
         /// </summary>
         /// <param name="value">The object to save.</param>
-        protected virtual void Save(dynamic value) { }
+        protected virtual void SaveState(dynamic value) { }
 
         /// <summary>
         /// You can use this method to specify what exactly you want to load.
         /// Retreive everything to the object and load it back onto your ViewModel.
         /// </summary>
         /// <param name="value">The object to load.</param>
-        protected virtual void Load(dynamic value) { }
+        protected virtual void LoadState(dynamic value) { }
     }
 }

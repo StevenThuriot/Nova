@@ -21,10 +21,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using Nova.Controls;
 using System.Windows.Input;
 using Nova.Library;
+using Nova.Shell.Library.Actions;
 using Nova.Shell.Library.Actions.Wizard;
 
 namespace Nova.Shell.Library
@@ -146,6 +148,27 @@ namespace Nova.Shell.Library
         public void ShowDialogBox(string message, ImageSource image = null)
         {
             Session.ShowDialogBox(message, image);
+        }
+
+        /// <summary>
+        /// Shows the dialog box.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="buttons">The buttons.</param>
+        /// <param name="image">The image.</param>
+        public T ShowDialogBox<T>(string message, IEnumerable<T> buttons, ImageSource image = null)
+        {
+            return Session.ShowDialogBox(message, buttons, image);
+        }
+
+        /// <summary>
+        /// Leaves the specified parameters.
+        /// </summary>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
+        public override Task<bool> Leave(params ActionContextEntry[] parameters)
+        {
+            return InvokeActionAsync<ContentLeaveAction<TView, TViewModel>>(parameters);
         }
     }
 }

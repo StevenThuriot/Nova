@@ -26,9 +26,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
 using Nova.Shell.Builders;
+using Nova.Shell.Domain;
 using Nova.Shell.Library;
 using Nova.Shell.Managers;
 using System.Windows.Input;
@@ -232,12 +235,27 @@ namespace Nova.Shell
         }
 
         /// <summary>
-        /// Creates the wizard.
+        /// Stacks a new wizard.
         /// </summary>
-        /// <returns></returns>
-        public void StackWizard(IWizardBuilder builder)
+        /// <param name="builder">The builder.</param>
+        void ISessionViewModel.StackWizard(IWizardBuilder builder)
         {
-            var wizardBuilder = (WizardBuilder)builder;
+            var dispatcher = View.Dispatcher;
+
+            if (!dispatcher.CheckAccess())
+                dispatcher.Invoke(() => ((ISessionViewModel)this).StackWizard(builder), DispatcherPriority.Send);
+
+            Guid stackId;
+            var overlay = CreateWizardOverlay(builder, out stackId);
+
+            var handle = new StackInfo(stackId);
+            overlay.Tag = handle;
+        }
+
+
+        private Overlay CreateWizardOverlay(IWizardBuilder builder, out Guid stackId)
+        {
+            var wizardBuilder = (WizardBuilder) builder;
 
             var overlay = new Overlay();
 
@@ -264,8 +282,6 @@ namespace Nova.Shell
 
             wizard.MinWidth = size.MinWidth;
             wizard.MinHeight = size.MinHeight;
-
-            overlay.Tag = wizardViewModel.ID;
             wizardViewModel.Initialize(this, wizardBuilder);
 
             var canvas = new Canvas();
@@ -273,6 +289,22 @@ namespace Nova.Shell
 
             overlay.Content = canvas;
             View._root.Children.Add(overlay);
+
+            stackId = wizardViewModel.ID;
+            return overlay;
+        }
+
+        /// <summary>
+        /// Unstacks the session dialog.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="result">The result.</param>
+        public void UnstackSessionDialog(Guid id, string result)
+        {
+            var stackHandle = Unstack(id) as StackHandle<string>;
+            
+            if (stackHandle == null) return;
+            stackHandle.Release(result);
         }
 
         /// <summary>
@@ -282,21 +314,40 @@ namespace Nova.Shell
         /// <param name="entries">The entries.</param>
         public void UnstackWizard(Guid id, IEnumerable<ActionContextEntry> entries)
         {
-            var frameworkElements = View._root.Children.OfType<FrameworkElement>().Where(x => x.Tag != null).ToList();
-            for (var i = frameworkElements.Count - 1; i >= 0; i--)
+            var stackInfo = Unstack(id);
+
+            if (stackInfo != null)
             {
-                var child = frameworkElements[i];
-                var input = child.Tag.ToString();
+                var actionContextEntries = entries.ToList();
+                var handleEntry = ActionContextEntry.Create(ActionContextConstants.StackHandle, stackInfo, false);
+                actionContextEntries.Add(handleEntry);
+                entries = actionContextEntries;
+            }
 
-                Guid tag;
-                if (!Guid.TryParse(input, out tag)) continue;
-                if (tag != id) continue;
+            ((IContentViewModel)CurrentView.ViewModel).ReturnToUseCase(entries);
+        }
 
-                View._root.Children.Remove(child);
+        private StackInfo Unstack(Guid id)
+        {
+            StackInfo stackInfo = null;
+
+            var elements = View._root.Children.OfType<FrameworkElement>().Where(x => x.Tag != null);
+
+            foreach (var element in elements)
+            {
+                var loopingInfo = element.Tag as StackInfo;
+
+                if (loopingInfo == null) continue;
+
+                if (loopingInfo.StackId != id) continue;
+
+                stackInfo = loopingInfo;
+                View._root.Children.Remove(element);
+
                 break;
             }
 
-           ((IContentViewModel)CurrentView.ViewModel).ReturnToUseCase(entries);
+            return stackInfo;
         }
 
         /// <summary>
@@ -306,6 +357,41 @@ namespace Nova.Shell
         /// <param name="image">The image.</param>
         public void ShowDialogBox(string message, ImageSource image = null)
         {
+            var handle = PrepareAndShowDialogBox(message, new[] { "OK" }, image);
+            handle.Dispose();
+        }
+
+        /// <summary>
+        /// Shows the dialog box.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="message">The message.</param>
+        /// <param name="buttons">The buttons.</param>
+        /// <param name="image">The image.</param>
+        /// <returns>
+        /// The dialog results
+        /// </returns>
+        /// <remarks>
+        /// This call blocks the current thread.
+        /// </remarks>
+        public T ShowDialogBox<T>(string message, IEnumerable<T> buttons, ImageSource image = null)
+        {
+            var handle = PrepareAndShowDialogBox(message, buttons, image);
+
+            using (handle)
+            {
+                handle.Wait();
+                return handle.Result;
+            }
+        }
+        
+        private StackHandle<T> PrepareAndShowDialogBox<T>(string message, IEnumerable<T> buttons, ImageSource image)
+        {
+            var dispatcher = View.Dispatcher;
+
+            if (!dispatcher.CheckAccess())
+                return dispatcher.Invoke(() => PrepareAndShowDialogBox<T>(message, buttons, image), DispatcherPriority.Send);
+
             var entries = new List<ActionContextEntry>();
 
             var entry = ActionContextEntry.Create(ActionContextConstants.DialogBoxMessage, message, false);
@@ -317,11 +403,28 @@ namespace Nova.Shell
                 entries.Add(imageEntry);
             }
 
+            if (buttons != null)
+            {
+                var boxedButtons = buttons.Where(x => x != null).Cast<object>().ToList().AsReadOnly();
+
+                if (boxedButtons.Count > 0)
+                {
+                    var buttonEntry = ActionContextEntry.Create(ActionContextConstants.DialogBoxButtons, boxedButtons, false);
+                    entries.Add(buttonEntry);
+                }
+            }
+
             var builder = CreateWizardBuilder();
             builder.AddStep<DialogView, DialogViewModel>(parameters: entries.ToArray());
             builder.Size = new ExtendedSize(480, 120, minWidth: 480, minHeight: 120);
+            
+            Guid stackId;
+            var overlay = CreateWizardOverlay(builder, out stackId);
 
-            StackWizard(builder);
+            var handle = new StackHandle<T>(stackId);
+            overlay.Tag = handle;
+            
+            return handle;
         }
 
 

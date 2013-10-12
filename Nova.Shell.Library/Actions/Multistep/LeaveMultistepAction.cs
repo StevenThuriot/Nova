@@ -31,8 +31,8 @@ namespace Nova.Shell.Library.Actions.Multistep
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     [Terminating, Alias(Nova.Library.Actions.Aliases.Leave)]
     public class LeaveMultistepAction<TView, TViewModel> : Actionflow<TView, TViewModel>
-        where TView : IView
-        where TViewModel : IViewModel
+        where TView : class, IView
+        where TViewModel : MultistepContentViewModel<TView, TViewModel>, new()
     {
         /// <summary>
         /// Executes async.
@@ -40,7 +40,23 @@ namespace Nova.Shell.Library.Actions.Multistep
         /// <returns>A value indicating wether to continue execution.</returns>
         public sealed override bool Execute()
         {
-            return base.Execute() && Leave();
+            if (!base.Execute())
+                return false;
+
+            bool triggerValidation;
+            bool result;
+
+            if (ActionContext.TryGetValue(ActionContextConstants.TriggerValidation, out triggerValidation) &&
+                triggerValidation)
+            {
+                result = ActionValidationHelper.TriggerValidation(ViewModel);
+            }
+            else
+            {
+                result = true;
+            }
+
+            return result && Leave();
         }
 
         /// <summary>

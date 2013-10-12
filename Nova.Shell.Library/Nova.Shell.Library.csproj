@@ -58,11 +58,13 @@
     </Compile>
     <Compile Include="ActionContextConstants.cs" />
     <Compile Include="Actions\Aliases.cs" />
+    <Compile Include="Actions\ContentLeaveAction.cs" />
     <Compile Include="Actions\Multistep\LeaveMultistepAction.cs" />
     <Compile Include="Actions\Wizard\FinishAction.cs" />
     <Compile Include="Actions\Wizard\ReturnAction.cs" />
     <Compile Include="Actions\Wizard\StackAction.cs" />
     <Compile Include="Actions\Wizard\ValidatableFinishAction.cs" />
+    <Compile Include="ActionValidationHelper.cs" />
     <Compile Include="ContentViewModel.cs" />
     <Compile Include="ExtendedSize.cs" />
     <Compile Include="IContentViewModel.cs" />
@@ -79,6 +81,8 @@
     <Compile Include="IWizardButton.cs" />
     <Compile Include="MultistepContentViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StackHandle.cs" />
+    <Compile Include="StackInfo.cs" />
     <Compile Include="StepInfo.cs" />
     <Compile Include="WizardContentViewModel.cs" />
   </ItemGroup>

@@ -72,13 +72,19 @@ namespace Nova.Shell.Library
             get { return true; }
         }
 
+
+        private IEnumerable<IWizardButton> _buttons;
         /// <summary>
         /// Gets the buttons.
         /// </summary>
         /// <value>
         /// The buttons.
         /// </value>
-        public IEnumerable<IWizardButton> Buttons { get; private set; }
+        public IEnumerable<IWizardButton> Buttons
+        {
+            get { return _buttons; }
+            private set { SetValue(ref _buttons, value); }
+        }
 
 
         /// <summary>
@@ -90,22 +96,25 @@ namespace Nova.Shell.Library
             base.Initialize(initializer, false);
             _wizard = (IWizard)initializer["Wizard"];
 
-            var buttons = CreateButtons();
+            if (triggerDeferal) TriggerDeferal();
+        }
+
+        protected void OnBeforeEnter(ActionContext context)
+        {
+            var buttons = CreateButtons(context);
 
             if (buttons == null || !buttons.Any())
                 throw new NotSupportedException("Created buttons are invalid.");
 
             Buttons = buttons;
-
-            if (triggerDeferal) TriggerDeferal();
         }
 
         /// <summary>
         /// Creates the buttons.
         /// </summary>
+        /// <param name="context">The context.</param>
         /// <returns></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        protected virtual IEnumerable<IWizardButton> CreateButtons()
+        protected virtual IEnumerable<IWizardButton> CreateButtons(ActionContext context)
         {
             var list = new List<IWizardButton>();
 
@@ -157,17 +166,27 @@ namespace Nova.Shell.Library
         /// <returns></returns>
         protected IWizardButton CreateFinishButton()
         {
-            return CreateButton("Finish", _ => RunFinishAction());
+            const string finish = "Finish";
+            return CreateButton(finish, _ => RunFinishAction(finish));
         }
 
         /// <summary>
         /// Runs the finish action.
         /// </summary>
-        protected virtual void RunFinishAction()
+        protected virtual void RunFinishAction(object result = null, params ActionContextEntry[] entries)
         {
-            InvokeAction<FinishAction<TView, TViewModel>>();
+            if (result != null)
+            {
+                var entry = ActionContextEntry.Create(ActionContextConstants.DialogBoxResult, result, false);
+                var actionContextEntries = entries.ToList();
+                actionContextEntries.Add(entry);
+
+                entries = actionContextEntries.ToArray();
+            }
+
+            InvokeAction<FinishAction<TView, TViewModel>>(entries);
         }
-        
+
         /// <summary>
         /// Finishes this instance.
         /// </summary>

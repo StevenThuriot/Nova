@@ -320,6 +320,7 @@
     <Compile Include="Library\ViewModel.EnterLeave.cs">
       <DependentUpon>ViewModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Library\ViewModel.Save.cs" />
     <Compile Include="Library\ViewModel.State.cs">
       <DependentUpon>ViewModel.cs</DependentUpon>
     </Compile>
