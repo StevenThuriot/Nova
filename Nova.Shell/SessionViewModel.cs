@@ -22,16 +22,15 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
 using Nova.Shell.Builders;
-using Nova.Shell.Domain;
 using Nova.Shell.Library;
 using Nova.Shell.Managers;
 using System.Windows.Input;
@@ -51,6 +50,15 @@ namespace Nova.Shell
         private IView _currentView;
         private readonly dynamic _model;
         private readonly dynamic _applicationModel;
+        private int _stackCounter;
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is stacked.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is stacked; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsStacked { get; private set; }
 
         /// <summary>
         /// Gets the navigation action manager.
@@ -250,6 +258,8 @@ namespace Nova.Shell
 
             var handle = new StackInfo(stackId);
             overlay.Tag = handle;
+
+            IsStacked = Interlocked.Increment(ref _stackCounter) > 0;
         }
 
 
@@ -343,6 +353,7 @@ namespace Nova.Shell
 
                 stackInfo = loopingInfo;
                 View._root.Children.Remove(element);
+                IsStacked = Interlocked.Decrement(ref _stackCounter) > 0;
 
                 break;
             }
@@ -423,6 +434,7 @@ namespace Nova.Shell
 
             var handle = new StackHandle<T>(stackId);
             overlay.Tag = handle;
+            IsStacked = Interlocked.Increment(ref _stackCounter) > 0;
             
             return handle;
         }

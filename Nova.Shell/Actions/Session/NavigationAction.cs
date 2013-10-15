@@ -48,7 +48,10 @@ namespace Nova.Shell.Actions.Session
 
         public override bool CanExecute()
         {
-            return ViewModel.CurrentView == null || !ViewModel.CurrentView.IsLoading;
+            var sessionViewModel = ViewModel;
+            var currentView = sessionViewModel.CurrentView;
+
+            return !sessionViewModel.IsStacked && (currentView == null || !currentView.IsLoading);
         }
 
         public override void OnBefore()

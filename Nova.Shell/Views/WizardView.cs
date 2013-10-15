@@ -20,8 +20,10 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using Nova.Controls;
+using Nova.Library.ActionMethodRepository;
 
 namespace Nova.Shell.Views
 {
@@ -61,6 +63,7 @@ namespace Nova.Shell.Views
         static WizardView()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(WizardView), new FrameworkPropertyMetadata(typeof(WizardView)));
+            
             var widthMetadata = new FrameworkPropertyMetadata(640d, FrameworkPropertyMetadataOptions.AffectsMeasure)
             {
                 CoerceValueCallback = WidthCoerceValueCallback
@@ -98,8 +101,9 @@ namespace Nova.Shell.Views
                                          Func<UIElement, double> getCanvasProperty,
                                          Func<FrameworkElement, double> getMinimumSize)
         {
-            var wizard = (WizardView)dependencyObject;
             var size = (double)baseValue;
+            
+            var wizard = (WizardView)dependencyObject;
             var element = (Canvas) wizard.Parent;
             
             if (element != null)
@@ -111,7 +115,7 @@ namespace Nova.Shell.Views
             }
 
             var minimum = getMinimumSize(wizard);
-
+            
             if (double.IsNaN(size) || double.IsInfinity(size) || size < minimum)
                 return minimum;
 
@@ -123,10 +127,10 @@ namespace Nova.Shell.Views
             Loaded -= Initialize;
 
             //Center!
-            var canvas = (Canvas) Parent;
-
-            var top = (canvas.ActualHeight - Height) / 2d;
-            var left = (canvas.ActualWidth - Width) / 2d;
+            var canvas = (Canvas)Parent;
+            
+            var top = (canvas.ActualHeight - ActualHeight) / 2d;
+            var left = (canvas.ActualWidth - ActualWidth) / 2d;
 
             Canvas.SetTop(this, top);
             Canvas.SetLeft(this, left);
@@ -138,7 +142,7 @@ namespace Nova.Shell.Views
             Func<double> getCanvasPosition = () => Canvas.GetLeft(this);
             Action<double> setCanvasPosition = x => Canvas.SetLeft(this, x);
             Func<double> getMinimum = () => MinWidth;
-            Func<double> getCurrent = () => Width;
+            Func<double> getCurrent = () => ActualWidth;
             Action<double> addToCurrent = x => Width = Math.Min(Math.Max(Width + x, MinWidth), MaxWidth);
 
             ChangeSize(draggingAffectsCanvas, args, getDelta, getCanvasPosition, getCurrent, getMinimum, addToCurrent, setCanvasPosition);
@@ -150,7 +154,7 @@ namespace Nova.Shell.Views
             Func<double> getCanvasPosition = () => Canvas.GetTop(this);
             Action<double> setCanvasPosition = x => Canvas.SetTop(this, x);
             Func<double> getMinimum = () => MinHeight;
-            Func<double> getCurrent = () => Height;
+            Func<double> getCurrent = () => ActualHeight;
             Action<double> addToCurrent = x => Height = Math.Min(Math.Max(Height + x, MinHeight), MaxHeight);
 
             ChangeSize(draggingAffectsCanvas, args, getDelta, getCanvasPosition, getCurrent, getMinimum, addToCurrent, setCanvasPosition);
@@ -224,10 +228,10 @@ namespace Nova.Shell.Views
 
             var canvas = (FrameworkElement)Parent;
 
-            var minLeft = canvas.ActualWidth - Width - margin;
+            var minLeft = canvas.ActualWidth - ActualWidth - margin;
             left = Math.Min(minLeft, left);
 
-            var minTop = canvas.ActualHeight - Height - margin;
+            var minTop = canvas.ActualHeight - ActualHeight - margin;
             top = Math.Min(minTop, top);
 
             Canvas.SetTop(this, top);

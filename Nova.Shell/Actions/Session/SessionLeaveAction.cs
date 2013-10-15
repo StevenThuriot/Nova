@@ -45,6 +45,11 @@ namespace Nova.Shell.Actions.Session
     /// </summary>
     public class SessionLeaveAction : LeaveAction<SessionView, SessionViewModel>
     {
+        public override bool CanExecute()
+        {
+            return !ViewModel.IsStacked;
+        }
+
         public override bool Leave()
         {
             var currentView = ViewModel.CurrentView;
