@@ -82,6 +82,7 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Actions\MainWindow\ShutdownAction.cs" />
     <Compile Include="Actions\Wizard\CancelAction.cs" />
     <Compile Include="Actions\Wizard\EnterWizardAction.cs" />
     <Compile Include="Actions\Wizard\FinishAction.cs" />
