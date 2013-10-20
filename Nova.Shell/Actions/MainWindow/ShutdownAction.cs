@@ -24,11 +24,18 @@ namespace Nova.Shell.Actions.MainWindow
 {
     public class ShutdownAction : LeaveAction<MainView, MainViewModel>
     {
+        private bool _isLoading;
+
+        public override void OnBefore()
+        {
+            _isLoading = View.IsLoading;
+        }
+
         public override bool Leave()
         {
-            if (!View.IsLoading) return true;
+            if (!_isLoading) return true;
             
-            var dialog = MessageBox.Show(RESX.CloseApplication, RESX.CloseApplicationTitle, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var dialog = MessageBox.Show(View, RESX.CloseApplication, RESX.CloseApplicationTitle, MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             return dialog == MessageBoxResult.Yes;
         }
