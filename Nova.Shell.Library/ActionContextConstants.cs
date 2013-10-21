@@ -26,6 +26,11 @@ namespace Nova.Shell.Library
         public const string NodeId = "### NODE ID ###";
         public const string DialogBoxMessage = "### DIALOGBOX MESSAGE ###";
         public const string DialogBoxImage = "### DIALOGBOX IMAGE ###";
+        public const string DialogBoxButtons = "### DIALOGBOX BUTTONS ###";
+        public const string DialogBoxResult = "### DIALOGBOX RESULT ###";
+        public const string StackHandle = "### STACK HANDLE ###";
+        public const string TriggerValidation = "### TRIGGER VALIDATION ###";
+        public const string SessionDialogBox = "### SESSION DIALOG BOX ###";
 
         internal const string CurrentViewConstant = "### CurrentSessionContentView ###";
         internal const string CreateNextViewConstant = "### CreateNextSessionContentView ###";

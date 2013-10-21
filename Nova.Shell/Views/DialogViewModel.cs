@@ -17,6 +17,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using Nova.Library;
@@ -69,14 +70,23 @@ namespace Nova.Shell.Views
             private set { SetValue(ref _image, value); }
         }
 
-        protected override IEnumerable<IWizardButton> CreateButtons()
+        protected override IEnumerable<IWizardButton> CreateButtons(ActionContext context)
         {
-            var wizardButton = CreateButton("Ok", _ => RunFinishAction());
-
+            IEnumerable<object> buttons;
+            if (context.TryGetValue(ActionContextConstants.DialogBoxButtons, out buttons))
+            {
+                ActionContextEntry[] entries = { ActionContextEntry.Create(ActionContextConstants.SessionDialogBox, true, false)};
+                
+                return buttons.Reverse().Select(x => CreateButton(x.ToString(), _ => RunFinishAction(x, entries))).ToList().AsReadOnly();
+            }
+            
+            //TODO: Replace with resource
+            const string title = "OK";
+            var wizardButton = CreateButton(title, _ => RunFinishAction(title));
             return new[] { wizardButton };
         }
 
-        public void OnBeforeEnter(ActionContext context)
+        public void OnBeforeEnterAction(ActionContext context)
         {
             Message = context.GetValue<string>(ActionContextConstants.DialogBoxMessage);
             

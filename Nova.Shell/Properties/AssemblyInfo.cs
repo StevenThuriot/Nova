@@ -36,3 +36,5 @@ using System.Windows;
     // app, or any theme specific resource dictionaries)
 )]
 [assembly: Guid("E75E3BE9-8045-4DF7-9798-1C9376160DF7")]
+
+[assembly: AssemblyInformationalVersion("0.8.0")]

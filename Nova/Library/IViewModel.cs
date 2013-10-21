@@ -81,15 +81,15 @@ namespace Nova.Library
         Task<bool> Leave(params ActionContextEntry[] parameters);
 
         /// <summary>
-        /// Saves this instance.
+        /// Saves the state of this instance.
         /// </summary>
-        void Save();
+        void SaveState();
 
         /// <summary>
-        /// Loads this instance.
+        /// Loads the state of this instance.
         /// Load(value) will only trigger in case the ViewModel has been saved before.
         /// </summary>
-        void Load();
+        void LoadState();
 
         /// <summary>
         /// Prepares the change tracking.
@@ -105,5 +105,11 @@ namespace Nova.Library
         /// Stops the change tracking.
         /// </summary>
         void StopChangeTracking();
+
+        /// <summary>
+        /// Saves this instance.
+        /// </summary>
+        /// <returns></returns>
+        bool Save();
     }
 }

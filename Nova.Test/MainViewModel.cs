@@ -98,12 +98,12 @@ namespace Nova.Test
         //    MessageBox.Show("General On After VM: " + context.ActionName);
         //}
 
-		protected override void Save(dynamic value)
+		protected override void SaveState(dynamic value)
 		{
 			value.Test = "test";
 		}
 
-		protected override void Load(dynamic value)
+		protected override void LoadState(dynamic value)
 		{
 			if (string.IsNullOrWhiteSpace(value.Test))
 				throw new ArgumentNullException("value.Test");

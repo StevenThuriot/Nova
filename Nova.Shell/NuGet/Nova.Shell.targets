@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <StartAction>Program</StartAction>
+        <StartProgram>$(TargetDir)Nova.Shell.exe</StartProgram>
+
+        <BuildDependsOn>
+            $(BuildDependsOn);
+            CopyNovaShell;
+        </BuildDependsOn>
+    </PropertyGroup>
+        
+    <Target Name="CopyNovaShell">
+        <Copy SourceFiles="..\..\tools\net45\Nova.Shell.exe" DestinationFolder="$(TargetDir)" />
+    </Target>
+    
+</Project>

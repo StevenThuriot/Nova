@@ -89,7 +89,7 @@ namespace Nova.Shell.Managers
 
             if (nodeId != Guid.Empty)
             {
-                var id = ActionContextEntry.Create(ActionContextConstants.NodeId, nodeId);
+                var id = ActionContextEntry.Create(ActionContextConstants.NodeId, nodeId, false);
                 actionContextEntries.Add(id);
             }
 

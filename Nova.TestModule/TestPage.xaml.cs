@@ -20,6 +20,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Nova.Library;
@@ -58,7 +59,10 @@ namespace Nova.TestModule
             var image = new BitmapImage(pack);
             image.Freeze();
 
-            _showMessage = new RelayCommand(() => ShowDialogBox("This is a message.", image));
+            _showMessage = new RelayCommand(() => Task.Run(() =>
+            {
+                var result = ShowDialogBox("This is a message.", new[] {"Yes", "No"}, image);
+            }));
         }
 
 

@@ -24,13 +24,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using System.Windows.Shell;
 using System.Windows.Threading;
 using Nova.Controls;
 using Nova.Library;
 using Nova.Shell.Actions.MainWindow;
-using Nova.Shell.Views;
 using RESX = Nova.Shell.Properties.Resources;
 
 namespace Nova.Shell
@@ -51,7 +49,6 @@ namespace Nova.Shell
         /// </summary>
         public MainViewModel()
         {
-            ShutDownCommand = new RelayCommand(ShutDown);
             MaximizeCommand = new RelayCommand(MaximizeView);
             MinimizeCommand = new RelayCommand(MinimizeView);
 
@@ -59,13 +56,6 @@ namespace Nova.Shell
             _sessions.CollectionChanged += SessionsChanged;
         }
 
-        /// <summary>
-        /// Gets the shut down command.
-        /// </summary>
-        /// <value>
-        /// The shut down command.
-        /// </value>
-        public ICommand ShutDownCommand { get; private set; }
         /// <summary>
         /// Gets the maximize command.
         /// </summary>
@@ -158,7 +148,8 @@ namespace Nova.Shell
         {
             SetKnownActionTypes(typeof(CloseSessionAction),
                                 typeof(CreateNewSessionAction),
-                                typeof(FocusTabAction));
+                                typeof(FocusTabAction),
+                                typeof(ShutdownAction));
             
             View.AddHandler(ClosableTabItem.CloseTabEvent, new RoutedEventHandler(CloseSession));
         }
@@ -250,22 +241,6 @@ namespace Nova.Shell
 
             var setChrome = new Action<Window, WindowChrome>(WindowChrome.SetWindowChrome);
             mainView.Dispatcher.BeginInvoke(setChrome, DispatcherPriority.Render, mainView, chrome);
-        }
-
-        /// <summary>
-        /// Shuts down.
-        /// </summary>
-        private void ShutDown()
-        {
-            if (View.IsLoading)
-            {
-                var dialog = MessageBox.Show(RESX.CloseApplication, RESX.CloseApplicationTitle, MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (dialog == MessageBoxResult.No)
-                    return;
-            }
-
-            Application.Current.Shutdown();
         }
     }
 }

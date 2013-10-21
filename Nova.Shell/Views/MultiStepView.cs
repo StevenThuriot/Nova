@@ -440,6 +440,16 @@ namespace Nova.Shell.Views
             return true;
         }
 
+
+        internal bool HasStep(NovaTreeNodeStep treeStep)
+        {
+            if (treeStep.GroupId != _groupId)
+                return false;
+
+            var stepId = treeStep.Id;
+            return _steps.Any(x => x.NodeId == stepId);
+        }
+
         internal bool GetOrCreateStep(NovaTreeNodeStep treeStep, out IView view)
         {
             view = null;

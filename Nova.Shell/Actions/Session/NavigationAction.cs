@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.AccessControl;
 using System.Windows.Threading;
 using Nova.Controls;
 using Nova.Shell.Domain;
@@ -48,7 +47,10 @@ namespace Nova.Shell.Actions.Session
 
         public override bool CanExecute()
         {
-            return ViewModel.CurrentView == null || !ViewModel.CurrentView.IsLoading;
+            var sessionViewModel = ViewModel;
+            var currentView = sessionViewModel.CurrentView;
+
+            return !sessionViewModel.IsStacked && (currentView == null || !currentView.IsLoading);
         }
 
         public override void OnBefore()
@@ -58,24 +60,43 @@ namespace Nova.Shell.Actions.Session
 
         public override bool Execute()
         {
-            var actionContextEntries = ActionContext.GetEntries().ToArray();
+            var actionContextEntries = ActionContext.GetEntries().ToList();
 
-            if (_current != null)
+            _viewType = ActionContext.GetValue<Type>(ActionContextConstants.ViewTypeConstant);
+            _viewModelType = ActionContext.GetValue<Type>(ActionContextConstants.ViewModelTypeConstant);
+
+            var currentlyInsideMultistep = typeof(IMultistepContentViewModel).IsAssignableFrom(_viewModelType);
+            var triggerValidation = !currentlyInsideMultistep;
+
+            NovaTreeNodeStep novaTreeNodeStep = null;
+            var hasStep = false;
+            if (currentlyInsideMultistep)
             {
-                var canLeave = _current.ViewModel.Leave(actionContextEntries).Result;
+                Guid key;
 
-                if (!canLeave) return false;
+                if (!ActionContext.TryGetValue(ActionContextConstants.NodeId, out key))
+                    throw new NotSupportedException("Navigating to a multistep view without providing a step key is not supported.");
+
+                novaTreeNodeStep = View._NovaTree.FindStep(key);
+
+                if (novaTreeNodeStep == null)
+                    throw new NotSupportedException("Navigating to an unknown step.");
+
+                var multistep = _current as MultiStepView;
+
+                if (multistep != null)
+                {
+                    hasStep = multistep.HasStep(novaTreeNodeStep);
+                    triggerValidation = !hasStep;
+                }
             }
+            
+            var triggerEntry = ActionContextEntry.Create(ActionContextConstants.TriggerValidation, triggerValidation, false);
+            actionContextEntries.Add(triggerEntry);
 
-            InitializeNextView();
+            var entries = actionContextEntries.ToArray();
 
-            var result = _nextView != null && _nextView.ViewModel.Enter(actionContextEntries).Result;
-
-            if (result) return true;
-
-            CreateNotAvailableView();
-
-            return true;
+            return LeavePreviousView(entries) && CreateNextView(currentlyInsideMultistep, novaTreeNodeStep, hasStep, entries);
         }
 
         public override void ExecuteCompleted()
@@ -108,37 +129,32 @@ namespace Nova.Shell.Actions.Session
 
 
 
-
-        private void InitializeNextView()
+        private bool LeavePreviousView(ActionContextEntry[] entries)
         {
-            _viewType = ActionContext.GetValue<Type>(ActionContextConstants.ViewTypeConstant);
-            _viewModelType = ActionContext.GetValue<Type>(ActionContextConstants.ViewModelTypeConstant);
-
-            var isMultiStep = typeof(IMultistepContentViewModel).IsAssignableFrom(_viewModelType);
-
-            if (isMultiStep)
-                CreateMultistep();
-            else
-                CreateNormalView();
+            return _current == null || _current.ViewModel.Leave(entries).Result;
         }
 
-        private void CreateMultistep()
+        private bool CreateNextView(bool currentlyInsideMultistep, NovaTreeNodeStep novaTreeNodeStep, bool hasStep,
+            ActionContextEntry[] entries)
         {
-            Guid key;
+            if (currentlyInsideMultistep)
+                CreateMultistep(novaTreeNodeStep, hasStep);
+            else
+                CreateNormalView();
 
-            if (!ActionContext.TryGetValue(ActionContextConstants.NodeId, out key))
-                throw new NotSupportedException("Navigating to a multistep view without providing a step key is not supported.");
+            var result = _nextView != null && _nextView.ViewModel.Enter(entries).Result;
 
-            var novaTreeNodeStep = View._NovaTree.FindStep(key);
+            if (result) return true;
 
-            if (novaTreeNodeStep == null)
-                throw new NotSupportedException("Navigating to an unknown step.");
+            CreateNotAvailableView();
 
+            return true;
+        }
+
+        private void CreateMultistep(NovaTreeNodeStep novaTreeNodeStep, bool hasChild)
+        {
             var multistep = _current as MultiStepView;
-            var groupId = novaTreeNodeStep.GroupId;
-
-            _navigatingInsideMultiStep = multistep != null && multistep.GroupId == groupId &&
-                                            Dispatch(() => multistep.GetOrCreateStep(novaTreeNodeStep, out _nextView));
+            _navigatingInsideMultiStep = hasChild && multistep != null && Dispatch(() => multistep.GetOrCreateStep(novaTreeNodeStep, out _nextView));
 
             
             if (_navigatingInsideMultiStep) return;
@@ -147,7 +163,8 @@ namespace Nova.Shell.Actions.Session
 
             var list = new LinkedList<NovaStep>(steps);
             var initialView = GetInitialView(novaTreeNodeStep, list);
-            
+
+            var groupId = novaTreeNodeStep.GroupId;
             _nextView = Dispatch(() => new MultiStepView(View, ViewModel, groupId, initialView));
         }
 
