@@ -12,7 +12,7 @@
     </PropertyGroup>
         
     <Target Name="CopyNovaShell">
-        <Copy SourceFiles="..\..\tools\net45\Nova.Shell.exe" DestinationFolder="$(TargetDir)" />
+        <Copy SourceFiles="$(MSBuildThisFileDirectory)\..\..\tools\net45\Nova.Shell.exe" DestinationFolder="$(TargetDir)" />
     </Target>
     
 </Project>
