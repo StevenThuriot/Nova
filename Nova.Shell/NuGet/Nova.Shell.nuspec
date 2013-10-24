@@ -10,6 +10,11 @@
         <projectUrl>http://github.com/StevenThuriot/Nova</projectUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>Small graphical framework to quickly start developing your apps without having to worry too much about controls and looks.</description>
+        
+        <dependencies>
+            <dependency id="Nova" />
+            <dependency id="Nova.Shell.Library" />
+        </dependencies>
     </metadata>
     <files>
         <file src="Nova.Shell.targets" target="build\net45\Nova.Shell.targets" />
