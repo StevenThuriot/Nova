@@ -16,7 +16,7 @@
 			<Output PropertyName="AssemblyInfoVersion" TaskParameter="ProductVersion"/>
 		</GetProductVersion>
 		
-        <Exec Command="$(NuGetCommand) pack &quot;$(ProjectDir)NuGet\Nova.Shell.nuspec&quot; -p OutputPath=&quot;$(TargetDir);version=$(AssemblyInfoVersion)&quot; -o &quot;$(PackageOutputDir)&quot; -symbols " />
+        <Exec Command="$(NuGetCommand) pack &quot;$(ProjectDir)NuGet\Nova.Shell.nuspec&quot; -IncludeReferencedProjects -p OutputPath=&quot;$(TargetDir);version=$(AssemblyInfoVersion)&quot; -o &quot;$(PackageOutputDir)&quot; -symbols " />
 		
 		<CreateProperty Value="$(PreviousBuildCommand)">
 			<Output PropertyName="BuildCommand" TaskParameter="Value"/>
