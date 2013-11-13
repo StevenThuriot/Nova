@@ -21,8 +21,6 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Input;
-using Nova.Library;
-using Nova.Shell.Library;
 
 namespace Nova.Shell.Domain
 {

@@ -22,6 +22,7 @@ using System.Linq;
 using Nova.Controls;
 using Nova.Library;
 using Nova.Shell.Library.Actions.Wizard;
+using RESX = Nova.Shell.Library.Properties.Resources;
 
 namespace Nova.Shell.Library
 {
@@ -140,15 +141,13 @@ namespace Nova.Shell.Library
             return _wizard.CreateWizardButton(title, action, canExecute);
         }
 
-        //TODO: Place strings in resources.
-
         /// <summary>
         /// Creates the previous button.
         /// </summary>
         /// <returns></returns>
         protected IWizardButton CreatePreviousButton()
         {
-            return CreateButton("Previous", _ => DoStep(PreviousStep), _ => PreviousStep != null && PreviousStep.Value != null);
+            return CreateButton(RESX.Previous, _ => DoStep(PreviousStep), _ => PreviousStep != null && PreviousStep.Value != null);
         }
 
         /// <summary>
@@ -157,7 +156,7 @@ namespace Nova.Shell.Library
         /// <returns></returns>
         protected IWizardButton CreateNextButton()
         {
-            return CreateButton("Next", _ => DoStep(NextStep), _ => NextStep != null && NextStep.Value != null);
+            return CreateButton(RESX.Next, _ => DoStep(NextStep), _ => NextStep != null && NextStep.Value != null);
         }
 
         /// <summary>
@@ -166,7 +165,7 @@ namespace Nova.Shell.Library
         /// <returns></returns>
         protected IWizardButton CreateFinishButton()
         {
-            const string finish = "Finish";
+            var finish = RESX.Finish;
             return CreateButton(finish, _ => RunFinishAction(finish));
         }
 
@@ -201,7 +200,7 @@ namespace Nova.Shell.Library
         /// <returns></returns>
         protected IWizardButton CreateCancelButton()
         {
-            return CreateButton("Cancel", _ => _wizard.Cancel(), _ => CanCancel);
+            return CreateButton(RESX.Cancel, _ => _wizard.Cancel(), _ => CanCancel);
         }
 
 

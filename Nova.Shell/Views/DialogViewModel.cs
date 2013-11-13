@@ -22,7 +22,7 @@ using System.Windows;
 using System.Windows.Media;
 using Nova.Library;
 using Nova.Shell.Library;
-
+using RESX=Nova.Shell.Library.Properties.Resources;
 namespace Nova.Shell.Views
 {
     /// <summary>
@@ -79,10 +79,9 @@ namespace Nova.Shell.Views
                 
                 return buttons.Reverse().Select(x => CreateButton(x.ToString(), _ => RunFinishAction(x, entries))).ToList().AsReadOnly();
             }
-            
-            //TODO: Replace with resource
-            const string title = "OK";
-            var wizardButton = CreateButton(title, _ => RunFinishAction(title));
+
+            var ok = RESX.OK;
+            var wizardButton = CreateButton(ok, _ => RunFinishAction(ok));
             return new[] { wizardButton };
         }
 

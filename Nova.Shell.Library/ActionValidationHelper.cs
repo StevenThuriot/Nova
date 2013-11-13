@@ -16,8 +16,8 @@
 //  
 #endregion
 
-using System.Linq;
 using Nova.Controls;
+using Nova.Shell.Library.Properties;
 
 namespace Nova.Shell.Library
 {
@@ -40,26 +40,17 @@ namespace Nova.Shell.Library
             if (!viewModel.IsChanged)
                 return true;
 
-            const string saveConstant = "Save"; //TODO: Replace with resource
 
-            var result = viewModel.ShowDialogBox("Changes have been made", new[] { saveConstant, "Cancel" });
+            var result = viewModel.ShowDialogBox(Resources.Changes_Have_Been_Made, new[] { Resources.Save, Resources.Cancel });
 
-            if (result == saveConstant)
+            if (result != Resources.Save)
             {
-                if (!viewModel.Save())
-                {
-                    viewModel.ShowDialogBox("Changes could not be saved succesfully...");
-                    return false;
-                }
-
-                if (viewModel.IsChanged)
-                {
-                    viewModel.ShowDialogBox("Changes could not be saved succesfully...");
-                    return false;
-                }
+                return false;
             }
-            else
+            
+            if (!viewModel.Save() || viewModel.IsChanged)
             {
+                viewModel.ShowDialogBox(Resources.Changes_Could_Not_Be_Saved);
                 return false;
             }
 

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Nova.Shell.Properties {
+namespace Nova.Shell.Library.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Nova.Shell.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Nova.Shell.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Nova.Shell.Library.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,47 +61,94 @@ namespace Nova.Shell.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Close app?.
+        ///   Looks up a localized string similar to Cancel.
         /// </summary>
-        public static string CloseApplication {
+        public static string Cancel {
             get {
-                return ResourceManager.GetString("CloseApplication", resourceCulture);
+                return ResourceManager.GetString("Cancel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exit.
+        ///   Looks up a localized string similar to Changes could not be saved succesfully....
         /// </summary>
-        public static string CloseApplicationTitle {
+        public static string Changes_Could_Not_Be_Saved {
             get {
-                return ResourceManager.GetString("CloseApplicationTitle", resourceCulture);
+                return ResourceManager.GetString("Changes_Could_Not_Be_Saved", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [ Empty ].
+        ///   Looks up a localized string similar to Changes have been made to the current view.
+        ///
+        ///Do you want to save your changes?.
         /// </summary>
-        public static string Empty {
+        public static string Changes_Have_Been_Made {
             get {
-                return ResourceManager.GetString("Empty", resourceCulture);
+                return ResourceManager.GetString("Changes_Have_Been_Made", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [ Empty Session ].
+        ///   Looks up a localized string similar to Finish.
         /// </summary>
-        public static string EmptySession {
+        public static string Finish {
             get {
-                return ResourceManager.GetString("EmptySession", resourceCulture);
+                return ResourceManager.GetString("Finish", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There are currently no sessions running. You can open a new session by clicking the + button at the top..
+        ///   Looks up a localized string similar to Next.
         /// </summary>
-        public static string NoOpenSessions {
+        public static string Next {
             get {
-                return ResourceManager.GetString("NoOpenSessions", resourceCulture);
+                return ResourceManager.GetString("Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string Previous {
+            get {
+                return ResourceManager.GetString("Previous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }
