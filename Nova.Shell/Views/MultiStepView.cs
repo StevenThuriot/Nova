@@ -383,8 +383,7 @@ namespace Nova.Shell.Views
                 var view = step.View;
                 if (view.FocusControl(fieldName, entityId))
                 {
-                    CurrentView = node;
-                    return true;
+                    return DoStep(node);
                 }
 
                 node = node.Next;
