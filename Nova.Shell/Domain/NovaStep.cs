@@ -122,6 +122,17 @@ namespace Nova.Shell.Domain
         public Guid NodeId { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether this instance is view initialized.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is view initialized; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsViewInitialized
+        {
+            get { return View != null; }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NovaStep" /> class.
         /// </summary>
         /// <param name="title">The title.</param>

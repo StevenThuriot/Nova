@@ -370,10 +370,27 @@ namespace Nova.Shell.Views
         /// <returns></returns>
         public bool FocusControl(string fieldName, Guid entityId)
         {
-            //TODO: foreach view in _views
-                    //if focus; break + navigate if needed
+            if (FocusHelper.FocusControl(this, fieldName, entityId))
+                return true;
 
-            return FocusHelper.FocusControl(this, fieldName, entityId);
+            var node = CurrentView.List.First;
+
+            while (node != null && node.Value != null)
+            {
+                var step = node.Value;
+                if (!step.IsViewInitialized) continue;
+
+                var view = step.View;
+                if (view.FocusControl(fieldName, entityId))
+                {
+                    CurrentView = node;
+                    return true;
+                }
+
+                node = node.Next;
+            }
+
+            return false;
         }
 
 
