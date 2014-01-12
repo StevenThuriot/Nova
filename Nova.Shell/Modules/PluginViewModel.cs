@@ -16,26 +16,28 @@
 //   
 #endregion
 
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Nova.Library;
+using Nova.Shell.Actions.Plugins;
+using Nova.Shell.Library;
+using NuGet;
 
-namespace Nova.Shell.Library
+namespace Nova.Shell.Modules
 {
-    /// <summary>
-    /// The content viewmodel
-    /// </summary>
-    internal interface IContentViewModel : INavigatablePage, IViewModel
+    public class PluginViewModel : ContentViewModel<PluginView, PluginViewModel>
     {
-        /// <summary>
-        /// Returns to use case.
-        /// </summary>
-        /// <param name="entries">The entries.</param>
-        void ReturnToUseCase(IEnumerable<ActionContextEntry> entries);
+        private List<IPackage> _plugins;
 
-        /// <summary>
-        /// Gets or sets the Current Node Id.
-        /// </summary>
-        Guid NodeId { get; set; }
+        public override Task<bool> Enter(params ActionContextEntry[] parameters)
+        {
+            return InvokeActionAsync<PluginEnterAction>(parameters);
+        }
+
+        public List<IPackage> Plugins
+        {
+            get { return _plugins; }
+            set { SetValue(ref _plugins, value); }
+        }
     }
 }

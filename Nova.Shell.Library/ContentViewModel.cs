@@ -41,7 +41,7 @@ namespace Nova.Shell.Library
         where TViewModel : ContentViewModel<TView, TViewModel>, new()
     {
         private readonly IDisposable _deferral;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentViewModel{TView, TViewModel}"/> class.
         /// </summary>
@@ -139,6 +139,11 @@ namespace Nova.Shell.Library
             var actionContextEntries = entries.ToArray();
             InvokeAction<ReturnAction<TView, TViewModel>>(actionContextEntries);
         }
+
+        /// <summary>
+        /// Gets or sets the Current Node Id.
+        /// </summary>
+        public Guid NodeId { get; set; }
 
         /// <summary>
         /// Shows the dialog box.

@@ -16,26 +16,12 @@
 //   
 #endregion
 
-using System;
-using System.Collections.Generic;
-using Nova.Library;
+using Nova.Controls;
 
-namespace Nova.Shell.Library
+namespace Nova.Shell.Modules.Plugins
 {
-    /// <summary>
-    /// The content viewmodel
-    /// </summary>
-    internal interface IContentViewModel : INavigatablePage, IViewModel
+    public abstract class PluginViewBase : ExtendedContentControl<PluginView, PluginViewModel>
     {
-        /// <summary>
-        /// Returns to use case.
-        /// </summary>
-        /// <param name="entries">The entries.</param>
-        void ReturnToUseCase(IEnumerable<ActionContextEntry> entries);
-
-        /// <summary>
-        /// Gets or sets the Current Node Id.
-        /// </summary>
-        Guid NodeId { get; set; }
+        
     }
 }

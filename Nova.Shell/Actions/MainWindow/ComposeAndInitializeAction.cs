@@ -19,13 +19,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using Nova.Shell.Builders;
-using Nova.Shell.Library;
 using Nova.Library.Actions;
 
 namespace Nova.Shell.Actions.MainWindow
@@ -39,7 +37,7 @@ namespace Nova.Shell.Actions.MainWindow
 
         public override bool Enter()
         {
-            ComposeModules();
+            ModuleComposer.Compose();
             ReadConfiguration();
 
             return true;
@@ -77,31 +75,6 @@ namespace Nova.Shell.Actions.MainWindow
 
 
 
-
-        private static void ComposeModules()
-        {
-            var builders = new List<ModuleBuilder>();
-
-            var app = (App)Application.Current;
-            var container = app.CompositionManager.CompositionContainer;
-            var moduleConfigurations = container.GetExportedValues<IModule>();
-
-            foreach (var module in moduleConfigurations)
-            {
-                var builder = new ModuleBuilder();
-                module.Configure(builder);
-                builders.Add(builder);
-            }
-
-            //Sort by ranking: Descending
-            builders.Sort((x, y) => x.Ranking < y.Ranking ? 1 : (x.Ranking > y.Ranking ? -1 : 0));
-
-            var modules = builders.Select(x => x.Build())
-                                  .ToList()
-                                  .AsReadOnly();
-
-            app.Model.Modules = modules;
-        }
 
         private void ReadConfiguration()
         {

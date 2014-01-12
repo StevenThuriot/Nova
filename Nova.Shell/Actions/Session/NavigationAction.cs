@@ -144,7 +144,16 @@ namespace Nova.Shell.Actions.Session
 
             var result = _nextView != null && _nextView.ViewModel.Enter(entries).Result;
 
-            if (result) return true;
+            if (result)
+            {
+                Guid key;
+                if (ActionContext.TryGetValue(ActionContextConstants.NodeId, out key))
+                {
+                    ((IContentViewModel) _nextView.ViewModel).NodeId = key;
+                }
+
+                return true;
+            }
 
             CreateNotAvailableView();
 

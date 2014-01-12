@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.Linq;
 using System.Threading;
@@ -31,6 +32,8 @@ using System.Windows.Threading;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
 using Nova.Shell.Builders;
+using Nova.Shell.Controls;
+using Nova.Shell.Domain;
 using Nova.Shell.Library;
 using Nova.Shell.Managers;
 using System.Windows.Input;
@@ -439,6 +442,41 @@ namespace Nova.Shell
             return handle;
         }
 
+        public void RebuildTree()
+        {
+            var dispatcher = Application.Current.Dispatcher;
+            var threaded = !dispatcher.CheckAccess();
+
+            var tree = threaded ? dispatcher.Invoke(() => View._NovaTree) : View._NovaTree;
+
+            var modules =  ModuleComposer.Compose(true)
+                                         .OrderByDescending(x => x.Ranking)
+                                         .Select(x => x.Build(tree, this))
+                                         .ToList()
+                                         .AsReadOnly();
+
+            if (threaded)
+            {
+                dispatcher.Invoke(() => InitTree(tree, modules));
+            }
+            else
+            {
+                InitTree(tree, modules);
+            }
+        }
+
+        private void InitTree(NovaTree tree, IEnumerable<NovaTreeModule> modules)
+        {
+            ((INovaTree) tree).InitializeData(modules);
+
+            var currentView = CurrentView;
+            var pageType = currentView.GetType();
+            var viewModel = currentView.ViewModel;
+            var viewModelType = viewModel.GetType();
+            var key = ((IContentViewModel) viewModel).NodeId;
+
+            tree.ReevaluateState(key, pageType, viewModelType);
+        }
 
         /// <summary>
         /// Disposes the managed resources.

@@ -50,6 +50,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.XmlTransform">
+      <HintPath>..\packages\Microsoft.Web.Xdt.1.0.0\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
+    </Reference>
     <Reference Include="Nova.Threading, Version=2.1.0.0, Culture=neutral, PublicKeyToken=03252df91086a919, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Nova.Threading.2.1.2\lib\net45\Nova.Threading.dll</HintPath>
@@ -57,6 +60,10 @@
     <Reference Include="Nova.Threading.Metadata, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Nova.Threading.Metadata.1.1.1\lib\net45\Nova.Threading.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="NuGet.Core, Version=2.7.41101.299, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NuGet.Core.2.7.2\lib\net40-Client\NuGet.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -83,6 +90,9 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Actions\MainWindow\ShutdownAction.cs" />
+    <Compile Include="Builders\ModuleComposer.cs" />
+    <Compile Include="Modules\Plugins\Actions\InstallPluginAction.cs" />
+    <Compile Include="Modules\Plugins\Actions\PluginEnterAction.cs" />
     <Compile Include="Actions\Wizard\CancelAction.cs" />
     <Compile Include="Actions\Wizard\EnterWizardAction.cs" />
     <Compile Include="Actions\Wizard\FinishAction.cs" />
@@ -123,6 +133,12 @@
     <Compile Include="DropShadow.xaml.cs">
       <DependentUpon>DropShadow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Plugins\PluginModule.cs" />
+    <Compile Include="Modules\Plugins\PluginView.xaml.cs">
+      <DependentUpon>PluginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Plugins\PluginViewBase.cs" />
+    <Compile Include="Modules\Plugins\PluginViewModel.cs" />
     <Compile Include="SessionView.xaml.cs">
       <DependentUpon>SessionView.xaml</DependentUpon>
     </Compile>
@@ -188,6 +204,10 @@
     <Compile Include="MainViewModel.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Modules\Plugins\PluginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SessionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -32,7 +32,7 @@ namespace Nova.Shell.Managers
     /// </summary>
     internal class CompositionManager
     {
-        private readonly Lazy<CompositionContainer> _compositionContainer;
+        private Lazy<CompositionContainer> _compositionContainer;
 
         /// <summary>
         /// Gets the composition container.
@@ -55,6 +55,14 @@ namespace Nova.Shell.Managers
         }
 
         /// <summary>
+        /// Rebuilds the container if already created.
+        /// </summary>
+        public void RebuildContainer()
+        {
+            _compositionContainer = new Lazy<CompositionContainer>(CreateContainer);
+        }
+
+        /// <summary>
         /// Creates the container.
         /// </summary>
         /// <remarks>This method is called on a different thread to speed up startup.</remarks>
@@ -72,7 +80,7 @@ namespace Nova.Shell.Managers
 
             //Subdirectories.
             var directories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories);
-            foreach (var catalog in directories.Select(x => new DirectoryCatalog(x, "*.dll")))
+            foreach (var catalog in directories.Where(x => (new DirectoryInfo(x)).Name == "lib").Select(x => new DirectoryCatalog(x, "*.dll")))
             {
                 aggregateCatalog.Catalogs.Add(catalog);
             }

@@ -52,6 +52,7 @@ namespace Nova.Shell.Controls
     {
         private IEnumerable<NovaTreeNodeBase> _treeNodes;
         private bool _showModules;
+        private IEnumerable<NovaTreeModule> _modules;
 
         /// <summary>
         /// Gets the tree nodes.
@@ -95,7 +96,17 @@ namespace Nova.Shell.Controls
         /// <value>
         /// The modules.
         /// </value>
-        public IEnumerable<NovaTreeModule> Modules { get; private set; }
+        public IEnumerable<NovaTreeModule> Modules
+        {
+            get { return _modules; }
+            private set
+            {
+                if (_modules == value) return;
+
+                _modules = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Occurs when a property has changed.
@@ -136,12 +147,22 @@ namespace Nova.Shell.Controls
                 return false;
 
             var novaTreeNodes = TreeNodes;
-            if (ReevaluateNodes(novaTreeNodes, key)) return true; //Node found in current module
+            if (ReevaluateNodes(novaTreeNodes, key))
+            {
+                //Node found in current module
+                foreach (var node in Modules.Select(x => x.TreeNodes).Where(x => x != novaTreeNodes))
+                {
+                    ReevaluateNodes(node, key);
+                }
+                return true;
+            }
 
             //Search TreeNodes in a different module.
             var nodes = Modules.Select(x => x.TreeNodes)
                                .Where(x => x != novaTreeNodes)
-                               .FirstOrDefault(x => ReevaluateNodes(x, key));
+                               .Where(x => ReevaluateNodes(x, key))
+                               .ToList()
+                               .FirstOrDefault();
 
             if (nodes == null) return false; //Leave the navigational tree intact if the current node was not found.
 
@@ -158,12 +179,22 @@ namespace Nova.Shell.Controls
         private bool ReevaluateState(Type pageType, Type viewModelType)
         {
             var novaTreeNodes = TreeNodes;
-            if (ReevaluateNodes(novaTreeNodes, pageType, viewModelType)) return true; //Node found in current module
+            if (ReevaluateNodes(novaTreeNodes, pageType, viewModelType))
+            {
+                //Node found in current module
+                foreach (var node in Modules.Select(x => x.TreeNodes).Where(x => x != novaTreeNodes))
+                {
+                    ReevaluateNodes(node, pageType, viewModelType);
+                }
+                return true; 
+            }
             
             //Search TreeNodes in a different module.
             var nodes = Modules.Select(x => x.TreeNodes)
                                .Where(x => x != novaTreeNodes)
-                               .FirstOrDefault(x => ReevaluateNodes(x, pageType, viewModelType));
+                               .Where(x => ReevaluateNodes(x, pageType, viewModelType))
+                               .ToList()
+                               .FirstOrDefault();
 
             if (nodes == null) return false; //Leave the navigational tree intact if the current node was not found.
 
@@ -226,6 +257,14 @@ namespace Nova.Shell.Controls
         }
 
         /// <summary>
+        /// Initializes a new nova tree.
+        /// </summary>
+        public NovaTree()
+        {
+            InitializeComponent();
+        }
+
+        /// <summary>
         /// Initializes the tree's data.
         /// </summary>
         /// <param name="modules">The modules.</param>
@@ -241,10 +280,8 @@ namespace Nova.Shell.Controls
                 throw new ArgumentException(@"No modules found.", "modules");
 
             Modules = modules;
-            TreeNodes = Modules.First().TreeNodes;
+            ((INovaTree)this).ActivateModule(Modules.First());
             ShowModules = amountOfModules > 1;
-
-            InitializeComponent();
         }
 
 

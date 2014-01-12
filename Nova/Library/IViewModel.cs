@@ -38,7 +38,7 @@ namespace Nova.Library
         IView View { get; }
 
         /// <summary>
-        /// Gets or sets the ViewModel ID.
+        /// Gets the ViewModel ID.
         /// </summary>
         /// <value>
         /// The ID.

@@ -173,5 +173,10 @@ namespace Nova.Shell.Library
         /// <param name="image">The image.</param>
         /// <returns>The dialog results</returns>
         T ShowDialogBox<T>(string message, IEnumerable<T> buttons, ImageSource image = null);
+
+        /// <summary>
+        /// Rebuilds the navigational tree.
+        /// </summary>
+        void RebuildTree();
     }
 }
