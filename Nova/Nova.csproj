@@ -78,7 +78,7 @@
   <ItemGroup>
     <Reference Include="Nova.Threading, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nova.Threading.2.1.2\lib\net45\Nova.Threading.dll</HintPath>
+      <HintPath>..\packages\Nova.Threading.2.1.3\lib\net45\Nova.Threading.dll</HintPath>
     </Reference>
     <Reference Include="Nova.Threading.Metadata, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

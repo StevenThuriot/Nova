@@ -1,6 +1,6 @@
 ﻿#region License
 //   
-//  Copyright 2013 Steven Thuriot
+//  Copyright 2014 Steven Thuriot
 //   
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -41,12 +41,16 @@ namespace Nova.Shell.Modules.Plugins.Actions
 
             var repository = PackageRepositoryFactory.Default.CreateRepository(@"http://novamodules.apphb.com/nuget");
             var manager = new PackageManager(repository, pluginFolder);
-
+            
             manager.InstallPackage(package, false, false);
 
-            ViewModel.Session.RebuildTree();
-
             return base.Execute();
+        }
+
+        public override void ExecuteCompleted()
+        {
+            ViewModel.Session.RebuildTree();
+            base.ExecuteCompleted();
         }
     }
 }

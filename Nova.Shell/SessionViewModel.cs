@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.Linq;
 using System.Threading;
@@ -32,8 +31,6 @@ using System.Windows.Threading;
 using Nova.Controls;
 using Nova.Shell.Actions.Session;
 using Nova.Shell.Builders;
-using Nova.Shell.Controls;
-using Nova.Shell.Domain;
 using Nova.Shell.Library;
 using Nova.Shell.Managers;
 using System.Windows.Input;
@@ -398,13 +395,21 @@ namespace Nova.Shell
                 return handle.Result;
             }
         }
-        
+
+        /// <summary>
+        /// Rebuilds the navigational tree.
+        /// </summary>
+        public void RebuildTree()
+        {
+            InvokeAction<RebuildNavigationalTreeAction>();
+        }
+
         private StackHandle<T> PrepareAndShowDialogBox<T>(string message, IEnumerable<T> buttons, ImageSource image)
         {
             var dispatcher = View.Dispatcher;
 
             if (!dispatcher.CheckAccess())
-                return dispatcher.Invoke(() => PrepareAndShowDialogBox<T>(message, buttons, image), DispatcherPriority.Send);
+                return dispatcher.Invoke(() => PrepareAndShowDialogBox(message, buttons, image), DispatcherPriority.Send);
 
             var entries = new List<ActionContextEntry>();
 
@@ -440,42 +445,6 @@ namespace Nova.Shell
             IsStacked = Interlocked.Increment(ref _stackCounter) > 0;
             
             return handle;
-        }
-
-        public void RebuildTree()
-        {
-            var dispatcher = Application.Current.Dispatcher;
-            var threaded = !dispatcher.CheckAccess();
-
-            var tree = threaded ? dispatcher.Invoke(() => View._NovaTree) : View._NovaTree;
-
-            var modules =  ModuleComposer.Compose(true)
-                                         .OrderByDescending(x => x.Ranking)
-                                         .Select(x => x.Build(tree, this))
-                                         .ToList()
-                                         .AsReadOnly();
-
-            if (threaded)
-            {
-                dispatcher.Invoke(() => InitTree(tree, modules));
-            }
-            else
-            {
-                InitTree(tree, modules);
-            }
-        }
-
-        private void InitTree(NovaTree tree, IEnumerable<NovaTreeModule> modules)
-        {
-            ((INovaTree) tree).InitializeData(modules);
-
-            var currentView = CurrentView;
-            var pageType = currentView.GetType();
-            var viewModel = currentView.ViewModel;
-            var viewModelType = viewModel.GetType();
-            var key = ((IContentViewModel) viewModel).NodeId;
-
-            tree.ReevaluateState(key, pageType, viewModelType);
         }
 
         /// <summary>
