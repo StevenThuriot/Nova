@@ -15,10 +15,10 @@ namespace Nova.Shell.Actions.Plugins
 
         public override bool Enter()
         {
-    var entryAssembly = Assembly.GetEntryAssembly();
-    var location = entryAssembly.Location;
-    var pluginDirectory = new FileInfo(location).Directory;
-    var pluginFolder = Path.Combine(pluginDirectory.FullName, "Modules");
+            var entryAssembly = Assembly.GetEntryAssembly();
+            var location = entryAssembly.Location;
+            var pluginDirectory = new FileInfo(location).Directory;
+            var pluginFolder = Path.Combine(pluginDirectory.FullName, "Modules");
 
             var repository = PackageRepositoryFactory.Default.CreateRepository(@"http://novamodules.apphb.com/nuget");
 
@@ -27,17 +27,17 @@ namespace Nova.Shell.Actions.Plugins
             _plugins = repository.GetPackages().Where(x => x.IsLatestVersion).ToList();
 
 
-    var catalogs = pluginDirectory.GetDirectories("lib", SearchOption.AllDirectories).Select(x => new DirectoryCatalog(x.FullName));
-    var directoryAggregate = new AggregateCatalog(catalogs);
-    var container = new CompositionContainer(directoryAggregate);
-
-
             //// TODO: check if package is newer than one already downloaded, if so , only delete the specific older package and not the whole addin folder
             //if (Directory.Exists(pluginFolder))
             //    Directory.Delete(pluginFolder, true);
 
             foreach (var plugin in _plugins)
                 manager.InstallPackage(plugin, false, true);
+
+
+            var catalogs = pluginDirectory.GetDirectories("lib", SearchOption.AllDirectories).Select(x => new DirectoryCatalog(x.FullName));
+            var directoryAggregate = new AggregateCatalog(catalogs);
+            var container = new CompositionContainer(directoryAggregate);
 
             return base.Enter();
         }
