@@ -21,11 +21,7 @@ namespace Nova.Shell.Builders
             if (refreshContainer)
             {
                 compositionManager.RebuildContainer();
-                var catalog = (AggregateCatalog) container.Catalog;
-                foreach (var catalogPart in catalog.Catalogs.OfType<DirectoryCatalog>())
-                {
-                    catalogPart.Refresh();
-                }
+                container = compositionManager.CompositionContainer;
             }
 
             var moduleConfigurations = container.GetExportedValues<IModule>();
