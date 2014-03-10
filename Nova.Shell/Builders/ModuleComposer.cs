@@ -16,13 +16,13 @@ namespace Nova.Shell.Builders
 
             var app = (App)Application.Current;
             var compositionManager = app.CompositionManager;
-            var container = compositionManager.CompositionContainer;
 
             if (refreshContainer)
             {
                 compositionManager.RebuildContainer();
-                container = compositionManager.CompositionContainer;
             }
+
+            var container = compositionManager.CompositionContainer;
 
             var moduleConfigurations = container.GetExportedValues<IModule>();
 
