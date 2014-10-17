@@ -111,11 +111,11 @@ namespace Nova.Controls
 				numericTextBox._customValidNumberRegex = null;
 				return;
 			}
-            
 
-			var regexString = settings.MaximumNumbers > 0
-			                     ? @"^[-+]?[0-9]{0," + settings.MaximumNumbers + "}"
-			                     : @"^[-+]?[0-9]*";
+			var regexString = @"^[-+]?[0-9]";
+			regexString += settings.MaximumNumbers > 0
+			                     ? @"{0," + settings.MaximumNumbers + "}"
+			                     : "*";
 
 			if (settings.MaximumDecimals > 0)
 			{
