@@ -112,7 +112,10 @@ namespace Nova.Controls
 				return;
 			}
             
-            var regexString = @"^[-+]?[0-9]{0," + settings.MaximumNumbers + "}";
+
+			var regexString = settings.MaximumNumbers > 0
+			                     ? @"^[-+]?[0-9]{0," + settings.MaximumNumbers + "}"
+			                     : @"^[-+]?[0-9]*";
 
 			if (settings.MaximumDecimals > 0)
 			{
