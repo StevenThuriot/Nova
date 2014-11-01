@@ -1,4 +1,4 @@
-Nova [![Build status](https://ci.appveyor.com/api/projects/status?id=x9427h8gu7woq1nq)](https://ci.appveyor.com/project/Nova)
+Nova [![Build status](https://ci.appveyor.com/api/projects/status/4ieea804buuju1ud?svg=true)](https://ci.appveyor.com/project/StevenThuriot/nova)
 ====
 
 * Graphical framework containing several controls, themes and other graphical aids so you can quickly start a new project without having to reinvent the same graphical logic over and over.
