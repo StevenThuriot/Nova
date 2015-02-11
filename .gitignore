@@ -99,3 +99,5 @@ UpgradeLog*.XML
 #NuGet
 packages/*
 !packages/repositories.config
+
+node_modules
