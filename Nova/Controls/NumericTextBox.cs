@@ -87,7 +87,7 @@ namespace Nova.Controls
             if (regex.IsMatch(value))
                 return value;
 
-            var text = ((NumericTextBox) dependencyObject).Text;
+            var text = numericTextBox.Text;
 
             if (regex.IsMatch(text))
                 return text;
@@ -111,8 +111,11 @@ namespace Nova.Controls
 				numericTextBox._customValidNumberRegex = null;
 				return;
 			}
-            
-            var regexString = @"^[-+]?[0-9]{0," + settings.MaximumNumbers + "}";
+
+			var regexString = @"^[-+]?[0-9]";
+			regexString += settings.MaximumNumbers > 0
+			                     ? @"{0," + settings.MaximumNumbers + "}"
+			                     : "*";
 
 			if (settings.MaximumDecimals > 0)
 			{
