@@ -1,6 +1,4 @@
-﻿using Nova.Library;
-
-#region License
+﻿#region License
 // 
 //  Copyright 2012 Steven Thuriot
 // 
@@ -20,6 +18,7 @@
 
 using System;
 using System.Threading;
+using Nova.Library;
 using Nova.Validation;
 
 namespace Nova.Test

@@ -1,6 +1,3 @@
-using System;
-using System.Windows;
-
 #region License
 // 
 //  Copyright 2012 Steven Thuriot
@@ -19,6 +16,8 @@ using System.Windows;
 // 
 #endregion
 
+using System;
+using System.Windows;
 using System.Windows.Documents;
 
 namespace Nova.Controls

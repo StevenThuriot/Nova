@@ -1,6 +1,4 @@
-﻿using Nova.Library;
-
-#region License
+﻿#region License
 // 
 //  Copyright 2012 Steven Thuriot
 // 

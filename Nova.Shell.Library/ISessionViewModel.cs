@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows.Media;
-using Nova.Library;
-
-#region License
+﻿#region License
 
 // 
 //  Copyright 2013 Steven Thuriot
@@ -23,7 +19,10 @@ using Nova.Library;
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Windows.Media;
 using Nova.Controls;
+using Nova.Library;
 
 namespace Nova.Shell.Library
 {

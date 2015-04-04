@@ -1,5 +1,3 @@
-using Nova.Library;
-
 #region License
 // 
 //  Copyright 2012 Steven Thuriot
@@ -22,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Nova.Controls;
+using Nova.Library;
 using Nova.Properties;
 
 namespace Nova.Validation
